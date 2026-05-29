@@ -1,4 +1,5 @@
 import { useState } from "react";
+import gitData from "../git-data.json";
 
 interface Commit {
   hash: string;
@@ -8,14 +9,9 @@ interface Commit {
   message: string;
 }
 
-// Injected at build time via vite define
-declare const __GIT_LOG__: Commit[];
-declare const __GIT_FILES__: string[];
-declare const __GIT_BRANCH__: string;
-
-const commits: Commit[] = typeof __GIT_LOG__ !== "undefined" ? __GIT_LOG__ : [];
-const files: string[] = typeof __GIT_FILES__ !== "undefined" ? __GIT_FILES__ : [];
-const branch: string = typeof __GIT_BRANCH__ !== "undefined" ? __GIT_BRANCH__ : "unknown";
+const commits: Commit[] = gitData.log as Commit[];
+const files: string[] = gitData.files;
+const branch: string = gitData.branch;
 
 type View = "log" | "tree" | "file" | "diff";
 
