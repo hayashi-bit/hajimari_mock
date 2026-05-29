@@ -1,0 +1,24 @@
+{
+  "query": "SELECT cs.id, cs.userId, cs.isOnboarding, cs.mode, cs.messageCount FROM chat_sessions cs ORDER BY cs.id DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user FBUNq4KdpNoPMp2.root --database YftbLHZFd22nj5w5n2Njvk --execute SELECT cs.id, cs.userId, cs.isOnboarding, cs.mode, cs.messageCount FROM chat_sessions cs ORDER BY cs.id DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "30001",
+      "userId": "1",
+      "isOnboarding": "0",
+      "mode": "NULL",
+      "messageCount": "8"
+    },
+    {
+      "id": "1",
+      "userId": "1",
+      "isOnboarding": "1",
+      "mode": "NULL",
+      "messageCount": "7"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuserId\tisOnboarding\tmode\tmessageCount\n30001\t1\t0\tNULL\t8\n1\t1\t1\tNULL\t7\n",
+  "stderr": "",
+  "execution_time_ms": 1833
+}

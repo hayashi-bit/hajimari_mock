@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1779029329826,
+      "tag": "0000_puzzling_grey_gargoyle",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1779029649441,
+      "tag": "0001_sturdy_joshua_kane",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1779032246196,
+      "tag": "0002_shallow_rage",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1779033827050,
+      "tag": "0003_strong_charles_xavier",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1779070726092,
+      "tag": "0004_flashy_wolverine",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1779103109635,
+      "tag": "0005_lean_rawhide_kid",
+      "breakpoints": true
+    }
+  ]
+}

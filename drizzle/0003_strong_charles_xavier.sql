@@ -1,0 +1,1 @@
+ALTER TABLE `chat_sessions` ADD `isFavorite` boolean DEFAULT false NOT NULL;

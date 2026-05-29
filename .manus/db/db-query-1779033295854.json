@@ -1,0 +1,49 @@
+{
+  "query": "SELECT id, role, LEFT(content, 200) as content_preview FROM messages WHERE sessionId = 1 ORDER BY id ASC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user FBUNq4KdpNoPMp2.root --database YftbLHZFd22nj5w5n2Njvk --execute SELECT id, role, LEFT(content, 200) as content_preview FROM messages WHERE sessionId = 1 ORDER BY id ASC LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "role": "assistant",
+      "content_preview": "はじめまして。miiiroへようこそ。"
+    },
+    {
+      "id": "30001",
+      "role": "user",
+      "content_preview": "女性向けのキャリアコーチングサービスを運営しています"
+    },
+    {
+      "id": "30002",
+      "role": "assistant",
+      "content_preview": "女性向けのキャリアコーチング、素晴らしいですね！そのサービスは、どんな女性を対象にしているんですか？"
+    },
+    {
+      "id": "60001",
+      "role": "user",
+      "content_preview": "test"
+    },
+    {
+      "id": "60002",
+      "role": "assistant",
+      "content_preview": "ありがとうございます。もしかして、入力中に何かありましたか？"
+    },
+    {
+      "id": "60003",
+      "role": "user",
+      "content_preview": "明日の仕事が不安"
+    },
+    {
+      "id": "60004",
+      "role": "assistant",
+      "content_preview": "明日の仕事が不安なんですね。そういった気持ちになることもありますよね。"
+    }
+  ],
+  "messages": [
+    "あなたのことを少し教えてください。どんなお仕事をされていますか？",
+    "もしよろしければ、先ほどの質問の続きで、キャリアコーチングのサービスはどんな女性を対象にされているのか、もう少し詳しく教えていただけますか？",
+    "もしよかったら、先ほどお伺いした女性向けのキャリアコーチングサービスについて、どんな女性を対象にされているのか、もう少し詳しく教えていただけますか？"
+  ],
+  "stdout": "id\trole\tcontent_preview\n1\tassistant\tはじめまして。miiiroへようこそ。\nあなたのことを少し教えてください。どんなお仕事をされていますか？\n30001\tuser\t女性向けのキャリアコーチングサービスを運営しています\n30002\tassistant\t女性向けのキャリアコーチング、素晴らしいですね！そのサービスは、どんな女性を対象にしているんですか？\n60001\tuser\ttest\n60002\tassistant\tありがとうございます。もしかして、入力中に何かありましたか？\n\nもしよろしければ、先ほどの質問の続きで、キャリアコーチングのサービスはどんな女性を対象にされているのか、もう少し詳しく教えていただけますか？\n60003\tuser\t明日の仕事が不安\n60004\tassistant\t明日の仕事が不安なんですね。そういった気持ちになることもありますよね。\n\nもしよかったら、先ほどお伺いした女性向けのキャリアコーチングサービスについて、どんな女性を対象にされているのか、もう少し詳しく教えていただけますか？\n",
+  "stderr": "",
+  "execution_time_ms": 1848
+}

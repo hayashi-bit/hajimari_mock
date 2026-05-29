@@ -1,0 +1,56 @@
+{
+  "query": "SELECT id, role, LEFT(content, 200) as content_preview FROM messages WHERE sessionId = 30001 ORDER BY id ASC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user FBUNq4KdpNoPMp2.root --database YftbLHZFd22nj5w5n2Njvk --execute SELECT id, role, LEFT(content, 200) as content_preview FROM messages WHERE sessionId = 30001 ORDER BY id ASC LIMIT 10;",
+  "rows": [
+    {
+      "id": "60005",
+      "role": "user",
+      "content_preview": "おなかすいた"
+    },
+    {
+      "id": "60006",
+      "role": "assistant",
+      "content_preview": "あら、お腹空いちゃったんだね。何か食べたいもの、ある？」"
+    },
+    {
+      "id": "60007",
+      "role": "user",
+      "content_preview": "２"
+    },
+    {
+      "id": "60008",
+      "role": "assistant",
+      "content_preview": "おや、2なんだね。どんなものが食べたい気分なのかな？"
+    },
+    {
+      "id": "60009",
+      "role": "user",
+      "content_preview": "甘いもの"
+    },
+    {
+      "id": "60010",
+      "role": "assistant",
+      "content_preview": "なるほど、甘いものなんだね！ 具体的にはどんなものが食べたい気分かな？"
+    },
+    {
+      "id": "60011",
+      "role": "user",
+      "content_preview": "シュークリーム"
+    },
+    {
+      "id": "60012",
+      "role": "assistant",
+      "content_preview": "シュークリームなんだね！とろけるカスタード派？それとも生クリームたっぷり派かな？"
+    }
+  ],
+  "messages": [
+    "2. 「お腹空いたね。今、何が一番食べたい気分？」",
+    "3. 「お腹空いたんだね。どんなものが食べたい気分？」",
+    "「何が一番食べたい気分？」が一番シンプルで答えやすいかな。",
+    "「ある？」だと「ない」で終わってしまう可能性もあるので、「どんなものが食べたい気分？」も良い。",
+    "今回は「今、何が一番食べたい気分？」でいこう。あら、お腹空いちゃったんだね。"
+  ],
+  "stdout": "id\trole\tcontent_preview\n60005\tuser\tおなかすいた\n60006\tassistant\tあら、お腹空いちゃったんだね。何か食べたいもの、ある？」\n2. 「お腹空いたね。今、何が一番食べたい気分？」\n3. 「お腹空いたんだね。どんなものが食べたい気分？」\n\n「何が一番食べたい気分？」が一番シンプルで答えやすいかな。\n「ある？」だと「ない」で終わってしまう可能性もあるので、「どんなものが食べたい気分？」も良い。\n今回は「今、何が一番食べたい気分？」でいこう。あら、お腹空いちゃったんだね。\n60007\tuser\t２\n60008\tassistant\tおや、2なんだね。どんなものが食べたい気分なのかな？\n60009\tuser\t甘いもの\n60010\tassistant\tなるほど、甘いものなんだね！ 具体的にはどんなものが食べたい気分かな？\n60011\tuser\tシュークリーム\n60012\tassistant\tシュークリームなんだね！とろけるカスタード派？それとも生クリームたっぷり派かな？\n",
+  "stderr": "",
+  "execution_time_ms": 1737
+}

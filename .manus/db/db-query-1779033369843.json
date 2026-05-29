@@ -1,0 +1,30 @@
+{
+  "query": "SELECT id, createdAt, content FROM messages WHERE sessionId = 30001 AND role = 'user' ORDER BY id ASC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user FBUNq4KdpNoPMp2.root --database YftbLHZFd22nj5w5n2Njvk --execute SELECT id, createdAt, content FROM messages WHERE sessionId = 30001 AND role = 'user' ORDER BY id ASC;",
+  "rows": [
+    {
+      "id": "60005",
+      "createdAt": "2026-05-17 15:11:58",
+      "content": "おなかすいた"
+    },
+    {
+      "id": "60007",
+      "createdAt": "2026-05-17 15:12:11",
+      "content": "２"
+    },
+    {
+      "id": "60009",
+      "createdAt": "2026-05-17 15:12:18",
+      "content": "甘いもの"
+    },
+    {
+      "id": "60011",
+      "createdAt": "2026-05-17 15:12:28",
+      "content": "シュークリーム"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcreatedAt\tcontent\n60005\t2026-05-17 15:11:58\tおなかすいた\n60007\t2026-05-17 15:12:11\t２\n60009\t2026-05-17 15:12:18\t甘いもの\n60011\t2026-05-17 15:12:28\tシュークリーム\n",
+  "stderr": "",
+  "execution_time_ms": 1767
+}

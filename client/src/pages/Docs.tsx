@@ -1,7 +1,7 @@
 /**
- * Docs Page - hajimari 開発方針ドキュメント
+ * Docs Page - miiiro 開発方針ドキュメント
  * Design: Editorial reading experience with sidebar navigation
- * Matches the Home page design language (Salmon Orange + Navy + Warm White)
+ * Brand: Base #FFFFFF / Main #FAF2F4 / Accent1 #C66A5A / Accent2 #1A2E4A
  */
 
 import { motion } from "framer-motion";
@@ -15,6 +15,7 @@ import {
   Lightbulb,
   MessageCircle,
   Mic,
+  Palette,
   Server,
   Shield,
   Sparkles,
@@ -24,6 +25,7 @@ import { Link } from "wouter";
 
 type SectionId =
   | "core-concept"
+  | "chat-ui-design"
   | "ui-principles"
   | "ai-personality"
   | "architecture"
@@ -39,6 +41,7 @@ interface Section {
 
 const sections: Section[] = [
   { id: "core-concept", title: "コアコンセプト", icon: <Lightbulb className="w-4 h-4" /> },
+  { id: "chat-ui-design", title: "チャットUIデザイン", icon: <Palette className="w-4 h-4" /> },
   { id: "ui-principles", title: "UI設計原則", icon: <Heart className="w-4 h-4" /> },
   { id: "ai-personality", title: "AI応答設計", icon: <Brain className="w-4 h-4" /> },
   { id: "architecture", title: "技術アーキテクチャ", icon: <Server className="w-4 h-4" /> },
@@ -81,7 +84,7 @@ function CoreConceptSection() {
         <h2 className="font-serif text-3xl mb-2" style={{ color: "#0F3752" }}>
           コアコンセプト
         </h2>
-        <p className="text-muted-foreground">hajimariの全ての設計判断の「最上位の判断基準」</p>
+        <p className="text-muted-foreground">miiiroの全ての設計判断の「最上位の判断基準」</p>
       </div>
       <blockquote className="border-l-4 border-primary pl-6 py-4 bg-primary/5 rounded-r-lg">
         <p className="font-serif text-xl italic" style={{ color: "#0F3752" }}>
@@ -90,7 +93,7 @@ function CoreConceptSection() {
       </blockquote>
       <div className="prose prose-slate max-w-none">
         <p className="text-foreground/80 leading-relaxed">
-          hajimariは、ユーザーにとって以下の存在である：
+          miiiroは、ユーザーにとって以下の存在である：
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
           <div className="p-5 rounded-xl bg-card border border-border/50">
@@ -113,7 +116,7 @@ function CoreConceptSection() {
           </div>
         </div>
         <p className="text-foreground/80 leading-relaxed">
-          このメタファーが意味するのは、<strong>hajimariは「ツール」ではなく「場」である</strong>ということ。
+          このメタファーが意味するのは、<strong>miiiroは「ツール」ではなく「場」である</strong>ということ。
           ユーザーが自分の思考を言語化し、整理し、前に進むための「安全な場所」を提供する。
         </p>
         <p className="text-foreground/80 leading-relaxed mt-4">
@@ -127,7 +130,7 @@ function CoreConceptSection() {
           メタファーの2層構造
         </h3>
         <p className="text-foreground/80 leading-relaxed mb-4">
-          hajimariのターゲット層は「GPTを開いても何を聞けばいいかわからない」人たちである。「白紙のノート」を渡すだけでは、GPTの空欄と同じ問題が発生する。
+          miiiroのターゲット層は「GPTを開いても何を聞けばいいかわからない」人たちである。「白紙のノート」を渡すだけでは、GPTの空欄と同じ問題が発生する。
         </p>
         <p className="text-foreground/80 leading-relaxed mb-6">
           この矛盾を解決するために、メタファーは<strong>2つの別レイヤー</strong>で機能する。
@@ -165,10 +168,10 @@ function CoreConceptSection() {
         </div>
       </div>
 
-      {/* GPTとhajimariの構造的な違い */}
+      {/* GPTとmiiiroの構造的な違い */}
       <div className="mt-10 pt-8 border-t border-border/50">
         <h3 className="font-serif text-2xl mb-4" style={{ color: "#0F3752" }}>
-          GPTとhajimariの構造的な違い
+          GPTとmiiiroの構造的な違い
         </h3>
         <div className="overflow-x-auto rounded-xl border border-border/50">
           <table className="w-full text-sm">
@@ -176,7 +179,7 @@ function CoreConceptSection() {
               <tr>
                 <th className="text-left py-2.5 px-4 font-mono text-xs uppercase tracking-wider text-muted-foreground"></th>
                 <th className="text-left py-2.5 px-4 font-mono text-xs uppercase tracking-wider text-muted-foreground">GPT</th>
-                <th className="text-left py-2.5 px-4 font-mono text-xs uppercase tracking-wider text-muted-foreground">hajimari</th>
+                <th className="text-left py-2.5 px-4 font-mono text-xs uppercase tracking-wider text-muted-foreground">miiiro</th>
               </tr>
             </thead>
             <tbody>
@@ -185,11 +188,11 @@ function CoreConceptSection() {
                 ["入力のハードル", "「何を聞けばいいかわからない」", "「答えるだけ」"],
                 ["空欄の意味", "自分で考えて書く場所", "AIの問いかけに返事を書く場所"],
                 ["使わない日", "罪悪感・離脱", "AIが待っていてくれる安心感"],
-              ].map(([label, gpt, hajimari], i) => (
+              ].map(([label, gpt, miiiro], i) => (
                 <tr key={i} className="border-b border-border/50 last:border-0">
                   <td className="py-3 px-4 font-medium">{label}</td>
                   <td className="py-3 px-4 text-muted-foreground">{gpt}</td>
-                  <td className="py-3 px-4 text-primary font-medium">{hajimari}</td>
+                  <td className="py-3 px-4 text-primary font-medium">{miiiro}</td>
                 </tr>
               ))}
             </tbody>
@@ -265,6 +268,173 @@ function CoreConceptSection() {
     </div>
    );
 }
+
+function ChatUIDesignSection() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="font-serif text-3xl mb-2" style={{ color: "#1A2E4A" }}>
+          チャットUIデザイン
+        </h2>
+        <p className="text-muted-foreground">「凛とした温もり・余白と意志・静かな推進力」</p>
+      </div>
+
+      {/* ブランド定義 */}
+      <div className="p-5 rounded-xl border border-border/50" style={{ backgroundColor: "#FAF2F4" }}>
+        <h4 className="font-semibold mb-2" style={{ color: "#1A2E4A" }}>miiiro サービス定義</h4>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          自分の意志でアクセルを踏もうとする女性のキャリアを、「方向づけ・アクセル・ブースト」で形にするサービス。
+        </p>
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+          <div className="p-2 rounded-lg bg-white">
+            <span className="font-semibold" style={{ color: "#C66A5A" }}>HANDLE</span>
+            <p className="text-muted-foreground mt-0.5">方向づけ</p>
+          </div>
+          <div className="p-2 rounded-lg bg-white">
+            <span className="font-semibold" style={{ color: "#C66A5A" }}>ACCEL</span>
+            <p className="text-muted-foreground mt-0.5">加速</p>
+          </div>
+          <div className="p-2 rounded-lg bg-white">
+            <span className="font-semibold" style={{ color: "#C66A5A" }}>BOOST</span>
+            <p className="text-muted-foreground mt-0.5">後押し</p>
+          </div>
+        </div>
+      </div>
+
+      {/* カラーパレット */}
+      <div>
+        <h3 className="text-lg font-semibold mb-3">カラーパレット</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">役割</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">カラー</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Base", "#FFFFFF", "画面背景"],
+                ["Main", "#FAF2F4", "AIバブル・セクション背景"],
+                ["Accent 1", "#C66A5A", "ユーザーバブル・音声ボタン・CTA"],
+                ["Accent 2", "#1A2E4A", "送信ボタン・ロゴ・見出し"],
+                ["N1", "#E9DCE0", "ボーダー・ディバイダー"],
+                ["N2", "#D2C3C8", "プレースホルダー・補助アイコン"],
+                ["N3", "#A19097", "サブテキスト・タイムスタンプ"],
+                ["N4", "#69565C", "本文テキスト"],
+              ].map(([role, color, usage], i) => (
+                <tr key={i} className="border-b border-border/50">
+                  <td className="py-2.5 px-3 font-medium flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-sm shrink-0" style={{ backgroundColor: color }}></span>
+                    {role}
+                  </td>
+                  <td className="py-2.5 px-3 font-mono text-xs">{color}</td>
+                  <td className="py-2.5 px-3 text-muted-foreground">{usage}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* デザイン判断 */}
+      <div>
+        <h3 className="text-lg font-semibold mb-3">核心的なデザイン判断</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">要素</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">miiiro</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">理由</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["アバター", "なし", "「隣の人」は姿が見えない"],
+                ["タイムスタンプ", "なし", "時間を気にさせない"],
+                ["プレースホルダー", "空白", "白紙のノート"],
+                ["音声ボタン", "48px（主役）", "スキマ時間に声で使う"],
+                ["送信ボタン", "36px（サブ）", "テキスト入力は補助"],
+                ["機能ボタン", "音声のみ", "引き算の設計"],
+              ].map(([element, miiiro, reason], i) => (
+                <tr key={i} className="border-b border-border/50">
+                  <td className="py-2.5 px-3 font-medium">{element}</td>
+                  <td className="py-2.5 px-3" style={{ color: "#C66A5A" }}>{miiiro}</td>
+                  <td className="py-2.5 px-3 text-muted-foreground">{reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 競合との差 */}
+      <div>
+        <h3 className="text-lg font-semibold mb-3">競合とのデザイン差別化</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">サービス</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">印象</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">miiiroの差</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["LINE", "賢やか・ポップ", "静か・余白・品格"],
+                ["ChatGPT", "機能的・ツール感", "温かい・対話感"],
+                ["Notion AI", "ドキュメント補助", "会話の場"],
+              ].map(([service, impression, diff], i) => (
+                <tr key={i} className="border-b border-border/50">
+                  <td className="py-2.5 px-3 font-medium">{service}</td>
+                  <td className="py-2.5 px-3 text-muted-foreground">{impression}</td>
+                  <td className="py-2.5 px-3 font-medium" style={{ color: "#C66A5A" }}>{diff}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* プロトタイプリンク */}
+      <div className="p-5 rounded-xl border border-border/50" style={{ backgroundColor: "#1A2E4A" }}>
+        <h4 className="font-semibold text-white mb-2">プロトタイププレビュー</h4>
+        <p className="text-sm text-white/70 mb-3">
+          実際のチャットUIをスマホフレームで体験できます。
+        </p>
+        <a
+          href="/chat-preview"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white border border-white/30 hover:bg-white/10 transition-colors"
+        >
+          <MessageCircle className="w-4 h-4" />
+          チャットUIを開く
+        </a>
+      </div>
+
+      {/* アニメーション仕様 */}
+      <div>
+        <h3 className="text-lg font-semibold mb-3">アニメーション仕様</h3>
+        <div className="space-y-3">
+          {[
+            { label: "メッセージ表示", value: "opacity 0→1 + translateY 8px→0 / 300ms ease-out" },
+            { label: "タイピングインジケータ", value: "3ドットが0.3s遅延で交互にフェード" },
+            { label: "音声ボタン（録音中）", value: "scale 1→1.08→1 / 1.5s infinite" },
+            { label: "ボタン切り替え", value: "scale 0.8→1 + opacity / 200ms" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+              <span className="text-xs font-mono font-medium text-primary shrink-0 mt-0.5 w-28">{item.label}</span>
+              <p className="text-sm text-foreground/80 font-mono">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function UIPrinciplesSection() {
   return (
     <div className="space-y-6">
@@ -454,7 +624,7 @@ function ArchitectureSection() {
       <div className="p-5 rounded-xl bg-amber-50 border border-amber-200">
         <h4 className="font-semibold text-amber-900 mb-2">関係者全員が理解すべき前提</h4>
         <p className="text-sm text-amber-800 leading-relaxed">
-          hajimariが使うのは<strong>OpenAI API（GPT-4o-mini等）</strong>であり、ChatGPTという製品ではない。
+          miiiroが使うのは<strong>OpenAI API（GPT-4o-mini等）</strong>であり、ChatGPTという製品ではない。
           APIは「頭脳だけ借りる」部品であり、ユーザーのことを一切覚えない。これは制約ではなく、むしろ強みである。
         </p>
       </div>
@@ -491,7 +661,7 @@ function ArchitectureSection() {
           <div className="space-y-2 text-slate-700">
             <p>【ユーザーがメッセージを送信】</p>
             <p className="text-slate-400 pl-8">↓</p>
-            <p>hajimariのサーバーが以下を組み立てる：</p>
+            <p>miiiroのサーバーが以下を組み立てる：</p>
             <p className="pl-4">① システムプロンプト（AIの人格・ルール）</p>
             <p className="pl-4">② 事業カルテ（名前、事業内容、目標、悩み）← <span className="text-primary">DBから取得</span></p>
             <p className="pl-4">③ 直近の会話履歴（過去5〜10往復）← <span className="text-primary">DBから取得</span></p>
@@ -506,7 +676,7 @@ function ArchitectureSection() {
 
       <blockquote className="border-l-4 border-primary/50 pl-4 py-2">
         <p className="text-sm text-foreground/80 italic">
-          つまり「覚えている」のはAIではなく、hajimariのデータベースである。
+          つまり「覚えている」のはAIではなく、miiiroのデータベースである。
           AIには毎回「この人はこういう人で、前回こういう話をしました」と教えてあげる構造。
         </p>
       </blockquote>
@@ -536,8 +706,8 @@ function MemoryDesignSection() {
             {[
               ["無料プランでも会話履歴が残る", "保存件数に制限をかけることでプラン差別化が可能"],
               ["端末を変えても同じ体験", "データはクラウドに保存されるため、スマホでもPCでも同一体験"],
-              ["AIの「人格」を完全にコントロール可能", "ChatGPTと違い、hajimari独自のメンター像を自由に設計できる"],
-              ["記憶の精度を設計できる", "「何を覚えるか」「いつ忘れるか」をhajimari側で制御"],
+              ["AIの「人格」を完全にコントロール可能", "ChatGPTと違い、miiiro独自のメンター像を自由に設計できる"],
+              ["記憶の精度を設計できる", "「何を覚えるか」「いつ忘れるか」をmiiiro側で制御"],
               ["コスト最適化が可能", "会話履歴の送信量を調整することでAPI費用をコントロール"],
             ].map(([merit, desc], i) => (
               <tr key={i} className="border-b border-border/50">
@@ -652,15 +822,15 @@ function ChecklistSection() {
               <tr className="border-b border-border">
                 <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">サービス</th>
                 <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">体験</th>
-                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">hajimariとの違い</th>
+                <th className="text-left py-2 px-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">miiiroとの違い</th>
               </tr>
             </thead>
             <tbody>
               {[
-                ["ChatGPT", "万能だが冷たい。覚えてくれない", "hajimariは「あなたを知っている」"],
-                ["LINEのAI機能", "返答カードが押しつけがましい", "hajimariは「聞くだけ」"],
-                ["Notion AI", "ドキュメント補助ツール。対話ではない", "hajimariは「会話の場」"],
-                ["コーチング（人間）", "高額（月3〜10万円）。予約が必要", "hajimariは月1,100円。いつでも"],
+                ["ChatGPT", "万能だが冷たい。覚えてくれない", "miiiroは「あなたを知っている」"],
+                ["LINEのAI機能", "返答カードが押しつけがましい", "miiiroは「聞くだけ」"],
+                ["Notion AI", "ドキュメント補助ツール。対話ではない", "miiiroは「会話の場」"],
+                ["コーチング（人間）", "高額（月3〜10万円）。予約が必要", "miiiroは月1,100円。いつでも"],
               ].map(([service, exp, diff], i) => (
                 <tr key={i} className="border-b border-border/50">
                   <td className="py-2.5 px-3 font-medium">{service}</td>
@@ -681,7 +851,7 @@ function ChecklistSection() {
           </p>
         </blockquote>
         <p className="text-white/60 text-sm mt-3">
-          UIは邪魔をしない。AIは押しつけない。でも、話し終わった後には「今日も少し前に進めた」という感覚が残る。それがhajimariの価値である。
+          UIは邪魔をしない。AIは押しつけない。でも、話し終わった後には「今日も少し前に進めた」という感覚が残る。それがmiiiroの価値である。
         </p>
       </div>
     </div>
@@ -700,6 +870,8 @@ export default function Docs() {
     switch (activeSection) {
       case "core-concept":
         return <CoreConceptSection />;
+      case "chat-ui-design":
+        return <ChatUIDesignSection />;
       case "ui-principles":
         return <UIPrinciplesSection />;
       case "ai-personality":
@@ -724,7 +896,7 @@ export default function Docs() {
             <Link href="/">
               <span className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="w-4 h-4" />
-                Sprint Dashboard
+                miiiro Dashboard
               </span>
             </Link>
           </div>
