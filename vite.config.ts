@@ -418,11 +418,30 @@ showLog();
   };
 }
 
+// Build-time git data injection
+function getGitData() {
+  try {
+    const log = git(`log --pretty=format:%H|%h|%an|%ad|%s --date=short`)
+      .trim().split("\n").filter(Boolean)
+      .map(l => { const [hash, short, author, date, ...msg] = l.split("|"); return { hash, short, author, date, message: msg.join("|") }; });
+    const files = git(`ls-tree -r --name-only HEAD`).trim().split("\n").filter(Boolean);
+    const branch = git(`rev-parse --abbrev-ref HEAD`).trim();
+    return { log, files, branch };
+  } catch { return { log: [], files: [], branch: "unknown" }; }
+}
+
+const { log: gitLog, files: gitFiles, branch: gitBranch } = getGitData();
+
 const isManus = !!process.env.MANUS_RUNTIME;
 const plugins = [react(), tailwindcss(), vitePluginGitViewer(), ...(isManus ? [jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()] : [])];
 
 export default defineConfig({
   plugins,
+  define: {
+    __GIT_LOG__: JSON.stringify(gitLog),
+    __GIT_FILES__: JSON.stringify(gitFiles),
+    __GIT_BRANCH__: JSON.stringify(gitBranch),
+  },
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

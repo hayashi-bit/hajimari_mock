@@ -11,6 +11,7 @@ import LoginPage from "./pages/Login";
 import DashboardPage from "./pages/Dashboard";
 import TasksPage from "./pages/Tasks";
 import CalendarPage from "./pages/CalendarPage";
+import GitViewer from "./pages/GitViewer";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
       {/* Legacy / existing routes */}
       <Route path="/" component={Home} />
       <Route path="/docs" component={Docs} />
+      <Route path="/git" component={GitViewer} />
       <Route path="/404" component={NotFound} />
 
       {/* Final fallback */}
