@@ -654,22 +654,28 @@ function ChatContent() {
     setInput("");
     setUserMsgCount(prev => prev + 1);
 
-    // Demo mode: mock response
+    // Demo mode: call /api/chat serverless function
     if (sessionId === -1) {
-      const demoReplies = [
-        "それについて、もう少し詳しく教えてもらえますか？",
-        "そう感じるようになったのはいつ頃からですか？",
-        "その状況で、あなたが一番大切にしたいことは何ですか？",
-        "もし理想の状態になったとしたら、どんな感じですか？",
-        "それを阻んでいるものは何だと思いますか？",
-      ];
-      setTimeout(() => {
-        setDisplayMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: demoReplies[Math.floor(Math.random() * demoReplies.length)] },
-        ]);
-      }, 800);
+      const currentMessages = [...displayMessages, { role: "user" as const, content: trimmed }];
+      const apiMessages = currentMessages.map((m) => ({ role: m.role, content: m.content }));
       if (inputRef.current) inputRef.current.style.height = "auto";
+      fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages }),
+      })
+        .then((r) => r.json())
+        .then((data: { message?: string; error?: string }) => {
+          if (data.message) {
+            setDisplayMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: data.message! },
+            ]);
+          }
+        })
+        .catch(() => {
+          toast.error("AI応答の取得に失敗しました");
+        });
       return;
     }
 
