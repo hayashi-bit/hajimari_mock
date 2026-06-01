@@ -534,6 +534,32 @@ function ChatContent() {
     }
   }, [resumeQuery.isError, resumeSessionId, navigate]);
 
+  // ─── Demo mode fallback (no backend) ───
+  useEffect(() => {
+    if (
+      (resumeSessionId === null && (sessionQuery.isError || sessionQuery.fetchStatus === "idle")) ||
+      (resumeSessionId !== null && (resumeQuery.isError || resumeQuery.fetchStatus === "idle"))
+    ) {
+      setSessionId(-1);
+      setIsOnboarding(false);
+      setDisplayMessages([{ role: "assistant", content: "こんにちは。今日はどんなことを話しましょうか？" }]);
+      setInitialLoading(false);
+    }
+  }, [sessionQuery.isError, sessionQuery.fetchStatus, resumeQuery.isError, resumeQuery.fetchStatus, resumeSessionId]);
+
+  // ─── Demo mode timeout fallback ───
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (initialLoading) {
+        setSessionId(-1);
+        setIsOnboarding(false);
+        setDisplayMessages([{ role: "assistant", content: "こんにちは。今日はどんなことを話しましょうか？" }]);
+        setInitialLoading(false);
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [initialLoading]);
+
   // ─── Initialize session (from resume or normal) ───
   useEffect(() => {
     if (resumeSessionId !== null && resumeQuery.data) {
@@ -627,6 +653,25 @@ function ChatContent() {
     ]);
     setInput("");
     setUserMsgCount(prev => prev + 1);
+
+    // Demo mode: mock response
+    if (sessionId === -1) {
+      const demoReplies = [
+        "それについて、もう少し詳しく教えてもらえますか？",
+        "そう感じるようになったのはいつ頃からですか？",
+        "その状況で、あなたが一番大切にしたいことは何ですか？",
+        "もし理想の状態になったとしたら、どんな感じですか？",
+        "それを阻んでいるものは何だと思いますか？",
+      ];
+      setTimeout(() => {
+        setDisplayMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: demoReplies[Math.floor(Math.random() * demoReplies.length)] },
+        ]);
+      }, 800);
+      if (inputRef.current) inputRef.current.style.height = "auto";
+      return;
+    }
 
     sendMessageMutation.mutate({
       sessionId,
