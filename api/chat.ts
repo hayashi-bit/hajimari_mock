@@ -24,11 +24,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { messages } = req.body ?? {};
+  const { messages, profile } = req.body ?? {};
   if (!Array.isArray(messages)) {
     res.status(400).json({ error: "messages が必要です" });
     return;
   }
+
+  const systemPrompt = profile
+    ? `${SYSTEM_PROMPT}\n\n---\n【ユーザープロフィール】\n${profile}`
+    : SYSTEM_PROMPT;
 
   let upstream: Response;
   try {
@@ -42,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
         max_tokens: 1024,
-        system: SYSTEM_PROMPT,
+        system: systemPrompt,
         messages,
         stream: true,
       }),
