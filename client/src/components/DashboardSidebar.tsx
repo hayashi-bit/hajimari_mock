@@ -10,12 +10,16 @@ import {
   ChevronLeft,
   Menu,
   X,
+  MessageCircle,
+  UserCog,
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/calendar", label: "Calendar", icon: Calendar },
+  { href: "/chat", label: "AIチャット", icon: MessageCircle },
+  { href: "/profile", label: "プロフィール", icon: UserCog },
 ];
 
 export default function DashboardSidebar() {
