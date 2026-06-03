@@ -831,10 +831,17 @@
     btn.textContent = '送信中...';
     toast.style.display = 'none';
 
+    const SUPA_URL = 'https://kwmulkworqsswmiqbabd.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE';
     try {
-      const res = await fetch('/api/feedback', {
+      const res = await fetch(`${SUPA_URL}/rest/v1/feedback`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Prefer': 'return=minimal',
+        },
         body: JSON.stringify({ type: selectedTab, content: text }),
       });
 
