@@ -4,6 +4,7 @@
   "framework": null,
   "rewrites": [
     { "source": "/docs", "destination": "/docs.html" },
-    { "source": "/chat", "destination": "/chat.html" }
+    { "source": "/chat", "destination": "/chat.html" },
+    { "source": "/voices", "destination": "/voices.html" }
   ]
 }

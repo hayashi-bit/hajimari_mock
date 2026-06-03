@@ -3,387 +3,841 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hajimari – Sprint Dashboard</title>
+  <title>miiiro Sprint Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --warm: #FFFBF5;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-      background: #FFFBF5;
-      color: #1a1a1a;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100dvh;
     }
 
     header {
-      padding: 14px 20px;
-      border-bottom: 1px solid #e8e0d8;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      background: #FFFBF5;
+      background: #fff;
       position: sticky;
       top: 0;
       z-index: 10;
+      gap: 8px;
     }
 
     .logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #0F3752;
-      letter-spacing: -0.5px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
       text-decoration: none;
+      letter-spacing: -0.3px;
     }
+
+    .header-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
 
     nav { display: flex; gap: 4px; margin-left: auto; }
     nav a {
       font-size: 13px;
-      color: #9a8a7a;
+      color: var(--muted);
       text-decoration: none;
       padding: 5px 12px;
       border-radius: 20px;
       transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
     }
-    nav a:hover { background: #f0e8e0; color: #0F3752; }
-    nav a.active { background: #F87C62; color: #fff; }
+    nav a:hover { background: #f0e8e0; color: var(--navy); }
+    nav a.active { background: var(--primary); color: #fff; }
 
     main {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 48px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
     }
 
-    h1 {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 36px;
-      color: #0F3752;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: #9a8a7a;
-      margin-bottom: 48px;
+    /* Section header */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
     }
 
     .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #9a8a7a;
-      margin-bottom: 16px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px;
+      color: var(--navy);
+      margin-bottom: 24px;
     }
 
-    /* Sprints grid */
-    .sprints {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    /* Sprint cards */
+    .sprint-grid {
+      display: flex;
+      flex-direction: column;
       gap: 16px;
-      margin-bottom: 48px;
     }
 
     .sprint-card {
       background: #fff;
-      border: 1px solid #e8e0d8;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px 28px;
+      transition: box-shadow 0.15s;
     }
 
-    .sprint-card.current { border-color: #F87C62; border-width: 2px; }
+    .sprint-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
 
-    .sprint-number {
+    .sprint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sprint-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .sprint-badge {
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9a8a7a;
-      margin-bottom: 4px;
-    }
-
-    .sprint-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: #0F3752;
-      margin-bottom: 12px;
-    }
-
-    .sprint-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 10px;
+      padding: 2px 10px;
       border-radius: 20px;
-      margin-bottom: 14px;
+      border: 1px solid;
     }
 
-    .status-done { background: #e8f5e9; color: #2e7d32; }
-    .status-active { background: #fff3e0; color: #e65100; }
-    .status-next { background: #f3e5f5; color: #6a1b9a; }
-    .status-planned { background: #e8e0d8; color: #6b5a4a; }
+    .badge-done { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+    .badge-progress { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+    .badge-upcoming { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
 
-    .sprint-tasks {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .sprint-tasks li {
+    .sprint-week {
+      margin-left: auto;
       font-size: 13px;
-      color: #4a4a4a;
-      display: flex;
-      gap: 6px;
-      align-items: flex-start;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .sprint-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
       line-height: 1.4;
     }
 
-    .sprint-tasks li::before {
-      content: '·';
-      color: #F87C62;
-      font-size: 18px;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    /* Philosophy */
-    .philosophy {
-      background: #0F3752;
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-bottom: 48px;
-      color: #FFFBF5;
-    }
-
-    .philosophy h2 {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 22px;
-      margin-bottom: 12px;
-      color: #FFFBF5;
-    }
-
-    .philosophy p {
+    .sprint-goal {
+      background: #f8f5f0;
+      border-radius: 8px;
+      padding: 12px 16px;
       font-size: 14px;
-      line-height: 1.8;
-      color: #b8cad8;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
     }
 
-    .philosophy strong { color: #F87C62; }
+    .goal-icon { color: var(--primary); flex-shrink: 0; font-size: 16px; margin-top: 1px; }
 
-    /* Tech stack */
-    .table-wrap {
-      overflow-x: auto;
-      margin-bottom: 48px;
+    .sprint-deliverables {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
+
+    .deliverable {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      color: #4a4a4a;
+      line-height: 1.5;
+    }
+
+    .deliverable::before {
+      content: '→';
+      color: var(--primary);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Release Gates */
+    .gates-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .gate-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+
+    .gate-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .gate-icon { color: var(--primary); font-size: 18px; }
+
+    .gate-conditions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gate-condition {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      color: #3a3a3a;
+      line-height: 1.6;
+    }
+
+    .gate-condition::before {
+      content: '→';
+      color: var(--primary);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Tech Stack */
+    .table-wrap { overflow-x: auto; }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
     }
 
     th {
       text-align: left;
-      padding: 10px 16px;
+      padding: 12px 20px;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #9a8a7a;
-      border-bottom: 1px solid #e8e0d8;
+      color: var(--muted);
+      background: #f8f5f0;
+      border-bottom: 1px solid var(--border);
     }
 
     td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #f0e8e0;
-      color: #1a1a1a;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f0ebe4;
       vertical-align: top;
+      line-height: 1.5;
     }
 
     tr:last-child td { border-bottom: none; }
 
-    td:first-child { color: #9a8a7a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    td:nth-child(2) { font-weight: 600; color: #0F3752; }
+    td.layer {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      width: 100px;
+    }
 
-    /* Decision gate */
-    .gate {
+    td.tech { font-weight: 600; color: var(--navy); }
+    td.detail { color: #6b5a4a; font-size: 13px; }
+
+    /* Update history */
+    .update-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .update-item {
       background: #fff;
-      border: 1px solid #e8e0d8;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 28px 32px;
+      padding: 20px 24px;
     }
 
-    .gate h2 {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 22px;
-      color: #0F3752;
-      margin-bottom: 20px;
-    }
-
-    .gate-items {
+    .update-meta {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
     }
 
-    .gate-item {
+    .update-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .update-version {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      background: #f0e8ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .update-type {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .type-fix { background: #fef3f2; color: #b91c1c; }
+    .type-feature { background: #f0fdf4; color: #15803d; }
+    .type-design { background: #eff6ff; color: #1d4ed8; }
+
+    .update-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .update-changes { display: flex; flex-direction: column; gap: 6px; }
+
+    .update-change {
       display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      font-size: 14px;
+      gap: 8px;
+      font-size: 13px;
+      color: #4a4a4a;
       line-height: 1.5;
     }
 
-    .gate-icon {
-      font-size: 16px;
+    .update-change::before {
+      content: '·';
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1;
       flex-shrink: 0;
-      margin-top: 1px;
     }
 
-    .gate-label { font-weight: 600; color: #0F3752; margin-right: 6px; }
-    .gate-desc { color: #6b5a4a; }
+    /* Feedback section */
+    .feedback-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 18px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: #f8f5f0;
+      color: #6b5a4a;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab:hover { border-color: var(--primary); color: var(--primary); }
+    .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .feedback-textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #faf8f6;
+      resize: none;
+      outline: none;
+      line-height: 1.6;
+      min-height: 100px;
+      color: var(--text);
+      transition: border-color 0.15s;
+      margin-bottom: 16px;
+    }
+
+    .feedback-textarea:focus { border-color: var(--primary); }
+    .feedback-textarea::placeholder { color: #c8b8a8; }
+
+    .feedback-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .submit-btn {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .submit-btn:hover { background: #0a2840; }
+    .submit-btn:active { transform: scale(0.97); }
+
+    .voices-link {
+      font-size: 14px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .voices-link:hover { text-decoration: underline; }
+
+    .toast {
+      display: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toast.success { color: #16a34a; }
+    .toast.error { color: #b91c1c; }
+
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 32px 16px 60px; gap: 48px; }
+      .sprint-card, .gate-card { padding: 18px 20px; }
+      nav a { padding: 5px 8px; font-size: 12px; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <a href="/" class="logo">hajimari</a>
+  <a href="/" class="logo">miiiro</a>
+  <span class="header-sub">— 開発ダッシュボード</span>
   <nav>
     <a href="/" class="active">ダッシュボード</a>
-    <a href="/docs">ドキュメント</a>
-    <a href="/chat">チャット</a>
+    <a href="/docs">設計ドキュメント</a>
+    <a href="/chat">壁打ちを試す</a>
   </nav>
 </header>
 
 <main>
-  <h1>Sprint Dashboard</h1>
-  <p class="subtitle">hajimari — 女性フリーランスのためのAIメンター</p>
 
-  <p class="section-title">開発スプリント</p>
-  <div class="sprints">
-    <div class="sprint-card">
-      <p class="sprint-number">Sprint 1</p>
-      <p class="sprint-name">基盤構築</p>
-      <span class="sprint-status status-done">✓ 完了</span>
-      <ul class="sprint-tasks">
-        <li>プロジェクト設計・要件定義</li>
-        <li>技術スタック選定</li>
-        <li>hajimariデザインシステム確立</li>
-        <li>Vercelデプロイ環境構築</li>
-      </ul>
+  <!-- Sprint plan -->
+  <section>
+    <div class="section-label">
+      <span>⚡</span> SPRINT PLAN
     </div>
+    <h2 class="section-title">スプリント計画</h2>
+    <div class="sprint-grid">
 
-    <div class="sprint-card">
-      <p class="sprint-number">Sprint 2</p>
-      <p class="sprint-name">チャット実装</p>
-      <span class="sprint-status status-done">✓ 完了</span>
-      <ul class="sprint-tasks">
-        <li>Anthropic API統合</li>
-        <li>SSEストリーミング実装</li>
-        <li>壁打ちチャットUI構築</li>
-        <li>AIメンタープロンプト設計</li>
-      </ul>
-    </div>
-
-    <div class="sprint-card current">
-      <p class="sprint-number">Sprint 3</p>
-      <p class="sprint-name">情報設計</p>
-      <span class="sprint-status status-active">▶ 進行中</span>
-      <ul class="sprint-tasks">
-        <li>スプリントダッシュボード</li>
-        <li>開発方針ドキュメント</li>
-        <li>マルチページナビゲーション</li>
-        <li>UIポリッシュ</li>
-      </ul>
-    </div>
-
-    <div class="sprint-card">
-      <p class="sprint-number">Sprint 4</p>
-      <p class="sprint-name">記憶と成長</p>
-      <span class="sprint-status status-planned">○ 予定</span>
-      <ul class="sprint-tasks">
-        <li>会話履歴の永続化</li>
-        <li>ユーザー認証（Auth）</li>
-        <li>振り返り機能</li>
-        <li>感情タグ・メモ</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="philosophy">
-    <h2>開発フィロソフィー</h2>
-    <p>
-      hajimariは<strong>AIが先に話しかける</strong>設計です。ユーザーを待たせない。<br>
-      返答は2〜3文以内。最後に質問を1つ。相手の言葉を否定せず、まず受け止める。<br>
-      選択肢は出さない。定型挨拶は使わない。3回に1回は<strong>予想外の角度から</strong>問いかける。
-    </p>
-  </div>
-
-  <p class="section-title">技術スタック</p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>レイヤー</th>
-          <th>技術</th>
-          <th>理由</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Frontend</td>
-          <td>Plain HTML / CSS / JS</td>
-          <td>フレームワーク不要。シンプルさを最優先</td>
-        </tr>
-        <tr>
-          <td>API</td>
-          <td>Vercel Serverless (TypeScript)</td>
-          <td>ゼロ設定でデプロイ。コールドスタートが速い</td>
-        </tr>
-        <tr>
-          <td>AI</td>
-          <td>Claude (claude-sonnet-4-6)</td>
-          <td>日本語の自然さ・文脈理解の精度</td>
-        </tr>
-        <tr>
-          <td>Streaming</td>
-          <td>Server-Sent Events (SSE)</td>
-          <td>体感速度向上。打ち込んでいる感を演出</td>
-        </tr>
-        <tr>
-          <td>Hosting</td>
-          <td>Vercel</td>
-          <td>GitプッシュでCI/CD。プレビューURLが即生成</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="gate">
-    <h2>Sprint 4 判断ゲート</h2>
-    <div class="gate-items">
-      <div class="gate-item">
-        <span class="gate-icon">⬜</span>
-        <div><span class="gate-label">継続率</span><span class="gate-desc">同一ユーザーが3日以上チャットを続けている</span></div>
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 1</span>
+          <span class="sprint-badge badge-done">完了</span>
+          <span class="sprint-week">Week 1-2</span>
+        </div>
+        <div class="sprint-title">AIと対話できるプロトタイプの構築</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          ターゲット層がスマホで実際にAIメンターと会話できる状態にする
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">スマホブラウザで開くだけでAIメンターと対話できるURL</div>
+          <div class="deliverable">共感的で温かいメンタートーンのシステムプロンプト</div>
+          <div class="deliverable">事業カルテ＋会話履歴の永続化</div>
+          <div class="deliverable">壁打ちインタビュアー型プロンプト</div>
+          <div class="deliverable">音声入力（Web Speech API）</div>
+        </div>
       </div>
-      <div class="gate-item">
-        <span class="gate-icon">⬜</span>
-        <div><span class="gate-label">質問の質</span><span class="gate-desc">AIの質問に「それは考えてなかった」と感じる瞬間がある</span></div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 2</span>
+          <span class="sprint-badge badge-progress">進行中</span>
+          <span class="sprint-week">Week 3-4</span>
+        </div>
+        <div class="sprint-title">壁打ち・ SNS投稿生成機能の実装</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          「インタビュー形式の壁打ち」と「SNS投稿生成」をチャットの中の機能として実装する
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">壁打ちモード（AIが深掘り質問を繰り返す）</div>
+          <div class="deliverable">SNS投稿生成機能（会話から投稿文を自動生成）</div>
+          <div class="deliverable">モード切り替えUIの実装</div>
+        </div>
       </div>
-      <div class="gate-item">
-        <span class="gate-icon">⬜</span>
-        <div><span class="gate-label">記憶の必要性</span><span class="gate-desc">「前回話したことを覚えてほしい」というフィードバックが出る</span></div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 3</span>
+          <span class="sprint-badge badge-upcoming">未着手</span>
+          <span class="sprint-week">Week 5-6</span>
+        </div>
+        <div class="sprint-title">第1回モニターテスト → UI/UX改善</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          操作の「摩擦」を極限まで減らし、「話すだけで完結する」体験に近づける
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">摩擦が最小化された直感的UI</div>
+          <div class="deliverable">壁打ち後の自動構造化機能</div>
+          <div class="deliverable">音声入力の強化</div>
+        </div>
       </div>
-      <div class="gate-item">
-        <span class="gate-icon">⬜</span>
-        <div><span class="gate-label">信頼性</span><span class="gate-desc">レスポンスが安定して2秒以内に始まる</span></div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 4</span>
+          <span class="sprint-badge badge-upcoming">未着手</span>
+          <span class="sprint-week">Week 7-8</span>
+        </div>
+        <div class="sprint-title">第2回モニターテスト → 事業性ジャッジ</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          「お金を払ってでも使い続けたいか」の最終判断を下す
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">PMF（Product-Market Fit）の判断材料</div>
+          <div class="deliverable">本格開発 or ピボットの明確な意思決定</div>
+          <div class="deliverable">モニター定量・定性フィードバックレポート</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Release Gates -->
+  <section>
+    <div class="section-label">
+      <span>🛡</span> RELEASE GATES
+    </div>
+    <h2 class="section-title">リリース・正式オープン条件</h2>
+    <div class="gates-grid">
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          モニターテスト開始条件
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">壁打ちプロンプトが安定動作（5往復以上破綻なく会話継続）</div>
+          <div class="gate-condition">まとめ生成が正常に機能する</div>
+          <div class="gate-condition">スマホブラウザでログイン不要で利用可能</div>
+          <div class="gate-condition">音声入力が動作する</div>
+        </div>
+      </div>
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          正式オープン条件（Sprint 4完了後）
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">「月額1,100円で使い続けるか？」にYESが過半数</div>
+          <div class="gate-condition">継続利用率（翌日以降も開く）が50%以上</div>
+          <div class="gate-condition">「自分で考えた感覚が残る」と回答したモニターが過半数</div>
+          <div class="gate-condition">致命的なUIフリクションが解消されている</div>
+        </div>
+      </div>
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          ピボット判断基準
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">YESが30%未満 → コンセプト変更を検討</div>
+          <div class="gate-condition">「話しにくい」が過半数 → プロンプト設計を根本的に見直し</div>
+          <div class="gate-condition">「使いたいが月額は払いたくない」 → 収益モデル変更を検討</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section>
+    <div class="section-label">
+      <span>⚙</span> TECH STACK
+    </div>
+    <h2 class="section-title">技術スタック</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>レイヤー</th>
+            <th>技術</th>
+            <th>詳細</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="layer">フロントエンド</td>
+            <td class="tech">React 19 + TypeScript + Tailwind CSS 4</td>
+            <td class="detail">Vite, Wouter, Framer Motion, shadcn/ui</td>
+          </tr>
+          <tr>
+            <td class="layer">バックエンド</td>
+            <td class="tech">Express 4 + tRPC 11</td>
+            <td class="detail">型安全なRPC、Superjson、publicProcedure/protectedProcedure</td>
+          </tr>
+          <tr>
+            <td class="layer">DB</td>
+            <td class="tech">MySQL (TiDB) + Drizzle ORM</td>
+            <td class="detail">スキーマファースト、drizzle-kit migrate</td>
+          </tr>
+          <tr>
+            <td class="layer">AI</td>
+            <td class="tech">OpenAI API (GPT-4o-mini)</td>
+            <td class="detail">invokeLLM helper、構造化JSON出力、モード判定</td>
+          </tr>
+          <tr>
+            <td class="layer">認証</td>
+            <td class="tech">Manus OAuth + 匿名デバイスID</td>
+            <td class="detail">管理者はOAuth、モニターはdeviceIdベース</td>
+          </tr>
+          <tr>
+            <td class="layer">ホスティング</td>
+            <td class="tech">Manus Platform</td>
+            <td class="detail">自動デプロイ、カスタムドメイン対応</td>
+          </tr>
+          <tr>
+            <td class="layer">テスト</td>
+            <td class="tech">Vitest</td>
+            <td class="detail">サーバーサイドユニットテスト、モック活用</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Update history -->
+  <section>
+    <div class="section-label">
+      <span>📋</span> CHANGELOG
+    </div>
+    <h2 class="section-title">アップデート履歴</h2>
+    <div class="update-list">
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.5.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">フィードバックUI強化・スマホ不具合修正</div>
+        <div class="update-changes">
+          <div class="update-change">フィードバックFABボタン: PC/スマホともに常時表示に修正</div>
+          <div class="update-change">みんなの声ページ（/voices）新規追加 + フォーム内導線</div>
+          <div class="update-change">フィードバック管理（/ideas）ステータス管理UI追加</div>
+          <div class="update-change">Homeにアイディア入力フォーム埋め込み</div>
+          <div class="update-change">PCサイドバー常時表示（閉じられないバグ修正）</div>
+          <div class="update-change">スマホ: 入力時の画面ブレ修正（visualViewportハンドラー削除）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.5.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">匿名セッション・ヘッダーUI改善</div>
+        <div class="update-changes">
+          <div class="update-change">ログイン不要化: デバイスIDベースの匿名セッション実装</div>
+          <div class="update-change">ヘッダーUI: アイコン+テキストラベル（「履歴」「+ 新規」）</div>
+          <div class="update-change">ダッシュボードへの隠しボタン（miiiroロゴ5回タップ）</div>
+          <div class="update-change">/chat, /history から認証ゲートを完全削除</div>
+          <div class="update-change">モニターはURLを開くだけで壁打ち開始可能</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.4.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">履歴・続きチャット・お気に入り機能</div>
+        <div class="update-changes">
+          <div class="update-change">セッション履歴一覧ページ（/history）</div>
+          <div class="update-change">まとめ付きセッションカードUI</div>
+          <div class="update-change">続きチャット（?session=パラメータで既存セッション再開）</div>
+          <div class="update-change">お気に入りトグル（ハートアイコン）</div>
+          <div class="update-change">履歴フィルタリング（すべて / お気に入り）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-17</span>
+          <span class="update-version">v0.3.0</span>
+          <span class="update-type type-design">design</span>
+        </div>
+        <div class="update-title">壁打ちプロンプト・トーン修正</div>
+        <div class="update-changes">
+          <div class="update-change">問い詰め感の排除 → 共感ファーストに全面修正</div>
+          <div class="update-change">語尾を「〜ですか？」→「〜かな？」「〜だったりする？」に統一</div>
+          <div class="update-change">共感だけで返す回を許容（毎回質問で終わらなくてよい）</div>
+          <div class="update-change">getGreetingのトーンもカジュアル化</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-17</span>
+          <span class="update-version">v0.2.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">壁打ち機能の全面実装</div>
+        <div class="update-changes">
+          <div class="update-change">インタビュアー型システムプロンプト（アドバイス禁止・質問で引き出す）</div>
+          <div class="update-change">6モード自動判定（LLMベース）</div>
+          <div class="update-change">4往復ごとの途中整理ロジック</div>
+          <div class="update-change">まとめ生成（構造化JSON出力 → DB保存）</div>
+          <div class="update-change">記憶保存（keywords/strengths/uncertainties/nextTheme）</div>
+          <div class="update-change">次回起動時の記憶引き継ぎ（前回バナー + greeting生成時参照）</div>
+          <div class="update-change">初回ウェルカム画面（コンセプト・GPTとの違い・使い方）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-16</span>
+          <span class="update-version">v0.1.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">初期プロトタイプ</div>
+        <div class="update-changes">
+          <div class="update-change">チャットUI（スマホ最適化）</div>
+          <div class="update-change">OpenAI API連携（GPT-4o-mini）</div>
+          <div class="update-change">オンボーディング（事業カルテ対話形式取得）</div>
+          <div class="update-change">音声入力（Web Speech API）</div>
+          <div class="update-change">会話履歴の永続化（MySQL/TiDB）</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Feedback -->
+  <section>
+    <div class="section-label">
+      <span>💡</span> FEEDBACK
+    </div>
+    <h2 class="section-title">開発アイディアを入れる</h2>
+    <div class="feedback-box">
+      <div class="tab-row">
+        <button class="tab active" onclick="selectTab(this, 'アイデア')">アイデア</button>
+        <button class="tab" onclick="selectTab(this, '感想')">感想</button>
+        <button class="tab" onclick="selectTab(this, '不具合')">不具合</button>
+        <button class="tab" onclick="selectTab(this, '要望')">要望</button>
+      </div>
+      <textarea class="feedback-textarea" id="feedbackText" placeholder="思いついたことを書いてください..." rows="4"></textarea>
+      <div class="feedback-actions">
+        <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">送信</button>
+        <a href="/voices" class="voices-link">みんなの声を見る →</a>
+        <span class="toast" id="toast"></span>
       </div>
     </div>
-  </div>
+  </section>
+
 </main>
+
+<footer>Last updated: 2026-05-18 | 技術顧問: 門倉 悠真</footer>
+
+<script>
+  let selectedTab = 'アイデア';
+
+  function selectTab(el, tab) {
+    selectedTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  async function submitFeedback() {
+    const text = document.getElementById('feedbackText').value.trim();
+    if (!text) return;
+
+    const btn = document.getElementById('submitBtn');
+    const toast = document.getElementById('toast');
+    btn.disabled = true;
+    btn.textContent = '送信中...';
+    toast.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: selectedTab, content: text }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      document.getElementById('feedbackText').value = '';
+      toast.textContent = '送信しました';
+      toast.className = 'toast success';
+      toast.style.display = 'inline';
+    } catch {
+      toast.textContent = '送信に失敗しました。もう一度お試しください';
+      toast.className = 'toast error';
+      toast.style.display = 'inline';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '送信';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+  }
+</script>
 
 </body>
 </html>

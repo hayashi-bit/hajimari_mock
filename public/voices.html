@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro – みんなの声</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+
+    header {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      gap: 8px;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .header-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: #f0e8e0; color: var(--navy); }
+    nav a.active { background: var(--primary); color: #fff; }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      color: var(--navy);
+      margin-bottom: 32px;
+    }
+
+    /* Filter tabs */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: #6b5a4a;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* Feedback list */
+    #list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .feedback-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .card-type {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .type-アイデア { background: #fff0ed; color: var(--primary); }
+    .type-感想 { background: #f0fdf4; color: #15803d; }
+    .type-不具合 { background: #fef2f2; color: #b91c1c; }
+    .type-要望 { background: #eff6ff; color: #1d4ed8; }
+
+    .card-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .card-content {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #3a3a3a;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .state-box {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .state-box .icon { font-size: 32px; margin-bottom: 12px; }
+
+    .count-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--primary);
+      text-decoration: none;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">miiiro</a>
+  <span class="header-sub">— 開発ダッシュボード</span>
+  <nav>
+    <a href="/">ダッシュボード</a>
+    <a href="/docs">設計ドキュメント</a>
+    <a href="/chat">壁打ちを試す</a>
+  </nav>
+</header>
+
+<main>
+  <a href="/" class="back-link">← ダッシュボードに戻る</a>
+
+  <div class="page-label">
+    <span>💬</span> VOICES
+  </div>
+  <h1>みんなの声</h1>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('すべて', this)">すべて</button>
+    <button class="filter-btn" onclick="setFilter('アイデア', this)">アイデア</button>
+    <button class="filter-btn" onclick="setFilter('感想', this)">感想</button>
+    <button class="filter-btn" onclick="setFilter('不具合', this)">不具合</button>
+    <button class="filter-btn" onclick="setFilter('要望', this)">要望</button>
+  </div>
+
+  <div class="count-label" id="count"></div>
+  <div id="list">
+    <div class="state-box">
+      <div class="icon">⏳</div>
+      読み込み中...
+    </div>
+  </div>
+</main>
+
+<script>
+  let allFeedback = [];
+  let currentFilter = 'すべて';
+
+  async function load() {
+    try {
+      const res = await fetch('/api/feedback');
+      if (!res.ok) throw new Error();
+      allFeedback = await res.json();
+      render();
+    } catch {
+      document.getElementById('list').innerHTML = `
+        <div class="state-box">
+          <div class="icon">😔</div>
+          読み込みに失敗しました
+        </div>`;
+    }
+  }
+
+  function setFilter(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    render();
+  }
+
+  function render() {
+    const items = currentFilter === 'すべて'
+      ? allFeedback
+      : allFeedback.filter(f => f.type === currentFilter);
+
+    const count = document.getElementById('count');
+    const list = document.getElementById('list');
+
+    count.textContent = `${items.length} 件`;
+
+    if (items.length === 0) {
+      list.innerHTML = `
+        <div class="state-box">
+          <div class="icon">📭</div>
+          まだ声がありません
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = items.map(f => {
+      const date = new Date(f.created_at).toLocaleDateString('ja-JP', {
+        month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      return `
+        <div class="feedback-card">
+          <div class="card-meta">
+            <span class="card-type type-${f.type}">${f.type}</span>
+            <span class="card-date">${date}</span>
+          </div>
+          <div class="card-content">${escapeHtml(f.content)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  load();
+</script>
+
+</body>
+</html>
