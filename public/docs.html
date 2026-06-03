@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hajimari – 開発方針ドキュメント</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: #FFFBF5;
+      color: #1a1a1a;
+      min-height: 100dvh;
+    }
+
+    header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e8e0d8;
+      display: flex;
+      align-items: center;
+      background: #FFFBF5;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0F3752;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      font-size: 13px;
+      color: #9a8a7a;
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: #f0e8e0; color: #0F3752; }
+    nav a.active { background: #F87C62; color: #fff; }
+
+    .layout {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      gap: 48px;
+    }
+
+    /* Sidebar */
+    aside {
+      width: 200px;
+      flex-shrink: 0;
+      padding-top: 48px;
+      position: sticky;
+      top: 57px;
+      height: calc(100dvh - 57px);
+      overflow-y: auto;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9a8a7a;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 13px;
+      color: #6b5a4a;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      line-height: 1.4;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .sidebar-nav a:hover { background: #f0e8e0; color: #0F3752; }
+    .sidebar-nav a.active { background: #fff3f0; color: #F87C62; font-weight: 600; }
+
+    /* Content */
+    article {
+      flex: 1;
+      padding: 48px 0 80px;
+      min-width: 0;
+    }
+
+    .doc-header {
+      margin-bottom: 48px;
+    }
+
+    .doc-header h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 36px;
+      color: #0F3752;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .doc-header p {
+      font-size: 14px;
+      color: #9a8a7a;
+    }
+
+    section {
+      margin-bottom: 56px;
+      scroll-margin-top: 80px;
+    }
+
+    section h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 26px;
+      color: #0F3752;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e8e0d8;
+    }
+
+    section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0F3752;
+      margin: 24px 0 8px;
+    }
+
+    section p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #3a3a3a;
+      margin-bottom: 12px;
+    }
+
+    .rule-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .rule-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3a3a3a;
+    }
+
+    .rule-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #F87C62;
+      background: #fff3f0;
+      border-radius: 4px;
+      padding: 2px 7px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .highlight-box {
+      background: #0F3752;
+      color: #FFFBF5;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .highlight-box strong { color: #F87C62; }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tag {
+      background: #f0e8e0;
+      color: #6b5a4a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .tag.accent { background: #fff3f0; color: #F87C62; }
+
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3a3a3a;
+    }
+
+    .check-icon { color: #F87C62; flex-shrink: 0; }
+
+    /* Mobile: hide sidebar */
+    @media (max-width: 640px) {
+      aside { display: none; }
+      .layout { gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">hajimari</a>
+  <nav>
+    <a href="/">ダッシュボード</a>
+    <a href="/docs" class="active">ドキュメント</a>
+    <a href="/chat">チャット</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside>
+    <p class="sidebar-label">目次</p>
+    <ul class="sidebar-nav">
+      <li><a href="#concept" class="active">コアコンセプト</a></li>
+      <li><a href="#ui">UI設計原則</a></li>
+      <li><a href="#ai">AI応答設計</a></li>
+      <li><a href="#arch">技術アーキテクチャ</a></li>
+      <li><a href="#memory">記憶の設計</a></li>
+      <li><a href="#output">成果物の設計</a></li>
+      <li><a href="#checklist">判断基準チェックリスト</a></li>
+    </ul>
+  </aside>
+
+  <article>
+    <div class="doc-header">
+      <h1>開発方針ドキュメント</h1>
+      <p>hajimari — 設計思想とルールの全体像</p>
+    </div>
+
+    <section id="concept">
+      <h2>コアコンセプト</h2>
+      <p>
+        hajimariは「壁打ち相手としてのAI」です。コーチでも、アドバイザーでも、検索エンジンでもない。
+        ただ話を聞いて、問いかける存在。
+      </p>
+      <div class="highlight-box">
+        hajimariが提供するのは<strong>答えではなく、問い</strong>。<br>
+        ユーザーが自分の中にすでに持っている答えを、引き出す触媒になる。
+      </div>
+      <h3>ターゲット</h3>
+      <p>女性フリーランス。一人で仕事をしていて、決断を一人で抱えている人。</p>
+      <div class="tag-row">
+        <span class="tag">フリーランス</span>
+        <span class="tag">女性</span>
+        <span class="tag">孤独な意思決定</span>
+        <span class="tag accent">壁打ちニーズ</span>
+      </div>
+    </section>
+
+    <section id="ui">
+      <h2>UI設計原則</h2>
+      <h3>カラーシステム</h3>
+      <div class="tag-row">
+        <span class="tag accent">#F87C62 — Salmon Orange（行動・温もり）</span>
+        <span class="tag">#0F3752 — Navy（信頼・深さ）</span>
+        <span class="tag">#FFFBF5 — Warm White（余白・静けさ）</span>
+      </div>
+      <h3>タイポグラフィ</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">見出し</span>DM Serif Display — 品格と余白</li>
+        <li><span class="rule-num">本文</span>System UI / Noto Sans JP — 読みやすさ優先</li>
+      </ul>
+      <h3>レイアウト原則</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">01</span>余白を恐れない。詰め込まない</li>
+        <li><span class="rule-num">02</span>モバイルファースト。100dvhで画面を使い切る</li>
+        <li><span class="rule-num">03</span>インタラクションはサブトル（微細）に。主役は会話</li>
+      </ul>
+    </section>
+
+    <section id="ai">
+      <h2>AI応答設計</h2>
+      <p>hajimariのAIは以下のルールで動作します。</p>
+      <ul class="rule-list">
+        <li><span class="rule-num">01</span>返答は2〜3文以内</li>
+        <li><span class="rule-num">02</span>最後に質問を1つだけする</li>
+        <li><span class="rule-num">03</span>相手の言葉を否定せず、まず受け止める</li>
+        <li><span class="rule-num">04</span>選択肢は出さない（ユーザーに考えてもらう）</li>
+        <li><span class="rule-num">05</span>相手のテンション・文量に合わせてトーンを調整する</li>
+        <li><span class="rule-num">06</span>定型挨拶は使わない</li>
+        <li><span class="rule-num">07</span>3回に1回は予想外の角度から質問する</li>
+      </ul>
+      <div class="highlight-box">
+        AIは<strong>先に話しかける</strong>。ユーザーを「空白」の前に立たせない。<br>
+        最初のメッセージはAIが投げる。これがhajimariの最重要原則。
+      </div>
+    </section>
+
+    <section id="arch">
+      <h2>技術アーキテクチャ</h2>
+      <h3>設計方針</h3>
+      <p>
+        「シンプルさは信頼性の別名」。フレームワーク・ライブラリを最小化し、
+        将来の変更コストを下げる。
+      </p>
+      <ul class="rule-list">
+        <li><span class="rule-num">Frontend</span>Plain HTML + CSS + Vanilla JS（ビルドステップなし）</li>
+        <li><span class="rule-num">API</span>Vercel Serverless Functions（TypeScript）</li>
+        <li><span class="rule-num">AI</span>Anthropic Messages API（SSEストリーミング）</li>
+        <li><span class="rule-num">Hosting</span>Vercel（GitプッシュでCI/CD自動化）</li>
+      </ul>
+      <h3>ストリーミングの仕組み</h3>
+      <p>
+        Anthropic APIの <code>content_block_delta</code> イベントをリアルタイムにブラウザへ転送。
+        体感速度を最大化し、「AIが考えている」感を演出する。
+      </p>
+    </section>
+
+    <section id="memory">
+      <h2>記憶の設計</h2>
+      <p>現時点（Sprint 3）では会話履歴はブラウザのメモリ内のみ。ページをリロードするとリセットされる。</p>
+      <h3>Sprint 4 以降の方向性</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">短期</span>セッション内の文脈はすべてAPIに渡す（現行）</li>
+        <li><span class="rule-num">中期</span>Supabase等で会話ログを永続化</li>
+        <li><span class="rule-num">長期</span>感情タグ・テーマ抽出による「振り返り機能」</li>
+      </ul>
+      <div class="highlight-box">
+        記憶は<strong>ユーザーが望んだ時だけ</strong>残す。強制的なプロファイリングはしない。
+      </div>
+    </section>
+
+    <section id="output">
+      <h2>成果物の設計</h2>
+      <p>hajimariは「答え」を返さない。ユーザーの思考の解像度を上げることが成果物。</p>
+      <h3>価値の測定指標</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">◎</span>「それは考えてなかった」という発言が生まれた</li>
+        <li><span class="rule-num">◎</span>会話後に「やること」が1つでも明確になった</li>
+        <li><span class="rule-num">◎</span>翌日もまた話しかけたくなった</li>
+        <li><span class="rule-num">×</span>「答えを教えてくれた」だけで終わった</li>
+      </ul>
+    </section>
+
+    <section id="checklist">
+      <h2>判断基準チェックリスト</h2>
+      <p>機能追加・変更時は以下を確認する。</p>
+      <ul class="checklist">
+        <li><span class="check-icon">▷</span>この変更は「壁打ちの質」を上げるか？</li>
+        <li><span class="check-icon">▷</span>コードの複雑度が増すか？増すなら本当に必要か？</li>
+        <li><span class="check-icon">▷</span>モバイルで違和感なく使えるか？</li>
+        <li><span class="check-icon">▷</span>ユーザーを迷わせる要素はないか？</li>
+        <li><span class="check-icon">▷</span>AIが「答え」を出していないか（出すべきでない局面で）</li>
+        <li><span class="check-icon">▷</span>hajimariカラー・フォントに沿っているか？</li>
+        <li><span class="check-icon">▷</span>Vercelへのデプロイが30秒以内に完了するか？</li>
+      </ul>
+    </section>
+  </article>
+</div>
+
+<script>
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,5 +1,9 @@
 {
   "buildCommand": "echo 'no build step needed'",
   "outputDirectory": "public",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    { "source": "/docs", "destination": "/docs.html" },
+    { "source": "/chat", "destination": "/chat.html" }
+  ]
 }
