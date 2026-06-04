@@ -1123,6 +1123,7 @@
         profile: profileText || undefined,
         fileContext: fileContext || undefined,
         pastContext: pastContext || undefined,
+        currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
         ...extraFlags,
       }),
     });
@@ -1212,6 +1213,7 @@
           messages: summaryMessages,
           profile: profileText || undefined,
           pastContext: pastContext || undefined,
+          currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
           summarize: true,
         }),
       });

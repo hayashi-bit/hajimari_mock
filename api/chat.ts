@@ -73,13 +73,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { messages, profile, fileContext, summarize, pastContext } = req.body ?? {};
+  const { messages, profile, fileContext, summarize, pastContext, currentTime } = req.body ?? {};
   if (!Array.isArray(messages)) {
     res.status(400).json({ error: "messages が必要です" });
     return;
   }
 
   let systemPrompt = BASE_PROMPT;
+  if (currentTime) systemPrompt += `\n\n---\n【現在の日時】\n${currentTime}\n時間帯に合わせた自然な声かけをしてください（深夜なら深夜らしく、朝なら朝らしく）。`;
   if (pastContext) systemPrompt += `\n\n---\n【この人との過去の会話から見えてきたこと】\n以下は過去のセッションから抽出された傾向です。会話の中で自然に活かしてください。\n${pastContext}`;
   if (profile) systemPrompt += `\n\n---\n【ユーザープロフィール】\n${profile}`;
   if (fileContext) systemPrompt += `\n\n---\n【添付資料】\n${fileContext}`;
