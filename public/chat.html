@@ -188,10 +188,7 @@
       display: flex;
       gap: 2px;
       flex-shrink: 0;
-      opacity: 0;
-      transition: opacity 0.12s;
     }
-    .session-item:hover .session-actions { opacity: 1; }
 
     .session-btn {
       width: 22px; height: 22px;
@@ -237,6 +234,18 @@
       text-align: left;
     }
     .feedback-toggle-btn:hover { background: #f8f5f0; border-color: var(--primary); color: var(--primary); }
+
+    .fb-close-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    .fb-close-btn:hover { color: var(--navy); }
 
     .feedback-form-wrap {
       display: none;
@@ -594,10 +603,14 @@
 
     <!-- フィードバックフォーム -->
     <div class="sidebar-footer">
-      <button class="feedback-toggle-btn" onclick="toggleFeedbackForm()">
+      <button class="feedback-toggle-btn" id="feedbackToggleBtn" onclick="toggleFeedbackForm()">
         💬 フィードバックを送る
       </button>
       <div class="feedback-form-wrap" id="feedbackFormWrap">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:11px; color:var(--muted); font-weight:600;">フィードバック</span>
+          <button class="fb-close-btn" onclick="closeFeedbackForm()" title="閉じる">✕</button>
+        </div>
         <div class="fb-type-row">
           <button class="fb-type-btn selected" onclick="selectFbType(this, 'アイデア')">アイデア</button>
           <button class="fb-type-btn" onclick="selectFbType(this, '感想')">感想</button>
@@ -811,6 +824,20 @@
     feedbackFormOpen = !feedbackFormOpen;
     document.getElementById('feedbackFormWrap').classList.toggle('open', feedbackFormOpen);
   }
+
+  function closeFeedbackForm() {
+    feedbackFormOpen = false;
+    document.getElementById('feedbackFormWrap').classList.remove('open');
+  }
+
+  // フィードバックフォーム外クリックで閉じる
+  document.addEventListener('click', (e) => {
+    if (!feedbackFormOpen) return;
+    const footer = document.querySelector('.sidebar-footer');
+    if (footer && !footer.contains(e.target)) {
+      closeFeedbackForm();
+    }
+  });
 
   function selectFbType(el, type) {
     selectedFbType = type;
