@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro – わたしの状態</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 40px;
+    }
+
+    header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .back-btn {
+      font-size: 20px;
+      color: var(--muted);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--navy);
+    }
+
+    .week-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      margin-left: auto;
+    }
+
+    /* ===== STAT CARDS ===== */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 8px 20px 20px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card.highlight { background: #fff8f6; border-color: #f0d0c4; }
+
+    .stat-icon { font-size: 22px; }
+    .stat-val { font-size: 22px; font-weight: 700; color: var(--primary); font-family: 'DM Serif Display', serif; }
+    .stat-val span { font-size: 13px; font-weight: 400; color: var(--muted); font-family: 'DM Sans', sans-serif; }
+    .stat-label { font-size: 12px; color: var(--muted); }
+
+    /* ===== ALERT ===== */
+    .alert-card {
+      margin: 0 20px 20px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.7;
+      display: none;
+    }
+    .alert-card.show { display: block; }
+
+    /* ===== SECTION ===== */
+    .section {
+      margin: 0 20px 20px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    /* ===== HEATMAP ===== */
+    .heatmap-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: 36px repeat(7, 1fr);
+      gap: 4px;
+      min-width: 280px;
+    }
+
+    .hm-header {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      padding: 2px 0;
+    }
+
+    .hm-row-label {
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .hm-cell {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #f0e8e0;
+    }
+
+    .hm-cell[data-level="1"] { background: #f5c4b4; }
+    .hm-cell[data-level="2"] { background: #e8937a; }
+    .hm-cell[data-level="3"] { background: var(--primary); }
+    .hm-cell[data-level="night"] { background: var(--navy); }
+
+    .hm-legend {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--muted);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hm-legend-item { display: flex; align-items: center; gap: 4px; }
+    .hm-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ===== STRENGTH TAGS ===== */
+    .tags-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .strength-tag {
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: #fff0ed;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .no-data-box {
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ===== AI MESSAGE ===== */
+    .ai-message {
+      margin: 0 20px 20px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: none;
+    }
+    .ai-message.show { display: block; }
+    .ai-message-header { font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; }
+    .ai-message-body { font-size: 13px; line-height: 1.8; color: var(--text); white-space: pre-wrap; }
+    .ai-message-body strong { color: var(--primary); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/home" class="back-btn">←</a>
+  <span class="page-title">わたしの状態</span>
+  <span class="week-label" id="weekLabel"></span>
+</header>
+
+<div class="stat-grid" id="statGrid">
+  <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-val" id="statSessions">0<span>回</span></div><div class="stat-label">今週の会話</div></div>
+  <div class="stat-card"><div class="stat-icon">✦</div><div class="stat-val" id="statStrengths">0<span>個</span></div><div class="stat-label">強みのヒント</div></div>
+  <div class="stat-card highlight"><div class="stat-icon">🔥</div><div class="stat-val" id="statStreak">0<span>日</span></div><div class="stat-label">連続利用中</div></div>
+  <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val" id="statTotal">0<span>回</span></div><div class="stat-label">累計会話</div></div>
+</div>
+
+<div class="alert-card" id="alertCard"></div>
+
+<div class="section">
+  <div class="section-title">時間帯 × 曜日の活動マップ</div>
+  <div class="heatmap-wrap">
+    <div class="heatmap-grid" id="heatmapGrid"></div>
+    <div class="hm-legend">
+      <div class="hm-legend-item"><div class="hm-dot" style="background:#f0e8e0"></div>なし</div>
+      <div class="hm-legend-item"><div class="hm-dot" style="background:#f5c4b4"></div>少</div>
+      <div class="hm-legend-item"><div class="hm-dot" style="background:var(--primary)"></div>多</div>
+      <div class="hm-legend-item"><div class="hm-dot" style="background:var(--navy)"></div>深夜注意</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">見えてきた強みのヒント</div>
+  <div class="tags-wrap" id="strengthsWrap">
+    <div class="no-data-box">まとめを生成すると<br>強みのヒントが蓄積されます</div>
+  </div>
+</div>
+
+<div class="ai-message" id="aiMessage">
+  <div class="ai-message-header">✦ hajimari より</div>
+  <div class="ai-message-body" id="aiMessageBody"></div>
+</div>
+
+<script>
+  const SESSIONS_KEY = 'hajimari_sessions';
+
+  function loadSessions() {
+    try { return JSON.parse(localStorage.getItem(SESSIONS_KEY) || '[]'); } catch { return []; }
+  }
+
+  function getWeekStart() {
+    const now = new Date();
+    const day = now.getDay();
+    const start = new Date(now);
+    start.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }
+
+  function calcStreak(sessions) {
+    const days = new Set(sessions.map(s => new Date(s.createdAt).toDateString()));
+    let streak = 0;
+    const d = new Date();
+    while (days.has(d.toDateString())) { streak++; d.setDate(d.getDate() - 1); }
+    return streak;
+  }
+
+  function extractStrengthTags(sessions) {
+    const tags = new Set();
+    sessions.forEach(s => {
+      const sum = s.messages?.find(m => m.role === 'summary');
+      if (!sum) return;
+      const lines = sum.content.split('\n');
+      let inStrength = false;
+      lines.forEach(line => {
+        if (line.includes('強み') || line.includes('視点')) inStrength = true;
+        else if (line.startsWith('■')) inStrength = false;
+        if (inStrength && line.trim().startsWith('・')) {
+          tags.add(line.replace(/^・/, '').trim().slice(0, 18));
+        }
+      });
+    });
+    return [...tags];
+  }
+
+  function buildHeatmap(sessions) {
+    const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
+    const SLOTS = [
+      { label: '朝', min: 6, max: 11 },
+      { label: '昼', min: 11, max: 17 },
+      { label: '夕', min: 17, max: 21 },
+      { label: '深夜', min: 21, max: 30 },
+    ];
+
+    const counts = {};
+    const weekStart = getWeekStart();
+    const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 7);
+
+    sessions.forEach(s => {
+      const d = new Date(s.createdAt);
+      const dow = (d.getDay() + 6) % 7; // 0=月
+      const h = d.getHours();
+      SLOTS.forEach((slot, si) => {
+        const h2 = h >= 21 ? h + 6 : h; // wrap midnight
+        if (h >= slot.min && h < slot.max || (slot.min === 21 && h >= 21)) {
+          const key = `${si}-${dow}`;
+          counts[key] = (counts[key] || 0) + 1;
+        }
+      });
+    });
+
+    const grid = document.getElementById('heatmapGrid');
+    // header row
+    grid.innerHTML = '<div></div>' + DAYS.map(d => `<div class="hm-header">${d}</div>`).join('');
+
+    SLOTS.forEach((slot, si) => {
+      grid.innerHTML += `<div class="hm-row-label">${slot.label}</div>`;
+      for (let dow = 0; dow < 7; dow++) {
+        const key = `${si}-${dow}`;
+        const c = counts[key] || 0;
+        let level = 0;
+        if (si === 3 && c > 0) level = 'night';
+        else if (c >= 3) level = 3;
+        else if (c === 2) level = 2;
+        else if (c === 1) level = 1;
+        grid.innerHTML += `<div class="hm-cell" data-level="${level}"></div>`;
+      }
+    });
+  }
+
+  function buildAIMessage(sessions, streak, strengthCount, lateCount) {
+    if (sessions.length === 0) return;
+    const parts = [];
+    if (streak >= 3) parts.push(`**${streak}日連続**でよく続けてますね！`);
+    if (lateCount >= 2) parts.push(`深夜の会話が今週**${lateCount}回**あります。体も大切にしてくださいね。`);
+    if (strengthCount > 0) parts.push(`会話から**${strengthCount}個**の強みのヒントが見えてきました。`);
+    if (parts.length === 0) parts.push('会話を重ねるごとに、あなたのことがもっとよく見えてきます。');
+
+    const msg = document.getElementById('aiMessage');
+    const body = document.getElementById('aiMessageBody');
+    body.innerHTML = parts.join('\n').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    msg.classList.add('show');
+  }
+
+  function init() {
+    const sessions = loadSessions();
+    const weekStart = getWeekStart();
+    const now = new Date();
+
+    // week label
+    const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 6);
+    document.getElementById('weekLabel').textContent =
+      `${weekStart.getMonth()+1}/${weekStart.getDate()} 〜 ${weekEnd.getMonth()+1}/${weekEnd.getDate()}`;
+
+    const thisWeek = sessions.filter(s => new Date(s.createdAt) >= weekStart);
+    const streak = calcStreak(sessions);
+    const tags = extractStrengthTags(sessions);
+    const lateCount = sessions.filter(s => { const d = new Date(s.createdAt); return d >= weekStart && d.getHours() >= 22; }).length;
+
+    document.getElementById('statSessions').innerHTML = `${thisWeek.length}<span>回</span>`;
+    document.getElementById('statStrengths').innerHTML = `${tags.length}<span>個</span>`;
+    document.getElementById('statStreak').innerHTML = `${streak}<span>日</span>`;
+    document.getElementById('statTotal').innerHTML = `${sessions.length}<span>回</span>`;
+
+    if (lateCount >= 2) {
+      const alert = document.getElementById('alertCard');
+      alert.innerHTML = `🌙 深夜（22時以降）の会話が今週${lateCount}回ありました。明日は早めに休もう！`;
+      alert.classList.add('show');
+    }
+
+    buildHeatmap(sessions);
+
+    const wrap = document.getElementById('strengthsWrap');
+    if (tags.length > 0) {
+      wrap.innerHTML = `<div class="tag-list">${tags.map(t => `<span class="strength-tag">${t}</span>`).join('')}</div>`;
+    }
+
+    buildAIMessage(sessions, streak, tags.length, lateCount);
+  }
+
+  init();
+</script>
+
+</body>
+</html>

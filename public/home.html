@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .status-btn {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .status-btn:hover { background: #b05a42; }
+
+    /* ===== GREETING ===== */
+    .greeting-wrap {
+      padding: 24px 20px 20px;
+    }
+
+    .greeting-time {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .greeting-main {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+
+    /* ===== FEATURE GRID ===== */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      padding: 0 20px 10px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 20px 28px;
+    }
+
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: box-shadow 0.15s, transform 0.1s, border-color 0.15s;
+      position: relative;
+    }
+
+    .feature-card:hover:not(.disabled) {
+      box-shadow: 0 4px 16px rgba(193,105,79,0.12);
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .feature-card.disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .feature-card.main {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, #fff8f6, #fff);
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .feature-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .coming-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 8px;
+      background: #f0e8e0;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ===== QUICK STATUS ===== */
+    .status-preview {
+      margin: 0 20px 28px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status-preview-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .status-preview-link {
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .status-preview-link:hover { text-decoration: underline; }
+
+    .status-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--bg);
+    }
+
+    .status-chip .chip-icon { font-size: 14px; }
+    .status-chip .chip-val { color: var(--navy); }
+    .status-chip .chip-label { color: var(--muted); font-weight: 400; font-size: 11px; }
+
+    .status-alert {
+      background: #fff8f0;
+      border: 1px solid #f0d8c0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #7a4a20;
+      line-height: 1.6;
+      display: none;
+    }
+    .status-alert.show { display: block; }
+
+    /* ===== NO DATA STATE ===== */
+    .no-data {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">miiiro</span>
+  <a href="/me" class="status-btn">🌱 わたしの状態</a>
+</header>
+
+<div class="greeting-wrap">
+  <div class="greeting-time" id="greetingTime"></div>
+  <div class="greeting-main" id="greetingMain">今日、何をしますか？</div>
+</div>
+
+<div class="section-label">機能</div>
+<div class="feature-grid">
+  <a href="/chat" class="feature-card main">
+    <div class="feature-icon">✦</div>
+    <div class="feature-name">壁打ちチャット</div>
+    <div class="feature-desc">AIと話して強みを整理する</div>
+  </a>
+
+  <div class="feature-card disabled">
+    <div class="coming-badge">SOON</div>
+    <div class="feature-icon">📱</div>
+    <div class="feature-name">SNS投稿</div>
+    <div class="feature-desc">あなたの文体で投稿を作る</div>
+  </div>
+
+  <div class="feature-card disabled">
+    <div class="coming-badge">SOON</div>
+    <div class="feature-icon">✅</div>
+    <div class="feature-name">タスク管理</div>
+    <div class="feature-desc">会話からTo-Doを生成</div>
+  </div>
+
+  <div class="feature-card disabled">
+    <div class="coming-badge">SOON</div>
+    <div class="feature-icon">📝</div>
+    <div class="feature-name">議事録</div>
+    <div class="feature-desc">会議のメモを自動まとめ</div>
+  </div>
+
+  <div class="feature-card disabled">
+    <div class="coming-badge">SOON</div>
+    <div class="feature-icon">💌</div>
+    <div class="feature-name">メール作成</div>
+    <div class="feature-desc">いつもの感じで書く</div>
+  </div>
+</div>
+
+<div class="section-label">わたしの状態</div>
+<div class="status-preview">
+  <div class="status-preview-header">
+    <span class="status-preview-title">今週のサマリー</span>
+    <a href="/me" class="status-preview-link">詳しく見る →</a>
+  </div>
+  <div class="status-chips" id="statusChips">
+    <div class="no-data">会話を始めるとここに状態が表示されます</div>
+  </div>
+  <div class="status-alert" id="statusAlert"></div>
+</div>
+
+<script>
+  const SESSIONS_KEY = 'hajimari_sessions';
+  const PROFILE_KEY = 'hajimari_profile';
+
+  function loadSessions() {
+    try { return JSON.parse(localStorage.getItem(SESSIONS_KEY) || '[]'); } catch { return []; }
+  }
+
+  // ===== GREETING =====
+  function setGreeting() {
+    const now = new Date();
+    const h = now.getHours();
+    const profile = (() => { try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}'); } catch { return {}; } })();
+    const name = profile.name ? `${profile.name}さん、` : '';
+
+    let timeLabel, msg;
+    if (h < 6)       { timeLabel = '🌙 深夜です'; msg = `${name}夜遅くまでお疲れさまです。`; }
+    else if (h < 10) { timeLabel = '🌅 おはようございます'; msg = `${name}今日も一緒に整理しましょう。`; }
+    else if (h < 13) { timeLabel = '☀️ こんにちは'; msg = `${name}今日、何をしますか？`; }
+    else if (h < 17) { timeLabel = '🌤 こんにちは'; msg = `${name}今日、何をしますか？`; }
+    else if (h < 20) { timeLabel = '🌇 お疲れさまです'; msg = `${name}今日の出来事、話してみますか？`; }
+    else             { timeLabel = '🌙 夜ですね'; msg = `${name}一日の振り返りをしてみますか？`; }
+
+    document.getElementById('greetingTime').textContent = timeLabel;
+    document.getElementById('greetingMain').textContent = msg;
+  }
+
+  // ===== STATUS CHIPS =====
+  function getWeekRange() {
+    const now = new Date();
+    const day = now.getDay();
+    const start = new Date(now);
+    start.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }
+
+  function calcStreak(sessions) {
+    const days = new Set(sessions.map(s => new Date(s.createdAt).toDateString()));
+    let streak = 0;
+    const d = new Date();
+    while (true) {
+      if (days.has(d.toDateString())) { streak++; d.setDate(d.getDate() - 1); }
+      else break;
+    }
+    return streak;
+  }
+
+  function countStrengthTags(sessions) {
+    const tags = new Set();
+    sessions.forEach(s => {
+      const sum = s.messages?.find(m => m.role === 'summary');
+      if (!sum) return;
+      const matches = sum.content.match(/・(.+)/g) || [];
+      matches.forEach(m => tags.add(m.replace(/^・/, '').trim().slice(0, 15)));
+    });
+    return tags.size;
+  }
+
+  function buildStatusChips() {
+    const sessions = loadSessions();
+    if (sessions.length === 0) return;
+
+    const weekStart = getWeekRange();
+    const thisWeek = sessions.filter(s => new Date(s.createdAt) >= weekStart);
+    const streak = calcStreak(sessions);
+    const strengthCount = countStrengthTags(sessions);
+
+    const chips = [];
+    if (streak > 0) chips.push(`<div class="status-chip"><span class="chip-icon">🔥</span><span class="chip-val">${streak}日</span><span class="chip-label">連続</span></div>`);
+    chips.push(`<div class="status-chip"><span class="chip-icon">💬</span><span class="chip-val">${thisWeek.length}回</span><span class="chip-label">今週の会話</span></div>`);
+    if (strengthCount > 0) chips.push(`<div class="status-chip"><span class="chip-icon">✦</span><span class="chip-val">${strengthCount}個</span><span class="chip-label">強みのヒント</span></div>`);
+
+    const el = document.getElementById('statusChips');
+    if (chips.length > 0) el.innerHTML = chips.join('');
+
+    // 深夜アラート
+    const lateNight = sessions.filter(s => {
+      const d = new Date(s.createdAt);
+      return d >= weekStart && d.getHours() >= 22;
+    });
+    if (lateNight.length >= 2) {
+      const alert = document.getElementById('statusAlert');
+      alert.textContent = `🌙 深夜の会話が今週${lateNight.length}回あります。たまにはゆっくり休んでくださいね。`;
+      alert.classList.add('show');
+    }
+  }
+
+  setGreeting();
+  buildStatusChips();
+</script>
+
+</body>
+</html>

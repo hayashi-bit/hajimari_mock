@@ -7,6 +7,8 @@
     "api/feedback.ts": { "maxDuration": 10 }
   },
   "rewrites": [
+    { "source": "/home", "destination": "/home.html" },
+    { "source": "/me", "destination": "/me.html" },
     { "source": "/docs", "destination": "/docs.html" },
     { "source": "/chat", "destination": "/chat.html" },
     { "source": "/voices", "destination": "/voices.html" },
