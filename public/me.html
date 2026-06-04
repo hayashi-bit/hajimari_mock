@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>miiiro – わたしの状態</title>
+  <title>miiiro – わたしの可視化</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -11,11 +11,14 @@
 
     :root {
       --primary: #C1694F;
+      --primary-light: #fff0ed;
       --navy: #0F3752;
+      --navy-light: #e8f0f6;
       --border: #e8e0d8;
       --muted: #9a8a7a;
       --text: #1a1a1a;
       --bg: #f8f5f0;
+      --card: #ffffff;
     }
 
     body {
@@ -25,7 +28,7 @@
       min-height: 100dvh;
       max-width: 480px;
       margin: 0 auto;
-      padding-bottom: 40px;
+      padding-bottom: 48px;
     }
 
     header {
@@ -37,6 +40,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      border-bottom: 1px solid var(--border);
     }
 
     .back-btn {
@@ -44,6 +48,7 @@
       color: var(--muted);
       text-decoration: none;
       line-height: 1;
+      padding: 4px;
     }
 
     .page-title {
@@ -59,70 +64,179 @@
       margin-left: auto;
     }
 
-    /* ===== STAT CARDS ===== */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 8px 20px 20px;
+    /* ===== SECTION ===== */
+    .section {
+      margin: 20px 20px 0;
     }
 
-    .stat-card {
-      background: #fff;
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ===== STATS ROW ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 16px 20px 0;
+    }
+
+    .stat-mini {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .stat-mini-val {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-mini-val sup {
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .stat-mini-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* ===== COMPARE CARD ===== */
+    .compare-card {
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 16px;
       display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .compare-col {
+      flex: 1;
+      text-align: center;
+    }
+
+    .compare-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border);
+      margin: 0 12px;
+    }
+
+    .compare-period {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      margin-bottom: 4px;
+    }
+
+    .compare-val {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .compare-val.up { color: var(--primary); }
+    .compare-val.down { color: var(--muted); }
+
+    .compare-unit {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .compare-badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .compare-badge.positive { background: #e8f7ef; color: #2d8c5a; }
+    .compare-badge.neutral  { background: #f0e8e0; color: var(--muted); }
+    .compare-badge.negative { background: #fde8e8; color: #c04040; }
+
+    /* ===== STRENGTH CARDS ===== */
+    .strength-list {
+      display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .stat-card.highlight { background: #fff8f6; border-color: #f0d0c4; }
-
-    .stat-icon { font-size: 22px; }
-    .stat-val { font-size: 22px; font-weight: 700; color: var(--primary); font-family: 'DM Serif Display', serif; }
-    .stat-val span { font-size: 13px; font-weight: 400; color: var(--muted); font-family: 'DM Sans', sans-serif; }
-    .stat-label { font-size: 12px; color: var(--muted); }
-
-    /* ===== ALERT ===== */
-    .alert-card {
-      margin: 0 20px 20px;
-      background: var(--navy);
-      color: #fff;
+    .strength-card {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 14px 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .strength-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--primary);
+      line-height: 1;
+      min-width: 24px;
+      opacity: 0.5;
+    }
+
+    .strength-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .strength-source {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      margin-top: 4px;
+    }
+
+    .no-data-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      padding: 28px 20px;
       font-size: 13px;
-      line-height: 1.7;
-      display: none;
-    }
-    .alert-card.show { display: block; }
-
-    /* ===== SECTION ===== */
-    .section {
-      margin: 0 20px 20px;
+      color: var(--muted);
+      line-height: 1.8;
     }
 
-    .section-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 12px;
-    }
-
-    /* ===== HEATMAP ===== */
+    /* ===== RHYTHM (HEATMAP) ===== */
     .heatmap-wrap {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 16px;
-      overflow-x: auto;
     }
 
     .heatmap-grid {
       display: grid;
-      grid-template-columns: 36px repeat(7, 1fr);
-      gap: 4px;
-      min-width: 280px;
+      grid-template-columns: 30px repeat(7, 1fr);
+      gap: 5px;
     }
 
     .hm-header {
@@ -130,7 +244,6 @@
       color: var(--muted);
       text-align: center;
       font-family: 'IBM Plex Mono', monospace;
-      padding: 2px 0;
     }
 
     .hm-row-label {
@@ -144,123 +257,262 @@
     .hm-cell {
       width: 100%;
       aspect-ratio: 1;
-      border-radius: 50%;
+      border-radius: 6px;
       background: #f0e8e0;
     }
 
     .hm-cell[data-level="1"] { background: #f5c4b4; }
     .hm-cell[data-level="2"] { background: #e8937a; }
     .hm-cell[data-level="3"] { background: var(--primary); }
-    .hm-cell[data-level="night"] { background: var(--navy); }
+    .hm-cell[data-level="night"] { background: var(--navy); opacity: 0.7; }
 
     .hm-legend {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       margin-top: 10px;
       font-size: 10px;
       color: var(--muted);
       align-items: center;
       flex-wrap: wrap;
     }
-    .hm-legend-item { display: flex; align-items: center; gap: 4px; }
-    .hm-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-    /* ===== STRENGTH TAGS ===== */
-    .tags-wrap {
-      background: #fff;
+    .hm-legend-item { display: flex; align-items: center; gap: 4px; }
+    .hm-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+    /* ===== TENDENCY ===== */
+    .tendency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tendency-card {
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 16px;
+      padding: 14px;
     }
 
-    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tendency-icon { font-size: 20px; margin-bottom: 6px; }
+    .tendency-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .tendency-val { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
 
-    .strength-tag {
+    /* ===== ALERT ===== */
+    .alert-card {
+      margin: 16px 20px 0;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
       font-size: 13px;
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: #fff0ed;
-      color: var(--primary);
-      font-weight: 500;
-    }
-
-    .no-data-box {
-      text-align: center;
-      padding: 20px;
-      font-size: 13px;
-      color: var(--muted);
       line-height: 1.7;
+      display: none;
     }
+    .alert-card.show { display: block; }
 
     /* ===== AI MESSAGE ===== */
     .ai-message {
-      margin: 0 20px 20px;
-      background: #fff;
-      border: 1px solid var(--border);
+      margin: 20px 20px 0;
+      background: var(--primary-light);
+      border: 1px solid #f0d0c4;
       border-radius: 14px;
       padding: 16px 18px;
       display: none;
     }
     .ai-message.show { display: block; }
-    .ai-message-header { font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; }
-    .ai-message-body { font-size: 13px; line-height: 1.8; color: var(--text); white-space: pre-wrap; }
+    .ai-message-header {
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .ai-message-body {
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
     .ai-message-body strong { color: var(--primary); font-weight: 700; }
+
+    /* ===== INTRO GEN ===== */
+    .intro-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .intro-hint {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .intro-result {
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--text);
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: none;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+
+    .intro-result.show { display: block; }
+
+    .btn-gen {
+      width: 100%;
+      padding: 11px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-gen:hover { background: #a85640; }
+    .btn-gen:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
 
 <header>
   <a href="/home" class="back-btn">←</a>
-  <span class="page-title">わたしの状態</span>
+  <span class="page-title" id="logoBtn">わたしの可視化</span>
   <span class="week-label" id="weekLabel"></span>
 </header>
 
-<div class="stat-grid" id="statGrid">
-  <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-val" id="statSessions">0<span>回</span></div><div class="stat-label">今週の会話</div></div>
-  <div class="stat-card"><div class="stat-icon">✦</div><div class="stat-val" id="statStrengths">0<span>個</span></div><div class="stat-label">強みのヒント</div></div>
-  <div class="stat-card highlight"><div class="stat-icon">🔥</div><div class="stat-val" id="statStreak">0<span>日</span></div><div class="stat-label">連続利用中</div></div>
-  <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val" id="statTotal">0<span>回</span></div><div class="stat-label">累計会話</div></div>
+<!-- ===== STAT MINI ROW ===== -->
+<div class="stats-row">
+  <div class="stat-mini">
+    <div class="stat-mini-val" id="statSessions">0<sup>回</sup></div>
+    <div class="stat-mini-label">今週の<br>会話</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-val" id="statStrengths">0<sup>個</sup></div>
+    <div class="stat-mini-label">強みの<br>ヒント</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-val" id="statStreak">0<sup>日</sup></div>
+    <div class="stat-mini-label">連続<br>利用</div>
+  </div>
+  <div class="stat-mini">
+    <div class="stat-mini-val" id="statTotal">0<sup>回</sup></div>
+    <div class="stat-mini-label">累計<br>会話</div>
+  </div>
 </div>
 
+<!-- ===== ALERT ===== -->
 <div class="alert-card" id="alertCard"></div>
 
+<!-- ===== 継続記録 先週vs今週 ===== -->
 <div class="section">
-  <div class="section-title">時間帯 × 曜日の活動マップ</div>
+  <div class="section-title">継続記録</div>
+  <div class="compare-card">
+    <div class="compare-col">
+      <div class="compare-period">先週</div>
+      <div class="compare-val" id="cmpLast">0</div>
+      <div class="compare-unit">回</div>
+    </div>
+    <div class="compare-divider"></div>
+    <div class="compare-col">
+      <div class="compare-period">今週</div>
+      <div class="compare-val" id="cmpThis">0</div>
+      <div class="compare-unit">回</div>
+      <div id="cmpBadge"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 強みの可視化 ===== -->
+<div class="section">
+  <div class="section-title">見えてきた強みのヒント</div>
+  <div id="strengthsWrap">
+    <div class="no-data-box">まとめを生成すると<br>強みのヒントが蓄積されます ✦</div>
+  </div>
+</div>
+
+<!-- ===== 思考の傾向 ===== -->
+<div class="section">
+  <div class="section-title">思考・行動の傾向</div>
+  <div class="tendency-grid" id="tendencyGrid">
+    <div class="tendency-card">
+      <div class="tendency-icon">🕐</div>
+      <div class="tendency-label">よく使う時間帯</div>
+      <div class="tendency-val" id="tendTime">—</div>
+    </div>
+    <div class="tendency-card">
+      <div class="tendency-icon">📅</div>
+      <div class="tendency-label">よく使う曜日</div>
+      <div class="tendency-val" id="tendDay">—</div>
+    </div>
+    <div class="tendency-card">
+      <div class="tendency-icon">✏️</div>
+      <div class="tendency-label">1回の会話量</div>
+      <div class="tendency-val" id="tendMsg">—</div>
+    </div>
+    <div class="tendency-card">
+      <div class="tendency-icon">📈</div>
+      <div class="tendency-label">利用ペース</div>
+      <div class="tendency-val" id="tendPace">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 生活リズム ===== -->
+<div class="section">
+  <div class="section-title">生活リズム（時間帯 × 曜日）</div>
   <div class="heatmap-wrap">
     <div class="heatmap-grid" id="heatmapGrid"></div>
     <div class="hm-legend">
       <div class="hm-legend-item"><div class="hm-dot" style="background:#f0e8e0"></div>なし</div>
       <div class="hm-legend-item"><div class="hm-dot" style="background:#f5c4b4"></div>少</div>
       <div class="hm-legend-item"><div class="hm-dot" style="background:var(--primary)"></div>多</div>
-      <div class="hm-legend-item"><div class="hm-dot" style="background:var(--navy)"></div>深夜注意</div>
+      <div class="hm-legend-item"><div class="hm-dot" style="background:var(--navy)"></div>深夜</div>
     </div>
   </div>
 </div>
 
+<!-- ===== 自己紹介文生成 ===== -->
 <div class="section">
-  <div class="section-title">見えてきた強みのヒント</div>
-  <div class="tags-wrap" id="strengthsWrap">
-    <div class="no-data-box">まとめを生成すると<br>強みのヒントが蓄積されます</div>
+  <div class="section-title">自己紹介文のたたき台</div>
+  <div class="intro-box">
+    <div class="intro-hint">会話と強みのデータをもとに、自己紹介文のたたき台を生成します。</div>
+    <div class="intro-result" id="introResult"></div>
+    <button class="btn-gen" id="btnGenIntro" onclick="generateIntro()">生成する</button>
   </div>
 </div>
 
+<!-- ===== miiiro からのメッセージ ===== -->
 <div class="ai-message" id="aiMessage">
-  <div class="ai-message-header">✦ hajimari より</div>
+  <div class="ai-message-header">✦ miiiro より</div>
   <div class="ai-message-body" id="aiMessageBody"></div>
 </div>
 
 <script>
   const SESSIONS_KEY = 'hajimari_sessions';
+  const PROFILE_KEY = 'hajimari_profile';
 
   function loadSessions() {
     try { return JSON.parse(localStorage.getItem(SESSIONS_KEY) || '[]'); } catch { return []; }
   }
 
-  function getWeekStart() {
+  function loadProfile() {
+    try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}'); } catch { return {}; }
+  }
+
+  function getWeekStart(offset = 0) {
     const now = new Date();
     const day = now.getDay();
     const start = new Date(now);
-    start.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    start.setDate(now.getDate() - (day === 0 ? 6 : day - 1) + offset * 7);
     start.setHours(0, 0, 0, 0);
     return start;
   }
@@ -274,7 +526,8 @@
   }
 
   function extractStrengthTags(sessions) {
-    const tags = new Set();
+    const tags = [];
+    const seen = new Set();
     sessions.forEach(s => {
       const sum = s.messages?.find(m => m.role === 'summary');
       if (!sum) return;
@@ -284,11 +537,12 @@
         if (line.includes('強み') || line.includes('視点')) inStrength = true;
         else if (line.startsWith('■')) inStrength = false;
         if (inStrength && line.trim().startsWith('・')) {
-          tags.add(line.replace(/^・/, '').trim().slice(0, 18));
+          const tag = line.replace(/^・/, '').trim().slice(0, 30);
+          if (!seen.has(tag)) { seen.add(tag); tags.push({ text: tag, session: s }); }
         }
       });
     });
-    return [...tags];
+    return tags;
   }
 
   function buildHeatmap(sessions) {
@@ -301,16 +555,13 @@
     ];
 
     const counts = {};
-    const weekStart = getWeekStart();
-    const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 7);
-
     sessions.forEach(s => {
       const d = new Date(s.createdAt);
-      const dow = (d.getDay() + 6) % 7; // 0=月
+      const dow = (d.getDay() + 6) % 7;
       const h = d.getHours();
       SLOTS.forEach((slot, si) => {
-        const h2 = h >= 21 ? h + 6 : h; // wrap midnight
-        if (h >= slot.min && h < slot.max || (slot.min === 21 && h >= 21)) {
+        const inSlot = si < 3 ? (h >= slot.min && h < slot.max) : (h >= 21 || h < 5);
+        if (inSlot) {
           const key = `${si}-${dow}`;
           counts[key] = (counts[key] || 0) + 1;
         }
@@ -318,7 +569,6 @@
     });
 
     const grid = document.getElementById('heatmapGrid');
-    // header row
     grid.innerHTML = '<div></div>' + DAYS.map(d => `<div class="hm-header">${d}</div>`).join('');
 
     SLOTS.forEach((slot, si) => {
@@ -336,57 +586,188 @@
     });
   }
 
+  function calcTendencies(sessions) {
+    if (sessions.length === 0) return;
+
+    // 時間帯
+    const hourBuckets = { '朝(6-11時)': 0, '昼(11-17時)': 0, '夕(17-21時)': 0, '深夜': 0 };
+    const dayCounts = [0,0,0,0,0,0,0]; // Mon-Sun
+    let totalMsgs = 0;
+
+    sessions.forEach(s => {
+      const h = new Date(s.createdAt).getHours();
+      if (h >= 6 && h < 11) hourBuckets['朝(6-11時)']++;
+      else if (h >= 11 && h < 17) hourBuckets['昼(11-17時)']++;
+      else if (h >= 17 && h < 21) hourBuckets['夕(17-21時)']++;
+      else hourBuckets['深夜']++;
+
+      const dow = (new Date(s.createdAt).getDay() + 6) % 7;
+      dayCounts[dow]++;
+
+      totalMsgs += (s.messages || []).filter(m => m.role === 'user').length;
+    });
+
+    const topTime = Object.entries(hourBuckets).sort((a,b) => b[1]-a[1])[0][0];
+    const DAYNAMES = ['月','火','水','木','金','土','日'];
+    const topDay = DAYNAMES[dayCounts.indexOf(Math.max(...dayCounts))];
+    const avgMsgs = Math.round(totalMsgs / sessions.length);
+
+    // ペース
+    const dates = sessions.map(s => new Date(s.createdAt)).sort();
+    let pace = '計測中';
+    if (dates.length >= 2) {
+      const span = (dates[dates.length-1] - dates[0]) / (1000*60*60*24);
+      const perWeek = Math.round(sessions.length / (span / 7) * 10) / 10;
+      pace = `週${perWeek}回ペース`;
+    }
+
+    document.getElementById('tendTime').textContent = topTime;
+    document.getElementById('tendDay').textContent = `${topDay}曜日が多い`;
+    document.getElementById('tendMsg').textContent = avgMsgs > 0 ? `平均${avgMsgs}メッセージ` : '—';
+    document.getElementById('tendPace').textContent = pace;
+  }
+
   function buildAIMessage(sessions, streak, strengthCount, lateCount) {
     if (sessions.length === 0) return;
     const parts = [];
-    if (streak >= 3) parts.push(`**${streak}日連続**でよく続けてますね！`);
-    if (lateCount >= 2) parts.push(`深夜の会話が今週**${lateCount}回**あります。体も大切にしてくださいね。`);
-    if (strengthCount > 0) parts.push(`会話から**${strengthCount}個**の強みのヒントが見えてきました。`);
+    if (streak >= 3) parts.push(`**${streak}日連続**でよく続けてますね。その積み重ねが力になっています。`);
+    if (strengthCount >= 3) parts.push(`会話から**${strengthCount}個**の強みのヒントが見えてきました。どれもあなたらしさが滲み出ています。`);
+    else if (strengthCount > 0) parts.push(`${strengthCount}個の強みのヒントが見えています。会話を重ねるほど、もっとクリアになってきます。`);
+    if (lateCount >= 2) parts.push(`深夜の会話が今週**${lateCount}回**。頑張り屋さんなのはわかるけど、休むことも仕事のうちですよ。`);
     if (parts.length === 0) parts.push('会話を重ねるごとに、あなたのことがもっとよく見えてきます。');
 
     const msg = document.getElementById('aiMessage');
-    const body = document.getElementById('aiMessageBody');
-    body.innerHTML = parts.join('\n').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    document.getElementById('aiMessageBody').innerHTML =
+      parts.join('\n').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     msg.classList.add('show');
+  }
+
+  function generateIntro() {
+    const sessions = loadSessions();
+    const profile = loadProfile();
+    const tags = extractStrengthTags(sessions);
+    const btn = document.getElementById('btnGenIntro');
+    const result = document.getElementById('introResult');
+
+    if (tags.length === 0 && !profile.name) {
+      result.textContent = 'まずはプロフィールを入力するか、チャットのまとめを生成してみてください。';
+      result.classList.add('show');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '生成中…';
+
+    const name = profile.name || '';
+    const job = profile.jobType || profile.workContent || '';
+    const strengthList = tags.slice(0, 5).map(t => t.text).join('、');
+
+    const intro = [
+      name ? `${name}と申します。` : '',
+      job ? `${job}として活動しています。` : '',
+      strengthList ? `\n強みとして感じているのは、${strengthList}といった点です。` : '',
+      '\n現在、自分の働き方や強みをより深く理解しながら、前に進んでいる最中です。',
+    ].filter(Boolean).join('');
+
+    setTimeout(() => {
+      result.textContent = intro || '（プロフィールと会話データから生成します）';
+      result.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = '再生成する';
+    }, 600);
   }
 
   function init() {
     const sessions = loadSessions();
-    const weekStart = getWeekStart();
-    const now = new Date();
+    const weekStart = getWeekStart(0);
+    const lastWeekStart = getWeekStart(-1);
 
-    // week label
     const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 6);
     document.getElementById('weekLabel').textContent =
-      `${weekStart.getMonth()+1}/${weekStart.getDate()} 〜 ${weekEnd.getMonth()+1}/${weekEnd.getDate()}`;
+      `${weekStart.getMonth()+1}/${weekStart.getDate()} – ${weekEnd.getMonth()+1}/${weekEnd.getDate()}`;
 
     const thisWeek = sessions.filter(s => new Date(s.createdAt) >= weekStart);
+    const lastWeek = sessions.filter(s => {
+      const d = new Date(s.createdAt);
+      return d >= lastWeekStart && d < weekStart;
+    });
+
     const streak = calcStreak(sessions);
     const tags = extractStrengthTags(sessions);
-    const lateCount = sessions.filter(s => { const d = new Date(s.createdAt); return d >= weekStart && d.getHours() >= 22; }).length;
+    const lateCount = sessions.filter(s => {
+      const d = new Date(s.createdAt);
+      return d >= weekStart && (d.getHours() >= 22 || d.getHours() < 5);
+    }).length;
 
-    document.getElementById('statSessions').innerHTML = `${thisWeek.length}<span>回</span>`;
-    document.getElementById('statStrengths').innerHTML = `${tags.length}<span>個</span>`;
-    document.getElementById('statStreak').innerHTML = `${streak}<span>日</span>`;
-    document.getElementById('statTotal').innerHTML = `${sessions.length}<span>回</span>`;
+    // Stats
+    document.getElementById('statSessions').innerHTML = `${thisWeek.length}<sup>回</sup>`;
+    document.getElementById('statStrengths').innerHTML = `${tags.length}<sup>個</sup>`;
+    document.getElementById('statStreak').innerHTML = `${streak}<sup>日</sup>`;
+    document.getElementById('statTotal').innerHTML = `${sessions.length}<sup>回</sup>`;
 
+    // Compare
+    document.getElementById('cmpLast').textContent = lastWeek.length;
+    document.getElementById('cmpThis').textContent = thisWeek.length;
+    const diff = thisWeek.length - lastWeek.length;
+    const badge = document.getElementById('cmpBadge');
+    if (diff > 0) {
+      badge.innerHTML = `<span class="compare-badge positive">↑ ${diff}回増</span>`;
+      document.getElementById('cmpThis').classList.add('up');
+    } else if (diff < 0) {
+      badge.innerHTML = `<span class="compare-badge negative">↓ ${Math.abs(diff)}回減</span>`;
+      document.getElementById('cmpThis').classList.add('down');
+    } else if (sessions.length > 0) {
+      badge.innerHTML = `<span class="compare-badge neutral">→ 先週と同じ</span>`;
+    }
+
+    // Alert
     if (lateCount >= 2) {
       const alert = document.getElementById('alertCard');
-      alert.innerHTML = `🌙 深夜（22時以降）の会話が今週${lateCount}回ありました。明日は早めに休もう！`;
+      alert.innerHTML = `🌙 深夜（22時以降）の会話が今週 ${lateCount} 回ありました。明日は早めに休みましょう。`;
       alert.classList.add('show');
     }
 
-    buildHeatmap(sessions);
-
+    // Strengths
     const wrap = document.getElementById('strengthsWrap');
     if (tags.length > 0) {
-      wrap.innerHTML = `<div class="tag-list">${tags.map(t => `<span class="strength-tag">${t}</span>`).join('')}</div>`;
+      wrap.innerHTML = `<div class="strength-list">${
+        tags.map((t, i) => `
+          <div class="strength-card">
+            <div class="strength-num">${i+1}</div>
+            <div>
+              <div class="strength-text">${t.text}</div>
+            </div>
+          </div>`).join('')
+      }</div>`;
     }
 
+    // Heatmap
+    buildHeatmap(sessions);
+
+    // Tendencies
+    calcTendencies(sessions);
+
+    // AI message
     buildAIMessage(sessions, streak, tags.length, lateCount);
   }
 
   init();
+
+  // 5-click dev mode
+  let logoClicks = 0, logoTimer;
+  document.getElementById('logoBtn').addEventListener('click', () => {
+    logoClicks++;
+    clearTimeout(logoTimer);
+    logoTimer = setTimeout(() => { logoClicks = 0; }, 1500);
+    if (logoClicks >= 5) {
+      logoClicks = 0;
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#0F3752;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;line-height:1.8;text-align:center;z-index:9999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
+      toast.innerHTML = '🛠 開発モード<br><a href="/dashboard" style="color:#f5c4b4;text-decoration:none">ダッシュボード</a>　<a href="/docs" style="color:#f5c4b4;text-decoration:none">設計ドキュメント</a>';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 8000);
+    }
+  });
 </script>
 
 </body>
