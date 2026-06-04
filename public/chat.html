@@ -753,6 +753,7 @@
     if (p.name) parts.push(`名前：${p.name}`);
     if (p.jobType) parts.push(`職種：${p.jobType}`);
     if (p.organization) parts.push(`所属：${p.organization}`);
+    if (p.location) parts.push(`居住地：${p.location}`);
     if (p.workContent) parts.push(`業務内容：${p.workContent}`);
     if (p.teamStructure) parts.push(`チーム構成：${p.teamStructure}`);
     if (p.challenges) parts.push(`課題・悩み：${p.challenges}`);
@@ -763,6 +764,50 @@
 
   const profile = loadProfile();
   const profileText = buildProfileText(profile);
+
+  // ===== WEATHER =====
+  let weatherContext = null;
+
+  const WEATHER_CODES = {
+    0:'快晴', 1:'晴れ', 2:'一部曇り', 3:'曇り',
+    45:'霧', 48:'着氷性の霧',
+    51:'小雨', 53:'雨', 55:'強い雨',
+    61:'小雨', 63:'雨', 65:'大雨',
+    71:'小雪', 73:'雪', 75:'大雪', 77:'霧雪',
+    80:'にわか雨', 81:'雨', 82:'強いにわか雨',
+    85:'にわか雪', 86:'強いにわか雪',
+    95:'雷雨', 96:'雷雨（雹あり）', 99:'強い雷雨（雹あり）',
+  };
+
+  async function fetchWeather(locationName) {
+    try {
+      const geoRes = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(locationName)}&count=1&language=ja`
+      );
+      const geoData = await geoRes.json();
+      const place = geoData.results?.[0];
+      if (!place) return null;
+
+      const wxRes = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m&timezone=Asia%2FTokyo`
+      );
+      const wxData = await wxRes.json();
+      const cur = wxData.current;
+      if (!cur) return null;
+
+      const condition = WEATHER_CODES[cur.weather_code] ?? '不明';
+      return `現在の${place.name}の天気：${condition}、気温${cur.temperature_2m}°C（体感${cur.apparent_temperature}°C）、湿度${cur.relative_humidity_2m}%、風速${cur.wind_speed_10m}m/s`;
+    } catch {
+      return null;
+    }
+  }
+
+  async function initWeather() {
+    if (!profile.location) return;
+    weatherContext = await fetchWeather(profile.location);
+  }
+
+  initWeather();
 
   let firstMsg = 'こんにちは 🌱 今日はどんなことを話しましょうか？';
   if (profileText.trim().length > 0) {
@@ -1151,6 +1196,7 @@
         fileContext: fileContext || undefined,
         pastContext: pastContext || undefined,
         currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
+        weatherContext: weatherContext || undefined,
         ...extraFlags,
       }),
     });
@@ -1241,6 +1287,7 @@
           profile: profileText || undefined,
           pastContext: pastContext || undefined,
           currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
+          weatherContext: weatherContext || undefined,
           summarize: true,
         }),
       });

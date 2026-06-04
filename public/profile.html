@@ -259,6 +259,12 @@
         <label for="organization">所属・会社・コミュニティ</label>
         <input type="text" id="organization" placeholder="例：フリーランス、〇〇株式会社、NPO法人など">
       </div>
+
+      <div class="field">
+        <label for="location">居住地・活動エリア</label>
+        <div class="hint">天気などを聞いたときに使います。市区町村まで書くと精度が上がります。</div>
+        <input type="text" id="location" placeholder="例：東京都渋谷区、大阪市、福岡県など">
+      </div>
     </div>
 
     <div class="section">
@@ -333,7 +339,7 @@
     }
   }
 
-  const fields = ['name', 'jobType', 'organization', 'workContent', 'teamStructure', 'challenges', 'goals', 'keywords'];
+  const fields = ['name', 'jobType', 'organization', 'location', 'workContent', 'teamStructure', 'challenges', 'goals', 'keywords'];
 
   const profile = loadProfile();
   fields.forEach(id => {
