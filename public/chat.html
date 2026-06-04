@@ -6,6 +6,7 @@
   <title>miiiro – 壁打ちチャット</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -450,26 +451,56 @@
   let fileContext = null;
   let fileName = null;
 
+  async function extractPdfText(file) {
+    if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js not loaded');
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let text = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(item => item.str).join(' ') + '\n';
+    }
+    return text.trim();
+  }
+
   document.getElementById('fileInput').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     fileName = file.name;
 
+    const banner = document.getElementById('fileBanner');
+    document.getElementById('fileBannerText').textContent = `📎 ${file.name} を読み込み中...`;
+    banner.style.display = 'flex';
+    document.getElementById('attachBtn').classList.add('active');
+
     if (file.type === 'application/pdf') {
-      fileContext = `[PDFファイル: ${file.name}]\n※ PDFの内容はテキスト形式でのみ読み取れます。内容をコピーしてテキストで貼り付けていただくか、別形式でお試しください。`;
+      try {
+        const text = await extractPdfText(file);
+        if (text.length > 10) {
+          fileContext = `[PDFファイル: ${file.name}]\n${text.slice(0, 8000)}`;
+          document.getElementById('fileBannerText').textContent = `📎 ${file.name}（${text.length}文字）を読み込みました`;
+        } else {
+          fileContext = `[PDFファイル: ${file.name}]\n※ スキャンPDFのためテキストを抽出できませんでした。内容をテキストで貼り付けてください。`;
+          document.getElementById('fileBannerText').textContent = `📎 ${file.name}（スキャンPDF・テキスト抽出不可）`;
+        }
+      } catch {
+        fileContext = `[PDFファイル: ${file.name}]\n※ 読み取りに失敗しました。`;
+        document.getElementById('fileBannerText').textContent = `📎 ${file.name}（読み取りエラー）`;
+      }
     } else {
       try {
         const text = await file.text();
         fileContext = `[添付ファイル: ${file.name}]\n${text.slice(0, 8000)}`;
+        document.getElementById('fileBannerText').textContent = `📎 ${file.name} を読み込みました`;
       } catch {
         fileContext = `[添付ファイル: ${file.name}]（読み取りエラー）`;
+        document.getElementById('fileBannerText').textContent = `📎 ${file.name}（読み取りエラー）`;
       }
     }
 
-    const banner = document.getElementById('fileBanner');
-    banner.style.display = 'flex';
-    document.getElementById('fileBannerText').textContent = `📎 ${file.name} を読み込みました`;
-    document.getElementById('attachBtn').classList.add('active');
     e.target.value = '';
   });
 
