@@ -567,9 +567,137 @@
     }
     .toggle-btn:hover { background: #f0e8e0; color: var(--navy); }
 
+    /* ===== MODE SELECT OVERLAY ===== */
+    #modeSelect {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 24px;
+      gap: 24px;
+      transition: opacity 0.3s ease;
+    }
+    #modeSelect.hidden { opacity: 0; pointer-events: none; }
+
+    .mode-intro {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-align: center;
+    }
+    .mode-sub {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -16px;
+    }
+
+    .mode-cards {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .mode-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      width: 160px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+    .mode-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px rgba(193,105,79,0.15);
+      transform: translateY(-2px);
+    }
+    .mode-card .mode-icon { font-size: 28px; margin-bottom: 8px; }
+    .mode-card .mode-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .mode-card .mode-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ===== MODE BADGE (in chat) ===== */
+    .mode-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 16px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .mode-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+    .mode-badge.壁打ち { background: #fff0ed; color: var(--primary); }
+    .mode-badge.傾聴 { background: #f0fdf4; color: #15803d; }
+    .mode-badge.雑談 { background: #eff6ff; color: #1d4ed8; }
+
+    .mode-change-btn {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .mode-change-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* モード変更ミニパネル */
+    .mode-switch-panel {
+      display: none;
+      position: absolute;
+      top: 36px;
+      right: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      z-index: 40;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      gap: 6px;
+      flex-direction: column;
+    }
+    .mode-switch-panel.open { display: flex; }
+    .mode-switch-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      transition: background 0.12s;
+    }
+    .mode-switch-item:hover { background: var(--bg); }
+    .mode-switch-item.current { background: #fff0ed; color: var(--primary); font-weight: 600; }
+
     @media (max-width: 640px) {
       .sidebar { position: absolute; top: 0; left: 0; bottom: 0; z-index: 30; box-shadow: 2px 0 12px rgba(0,0,0,0.1); }
       .sidebar.collapsed { transform: translateX(-100%); width: var(--sidebar-w); }
+      .mode-cards { flex-direction: column; }
+      .mode-card { width: 240px; }
     }
   </style>
 </head>
@@ -627,6 +755,41 @@
   <!-- ===== MAIN CHAT ===== -->
   <div class="chat-wrap">
     <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()" title="サイドバー">☰</button>
+
+    <!-- モード選択オーバーレイ -->
+    <div id="modeSelect">
+      <div class="mode-intro">今日はどんなふうに話したい？</div>
+      <div class="mode-sub">いつでも変更できます</div>
+      <div class="mode-cards">
+        <button class="mode-card" onclick="selectMode('壁打ち')">
+          <div class="mode-icon">🎤</div>
+          <div class="mode-name">壁打ち</div>
+          <div class="mode-desc">どんどん聞いてほしい。深く掘り下げたい。</div>
+        </button>
+        <button class="mode-card" onclick="selectMode('傾聴')">
+          <div class="mode-icon">💭</div>
+          <div class="mode-name">傾聴</div>
+          <div class="mode-desc">まず話を聞いてほしい。質問は控えめで。</div>
+        </button>
+        <button class="mode-card" onclick="selectMode('雑談')">
+          <div class="mode-icon">🌀</div>
+          <div class="mode-name">雑談</div>
+          <div class="mode-desc">ただ話したい。答えを求めなくていい。</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- モードバー（選択後に表示） -->
+    <div class="mode-bar" id="modeBar" style="display:none; position:relative;">
+      <span id="modeBadge" class="mode-badge"></span>
+      <span id="modeBarLabel" style="font-size:12px; color:var(--muted);"></span>
+      <button class="mode-change-btn" onclick="toggleModePanel()">モードを変える</button>
+      <div class="mode-switch-panel" id="modeSwitchPanel">
+        <button class="mode-switch-item" onclick="changeMode('壁打ち')">🎤 壁打ち — どんどん聞いてほしい</button>
+        <button class="mode-switch-item" onclick="changeMode('傾聴')">💭 傾聴 — まず話を聞いてほしい</button>
+        <button class="mode-switch-item" onclick="changeMode('雑談')">🌀 雑談 — ただ話したい</button>
+      </div>
+    </div>
 
     <div class="banner" id="profileBanner">
       <span id="profileBannerText"></span>
@@ -819,6 +982,64 @@
       `📋 ${[profile.jobType, profile.organization].filter(Boolean).join(' / ')} のプロフィール読み込み済み`;
   }
   document.getElementById('firstMessage').textContent = firstMsg;
+
+  // ===== MODE MANAGEMENT =====
+  let currentMode = null;
+
+  const MODE_META = {
+    '壁打ち': { icon: '🎤', label: 'どんどん聞いてほしい' },
+    '傾聴':   { icon: '💭', label: 'まず話を聞いてほしい' },
+    '雑談':   { icon: '🌀', label: 'ただ話したい' },
+  };
+
+  function selectMode(mode) {
+    currentMode = mode;
+    const overlay = document.getElementById('modeSelect');
+    overlay.classList.add('hidden');
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+
+    const modeBar = document.getElementById('modeBar');
+    modeBar.style.display = 'flex';
+    updateModeBar();
+  }
+
+  function updateModeBar() {
+    const badge = document.getElementById('modeBadge');
+    const label = document.getElementById('modeBarLabel');
+    badge.textContent = MODE_META[currentMode].icon + ' ' + currentMode;
+    badge.className = 'mode-badge ' + currentMode;
+    label.textContent = MODE_META[currentMode].label;
+
+    // 現在のモードをパネルでハイライト
+    document.querySelectorAll('.mode-switch-item').forEach(el => {
+      el.classList.toggle('current', el.textContent.includes(currentMode));
+    });
+  }
+
+  function toggleModePanel() {
+    document.getElementById('modeSwitchPanel').classList.toggle('open');
+  }
+
+  function changeMode(mode) {
+    currentMode = mode;
+    updateModeBar();
+    document.getElementById('modeSwitchPanel').classList.remove('open');
+    // モード変更をチャットに小さく表示
+    const note = document.createElement('div');
+    note.style.cssText = 'text-align:center; font-size:11px; color:var(--muted); padding:4px 0;';
+    note.textContent = `— モードを「${mode}」に変更しました —`;
+    const typing = document.getElementById('typing');
+    chatEl && chatEl.insertBefore(note, typing);
+  }
+
+  // モードパネル外クリックで閉じる
+  document.addEventListener('click', (e) => {
+    const panel = document.getElementById('modeSwitchPanel');
+    const bar = document.getElementById('modeBar');
+    if (panel && panel.classList.contains('open') && bar && !bar.contains(e.target)) {
+      panel.classList.remove('open');
+    }
+  });
 
   // ===== LOGO 5-CLICK DEV MODE =====
   let logoClicks = 0;
@@ -1197,6 +1418,7 @@
         pastContext: pastContext || undefined,
         currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
         weatherContext: weatherContext || undefined,
+        chatMode: currentMode || '傾聴',
         ...extraFlags,
       }),
     });
@@ -1288,6 +1510,7 @@
           pastContext: pastContext || undefined,
           currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
           weatherContext: weatherContext || undefined,
+          chatMode: currentMode || '傾聴',
           summarize: true,
         }),
       });

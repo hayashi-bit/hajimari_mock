@@ -73,13 +73,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { messages, profile, fileContext, summarize, pastContext, currentTime, weatherContext } = req.body ?? {};
+  const { messages, profile, fileContext, summarize, pastContext, currentTime, weatherContext, chatMode } = req.body ?? {};
   if (!Array.isArray(messages)) {
     res.status(400).json({ error: "messages が必要です" });
     return;
   }
 
+  const MODE_PROMPTS: Record<string, string> = {
+    '壁打ち': `\n\n---\n【会話モード：壁打ち】\nユーザーは積極的に深掘りしてほしいと望んでいます。毎回1つ質問し、答えを受けてさらに掘り下げてください。仮説を提示して「これはどうですか？」と確認する形も有効です。`,
+    '傾聴': `\n\n---\n【会話モード：傾聴】\nユーザーはまず話を聞いてほしいと望んでいます。共感・反映を中心に返し、質問は3往復に1回程度に抑えてください。「そうなんですね」「それはしんどいですね」など受け止める言葉を大切に。`,
+    '雑談': `\n\n---\n【会話モード：雑談】\nユーザーはただ話したいだけです。答えを求めず、質問は基本しないでください。相槌・共感・軽い感想だけで返してOKです。重い深掘りは不要。会話を楽しむことを優先してください。`,
+  };
+
+  const TENSION_PROMPT = `\n\n---\n【テンション自動読み】\nユーザーのメッセージが短い（1〜2行）場合や、絵文字・感嘆符が多い場合は、質問を省いて共感・相槌だけで返してください。メッセージが長く詳細な場合は、内容を整理して反映しつつ1つだけ質問してください。相手のテンポに合わせることを最優先にしてください。`;
+
   let systemPrompt = BASE_PROMPT;
+  if (chatMode && MODE_PROMPTS[chatMode]) systemPrompt += MODE_PROMPTS[chatMode];
+  systemPrompt += TENSION_PROMPT;
   if (currentTime) systemPrompt += `\n\n---\n【現在の日時】\n${currentTime}\n時間帯に合わせた自然な声かけをしてください（深夜なら深夜らしく、朝なら朝らしく）。`;
   if (weatherContext) {
     systemPrompt += `\n\n---\n【現在の天気情報】\n${weatherContext}\n天気について聞かれたらこの情報をもとに答えてください。`;
