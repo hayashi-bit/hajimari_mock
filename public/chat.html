@@ -440,42 +440,22 @@
       40% { transform: translateY(-5px); opacity: 1; }
     }
 
-    /* ===== SUMMARY ACCORDION BAR ===== */
-    #summaryBar {
-      display: none;
-      flex-shrink: 0;
-      border-top: 1px solid var(--border);
+    /* まとめ促進バブル（チャット内） */
+    .summary-prompt-bubble {
+      align-self: flex-start;
       background: #fff;
-    }
-
-    #summaryBarToggle {
-      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px 14px 14px 14px;
+      padding: 12px 16px;
+      max-width: 82%;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 13px;
-      color: var(--primary);
-      font-weight: 500;
-      text-align: left;
+      flex-direction: column;
+      gap: 10px;
     }
-    #summaryBarToggle:hover { background: #fff8f6; }
-    #summaryBarToggle .bar-arrow { margin-left: auto; transition: transform 0.2s; font-size: 11px; }
-    #summaryBarToggle.open .bar-arrow { transform: rotate(180deg); }
-
-    #summaryBarContent {
-      display: none;
-      padding: 0 16px 12px;
-    }
-    #summaryBarContent.open { display: block; }
-
-    #summaryBarContent p { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .summary-prompt-bubble p { font-size: 14px; color: var(--text); line-height: 1.7; }
 
     .summary-btn {
+      align-self: flex-start;
       padding: 8px 20px;
       background: var(--navy);
       color: #fff;
@@ -567,61 +547,48 @@
     }
     .toggle-btn:hover { background: #f0e8e0; color: var(--navy); }
 
-    /* ===== MODE SELECT OVERLAY ===== */
+    /* ===== MODE SELECT (チャット上部バー) ===== */
     #modeSelect {
-      position: absolute;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-      padding: 24px;
-      gap: 24px;
-      transition: opacity 0.3s ease;
+      padding: 12px 16px 10px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: opacity 0.3s ease, max-height 0.3s ease;
     }
-    #modeSelect.hidden { opacity: 0; pointer-events: none; }
+    #modeSelect.hidden { display: none; }
 
     .mode-intro {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      color: var(--navy);
-      text-align: center;
-    }
-    .mode-sub {
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
       color: var(--muted);
-      text-align: center;
-      margin-top: -16px;
+      margin-bottom: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.06em;
     }
 
     .mode-cards {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
-      justify-content: center;
     }
 
     .mode-card {
-      background: #fff;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 24px;
-      width: 160px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 14px;
       cursor: pointer;
-      text-align: center;
-      transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, background 0.15s;
       font-family: inherit;
     }
-    .mode-card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 4px 16px rgba(193,105,79,0.15);
-      transform: translateY(-2px);
-    }
-    .mode-card .mode-icon { font-size: 28px; margin-bottom: 8px; }
-    .mode-card .mode-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .mode-card .mode-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .mode-card:hover { border-color: var(--primary); background: #fff0ed; }
+    .mode-card.selected { border-color: var(--primary); background: #fff0ed; }
+    .mode-card .mode-icon { font-size: 16px; }
+    .mode-card .mode-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+    .mode-card .mode-desc { font-size: 11px; color: var(--muted); }
 
     /* ===== MODE BADGE (in chat) ===== */
     .mode-bar {
@@ -756,30 +723,29 @@
   <div class="chat-wrap">
     <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()" title="サイドバー">☰</button>
 
-    <!-- モード選択オーバーレイ -->
+    <!-- モード選択バー（チャット上部） -->
     <div id="modeSelect">
-      <div class="mode-intro">今日はどんなふうに話したい？</div>
-      <div class="mode-sub">いつでも変更できます</div>
+      <div class="mode-intro">今日はどんなふうに話したい？（選ばなくてもOK）</div>
       <div class="mode-cards">
-        <button class="mode-card" onclick="selectMode('壁打ち')">
-          <div class="mode-icon">🎤</div>
-          <div class="mode-name">壁打ち</div>
-          <div class="mode-desc">どんどん聞いてほしい。深く掘り下げたい。</div>
+        <button class="mode-card" id="modeCard-壁打ち" onclick="selectMode('壁打ち')">
+          <span class="mode-icon">🎤</span>
+          <span class="mode-name">壁打ち</span>
+          <span class="mode-desc">どんどん聞いてほしい</span>
         </button>
-        <button class="mode-card" onclick="selectMode('傾聴')">
-          <div class="mode-icon">💭</div>
-          <div class="mode-name">傾聴</div>
-          <div class="mode-desc">まず話を聞いてほしい。質問は控えめで。</div>
+        <button class="mode-card" id="modeCard-傾聴" onclick="selectMode('傾聴')">
+          <span class="mode-icon">💭</span>
+          <span class="mode-name">傾聴</span>
+          <span class="mode-desc">まず聞いてほしい</span>
         </button>
-        <button class="mode-card" onclick="selectMode('雑談')">
-          <div class="mode-icon">🌀</div>
-          <div class="mode-name">雑談</div>
-          <div class="mode-desc">ただ話したい。答えを求めなくていい。</div>
+        <button class="mode-card" id="modeCard-雑談" onclick="selectMode('雑談')">
+          <span class="mode-icon">🌀</span>
+          <span class="mode-name">雑談</span>
+          <span class="mode-desc">ただ話したい</span>
         </button>
       </div>
     </div>
 
-    <!-- モードバー（選択後に表示） -->
+    <!-- モードバー（モード選択後の小表示） -->
     <div class="mode-bar" id="modeBar" style="display:none; position:relative;">
       <span id="modeBadge" class="mode-badge"></span>
       <span id="modeBarLabel" style="font-size:12px; color:var(--muted);"></span>
@@ -822,18 +788,6 @@
         <div class="dots">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
-      </div>
-    </div>
-
-    <!-- まとめアコーディオンバー -->
-    <div id="summaryBar">
-      <button id="summaryBarToggle" onclick="toggleSummaryBar()">
-        <span>💡 ある程度話せましたね。まとめてみますか？</span>
-        <span class="bar-arrow">▼</span>
-      </button>
-      <div id="summaryBarContent">
-        <p>会話から見えてきた強みや課題を整理します</p>
-        <button class="summary-btn" onclick="requestSummary()">📝 ここまでをまとめる</button>
       </div>
     </div>
 
@@ -994,12 +948,10 @@
 
   function selectMode(mode) {
     currentMode = mode;
-    const overlay = document.getElementById('modeSelect');
-    overlay.classList.add('hidden');
-    setTimeout(() => { overlay.style.display = 'none'; }, 300);
-
-    const modeBar = document.getElementById('modeBar');
-    modeBar.style.display = 'flex';
+    // カードのハイライト更新
+    document.querySelectorAll('.mode-card').forEach(el => el.classList.remove('selected'));
+    const card = document.getElementById('modeCard-' + mode);
+    if (card) card.classList.add('selected');
     updateModeBar();
   }
 
@@ -1021,15 +973,14 @@
   }
 
   function changeMode(mode) {
-    currentMode = mode;
-    updateModeBar();
+    selectMode(mode);
     document.getElementById('modeSwitchPanel').classList.remove('open');
     // モード変更をチャットに小さく表示
     const note = document.createElement('div');
     note.style.cssText = 'text-align:center; font-size:11px; color:var(--muted); padding:4px 0;';
     note.textContent = `— モードを「${mode}」に変更しました —`;
     const typing = document.getElementById('typing');
-    chatEl && chatEl.insertBefore(note, typing);
+    if (chatEl) chatEl.insertBefore(note, typing);
   }
 
   // モードパネル外クリックで閉じる
@@ -1072,14 +1023,21 @@
     document.getElementById('toggleBtn').textContent = sidebarOpen ? '✕' : '☰';
   }
 
-  // ===== SUMMARY ACCORDION =====
-  let summaryBarOpen = false;
-  function toggleSummaryBar() {
-    summaryBarOpen = !summaryBarOpen;
-    const toggle = document.getElementById('summaryBarToggle');
-    const content = document.getElementById('summaryBarContent');
-    toggle.classList.toggle('open', summaryBarOpen);
-    content.classList.toggle('open', summaryBarOpen);
+  // まとめ促進バブルをチャット内に挿入
+  function showSummaryPromptBubble() {
+    if (document.getElementById('summaryPromptBubble')) return; // 重複防止
+    const typing = document.getElementById('typing');
+    const wrap = document.createElement('div');
+    wrap.className = 'message ai';
+    wrap.id = 'summaryPromptBubble';
+    wrap.innerHTML = `
+      <div class="avatar">✦</div>
+      <div class="summary-prompt-bubble">
+        <p>ある程度話せましたね 💡<br>ここまでの内容を整理してみますか？</p>
+        <button class="summary-btn" onclick="requestSummary()">📝 ここまでをまとめる</button>
+      </div>`;
+    chatEl.insertBefore(wrap, typing);
+    scrollBottom();
   }
 
   // ===== FEEDBACK FORM =====
@@ -1201,7 +1159,6 @@
         </div>
       </div>`;
 
-    document.getElementById('summaryBar').style.display = 'none';
     document.getElementById('progressBar').style.display = 'none';
     document.getElementById('progressFill').style.width = '0%';
     document.getElementById('input').value = '';
@@ -1299,7 +1256,7 @@
     pct.textContent = progress + '%';
 
     if (userTurnCount >= 8 && !summarized) {
-      document.getElementById('summaryBar').style.display = 'block';
+      showSummaryPromptBubble();
     }
   }
 
@@ -1469,7 +1426,6 @@
 
     const typing = document.getElementById('typing');
     typing.classList.add('show');
-    document.getElementById('summaryBar').style.display = 'none';
     scrollBottom();
 
     try {
@@ -1488,7 +1444,8 @@
 
   async function requestSummary() {
     summarized = true;
-    document.getElementById('summaryBar').style.display = 'none';
+    const promptBubble = document.getElementById('summaryPromptBubble');
+    if (promptBubble) promptBubble.remove();
     sendBtn.disabled = true;
 
     const typing = document.getElementById('typing');
