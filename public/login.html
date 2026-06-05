@@ -220,27 +220,36 @@
       <!-- ログインフォーム -->
       <div id="loginForm">
         <div class="card-title">ログイン / 新規登録</div>
-        <div class="card-desc">メールアドレスを入力すると、ログインリンクが届きます。パスワード不要です。</div>
+        <div class="card-desc">メールアドレスを入力すると、6桁のコードが届きます。パスワード不要です。</div>
 
         <div class="form-group">
           <label>メールアドレス</label>
           <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
         </div>
 
-        <button class="btn" id="sendBtn" onclick="sendMagicLink()">ログインリンクを送る</button>
+        <button class="btn" id="sendBtn" onclick="sendOtp()">コードを送る</button>
 
         <div class="message" id="messageBox"></div>
       </div>
 
-      <!-- 送信完了 -->
+      <!-- コード入力 -->
       <div class="sent-view" id="sentView">
         <div class="sent-icon">📬</div>
-        <div class="sent-title">メールを送りました</div>
+        <div class="sent-title">コードを送りました</div>
         <div class="sent-desc">
           <span class="sent-email" id="sentEmail"></span><br>
-          にログインリンクを送りました。<br>
-          メールのリンクをタップしてください。
+          に6桁のコードを送りました。
         </div>
+
+        <div class="form-group" style="margin-top: 20px; text-align: left;">
+          <label>届いたコードを入力</label>
+          <input type="text" id="otpInput" placeholder="123456" maxlength="6"
+            inputmode="numeric" pattern="[0-9]*"
+            style="width:100%; background:#1a1a1a; border:1px solid #333; border-radius:10px; padding:14px 16px; font-size:24px; color:#e8e0d5; outline:none; letter-spacing:0.3em; text-align:center;">
+        </div>
+
+        <button class="btn" id="verifyBtn" onclick="verifyOtp()">ログイン</button>
+        <div class="message" id="verifyMessageBox"></div>
         <button class="resend-btn" onclick="showLoginForm()">別のアドレスで試す</button>
       </div>
     </div>
@@ -271,7 +280,9 @@
       }
     });
 
-    async function sendMagicLink() {
+    let currentEmail = '';
+
+    async function sendOtp() {
       const email = document.getElementById('emailInput').value.trim();
       if (!email) {
         showMessage('メールアドレスを入力してください', 'error');
@@ -282,24 +293,49 @@
       btn.disabled = true;
       btn.textContent = '送信中...';
 
-      const { error } = await sb.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: window.location.origin + '/home',
-        },
-      });
+      const { error } = await sb.auth.signInWithOtp({ email });
 
       btn.disabled = false;
-      btn.textContent = 'ログインリンクを送る';
+      btn.textContent = 'コードを送る';
 
       if (error) {
         showMessage('送信に失敗しました：' + error.message, 'error');
         return;
       }
 
+      currentEmail = email;
       document.getElementById('sentEmail').textContent = email;
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('sentView').style.display = 'block';
+      setTimeout(() => document.getElementById('otpInput').focus(), 100);
+    }
+
+    async function verifyOtp() {
+      const token = document.getElementById('otpInput').value.trim();
+      if (token.length !== 6) {
+        showVerifyMessage('6桁のコードを入力してください', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('verifyBtn');
+      btn.disabled = true;
+      btn.textContent = '確認中...';
+
+      const { error } = await sb.auth.verifyOtp({
+        email: currentEmail,
+        token,
+        type: 'email',
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'ログイン';
+
+      if (error) {
+        showVerifyMessage('コードが正しくありません。もう一度確認してください。', 'error');
+        return;
+      }
+
+      window.location.href = '/home';
     }
 
     function showMessage(text, type) {
@@ -308,13 +344,20 @@
       box.className = 'message ' + type;
     }
 
+    function showVerifyMessage(text, type) {
+      const box = document.getElementById('verifyMessageBox');
+      box.textContent = text;
+      box.className = 'message ' + type;
+    }
+
     function showLoginForm() {
       document.getElementById('loginForm').style.display = 'block';
       document.getElementById('sentView').style.display = 'none';
+      document.getElementById('otpInput').value = '';
     }
 
     document.getElementById('emailInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendMagicLink();
+      if (e.key === 'Enter') sendOtp();
     });
   </script>
 </body>
