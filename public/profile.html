@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro – プロフィール設定</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+
+    header {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      gap: 8px;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .header-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: #f0e8e0; color: var(--navy); }
+    nav a.active { background: var(--primary); color: #fff; }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .lead {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    input[type="text"]::placeholder, textarea::placeholder {
+      color: #c8b8a8;
+    }
+
+    textarea { min-height: 80px; line-height: 1.6; }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 28px;
+    }
+
+    .btn-primary {
+      padding: 12px 28px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: #b05a42; }
+
+    .btn-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 12px 0;
+    }
+
+    .saved-badge {
+      display: none;
+      font-size: 13px;
+      color: #15803d;
+      font-weight: 500;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: 6px 14px;
+    }
+
+    .status-bar {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      font-size: 13px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+      flex-shrink: 0;
+    }
+
+    .status-dot.complete { background: #22c55e; }
+
+    .status-text { color: var(--muted); }
+    .status-text strong { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">miiiro</a>
+  <span class="header-sub">— 開発ダッシュボード</span>
+  <nav>
+    <a href="/">ダッシュボード</a>
+    <a href="/docs">設計ドキュメント</a>
+    <a href="/chat">壁打ちを試す</a>
+    <a href="/profile" class="active">プロフィール</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-label">
+    <span>👤</span> PROFILE
+  </div>
+  <h1>プロフィール設定</h1>
+  <p class="lead">あなたの仕事や状況をここに登録しておくと、チャットが毎回ゼロから説明しなくてよくなります。AIが最初からあなたのことを知った状態で会話を始めます。</p>
+
+  <div class="status-bar" id="statusBar">
+    <div class="status-dot" id="statusDot"></div>
+    <div class="status-text" id="statusText">まだ設定されていません</div>
+  </div>
+
+  <form id="profileForm">
+    <div class="section">
+      <div class="section-title">基本情報</div>
+
+      <div class="field">
+        <label for="name">お名前（ニックネームでもOK）</label>
+        <input type="text" id="name" placeholder="例：田中さくら">
+      </div>
+
+      <div class="field">
+        <label for="jobType">職種・肩書き</label>
+        <input type="text" id="jobType" placeholder="例：フリーランスのWebデザイナー、マーケティング担当">
+      </div>
+
+      <div class="field">
+        <label for="organization">所属・会社・コミュニティ</label>
+        <input type="text" id="organization" placeholder="例：フリーランス、〇〇株式会社、NPO法人など">
+      </div>
+
+      <div class="field">
+        <label for="location">居住地・活動エリア</label>
+        <div class="hint">天気などを聞いたときに使います。市区町村まで書くと精度が上がります。</div>
+        <input type="text" id="location" placeholder="例：東京都渋谷区、大阪市、福岡県など">
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">仕事の内容</div>
+
+      <div class="field">
+        <label for="workContent">今やっている仕事・業務内容</label>
+        <div class="hint">複数あれば全部書いてください。AIが文脈を理解するために使います。</div>
+        <textarea id="workContent" placeholder="例：コミュニティの事務局運営、プロモーション広報、東芝の新規事業担当として関係商材のPR"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="teamStructure">チーム・組織の構成</label>
+        <div class="hint">一人ですか？何人チームですか？どんな役割の人がいますか？</div>
+        <textarea id="teamStructure" placeholder="例：一人で複数のクライアントを掛け持ち。主に一人で動いて必要に応じて外部に発注"></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">課題・目標</div>
+
+      <div class="field">
+        <label for="challenges">今感じている課題・悩み</label>
+        <textarea id="challenges" placeholder="例：自分の強みがうまく言語化できない、単価を上げたいが何から始めればいいかわからない"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="goals">目指していること・やりたいこと</label>
+        <textarea id="goals" placeholder="例：自分の専門性を活かした仕事にシフトしたい、収入を安定させたい"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="keywords">よく使うキーワード・業界用語</label>
+        <div class="hint">AIが会話の文脈を掴むのに役立ちます。</div>
+        <input type="text" id="keywords" placeholder="例：コミュニティマネジメント、BtoB、事業開発、広報PR">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn-primary">保存してチャットへ</button>
+      <a href="/chat" class="btn-link">スキップ</a>
+      <span class="saved-badge" id="savedBadge">✓ 保存しました</span>
+    </div>
+  </form>
+</main>
+
+<script>
+  const STORAGE_KEY = 'hajimari_profile';
+
+  function loadProfile() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProfile(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function updateStatus(profile) {
+    const hasData = profile.jobType || profile.workContent;
+    const dot = document.getElementById('statusDot');
+    const text = document.getElementById('statusText');
+    if (hasData) {
+      dot.className = 'status-dot complete';
+      text.innerHTML = `<strong>設定済み</strong> — チャットはあなたの仕事を把握した状態で始まります`;
+    } else {
+      dot.className = 'status-dot';
+      text.innerHTML = `まだ設定されていません — 設定するとチャットがずっと使いやすくなります`;
+    }
+  }
+
+  const fields = ['name', 'jobType', 'organization', 'location', 'workContent', 'teamStructure', 'challenges', 'goals', 'keywords'];
+
+  const profile = loadProfile();
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && profile[id]) el.value = profile[id];
+  });
+  updateStatus(profile);
+
+  document.getElementById('profileForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {};
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.value.trim();
+    });
+    saveProfile(data);
+    updateStatus(data);
+
+    const badge = document.getElementById('savedBadge');
+    badge.style.display = 'inline-block';
+    setTimeout(() => {
+      window.location.href = '/chat';
+    }, 800);
+  });
+</script>
+
+</body>
+</html>

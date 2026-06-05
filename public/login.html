@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン - miiiro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      background: #0a0a0a;
+      color: #e8e0d5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #e8e0d5;
+    }
+
+    .logo-sub {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 0.15em;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 32px 28px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #e8e0d5;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #e8e0d5;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="email"]:focus, input[type="password"]:focus {
+      border-color: #555;
+    }
+
+    input::placeholder { color: #444; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #e8e0d5;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-sub {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: #888;
+      border: 1px solid #333;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-sub:hover { border-color: #555; color: #aaa; }
+
+    .message {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .message.success {
+      background: #1a2a1a;
+      border: 1px solid #2a4a2a;
+      color: #6abf6a;
+      display: block;
+    }
+
+    .message.error {
+      background: #2a1a1a;
+      border: 1px solid #4a2a2a;
+      color: #bf6a6a;
+      display: block;
+    }
+
+    .divider {
+      text-align: center;
+      color: #444;
+      font-size: 12px;
+      margin: 24px 0;
+      position: relative;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #333;
+    }
+
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+
+    .note {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 24px;
+      line-height: 1.7;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #222;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      color: #e8e0d5;
+      border-bottom-color: #e8e0d5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-text">miiiro</div>
+      <div class="logo-sub">あなたの思考を、資産に。</div>
+    </div>
+
+    <div class="card">
+      <div class="tab-row">
+        <div class="tab active" id="tabLogin" onclick="switchTab('login')">ログイン</div>
+        <div class="tab" id="tabSignup" onclick="switchTab('signup')">新規登録</div>
+      </div>
+
+      <!-- ログインフォーム -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>パスワード</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn" id="loginBtn" onclick="signIn()">ログイン</button>
+        <div class="message" id="loginMessage"></div>
+      </div>
+
+      <!-- 新規登録フォーム -->
+      <div id="signupForm" style="display:none;">
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>パスワード（8文字以上）</label>
+          <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label>パスワード（確認）</label>
+          <input type="password" id="signupPassword2" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <button class="btn" id="signupBtn" onclick="signUp()">登録する</button>
+        <div class="message" id="signupMessage"></div>
+      </div>
+    </div>
+
+    <div class="note">
+      スマホ・PCどちらでも同じデータを使えます
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPA_URL = 'https://znezjmhkzdhlxdigajbo.supabase.co';
+    const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc';
+    const sb = supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+
+    sb.auth.getSession().then(({ data }) => {
+      if (data.session) window.location.href = '/home';
+    });
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) window.location.href = '/home';
+    });
+
+    function switchTab(tab) {
+      document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+      document.getElementById('signupForm').style.display = tab === 'signup' ? '' : 'none';
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+    }
+
+    async function signIn() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        showMessage('loginMessage', 'メールアドレスとパスワードを入力してください', 'error');
+        return;
+      }
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'ログイン中...';
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      btn.disabled = false;
+      btn.textContent = 'ログイン';
+      if (error) {
+        showMessage('loginMessage', 'メールアドレスまたはパスワードが正しくありません', 'error');
+        return;
+      }
+      window.location.href = '/home';
+    }
+
+    async function signUp() {
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const password2 = document.getElementById('signupPassword2').value;
+      if (!email || !password) {
+        showMessage('signupMessage', 'メールアドレスとパスワードを入力してください', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        showMessage('signupMessage', 'パスワードは8文字以上にしてください', 'error');
+        return;
+      }
+      if (password !== password2) {
+        showMessage('signupMessage', 'パスワードが一致しません', 'error');
+        return;
+      }
+      const btn = document.getElementById('signupBtn');
+      btn.disabled = true;
+      btn.textContent = '登録中...';
+      const { error } = await sb.auth.signUp({ email, password });
+      btn.disabled = false;
+      btn.textContent = '登録する';
+      if (error) {
+        showMessage('signupMessage', error.message === 'User already registered' ? 'このメールアドレスは既に登録されています' : '登録に失敗しました。もう一度お試しください', 'error');
+        return;
+      }
+      showMessage('signupMessage', '登録完了しました！そのままログインします...', 'success');
+      setTimeout(async () => {
+        await sb.auth.signInWithPassword({ email, password });
+        window.location.href = '/home';
+      }, 1500);
+    }
+
+    function showMessage(id, text, type) {
+      const box = document.getElementById(id);
+      box.textContent = text;
+      box.className = 'message ' + type;
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const activeTab = document.getElementById('loginForm').style.display !== 'none' ? 'login' : 'signup';
+        activeTab === 'login' ? signIn() : signUp();
+      }
+    });
+  </script>
+</body>
+</html>

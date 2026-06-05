@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro – 設計ドキュメント</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --warm: #FFFBF5;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+
+    header {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      gap: 8px;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .header-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    nav a:hover { background: #f0e8e0; color: var(--navy); }
+    nav a.active { background: var(--primary); color: #fff; }
+
+    .layout {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      gap: 56px;
+    }
+
+    aside {
+      width: 220px;
+      flex-shrink: 0;
+      padding-top: 48px;
+      position: sticky;
+      top: 57px;
+      height: calc(100dvh - 57px);
+      overflow-y: auto;
+    }
+
+    .sidebar-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 13px;
+      color: #6b5a4a;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      line-height: 1.4;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .sidebar-nav a:hover { background: #f0e8e0; color: var(--navy); }
+    .sidebar-nav a.active { background: #fff0ed; color: var(--primary); font-weight: 600; }
+
+    article {
+      flex: 1;
+      padding: 48px 0 80px;
+      min-width: 0;
+    }
+
+    .doc-header { margin-bottom: 48px; }
+
+    .doc-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .doc-header p { font-size: 14px; color: var(--muted); }
+
+    section {
+      margin-bottom: 64px;
+      scroll-margin-top: 80px;
+    }
+
+    section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--navy);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 28px 0 10px;
+    }
+
+    section p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #3a3a3a;
+      margin-bottom: 14px;
+    }
+
+    .highlight-box {
+      background: var(--navy);
+      color: #FFFBF5;
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .highlight-box strong { color: #F87C62; }
+
+    .quote-box {
+      background: #fff;
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 20px;
+      margin: 20px 0;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--navy);
+      font-style: italic;
+    }
+
+    .rule-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .rule-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3a3a3a;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .rule-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      background: #fff0ed;
+      border-radius: 4px;
+      padding: 2px 7px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      white-space: nowrap;
+    }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 16px 0;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .compare-table th {
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f8f5f0;
+      border-bottom: 1px solid var(--border);
+      color: var(--navy);
+    }
+
+    .compare-table td {
+      padding: 12px 18px;
+      border-bottom: 1px solid #f0ebe4;
+      line-height: 1.5;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { color: var(--muted); font-size: 13px; font-weight: 600; }
+
+    .gpt-col { color: #6b5a4a; }
+    .miiiro-col { color: var(--primary); font-weight: 600; }
+
+    /* Layer cards */
+    .layer-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 14px;
+    }
+
+    .layer-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .layer-rules { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+
+    .layer-rules li {
+      font-size: 14px;
+      color: #3a3a3a;
+      display: flex;
+      gap: 8px;
+      line-height: 1.5;
+    }
+
+    .layer-rules li::before {
+      content: '·';
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    /* Schema */
+    .code-block {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    .code-key { color: #93c5fd; }
+    .code-str { color: #86efac; }
+
+    /* Checklist */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .checklist li {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3a3a3a;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .check-icon { color: var(--primary); flex-shrink: 0; font-size: 16px; }
+
+    /* Do/Don't table */
+    .do-dont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .do-box, .dont-box {
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+
+    .dont-box { background: #fef2f2; border: 1px solid #fecaca; }
+    .do-box { background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+    .do-box h4 { color: #15803d; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+    .dont-box h4 { color: #b91c1c; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+
+    .do-box ul, .dont-box ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .do-box li, .dont-box li { font-size: 13px; line-height: 1.5; color: #3a3a3a; display: flex; gap: 6px; }
+    .do-box li::before { content: '✓'; color: #15803d; flex-shrink: 0; }
+    .dont-box li::before { content: '✕'; color: #b91c1c; flex-shrink: 0; }
+
+    /* Tag row */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #f0e8e0;
+      color: #6b5a4a;
+    }
+    .tag.accent { background: #fff0ed; color: var(--primary); }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @media (max-width: 768px) {
+      aside { display: none; }
+      .layout { gap: 0; }
+      .do-dont { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">miiiro</a>
+  <span class="header-sub">— 開発ダッシュボード</span>
+  <nav>
+    <a href="/">ダッシュボード</a>
+    <a href="/docs" class="active">設計ドキュメント</a>
+    <a href="/home">トップ画面</a>
+    <a href="/chat">壁打ちチャット</a>
+    <a href="/profile">プロフィール</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside>
+    <p class="sidebar-label">目次</p>
+    <ul class="sidebar-nav">
+      <li><a href="#concept" class="active">コアコンセプト</a></li>
+      <li><a href="#chat-ui">チャットUIデザイン</a></li>
+      <li><a href="#ui">UI設計原則</a></li>
+      <li><a href="#ai">AI応答設計</a></li>
+      <li><a href="#arch">技術アーキテクチャ</a></li>
+      <li><a href="#memory">記憶の設計</a></li>
+      <li><a href="#output">成果物の設計</a></li>
+      <li><a href="#checklist">判断基準チェックリスト</a></li>
+      <li><a href="#devlog">開発履歴</a></li>
+    </ul>
+  </aside>
+
+  <article>
+    <div class="doc-header">
+      <h1>開発方針ドキュメント</h1>
+      <p>miiiroの全ての設計判断の「最上位の判断基準」</p>
+    </div>
+
+    <section id="concept">
+      <h2>コアコンセプト</h2>
+
+      <div class="quote-box">「白紙のノートと、隣に座っている人」</div>
+
+      <p>miiiroは、ユーザーにとって以下の存在である：</p>
+
+      <h3>白紙のノート</h3>
+      <p>何を書いてもいい。構造も正解もない。自分の言葉で、自分のペースで。</p>
+
+      <h3>隣に座っている人</h3>
+      <p>指示はしない。でも聞いている。覚えている。たまに「それ、どういうこと？」と聞いてくる。</p>
+
+      <div class="highlight-box">
+        このメタファーが意味するのは、miiiroは「ツール」ではなく<strong>「場」</strong>である、ということ。<br>
+        ユーザーが自分の思考を言語化し、整理し、前に進むための「安全な場所」を提供する。<br><br>
+        迷ったときは常にここに立ち返り、「この判断はコアメタファーを強化するか、希薄にするか？」で決定する。
+      </div>
+
+      <h3>メタファーの2層構造</h3>
+      <p>miiiroのターゲット層は「GPTを開いても何を聞けばいいかわからない」人たちである。「白紙のノート」を渡すだけでは、GPTの空欄と同じ問題が発生する。</p>
+      <p>この矛盾を解決するために、メタファーは2つの別レイヤーで機能する。</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>メタファー</th><th>UI（見た目）</th><th>AI（振る舞い）</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>白紙のノート</td>
+            <td>余計なボタン・カード・装飾がない。入力欄は常に白紙。静か。</td>
+            <td>プロンプト設計</td>
+          </tr>
+          <tr>
+            <td>隣に座っている人</td>
+            <td>—</td>
+            <td>話しかけてくるのはこっち。会話の起点はAI側にある。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>ノートは白紙のまま。だが隣の人が「今日どうだった？」と声をかけてくるから、ユーザーはそのノートに「答え」を書き始める。</p>
+      <ul class="rule-list">
+        <li><span class="rule-num">重要</span>隣の人の声が聞こえる（チャット画面にAIのメッセージが先に表示されている）</li>
+        <li><span class="rule-num">重要</span>入力欄（ノート）自体は常に白紙である</li>
+      </ul>
+
+      <h3>GPTとmiiiroの構造的な違い</h3>
+      <table class="compare-table">
+        <thead>
+          <tr><th></th><th class="gpt-col">GPT</th><th class="miiiro-col">miiiro</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>会話の起点</td><td>ユーザー（能動的行動が必要）</td><td>AI（ユーザーは受動的でOK）</td></tr>
+          <tr><td>入力のハードル</td><td>「何を聞けばいいかわからない」</td><td>「答えるだけ」</td></tr>
+          <tr><td>空欄の意味</td><td>自分で考えて書く場所</td><td>AIの問いかけに返事を書く場所</td></tr>
+          <tr><td>使わない日</td><td>罪悪感・離脱</td><td>AIが待っていてくれる安心感</td></tr>
+        </tbody>
+      </table>
+
+      <h3>具体的な体験設計</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">起動時</span>アプリを開いた瞬間、AIからメッセージが来ている。「おはようございます。昨日のインスタ投稿、反応どうでしたか？」</li>
+        <li><span class="rule-num">深掘り</span>ユーザーが「まだ何も進んでない…」と言うと、「忙しかったんですね。ちなみに、何が一番引っかかってます？時間？それとも方向性？」と返す</li>
+        <li><span class="rule-num">沈黙OK</span>何も答えなくても、翌日また別の切り口で話しかけてくる。「使わなきゃ」というプレッシャーがない</li>
+      </ul>
+
+      <h3>miiiro サービス定義</h3>
+      <div class="highlight-box">
+        自分の意志でアクセルを踏もうとする女性のキャリアを、<strong>「方向づけ・アクセル・ブースト」</strong>で形にするサービス。
+      </div>
+    </section>
+
+    <section id="chat-ui">
+      <h2>チャットUIデザイン</h2>
+
+      <p>「凛とした温もり・余白と意志・静かな推進力」</p>
+
+      <h3>カラーパレット</h3>
+      <div class="tag-row">
+        <span class="tag" style="background:#f9f0ed; color:#C1694F;">#C1694F — ユーザーバブル・音声ボタン・CTA</span>
+        <span class="tag" style="background:#e8f0f5; color:#0F3752;">#0F3752 — 送信ボタン・ロゴ・見出し</span>
+        <span class="tag" style="background:#f5f2ee; color:#9a8a7a;">#F8F5F0 — AIバブル・セクション背景</span>
+      </div>
+
+      <h3>核心的なデザイン判断</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">アバター</span>「隣の人」は姿が見えない。アバター画像なし</li>
+        <li><span class="rule-num">時刻</span>タイムスタンプ非表示。時間を気にさせない</li>
+        <li><span class="rule-num">入力欄</span>プレースホルダーは最小限</li>
+        <li><span class="rule-num">音声</span>音声ボタン 48px（主役）。スキマ時間に声で使う</li>
+        <li><span class="rule-num">送信</span>送信ボタン 36px（サブ）。テキスト入力は補助</li>
+        <li><span class="rule-num">機能</span>引き算の設計。ボタンを増やさない</li>
+      </ul>
+
+      <h3>アニメーション仕様</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">メッセージ</span>opacity 0→1 + translateY 8px→0 / 300ms ease-out</li>
+        <li><span class="rule-num">タイピング</span>3ドットが0.3s遅延で交互にフェード</li>
+        <li><span class="rule-num">音声ボタン</span>scale 1→1.08→1 / 1.5s infinite（録音中）</li>
+        <li><span class="rule-num">切り替え</span>scale 0.8→1 + opacity / 200ms</li>
+      </ul>
+    </section>
+
+    <section id="ui">
+      <h2>UI設計原則</h2>
+
+      <div class="highlight-box">「邪魔しないこと」が最高のUI</div>
+
+      <div class="do-dont">
+        <div class="dont-box">
+          <h4>やらないこと（禁止事項）</h4>
+          <ul>
+            <li>返答カード・選択肢の提示</li>
+            <li>過剰な装飾・アニメーション</li>
+            <li>毎回同じ定型挨拶</li>
+            <li>長文での返答</li>
+            <li>機能ボタンの乱立</li>
+          </ul>
+        </div>
+        <div class="do-box">
+          <h4>やること（設計方針）</h4>
+          <ul>
+            <li>入力欄は「ただの空白」</li>
+            <li>AIの返答はプレーンテキスト</li>
+            <li>開いた瞬間に使える</li>
+            <li>音声入力を「主役」にする</li>
+            <li>成果物は「静かに現れる」</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>音声入力について</h3>
+      <p>ターゲット層（女性フリーランス）は家事の合間や移動中に使うことが多い。「話しかけるだけで完結する」体験を実現するため、音声入力ボタンはテキスト入力欄と同等以上の存在感で配置する。</p>
+
+      <h3>競合とのデザイン差別化</h3>
+      <table class="compare-table">
+        <thead>
+          <tr><th>競合</th><th>競合の特徴</th><th>miiiroの差</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ChatGPT</td><td>賢やか・ポップ</td><td>静か・余白・品格</td></tr>
+          <tr><td>NotionAI等</td><td>機能的・ツール感</td><td>温かい・対話感</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="ai">
+      <h2>AI応答設計</h2>
+
+      <p>「飽きない」を作るのはUIではなくAIの振る舞い</p>
+
+      <h3>飽きないかどうかを決める5つの原則</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">聞く人</span>遮らない。否定しない。まず受け止める。短い相槌を打ってから、1つだけ質問する</li>
+        <li><span class="rule-num">覚える人</span>「前に言ってた〇〇の件、どうなりました？」— 事業カルテと会話履歴をDBに保存し、毎回AIに「思い出させる」</li>
+        <li><span class="rule-num">意外な問い</span>たまに「それ、本当にやりたいですか？」「逆に、やめたらどうなりますか？」とユーザーが予期しない角度から問いかける</li>
+        <li><span class="rule-num">テンション</span>元気な日は軽く返す。疲れている日は静かに寄り添う。ユーザーの文体・文量・絵文字の有無からテンションを読み取る</li>
+        <li><span class="rule-num">短く返す</span>1回の応答は2〜3文。そして必ず1つだけ質問で終わる</li>
+      </ul>
+
+      <div class="do-dont">
+        <div class="dont-box">
+          <h4>やってはいけないこと</h4>
+          <ul>
+            <li>毎回同じ挨拶</li>
+            <li>選択肢を出す</li>
+            <li>長文で返す</li>
+            <li>褒めすぎる</li>
+            <li>毎回同じトーン</li>
+          </ul>
+        </div>
+        <div class="do-box">
+          <h4>やるべきこと</h4>
+          <ul>
+            <li>前回の話題に触れてから始める</li>
+            <li>「最近どうですか？」とだけ聞く</li>
+            <li>短く返して、1つだけ質問する</li>
+            <li>たまに率直に「それ、本当にやりたいですか？」と聞く</li>
+            <li>相手のテンションに合わせる</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>壁打ちプロンプト設計（3層構造）</h3>
+
+      <div class="layer-card">
+        <div class="layer-title">Layer 1: 基本ルール（固定）</div>
+        <ul class="layer-rules">
+          <li>インタビュアーとして振る舞う（コーチ・先生・アドバイザーではない）</li>
+          <li>まず共感 → 感想 → 質問（質問は0〜1個）</li>
+          <li>2〜3文以内。長文禁止</li>
+          <li>アドバイス・提案・解決策の提示は禁止</li>
+          <li>ユーザーの言葉をそのまま拾う（きれいに言い換えすぎない）</li>
+          <li>柔らかい語尾（「〜かな？」「〜だったりする？」）</li>
+        </ul>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-title">Layer 2: モード別質問方向（動的注入）</div>
+        <ul class="layer-rules">
+          <li>強み整理: 人からよく頼まれること、自然にできていることを掘る</li>
+          <li>悩み整理: 何に引っかかっているか、止まっている原因を掘る</li>
+          <li>サービス整理: 誰のどんな困りごとを助けたいかを掘る</li>
+          <li>ターゲット整理: 一番助けたい人はどんな人かを掘る</li>
+          <li>意思決定: どの選択肢で迷っているか、本当はどちらに傾いているかを掘る</li>
+          <li>行動整理: 最初にできそうなこと、10分でできることを掘る</li>
+        </ul>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-title">Layer 3: 記憶コンテキスト（動的注入）</div>
+        <ul class="layer-rules">
+          <li>事業カルテ（オンボーディングで収集済み）</li>
+          <li>前回セッションの記憶（重要ワード・強み・迷い・次回テーマ）</li>
+          <li>直近の会話履歴（最新20件）</li>
+        </ul>
+      </div>
+
+      <p>4往復ごとにプロンプトに整理指示を動的注入。「ここまで聞いてて思ったんだけど、〇〇ってことだよね？」形式。</p>
+      <p>会話の最初の2〜3往復後、LLMに別途判定させる。判定結果をセッションに保存し、以降のプロンプトに注入。</p>
+
+      <h3>まとめ生成スキーマ（LLM構造化出力）</h3>
+      <div class="code-block"><span class="code-key">"theme"</span>: <span class="code-str">"今日話したテーマ"</span>,
+<span class="code-key">"insights"</span>: [<span class="code-str">"見えてきたこと"</span>],
+<span class="code-key">"keywords"</span>: [<span class="code-str">"大事そうな言葉"</span>],
+<span class="code-key">"strengths"</span>: [<span class="code-str">"見えてきた強み"</span>],
+<span class="code-key">"uncertainties"</span>: [<span class="code-str">"まだ迷っていること"</span>],
+<span class="code-key">"nextTheme"</span>: <span class="code-str">"次に考えるとよいこと"</span>,
+<span class="code-key">"nextAction"</span>: <span class="code-str">"小さな次アクション"</span></div>
+    </section>
+
+    <section id="arch">
+      <h2>技術アーキテクチャ</h2>
+
+      <div class="highlight-box">
+        OpenAI API ≠ ChatGPT — この区別が全ての基盤<br><br>
+        miiiroが使うのは<strong>OpenAI API（GPT-4o-mini等）</strong>であり、ChatGPTという製品ではない。
+        APIは「頭脳だけ借りる」部品であり、ユーザーのことを一切覚えない。
+        これは制約ではなく、むしろ強みである。
+      </div>
+
+      <h3>データフロー</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">①</span>システムプロンプト（AIの人格・ルール）</li>
+        <li><span class="rule-num">②</span>事業カルテ（名前、事業内容、目標、悩み）← DBから取得</li>
+        <li><span class="rule-num">③</span>直近の会話履歴（過去5〜10往復）← DBから取得</li>
+        <li><span class="rule-num">④</span>今回のユーザーメッセージ → OpenAI APIに送信 → 応答をDBに保存 + ユーザーに表示</li>
+      </ul>
+
+      <p>つまり「覚えている」のはAIではなく、miiiroのデータベースである。AIには毎回「この人はこういう人で、前回こういう話をしました」と教えてあげる構造。</p>
+
+      <h3>DBスキーマ</h3>
+      <div class="code-block">chat_sessions: id, userId, deviceId, title, mode, messageCount,
+  keywords, strengths, uncertainties, nextTheme,
+  summary, summaryGeneratedAt, isFavorite, createdAt, updatedAt
+
+messages: id, sessionId, role, content, createdAt
+
+business_profiles: id, userId, deviceId, displayName,
+  businessType, targetCustomer, currentGoal,
+  onboardingCompleted, createdAt, updatedAt</div>
+
+      <h3>なぜこの技術判断をしたか</h3>
+      <ul class="rule-list">
+        <li><span class="rule-num">/chat専用</span>ページを分けると「チャットと壁打ちの違いは何？」という説明コストが発生する。ターゲット層にとって選択肢が増えること自体が障壁。既存のDB・UI・音声入力はそのまま活用できる</li>
+        <li><span class="rule-num">匿名認証</span>モニターテスト段階でOAuth登録を強制すると離脱率が上がる。デバイスIDベースなら「URLを開くだけ」で壁打ち開始可能</li>
+        <li><span class="rule-num">LLM判定</span>ターゲット層は自分の状態を正確に言語化できないことが多い。キーワードマッチでは拾えない。LLM判定はコスト微小で精度が圧倒的に高い</li>
+        <li><span class="rule-num">ボタン生成</span>自動生成にすると毎回LLMコストがかかる。ボタン表示は自動（5往復以上で表示）、生成はタップ時のみ実行</li>
+        <li><span class="rule-num">共感ファースト</span>初期プロンプトは「受け止め→即質問」のパターンが繰り返され、問い詰められている感覚になった。実際のモニターフィードバックに基づき修正</li>
+      </ul>
+    </section>
+
+    <section id="memory">
+      <h2>記憶の設計</h2>
+
+      <p>「何を覚え、何を忘れるか」を設計する</p>
+
+      <ul class="rule-list">
+        <li><span class="rule-num">継続性</span>無料プランでも会話履歴が残る。保存件数に制限をかけることでプラン差別化が可能</li>
+        <li><span class="rule-num">マルチデバイス</span>端末を変えても同じ体験。データはクラウドに保存されるため、スマホでもPCでも同一体験</li>
+        <li><span class="rule-num">人格制御</span>AIの「人格」を完全にコントロール可能。ChatGPTと違い、miiiro独自のメンター像を自由に設計できる</li>
+        <li><span class="rule-num">精度設計</span>記憶の精度を設計できる。「何を覚えるか」「いつ忘れるか」をmiiiro側で制御</li>
+        <li><span class="rule-num">コスト制御</span>会話履歴の送信量を調整することでAPI費用をコントロール</li>
+      </ul>
+
+      <h3>データ保存構造（概念設計）</h3>
+      <div class="code-block">ユーザーテーブル
+└─ 事業カルテ（プロフィール情報）
+└─ 会話セッション一覧
+   └─ 各セッションのメッセージ履歴
+   └─ 自動生成された「まとめ」
+   └─ AIが抽出した重要トピックタグ</div>
+
+      <div class="highlight-box">
+        記憶は<strong>ユーザーが望んだ時だけ</strong>残す。強制的なプロファイリングはしない。
+      </div>
+    </section>
+
+    <section id="output">
+      <h2>成果物の設計</h2>
+
+      <p>「押しつけがましくない」成果物の提示方法</p>
+      <p>壁打ちが終わった後、AIが自動的に「まとめ」を生成するが、表示方法は「押しつけない」。主語はあくまでユーザーであり、「AIが勝手に作ったもの」ではなく「自分が話したことの整理」として提示する。</p>
+
+      <ul class="rule-list">
+        <li><span class="rule-num">表示条件</span>会話が5往復以上続いた場合のみ、画面下部に小さく「まとめを見る」リンクが現れる</li>
+        <li><span class="rule-num">展開</span>タップすると「今日の壁打ちまとめ」カードが展開される</li>
+        <li><span class="rule-num">内容</span>話したテーマ / 出てきたアイデア / 明日やること（1〜3個）</li>
+        <li><span class="rule-num">保存</span>閉じても履歴からいつでも見返せる</li>
+      </ul>
+
+      <div class="highlight-box">
+        重要：まとめは「AIが勝手に作ったもの」ではなく、「<strong>自分が話したことの整理</strong>」として提示する。主語はあくまでユーザー。
+      </div>
+
+      <h3>競合との差別化</h3>
+      <table class="compare-table">
+        <thead>
+          <tr><th>競合</th><th>特徴</th><th>miiiroとの違い</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ChatGPT</td><td>万能だが冷たい。覚えてくれない</td><td>miiiroは「あなたを知っている」</td></tr>
+          <tr><td>LINEのAI機能</td><td>返答カードが押しつけがましい</td><td>miiiroは「聞くだけ」</td></tr>
+          <tr><td>Notion AI</td><td>ドキュメント補助ツール。対話ではない</td><td>miiiroは「会話の場」</td></tr>
+          <tr><td>コーチング（人間）</td><td>高額（月3〜10万円）。予約が必要</td><td>miiiroは月1,100円。いつでも</td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        「ユーザーが、自分の言葉で、自分のペースで考えを言語化できる場を、静かに提供し続けること。」<br><br>
+        UIは邪魔をしない。AIは押しつけない。でも、話し終わった後には「今日も少し前に進めた」という感覚が残る。それがmiiiroの価値である。
+      </div>
+    </section>
+
+    <section id="checklist">
+      <h2>判断基準チェックリスト</h2>
+      <p>新しい機能やUI要素を追加する際の確認事項</p>
+      <ul class="checklist">
+        <li><span class="check-icon">▷</span>これは「白紙のノート」の静けさを壊さないか？</li>
+        <li><span class="check-icon">▷</span>これは「隣に座っている人」の押しつけがましさを生まないか？</li>
+        <li><span class="check-icon">▷</span>ユーザーが「自分の言葉で話している」感覚を維持できるか？</li>
+        <li><span class="check-icon">▷</span>これがなくても、ユーザーは目的を達成できるか？（YESなら不要）</li>
+        <li><span class="check-icon">▷</span>3ヶ月後も飽きずに使い続けられるか？</li>
+        <li><span class="check-icon">▷</span>miiiroカラー・フォントに沿っているか？</li>
+        <li><span class="check-icon">▷</span>Vercelへのデプロイが30秒以内に完了するか？</li>
+      </ul>
+    </section>
+
+    <section id="devlog">
+      <h2>開発履歴</h2>
+      <p>プロダクトの変遷と各フェーズで行った意思決定の記録</p>
+
+      <h3>v1.2.1 — わたしの可視化：強みカード刷新・自己紹介文AI生成（2026-06-05）</h3>
+      <p>強みカードを刷新。複数セッションで同じ強みが言及された場合は出現回数をカウントし、2回以上出現したものを「CORE」ラベルでハイライト表示（ピンク背景・太字）。初出日と出現回数バッジも表示。自己紹介文生成をテンプレート文字列から Claude API によるストリーミング生成に刷新。SNS・営業提案・交流会の3スタイルを選択可能。生成後にコピーボタンを表示。api/intro.ts を新設。</p>
+
+      <h3>v1.2.0 — AI記憶：pgvector + OpenAI Embedding 実装（2026-06-05）</h3>
+      <p>Supabase に pgvector 拡張を有効化し、session_memories テーブル（1536次元ベクトル）を作成。まとめ生成後に OpenAI text-embedding-3-small でベクトル化して保存する api/embed.ts を新設。チャット送信ごとに match_memories 関数でコサイン類似度 0.75 以上の過去セッションを最大3件取得し、system prompt に注入。これにより AI が過去の会話文脈を意味的に参照できるようになった。OPENAI_API_KEY は Vercel 環境変数として設定（コード非公開）。</p>
+
+      <h3>v1.1.3 — 全ページ共通フッターフィードバック・ナビ整備（2026-06-04）</h3>
+      <p>/home にフッターフィードバックフォームを追加（チャットと同仕様）。今後実装する全ページにヘッダー・フッター・フィードバックを共通で実装する方針を確立。ダッシュボード・設計ドキュメントのナビにトップ画面・壁打ちチャットリンクを追加。チャット画面のナビにトップリンクを追加。</p>
+
+      <h3>v1.1.1 — /me ページ刷新・タイトル修正・5クリック開発モード（2026-06-04）</h3>
+      <p>/me ページを「わたしの可視化」として全面刷新。先週vs今週の継続記録比較・強みカードリスト（番号付き）・思考・行動の傾向4項目（時間帯/曜日/会話量/ペース）・自己紹介文生成ボタンを追加。「hajimari」残存テキストを「miiiro」に修正。/home・/me 両ページのロゴを5回クリックすると開発モードトーストを8秒間表示（ダッシュボード/設計ドキュメントへのリンク）。</p>
+
+      <h3>v1.1.0 — トップ画面・わたしの状態ページ新設（2026-06-04）</h3>
+      <p>/home：機能ランチャー画面。壁打ちチャットのみ有効で、SNS・タスク管理・議事録・メールは準備中（SOON）表示。右上の「わたしの状態」ボタンで/meへ遷移。時間帯に応じた挨拶文を表示。</p>
+      <p>/me：わたしの状態ページ。localStorageのセッションデータを集計して連続利用日数・今週の会話数・累計会話数・強みタグ・時間帯×曜日ヒートマップ・深夜アラート・AIメッセージを表示。サービス名をmiiiroに統一。</p>
+
+      <h3>v1.0.2 — AI応答設計をロジャーズ式傾聴に刷新（2026-06-04）</h3>
+      <p>「毎回必ず1質問」というルールを廃止し、カール・ロジャーズの傾聴技法（反映・ミラーリング）を中心に据えたプロンプト設計に刷新。相手の言葉をそのまま使って返す「反映」を最優先とし、質問は3〜4往復に1回以下に抑える。テンション自動読みも強化し、短文メッセージには相槌のみ・長文には深掘り1つという明確な基準を設定。モード別プロンプトも全面的に反映スタイルへ更新。「沈黙・余白を作る」概念を明示的に導入。</p>
+
+      <h3>v1.0.1 — モード選択UI改善・まとめをチャット内表示（2026-06-04）</h3>
+      <p>モード選択UIをフルスクリーンオーバーレイからチャット上部の小バーに変更。選択しなくてもそのまま会話開始可能（デフォルト動作は傾聴相当）。まとめ促進のアコーディオンバーを廃止し、8往復後にAIのバブルとしてチャット内に「ここまでをまとめる」ボタンを表示。まとめ結果もその場に表示される。</p>
+
+      <h3>v1.0.0 — 会話モード選択機能（2026-06-04）</h3>
+      <p>チャット開始時に「壁打ち／傾聴／雑談」の3モードを選択するオーバーレイを実装。モード別にシステムプロンプトを切り替えてAIの振る舞いを制御。会話中は「モードを変える」ボタンでいつでも変更可能。またユーザーのメッセージ量・テンションを自動読みして質問頻度を動的に調整するテンション自動読みも追加。</p>
+
+      <h3>v0.9.2 — 天気機能・居住地プロフィール追加（2026-06-04）</h3>
+      <p>プロフィールに居住地フィールドを追加。Open-Meteo API（無料・APIキー不要）でジオコーディング→天気取得を実装。居住地設定済みなら起動時に自動で天気を取得しシステムプロンプトに注入。未設定時はAIが会話の中で自然に居住地を聞く。</p>
+
+      <h3>v0.9.1 — フィードバックフォーム・履歴ボタン改善（2026-06-04）</h3>
+      <p>フィードバックフォームに✕ボタンを追加し、フォーム外クリックで自動的に閉じるよう改善。履歴の★・×ボタンをホバーなしで常時表示。現在時刻（JST）をシステムプロンプトに注入し、深夜にランチを聞くなど時間帯がおかしい問題を修正。</p>
+
+      <h3>v0.9.0 — AI記憶機能・UX大幅改善（2026-06-04）</h3>
+      <p>過去セッションのまとめ（summary）をlocalStorageから収集し、新しい会話のシステムプロンプトに「この人との過去の会話から見えてきたこと」として注入。AIが会話の傾向・癖・課題感を蓄積していく設計。匿名ユーザーID（hajimari_uid）をlocalStorageに生成し、将来のpgvector連携に備える。</p>
+      <p>UX改善：吹き出し2重表示バグ修正（streamToElementがtyping非表示後にバブル生成する順序に変更）。「ここまでをまとめる」をアコーディオンバーに変更。AIアバターを✦に変更しフェーズラベルにアイコン追加。ナビからダッシュボード・設計ドキュメントリンクを削除（モニター表示対応）。ロゴ5クリックで開発モード解放。サイドバー下部にフィードバックフォーム追加。</p>
+
+      <h3>v0.8.0 — チャット履歴サイドバー追加（2026-06-04）</h3>
+      <p>左サイドバーに会話履歴を自動保存・一覧表示する機能を追加。AIの返答を受け取るたびに自動でlocalStorageに保存され、過去の会話をいつでも選択・再開できる。星マークでお気に入り登録するとサイドバー上部に固定表示。☰ボタンでサイドバーの開閉切り替えが可能。</p>
+
+      <h3>v0.7.1 — PDF添付の読み取り対応（2026-06-04）</h3>
+      <p>PDF.jsをCDNから読み込み、ブラウザ側でPDFのテキストをリアルタイム抽出できるよう修正。最大20ページ・8000文字をAIのシステムプロンプトに追加。スキャンPDF（画像化されたもの）は抽出不可のため案内メッセージを表示する。</p>
+
+      <h3>v0.7.0 — チャット体験の大幅改善（2026-06-04）</h3>
+      <p>磯崎（大沼）亜樹さんのフィードバックを受け、チャット体験を全面的に改善。課題1〜4をまとめて実装した。</p>
+      <p>【課題1: コンテキスト不足】プロフィール登録ページ（/profile）を新設。職種・所属・業務内容・チーム構成・課題・目標・キーワードの8項目をlocalStorageに保存し、チャット開始時にシステムプロンプトとして注入。初回から「あなたのことを知っている」状態で会話を始められる。</p>
+      <p>【課題2: 質問がフワフワ】システムプロンプトを3フェーズ構造（解決したいこと→現状→理想）に再設計。共感を先に置き、漠然とした答えには「どんなとき？」「たとえば？」で自然に深掘り。責められている感を出さない聞き方を意識した設計。</p>
+      <p>【課題3: 会話が突然終わる】進捗バー＋フェーズラベルを画面上部に表示。8往復後に「ここまでをまとめる」ボタンが出現し、押すと「解決したいこと・現状・理想・見えてきた強み」の構造化サマリーカードをその場に生成。</p>
+      <p>【課題4: テキストだけでは業務説明が困難】📎ファイル添付ボタンを実装。txt/md/csvファイルの内容をAIのシステムプロンプトに追加し、資料を踏まえた会話が可能に。PDFはフォールバックメッセージで案内。</p>
+
+      <h3>v0.6.0 — Claude Code環境への移行（2026-06-03）</h3>
+      <p>開発環境をClaude Codeに全面移行。React/Viteのビルドスタックを廃止しPlain HTML+CSS+JSに刷新、フロントエンドの依存ゼロ化を実現。バックエンドはExpress+tRPCからVercel Serverless Functions（TypeScript）に変更し、AIもOpenAI GPT-4o-miniからAnthropic Claude（claude-sonnet-4-6）に切り替え。フィードバック機能はSupabase REST APIで実装。</p>
+
+      <h3>v0.5.1 — フィードバックUI強化（2026-05-18）</h3>
+      <p>フィードバックFABボタンをPC・スマホ双方で常時表示に修正。みんなの声ページ（/voices）を新規追加しフォーム内導線を整備。フィードバック管理（/ideas）にステータス管理UIを追加。Homeにアイディア入力フォームを埋め込み。</p>
+
+      <h3>v0.5.0 — みんなの声・フィードバック基盤（2026-05-14）</h3>
+      <p>フィードバック収集の仕組みを本格実装。投稿タイプ（アイデア/感想/不具合/要望）の分類、Supabaseへの永続化、一覧閲覧機能を追加。ユーザーの声を開発に活かすループを構築した。</p>
+
+      <h3>v0.4.0 — スプリント管理・設計ドキュメント（2026-05-08）</h3>
+      <p>開発スプリントの可視化とリリースゲート管理を実装。設計ドキュメントページ（/docs）を新設し、コンセプト・UI原則・AI応答設計・技術アーキテクチャ・判断基準を一元管理する形に整備。</p>
+
+      <h3>v0.3.0 — 壁打ちチャット基本実装（2026-04-28）</h3>
+      <p>コアとなる壁打ちチャット機能をリリース。ストリーミング応答（SSE）、ボット入力中インジケーター、会話履歴管理を実装。「2〜3文＋1質問」の応答スタイルをシステムプロンプトで定義し、上滑りしない対話品質を担保。</p>
+
+      <h3>v0.2.0 — 認証・プロフィール基盤（2026-04-18）</h3>
+      <p>Manus OAuthによるユーザー認証を実装。プロフィール情報の登録・編集機能を追加し、将来的なパーソナライズの基盤を構築。</p>
+
+      <h3>v0.1.0 — プロジェクト立ち上げ（2026-04-08）</h3>
+      <p>「女性フリーランスが自分の強みを言語化する」プロダクトとして開発開始。技術スタックの選定（React19+TypeScript+Tailwind / Express+tRPC / MySQL+Drizzle / OpenAI GPT-4o-mini）、デザイントークン策定（サーモン#C1694F・ネイビー#0F3752）、初期UIプロトタイプ作成。</p>
+
+      <h3>ユーザーフィードバックから得た知見（2026-06-03）</h3>
+      <p>磯崎（大沼）亜樹さんのフィードバックより：「全然理解してない人と上っ面の会話をしてる感じ」「仕事の説明コストが極めて高い」「質問がフワフワして会話が上滑りした」「突然会話が終わった」。これを受けてコンテキスト注入（プロフィール登録→システムプロンプト反映）を課題1として実装。課題2（構造化ヒアリング）・課題3（進捗インジケーター）・課題4（資料アップロード）は次フェーズへ。</p>
+    </section>
+  </article>
+</div>
+
+<footer>Last updated: 2026-06-03 | 技術顧問: 門倉 悠真</footer>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
