@@ -8,6 +8,7 @@
     "api/feedback.ts": { "maxDuration": 10 },
     "api/embed.ts": { "maxDuration": 20 },
     "api/intro.ts": { "maxDuration": 30 },
+<<<<<<< HEAD
     "api/healthcheck.ts": { "maxDuration": 5 },
     "api/test-anthropic.ts": { "maxDuration": 15 }
   },
