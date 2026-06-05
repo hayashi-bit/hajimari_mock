@@ -624,38 +624,38 @@
         <tbody>
           <tr>
             <td class="layer">フロントエンド</td>
-            <td class="tech">React 19 + TypeScript + Tailwind CSS 4</td>
-            <td class="detail">Vite, Wouter, Framer Motion, shadcn/ui</td>
+            <td class="tech">Plain HTML + CSS + Vanilla JS</td>
+            <td class="detail">フレームワークなし・ビルドステップなし・依存ゼロ</td>
           </tr>
           <tr>
             <td class="layer">バックエンド</td>
-            <td class="tech">Express 4 + tRPC 11</td>
-            <td class="detail">型安全なRPC、Superjson、publicProcedure/protectedProcedure</td>
+            <td class="tech">Vercel Serverless Functions (TypeScript)</td>
+            <td class="detail">api/chat.ts, api/embed.ts, api/intro.ts, api/feedback.ts</td>
           </tr>
           <tr>
             <td class="layer">DB</td>
-            <td class="tech">MySQL (TiDB) + Drizzle ORM</td>
-            <td class="detail">スキーマファースト、drizzle-kit migrate</td>
+            <td class="tech">Supabase (PostgreSQL + pgvector)</td>
+            <td class="detail">session_memories（1536次元ベクトル）, feedback, mascot_notify</td>
           </tr>
           <tr>
-            <td class="layer">AI</td>
-            <td class="tech">OpenAI API (GPT-4o-mini)</td>
-            <td class="detail">invokeLLM helper、構造化JSON出力、モード判定</td>
+            <td class="layer">AI チャット</td>
+            <td class="tech">Anthropic Claude (claude-sonnet-4-6)</td>
+            <td class="detail">SSEストリーミング、ロジャーズ式傾聴プロンプト</td>
+          </tr>
+          <tr>
+            <td class="layer">AI 記憶</td>
+            <td class="tech">OpenAI text-embedding-3-small</td>
+            <td class="detail">セッションまとめをベクトル化してpgvectorに保存・類似検索</td>
           </tr>
           <tr>
             <td class="layer">認証</td>
-            <td class="tech">Manus OAuth + 匿名デバイスID</td>
-            <td class="detail">管理者はOAuth、モニターはdeviceIdベース</td>
+            <td class="tech">Supabase Auth（メール＋パスワード）</td>
+            <td class="detail">JWT → RLS でユーザーごとのデータ分離。セルフ登録対応</td>
           </tr>
           <tr>
             <td class="layer">ホスティング</td>
-            <td class="tech">Manus Platform</td>
-            <td class="detail">自動デプロイ、カスタムドメイン対応</td>
-          </tr>
-          <tr>
-            <td class="layer">テスト</td>
-            <td class="tech">Vitest</td>
-            <td class="detail">サーバーサイドユニットテスト、モック活用</td>
+            <td class="tech">Vercel</td>
+            <td class="detail">hajimari-dashboard.vercel.app（内部名）</td>
           </tr>
         </tbody>
       </table>
@@ -710,8 +710,8 @@
             <strong>質問がフワフワ</strong><br>
             <span style="font-size:12px; color:var(--muted);">AIが業務の具体性を引き出せていない</span>
           </td>
-          <td style="font-size:13px;">構造化ヒアリング（現状→課題→理想の順で深掘り）</td>
-          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+          <td style="font-size:13px;">3フェーズ構造（解決したいこと→現状→理想）プロンプト設計・ロジャーズ式傾聴に刷新</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f0fdf4; color:#15803d;">✓ 完了</span></td>
         </tr>
         <tr>
           <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">3</td>
@@ -719,8 +719,8 @@
             <strong>会話が突然終わる</strong><br>
             <span style="font-size:12px; color:var(--muted);">終了条件が不明瞭でユーザーが置いてきぼり</span>
           </td>
-          <td style="font-size:13px;">進捗インジケーター＋終了時の要約表示</td>
-          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+          <td style="font-size:13px;">8往復後にまとめボタン表示 → セッションまとめカード生成・Supabaseに保存</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f0fdf4; color:#15803d;">✓ 完了</span></td>
         </tr>
         <tr>
           <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">4</td>
@@ -728,11 +728,75 @@
             <strong>テキストだけでは業務説明が困難</strong><br>
             <span style="font-size:12px; color:var(--muted);">複雑な仕事内容はテキストで伝わらない</span>
           </td>
-          <td style="font-size:13px;">資料アップロード / 音声入力 / テンプレート</td>
-          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+          <td style="font-size:13px;">ファイル添付（txt/md/csv/PDF）実装済み。音声入力（Web Speech API）実装済み</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f0fdf4; color:#15803d;">✓ 完了</span></td>
         </tr>
       </tbody>
     </table>
+  </section>
+
+  <!-- Backlog -->
+  <section>
+    <div class="section-label">
+      <span>📌</span> BACKLOG
+    </div>
+    <h2 class="section-title">積み残し・アイデア</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:80px;">優先度</th>
+            <th>タスク / アイデア</th>
+            <th style="width:100px;">カテゴリ</th>
+            <th style="width:80px;">状態</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--primary); font-weight:700;">HIGH</td>
+            <td><strong>モニターテスト実施</strong><br><span style="font-size:12px; color:var(--muted);">10人に登録・使用してもらいフィードバック収集</span></td>
+            <td style="font-size:12px;">運用</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--primary); font-weight:700;">HIGH</td>
+            <td><strong>パスワード変更機能</strong><br><span style="font-size:12px; color:var(--muted);">ユーザーが自分でパスワードを変更できる画面</span></td>
+            <td style="font-size:12px;">機能</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#64748b; font-weight:700;">MED</td>
+            <td><strong>/me ページのSupabase完全移行</strong><br><span style="font-size:12px; color:var(--muted);">思考・話し方の癖をSupabaseから取得して表示（現状はlocalStorage混在）</span></td>
+            <td style="font-size:12px;">改善</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#64748b; font-weight:700;">MED</td>
+            <td><strong>管理者ユーザー一覧画面</strong><br><span style="font-size:12px; color:var(--muted);">モニターの登録状況・最終ログイン・会話数を確認できる管理画面</span></td>
+            <td style="font-size:12px;">運用</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#64748b; font-weight:700;">MED</td>
+            <td><strong>招待制への切り替えオプション</strong><br><span style="font-size:12px; color:var(--muted);">現在は誰でも登録可能。招待コード方式に切り替える仕組み</span></td>
+            <td style="font-size:12px;">機能</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#94a3b8; font-weight:700;">LOW</td>
+            <td><strong>プッシュ通知 / リマインド</strong><br><span style="font-size:12px; color:var(--muted);">「昨日話してたあの件、その後どうですか？」的なリマインドをAIが送る</span></td>
+            <td style="font-size:12px;">アイデア</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#94a3b8; font-weight:700;">LOW</td>
+            <td><strong>SNS投稿生成</strong><br><span style="font-size:12px; color:var(--muted);">会話から自動でX/Instagram投稿文を生成する機能</span></td>
+            <td style="font-size:12px;">アイデア</td>
+            <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- System Spec -->
