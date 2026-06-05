@@ -679,8 +679,8 @@
 <script>
   // Auth check
   const _sb = supabase.createClient(
-    'https://kwmulkworqsswmiqbabd.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE'
+    'https://znezjmhkzdhlxdigajbo.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc'
   );
   _sb.auth.getSession().then(({ data }) => {
     if (!data.session) { window.location.href = '/login'; return; }
@@ -702,8 +702,8 @@
   async function loadPatterns(session) {
     try {
       const res = await fetch(
-        'https://kwmulkworqsswmiqbabd.supabase.co/rest/v1/session_memories?select=summary&order=created_at.desc&limit=20',
-        { headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE', 'Authorization': `Bearer ${session.access_token}` } }
+        'https://znezjmhkzdhlxdigajbo.supabase.co/rest/v1/session_memories?select=summary&order=created_at.desc&limit=20',
+        { headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc', 'Authorization': `Bearer ${session.access_token}` } }
       );
       if (!res.ok) return;
       const rows = await res.json();
