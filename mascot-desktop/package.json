@@ -1,0 +1,25 @@
+{
+  "name": "hajimari-mascot",
+  "version": "1.0.0",
+  "description": "Hajimari desktop mascot",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.hajimari.mascot",
+    "productName": "Hajimari Mascot",
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}

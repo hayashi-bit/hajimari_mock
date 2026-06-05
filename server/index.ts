@@ -10,6 +10,24 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  app.use(express.json());
+
+  let notifyFlag = false;
+  let notifyTimer: ReturnType<typeof setTimeout> | null = null;
+
+  app.post("/api/notify", (_req, res) => {
+    notifyFlag = true;
+    if (notifyTimer) clearTimeout(notifyTimer);
+    notifyTimer = setTimeout(() => { notifyFlag = false; }, 30000);
+    res.json({ ok: true });
+  });
+
+  app.get("/api/notify", (_req, res) => {
+    const done = notifyFlag;
+    if (done) notifyFlag = false;
+    res.json({ done });
+  });
+
   // Serve static files from dist/public in production
   const staticPath =
     process.env.NODE_ENV === "production"
