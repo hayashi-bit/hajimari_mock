@@ -158,6 +158,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
+    console.error("[chat] ANTHROPIC_API_KEY is not set");
     res.status(500).json({ error: "ANTHROPIC_API_KEY が設定されていません" });
     return;
   }
@@ -243,6 +244,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!upstream.ok || !upstream.body) {
     const text = await upstream.text().catch(() => "");
+    console.error(`[chat] Anthropic API error: ${upstream.status} ${text}`);
     res.status(upstream.status || 502).json({ error: text || "AI応答に失敗しました" });
     return;
   }
