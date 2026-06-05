@@ -745,6 +745,22 @@
 
       <div class="update-item">
         <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.2.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">AI記憶：pgvector + OpenAI Embedding 実装</div>
+        <div class="update-changes">
+          <div class="update-change">Supabase に session_memories テーブル作成（pgvector / 1536次元）</div>
+          <div class="update-change">api/embed.ts 新設：まとめ生成後に OpenAI text-embedding-3-small でベクトル化・保存</div>
+          <div class="update-change">api/chat.ts：送信ごとに類似セッションを意味検索し、system prompt に注入</div>
+          <div class="update-change">chat.html：まとめ生成後に /api/embed を非同期呼び出し</div>
+          <div class="update-change">Vercel 環境変数 OPENAI_API_KEY 設定済み</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
           <span class="update-date">2026-06-04</span>
           <span class="update-version">v1.1.3</span>
           <span class="update-type type-feature">feature</span>

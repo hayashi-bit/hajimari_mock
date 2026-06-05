@@ -4,7 +4,8 @@
   "framework": null,
   "functions": {
     "api/chat.ts": { "maxDuration": 30 },
-    "api/feedback.ts": { "maxDuration": 10 }
+    "api/feedback.ts": { "maxDuration": 10 },
+    "api/embed.ts": { "maxDuration": 20 }
   },
   "rewrites": [
     { "source": "/home", "destination": "/home.html" },

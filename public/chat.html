@@ -1377,6 +1377,8 @@
         currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
         weatherContext: weatherContext || undefined,
         chatMode: currentMode || '傾聴',
+        userId: userId || undefined,
+        currentMessage: messages[messages.length - 1]?.content || undefined,
         ...extraFlags,
       }),
     });
@@ -1503,6 +1505,13 @@
       document.getElementById('phaseLabel').textContent = '✅ 分析完了';
       document.getElementById('progressPercent').textContent = '100%';
       saveCurrentSession();
+
+      // pgvector: まとめをベクトル化して保存
+      fetch('/api/embed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, sessionId: currentSessionId, summary: text }),
+      }).catch(() => {});  // バックグラウンド処理、失敗しても無視
     } catch {
       typing.classList.remove('show');
       appendMessage('ai', 'まとめの生成に失敗しました。もう一度お試しください。');
