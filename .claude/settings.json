@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "curl -sf -X PATCH \"https://kwmulkworqsswmiqbabd.supabase.co/rest/v1/mascot_notify?id=eq.1\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE\" -H \"Content-Type: application/json\" -d \"{\\\"done\\\":true}\" 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
+            "command": "curl -sf -X POST \"https://hajimari-dashboard-git-main-hayashi-bits-projects.vercel.app/api/notify\" -H \"Content-Type: application/json\" 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
             "timeout": 5
           }
         ]

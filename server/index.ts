@@ -12,20 +12,44 @@ async function startServer() {
 
   app.use(express.json());
 
-  let notifyFlag = false;
-  let notifyTimer: ReturnType<typeof setTimeout> | null = null;
+  const SUPABASE_URL = "https://kwmulkworqsswmiqbabd.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE";
 
-  app.post("/api/notify", (_req, res) => {
-    notifyFlag = true;
-    if (notifyTimer) clearTimeout(notifyTimer);
-    notifyTimer = setTimeout(() => { notifyFlag = false; }, 30000);
+  const supabaseHeaders = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": `Bearer ${SUPABASE_KEY}`,
+    "Content-Type": "application/json",
+  };
+
+  app.post("/api/notify", async (_req, res) => {
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/mascot_notify?id=eq.1`, {
+        method: "PATCH",
+        headers: supabaseHeaders,
+        body: JSON.stringify({ done: true }),
+      });
+    } catch {}
     res.json({ ok: true });
   });
 
-  app.get("/api/notify", (_req, res) => {
-    const done = notifyFlag;
-    if (done) notifyFlag = false;
-    res.json({ done });
+  app.get("/api/notify", async (_req, res) => {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/mascot_notify?id=eq.1&select=done`, {
+        headers: supabaseHeaders,
+      });
+      const rows = await r.json() as { done: boolean }[];
+      const done = rows[0]?.done ?? false;
+      if (done) {
+        await fetch(`${SUPABASE_URL}/rest/v1/mascot_notify?id=eq.1`, {
+          method: "PATCH",
+          headers: supabaseHeaders,
+          body: JSON.stringify({ done: false }),
+        });
+      }
+      res.json({ done });
+    } catch {
+      res.json({ done: false });
+    }
   });
 
   // Serve static files from dist/public in production
