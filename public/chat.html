@@ -1041,12 +1041,20 @@
   }
 
   // ===== SIDEBAR TOGGLE =====
-  let sidebarOpen = true;
+  const isMobile = () => window.innerWidth <= 640;
+  let sidebarOpen = !isMobile();
+
+  // モバイルは初期状態で閉じる
+  if (isMobile()) {
+    document.getElementById('sidebar').classList.add('collapsed');
+    document.getElementById('toggleBtn').textContent = '☰';
+  }
+
   function toggleSidebar() {
     sidebarOpen = !sidebarOpen;
     document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
     document.getElementById('toggleBtn').textContent = sidebarOpen ? '✕' : '☰';
-    if (window.innerWidth <= 640) {
+    if (isMobile()) {
       document.getElementById('sidebarOverlay').classList.toggle('active', sidebarOpen);
     }
   }
