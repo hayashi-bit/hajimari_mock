@@ -293,7 +293,10 @@
       btn.disabled = true;
       btn.textContent = '送信中...';
 
-      const { error } = await sb.auth.signInWithOtp({ email });
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin + '/login' },
+      });
 
       btn.disabled = false;
       btn.textContent = 'コードを送る';
