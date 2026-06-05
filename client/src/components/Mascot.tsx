@@ -1,23 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Mascot() {
   const [isWaving, setIsWaving] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const showMessage = (msg: string, duration = 4000) => {
+    setMessage(msg);
+    setIsWaving(true);
+    setTimeout(() => {
+      setMessage(null);
+      setIsWaving(false);
+    }, duration);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch("/api/notify");
+        const data = await res.json();
+        if (data.done) {
+          showMessage("✅ 完了したよ！");
+        }
+      } catch {
+        // dev server not running, skip
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleClick = () => {
-    setIsWaving(true);
-    setShowMessage(true);
-    setTimeout(() => {
-      setIsWaving(false);
-      setShowMessage(false);
-    }, 2000);
+    showMessage("こんにちは！👋", 2000);
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
-      {showMessage && (
-        <div className="bg-white border border-gray-200 rounded-2xl px-4 py-2 shadow-lg text-sm text-gray-700 animate-bounce">
-          こんにちは！👋
+      {message && (
+        <div className="bg-white border border-gray-200 rounded-2xl px-4 py-2 shadow-lg text-sm text-gray-700 animate-bounce whitespace-nowrap">
+          {message}
         </div>
       )}
       <button

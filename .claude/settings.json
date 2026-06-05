@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"systemMessage\": \"✅ 開発完了！Claude Codeの作業が終わりました。\"}'",
+            "command": "curl -sf -X POST http://localhost:3000/api/notify 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
             "timeout": 5
           }
         ]
