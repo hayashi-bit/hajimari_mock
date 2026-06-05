@@ -75,7 +75,7 @@
       letter-spacing: 0.05em;
     }
 
-    input[type="email"] {
+    input[type="email"], input[type="password"] {
       width: 100%;
       background: #1a1a1a;
       border: 1px solid #333;
@@ -87,13 +87,11 @@
       transition: border-color 0.2s;
     }
 
-    input[type="email"]:focus {
+    input[type="email"]:focus, input[type="password"]:focus {
       border-color: #555;
     }
 
-    input[type="email"]::placeholder {
-      color: #444;
-    }
+    input::placeholder { color: #444; }
 
     .btn {
       width: 100%;
@@ -112,6 +110,22 @@
 
     .btn:hover { opacity: 0.85; }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-sub {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: #888;
+      border: 1px solid #333;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-sub:hover { border-color: #555; color: #aaa; }
 
     .message {
       margin-top: 20px;
@@ -140,7 +154,7 @@
       text-align: center;
       color: #444;
       font-size: 12px;
-      margin: 20px 0;
+      margin: 24px 0;
       position: relative;
     }
 
@@ -164,48 +178,27 @@
       line-height: 1.7;
     }
 
-    .sent-view {
-      display: none;
+    .tab-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #222;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
       text-align: center;
-    }
-
-    .sent-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .sent-title {
-      font-size: 16px;
-      color: #e8e0d5;
-      margin-bottom: 8px;
-    }
-
-    .sent-desc {
       font-size: 13px;
-      color: #888;
-      line-height: 1.7;
-    }
-
-    .sent-email {
-      color: #e8e0d5;
-      font-weight: 500;
-    }
-
-    .resend-btn {
-      background: none;
-      border: 1px solid #333;
-      color: #888;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 12px;
+      color: #666;
       cursor: pointer;
-      margin-top: 20px;
+      border-bottom: 2px solid transparent;
       transition: all 0.2s;
     }
 
-    .resend-btn:hover {
-      border-color: #555;
-      color: #aaa;
+    .tab.active {
+      color: #e8e0d5;
+      border-bottom-color: #e8e0d5;
     }
   </style>
 </head>
@@ -217,33 +210,45 @@
     </div>
 
     <div class="card">
-      <!-- ログインフォーム -->
-      <div id="loginForm">
-        <div class="card-title">ログイン</div>
-        <div class="card-desc">メールアドレスとパスワードを入力してください。</div>
-
-        <div class="form-group">
-          <label>メールアドレス</label>
-          <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
-        </div>
-
-        <div class="form-group">
-          <label>パスワード</label>
-          <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password"
-            style="width:100%; background:#1a1a1a; border:1px solid #333; border-radius:10px; padding:14px 16px; font-size:15px; color:#e8e0d5; outline:none; transition:border-color 0.2s;">
-        </div>
-
-        <button class="btn" id="loginBtn" onclick="signIn()">ログイン</button>
-
-        <div class="message" id="messageBox"></div>
+      <div class="tab-row">
+        <div class="tab active" id="tabLogin" onclick="switchTab('login')">ログイン</div>
+        <div class="tab" id="tabSignup" onclick="switchTab('signup')">新規登録</div>
       </div>
 
-      <!-- ダミー（使わない） -->
-      <div class="sent-view" id="sentView" style="display:none;">
+      <!-- ログインフォーム -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>パスワード</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn" id="loginBtn" onclick="signIn()">ログイン</button>
+        <div class="message" id="loginMessage"></div>
+      </div>
+
+      <!-- 新規登録フォーム -->
+      <div id="signupForm" style="display:none;">
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>パスワード（8文字以上）</label>
+          <input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label>パスワード（確認）</label>
+          <input type="password" id="signupPassword2" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <button class="btn" id="signupBtn" onclick="signUp()">登録する</button>
+        <div class="message" id="signupMessage"></div>
+      </div>
     </div>
 
     <div class="note">
-      初めての方もこのまま登録できます<br>
       スマホ・PCどちらでも同じデータを使えます
     </div>
   </div>
@@ -254,53 +259,85 @@
     const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc';
     const sb = supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
 
-    // すでにログイン済みならホームへ
     sb.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        window.location.href = '/home';
-      }
+      if (data.session) window.location.href = '/home';
     });
 
-    // Auth state変化（マジックリンク経由のコールバック）
     sb.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        window.location.href = '/home';
-      }
+      if (event === 'SIGNED_IN' && session) window.location.href = '/home';
     });
+
+    function switchTab(tab) {
+      document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+      document.getElementById('signupForm').style.display = tab === 'signup' ? '' : 'none';
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+    }
 
     async function signIn() {
-      const email = document.getElementById('emailInput').value.trim();
-      const password = document.getElementById('passwordInput').value;
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
       if (!email || !password) {
-        showMessage('メールアドレスとパスワードを入力してください', 'error');
+        showMessage('loginMessage', 'メールアドレスとパスワードを入力してください', 'error');
         return;
       }
-
       const btn = document.getElementById('loginBtn');
       btn.disabled = true;
       btn.textContent = 'ログイン中...';
-
       const { error } = await sb.auth.signInWithPassword({ email, password });
-
       btn.disabled = false;
       btn.textContent = 'ログイン';
-
       if (error) {
-        showMessage('メールアドレスまたはパスワードが正しくありません', 'error');
+        showMessage('loginMessage', 'メールアドレスまたはパスワードが正しくありません', 'error');
         return;
       }
-
       window.location.href = '/home';
     }
 
-    function showMessage(text, type) {
-      const box = document.getElementById('messageBox');
+    async function signUp() {
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const password2 = document.getElementById('signupPassword2').value;
+      if (!email || !password) {
+        showMessage('signupMessage', 'メールアドレスとパスワードを入力してください', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        showMessage('signupMessage', 'パスワードは8文字以上にしてください', 'error');
+        return;
+      }
+      if (password !== password2) {
+        showMessage('signupMessage', 'パスワードが一致しません', 'error');
+        return;
+      }
+      const btn = document.getElementById('signupBtn');
+      btn.disabled = true;
+      btn.textContent = '登録中...';
+      const { error } = await sb.auth.signUp({ email, password });
+      btn.disabled = false;
+      btn.textContent = '登録する';
+      if (error) {
+        showMessage('signupMessage', error.message === 'User already registered' ? 'このメールアドレスは既に登録されています' : '登録に失敗しました。もう一度お試しください', 'error');
+        return;
+      }
+      showMessage('signupMessage', '登録完了しました！そのままログインします...', 'success');
+      setTimeout(async () => {
+        await sb.auth.signInWithPassword({ email, password });
+        window.location.href = '/home';
+      }, 1500);
+    }
+
+    function showMessage(id, text, type) {
+      const box = document.getElementById(id);
       box.textContent = text;
       box.className = 'message ' + type;
     }
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') signIn();
+      if (e.key === 'Enter') {
+        const activeTab = document.getElementById('loginForm').style.display !== 'none' ? 'login' : 'signup';
+        activeTab === 'login' ? signIn() : signUp();
+      }
     });
   </script>
 </body>
