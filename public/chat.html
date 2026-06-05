@@ -661,8 +661,17 @@
     .mode-switch-item:hover { background: var(--bg); }
     .mode-switch-item.current { background: #fff0ed; color: var(--primary); font-weight: 600; }
 
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 25;
+    }
+    .sidebar-overlay.active { display: block; }
+
     @media (max-width: 640px) {
-      .sidebar { position: absolute; top: 0; left: 0; bottom: 0; z-index: 30; box-shadow: 2px 0 12px rgba(0,0,0,0.1); }
+      .sidebar { position: fixed; top: 0; left: 0; bottom: 0; z-index: 30; box-shadow: 2px 0 12px rgba(0,0,0,0.1); }
       .sidebar.collapsed { transform: translateX(-100%); width: var(--sidebar-w); }
       .mode-cards { flex-direction: column; }
       .mode-card { width: 240px; }
@@ -680,6 +689,7 @@
   </nav>
 </header>
 
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <div class="body-wrap">
 
   <!-- ===== LEFT SIDEBAR ===== -->
@@ -1036,6 +1046,15 @@
     sidebarOpen = !sidebarOpen;
     document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
     document.getElementById('toggleBtn').textContent = sidebarOpen ? '✕' : '☰';
+    if (window.innerWidth <= 640) {
+      document.getElementById('sidebarOverlay').classList.toggle('active', sidebarOpen);
+    }
+  }
+  function closeSidebar() {
+    sidebarOpen = false;
+    document.getElementById('sidebar').classList.add('collapsed');
+    document.getElementById('toggleBtn').textContent = '☰';
+    document.getElementById('sidebarOverlay').classList.remove('active');
   }
 
   // まとめ促進バブルをチャット内に挿入
