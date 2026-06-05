@@ -387,6 +387,7 @@
       <li><a href="#memory">記憶の設計</a></li>
       <li><a href="#output">成果物の設計</a></li>
       <li><a href="#checklist">判断基準チェックリスト</a></li>
+      <li><a href="#environments">環境一覧</a></li>
       <li><a href="#devlog">開発履歴</a></li>
     </ul>
   </aside>
@@ -744,6 +745,69 @@ business_profiles: id, userId, deviceId, displayName,
         <li><span class="check-icon">▷</span>miiiroカラー・フォントに沿っているか？</li>
         <li><span class="check-icon">▷</span>Vercelへのデプロイが30秒以内に完了するか？</li>
       </ul>
+    </section>
+
+    <section id="environments">
+      <h2>環境一覧</h2>
+      <p>本番環境と開発環境のURL・ブランチ・用途の整理</p>
+
+      <h3>本番環境（Production）</h3>
+      <table style="width:100%; border-collapse:collapse; margin: 16px 0; font-size:14px;">
+        <tr style="background:#f8f5f0;">
+          <th style="text-align:left; padding:10px 16px; border:1px solid #e8e0d8; color:#9a8a7a;">項目</th>
+          <th style="text-align:left; padding:10px 16px; border:1px solid #e8e0d8; color:#9a8a7a;">内容</th>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">URL</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-family:monospace;">hajimari-dashboard.vercel.app</td>
+        </tr>
+        <tr style="background:#fdfcfb;">
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">ブランチ</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-family:monospace;">main</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">用途</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8;">モニターが実際に使う環境。常に安定した状態を保つ</td>
+        </tr>
+        <tr style="background:#fdfcfb;">
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">反映タイミング</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8;">開発ブランチのPRをmainにマージしたとき自動デプロイ</td>
+        </tr>
+      </table>
+
+      <h3>開発環境（Preview）</h3>
+      <table style="width:100%; border-collapse:collapse; margin: 16px 0; font-size:14px;">
+        <tr style="background:#f8f5f0;">
+          <th style="text-align:left; padding:10px 16px; border:1px solid #e8e0d8; color:#9a8a7a;">項目</th>
+          <th style="text-align:left; padding:10px 16px; border:1px solid #e8e0d8; color:#9a8a7a;">内容</th>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">URL</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-family:monospace;">miiiro-git-claude-*-hayashi-bits-projects.vercel.app</td>
+        </tr>
+        <tr style="background:#fdfcfb;">
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">ブランチ</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-family:monospace;">claude/* （作業ブランチ）</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">用途</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8;">開発・動作確認用。えいじさんと自分だけが確認する</td>
+        </tr>
+        <tr style="background:#fdfcfb;">
+          <td style="padding:10px 16px; border:1px solid #e8e0d8; font-weight:600;">反映タイミング</td>
+          <td style="padding:10px 16px; border:1px solid #e8e0d8;">ブランチにpushするたびに自動でプレビューURLが生成される</td>
+        </tr>
+      </table>
+
+      <h3>デプロイフロー</h3>
+      <p style="margin: 12px 0; font-size:14px; line-height:1.8;">
+        <code style="background:#f0e8e0; padding:2px 6px; border-radius:4px;">claude/* ブランチで開発</code>
+        　→　<code style="background:#f0e8e0; padding:2px 6px; border-radius:4px;">プレビューURLで動作確認</code>
+        　→　<code style="background:#f0e8e0; padding:2px 6px; border-radius:4px;">えいじさんが「なおった」と確認</code>
+        　→　<code style="background:#f0e8e0; padding:2px 6px; border-radius:4px;">mainにマージ</code>
+        　→　<code style="background:#f0e8e0; padding:2px 6px; border-radius:4px;">本番に自動反映</code>
+      </p>
+      <p style="font-size:13px; color:#9a8a7a;">モニターが使っている本番環境は、確認済みの変更だけが反映される。</p>
     </section>
 
     <section id="devlog">
