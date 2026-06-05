@@ -1,8 +1,12 @@
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
-const http = require("http");
+const https = require("https");
 const path = require("path");
 
+const GITHUB_API = "api.github.com";
+const NOTIFY_PATH = "/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify";
+
 let win;
+let lastTs = 0;
 
 function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -27,27 +31,48 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
 }
 
-// HTTP server to receive notifications from Stop hook
-function startNotifyServer() {
-  const server = http.createServer((req, res) => {
-    if (req.method === "POST" && req.url === "/notify") {
-      win?.webContents.send("show-complete");
-      res.writeHead(200);
-      res.end("ok");
-    } else {
-      res.writeHead(404);
-      res.end();
-    }
-  });
-
-  server.listen(39876, "127.0.0.1", () => {
-    console.log("Notify server running on port 39876");
+function fetchNotify() {
+  return new Promise((resolve) => {
+    const options = {
+      hostname: GITHUB_API,
+      path: NOTIFY_PATH,
+      method: "GET",
+      headers: { "User-Agent": "hajimari-mascot" },
+    };
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          const content = Buffer.from(json.content, "base64").toString("utf8");
+          const { ts } = JSON.parse(content);
+          resolve(ts);
+        } catch {
+          resolve(null);
+        }
+      });
+    });
+    req.on("error", () => resolve(null));
+    req.end();
   });
 }
 
-app.whenReady().then(() => {
+function startPolling() {
+  setInterval(async () => {
+    const ts = await fetchNotify();
+    if (ts && ts !== lastTs && ts > (Date.now() / 1000 - 60)) {
+      lastTs = ts;
+      win?.webContents.send("show-complete");
+    }
+    if (ts) lastTs = ts;
+  }, 3000);
+}
+
+app.whenReady().then(async () => {
   createWindow();
-  startNotifyServer();
+  lastTs = (await fetchNotify()) ?? 0;
+  startPolling();
 });
 
 app.on("window-all-closed", () => app.quit());
