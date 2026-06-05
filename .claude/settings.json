@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"✅ 開発完了！Claude Codeの作業が終わりました。\"}'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
