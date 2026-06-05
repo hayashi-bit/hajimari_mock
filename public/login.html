@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン - miiiro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      background: #0a0a0a;
+      color: #e8e0d5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #e8e0d5;
+    }
+
+    .logo-sub {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 0.15em;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 32px 28px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #e8e0d5;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #e8e0d5;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="email"]:focus {
+      border-color: #555;
+    }
+
+    input[type="email"]::placeholder {
+      color: #444;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #e8e0d5;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .message {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .message.success {
+      background: #1a2a1a;
+      border: 1px solid #2a4a2a;
+      color: #6abf6a;
+      display: block;
+    }
+
+    .message.error {
+      background: #2a1a1a;
+      border: 1px solid #4a2a2a;
+      color: #bf6a6a;
+      display: block;
+    }
+
+    .divider {
+      text-align: center;
+      color: #444;
+      font-size: 12px;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #333;
+    }
+
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+
+    .note {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 24px;
+      line-height: 1.7;
+    }
+
+    .sent-view {
+      display: none;
+      text-align: center;
+    }
+
+    .sent-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .sent-title {
+      font-size: 16px;
+      color: #e8e0d5;
+      margin-bottom: 8px;
+    }
+
+    .sent-desc {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    .sent-email {
+      color: #e8e0d5;
+      font-weight: 500;
+    }
+
+    .resend-btn {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+
+    .resend-btn:hover {
+      border-color: #555;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-text">miiiro</div>
+      <div class="logo-sub">あなたの思考を、資産に。</div>
+    </div>
+
+    <div class="card">
+      <!-- ログインフォーム -->
+      <div id="loginForm">
+        <div class="card-title">ログイン / 新規登録</div>
+        <div class="card-desc">メールアドレスを入力すると、ログインリンクが届きます。パスワード不要です。</div>
+
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
+        </div>
+
+        <button class="btn" id="sendBtn" onclick="sendMagicLink()">ログインリンクを送る</button>
+
+        <div class="message" id="messageBox"></div>
+      </div>
+
+      <!-- 送信完了 -->
+      <div class="sent-view" id="sentView">
+        <div class="sent-icon">📬</div>
+        <div class="sent-title">メールを送りました</div>
+        <div class="sent-desc">
+          <span class="sent-email" id="sentEmail"></span><br>
+          にログインリンクを送りました。<br>
+          メールのリンクをタップしてください。
+        </div>
+        <button class="resend-btn" onclick="showLoginForm()">別のアドレスで試す</button>
+      </div>
+    </div>
+
+    <div class="note">
+      初めての方もこのまま登録できます<br>
+      スマホ・PCどちらでも同じデータを使えます
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPA_URL = 'https://kwmulkworqsswmiqbabd.supabase.co';
+    const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE';
+    const sb = supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+
+    // すでにログイン済みならホームへ
+    sb.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        window.location.href = '/home';
+      }
+    });
+
+    // Auth state変化（マジックリンク経由のコールバック）
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        window.location.href = '/home';
+      }
+    });
+
+    async function sendMagicLink() {
+      const email = document.getElementById('emailInput').value.trim();
+      if (!email) {
+        showMessage('メールアドレスを入力してください', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('sendBtn');
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin + '/home',
+        },
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'ログインリンクを送る';
+
+      if (error) {
+        showMessage('送信に失敗しました：' + error.message, 'error');
+        return;
+      }
+
+      document.getElementById('sentEmail').textContent = email;
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('sentView').style.display = 'block';
+    }
+
+    function showMessage(text, type) {
+      const box = document.getElementById('messageBox');
+      box.textContent = text;
+      box.className = 'message ' + type;
+    }
+
+    function showLoginForm() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('sentView').style.display = 'none';
+    }
+
+    document.getElementById('emailInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendMagicLink();
+    });
+  </script>
+</body>
+</html>

@@ -98,13 +98,13 @@ async function getEmbedding(text: string): Promise<number[] | null> {
   } catch { return null; }
 }
 
-async function fetchSimilarMemories(userId: string, embedding: number[]): Promise<string> {
+async function fetchSimilarMemories(userId: string, embedding: number[], userToken: string): Promise<string> {
   try {
     const res = await fetch(`${SUPA_URL}/rest/v1/rpc/match_memories`, {
       method: "POST",
       headers: {
         "apikey": SUPA_KEY,
-        "Authorization": `Bearer ${SUPA_KEY}`,
+        "Authorization": `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query_embedding: embedding, match_user_id: userId, match_count: 3 }),
@@ -159,10 +159,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     systemPrompt += `\n\n---\n【天気について】\n天気を聞かれた場合、居住地がわからないので「どちらにお住まいですか？」と自然に聞いてください。プロフィールに居住地を登録するとすぐに答えられるようになる旨も軽く伝えてください。`;
   }
   // pgvector 意味検索（userId と今の発言があれば）
-  if (userId && currentMessage && process.env.OPENAI_API_KEY) {
+  const authHeader = req.headers.authorization;
+  const userToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (userId && currentMessage && process.env.OPENAI_API_KEY && userToken) {
     const embedding = await getEmbedding(currentMessage);
     if (embedding) {
-      const similarMemories = await fetchSimilarMemories(userId, embedding);
+      const similarMemories = await fetchSimilarMemories(userId, embedding, userToken);
       if (similarMemories) {
         systemPrompt += `\n\n---\n【過去の会話から見えてきた傾向（意味的に近いもの）】\n以下は過去のセッションで記録された内容です。今の話題と関連する部分を自然に活かしてください。\n${similarMemories}`;
       }

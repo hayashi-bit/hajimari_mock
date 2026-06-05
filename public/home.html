@@ -334,6 +334,7 @@
       margin-top: 4px;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -397,6 +398,15 @@
 </div>
 
 <script>
+  // Auth check
+  const _sb = supabase.createClient(
+    'https://kwmulkworqsswmiqbabd.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE'
+  );
+  _sb.auth.getSession().then(({ data }) => {
+    if (!data.session) window.location.href = '/login';
+  });
+
   const SESSIONS_KEY = 'hajimari_sessions';
   const PROFILE_KEY = 'hajimari_profile';
 

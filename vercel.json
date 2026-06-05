@@ -9,6 +9,7 @@
     "api/intro.ts": { "maxDuration": 30 }
   },
   "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
     { "source": "/home", "destination": "/home.html" },
     { "source": "/me", "destination": "/me.html" },
     { "source": "/docs", "destination": "/docs.html" },

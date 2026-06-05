@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -819,16 +820,29 @@
     { label: '✨ 分析の仕上げ段階です', until: 999 },
   ];
 
-  // ===== ANONYMOUS USER ID =====
-  function getUserId() {
-    let uid = localStorage.getItem(USER_ID_KEY);
-    if (!uid) {
-      uid = 'u_' + Date.now().toString(36) + Math.random().toString(36).slice(2);
-      localStorage.setItem(USER_ID_KEY, uid);
+  // ===== AUTH =====
+  const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+  let currentUser = null;
+  let currentAccessToken = null;
+
+  async function initAuth() {
+    const { data } = await sb.auth.getSession();
+    if (!data.session) {
+      window.location.href = '/login';
+      return false;
     }
-    return uid;
+    currentUser = data.session.user;
+    currentAccessToken = data.session.access_token;
+    sb.auth.onAuthStateChange((event, session) => {
+      if (!session) { window.location.href = '/login'; return; }
+      currentUser = session.user;
+      currentAccessToken = session.access_token;
+    });
+    return true;
   }
-  const userId = getUserId();
+
+  function getUserId() { return currentUser?.id ?? null; }
+  const userId = null; // initAuth後に動的取得
 
   // ===== SESSION STORAGE =====
   function loadSessions() {
@@ -1366,9 +1380,12 @@
   async function streamToElement(messages, extraFlags = {}) {
     const pastContext = buildPastContext();
 
+    const headers = { 'Content-Type': 'application/json' };
+    if (currentAccessToken) headers['Authorization'] = `Bearer ${currentAccessToken}`;
+
     const res = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         messages,
         profile: profileText || undefined,
@@ -1377,7 +1394,7 @@
         currentTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', weekday: 'short' }),
         weatherContext: weatherContext || undefined,
         chatMode: currentMode || '傾聴',
-        userId: userId || undefined,
+        userId: getUserId() || undefined,
         currentMessage: messages[messages.length - 1]?.content || undefined,
         ...extraFlags,
       }),
@@ -1507,11 +1524,13 @@
       saveCurrentSession();
 
       // pgvector: まとめをベクトル化して保存
-      fetch('/api/embed', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, sessionId: currentSessionId, summary: text }),
-      }).catch(() => {});  // バックグラウンド処理、失敗しても無視
+      if (currentAccessToken) {
+        fetch('/api/embed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${currentAccessToken}` },
+          body: JSON.stringify({ userId: getUserId(), sessionId: currentSessionId, summary: text }),
+        }).catch(() => {});
+      }
     } catch {
       typing.classList.remove('show');
       appendMessage('ai', 'まとめの生成に失敗しました。もう一度お試しください。');
@@ -1522,8 +1541,11 @@
   }
 
   // ===== INIT =====
-  history = [{ role: 'assistant', content: firstMsg }];
-  renderSidebar();
+  initAuth().then(ok => {
+    if (!ok) return;
+    history = [{ role: 'assistant', content: firstMsg }];
+    renderSidebar();
+  });
 </script>
 
 </body>
