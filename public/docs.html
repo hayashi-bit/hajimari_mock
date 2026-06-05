@@ -750,6 +750,9 @@ business_profiles: id, userId, deviceId, displayName,
       <h2>開発履歴</h2>
       <p>プロダクトの変遷と各フェーズで行った意思決定の記録</p>
 
+      <h3>v1.2.1 — わたしの可視化：強みカード刷新・自己紹介文AI生成（2026-06-05）</h3>
+      <p>強みカードを刷新。複数セッションで同じ強みが言及された場合は出現回数をカウントし、2回以上出現したものを「CORE」ラベルでハイライト表示（ピンク背景・太字）。初出日と出現回数バッジも表示。自己紹介文生成をテンプレート文字列から Claude API によるストリーミング生成に刷新。SNS・営業提案・交流会の3スタイルを選択可能。生成後にコピーボタンを表示。api/intro.ts を新設。</p>
+
       <h3>v1.2.0 — AI記憶：pgvector + OpenAI Embedding 実装（2026-06-05）</h3>
       <p>Supabase に pgvector 拡張を有効化し、session_memories テーブル（1536次元ベクトル）を作成。まとめ生成後に OpenAI text-embedding-3-small でベクトル化して保存する api/embed.ts を新設。チャット送信ごとに match_memories 関数でコサイン類似度 0.75 以上の過去セッションを最大3件取得し、system prompt に注入。これにより AI が過去の会話文脈を意味的に参照できるようになった。OPENAI_API_KEY は Vercel 環境変数として設定（コード非公開）。</p>
 

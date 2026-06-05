@@ -5,7 +5,8 @@
   "functions": {
     "api/chat.ts": { "maxDuration": 30 },
     "api/feedback.ts": { "maxDuration": 10 },
-    "api/embed.ts": { "maxDuration": 20 }
+    "api/embed.ts": { "maxDuration": 20 },
+    "api/intro.ts": { "maxDuration": 30 }
   },
   "rewrites": [
     { "source": "/home", "destination": "/home.html" },

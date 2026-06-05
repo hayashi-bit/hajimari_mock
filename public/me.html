@@ -191,29 +191,75 @@
       display: flex;
       align-items: flex-start;
       gap: 12px;
+      transition: border-color 0.15s;
+    }
+
+    .strength-card.core {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .strength-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 28px;
     }
 
     .strength-num {
       font-family: 'DM Serif Display', serif;
-      font-size: 20px;
+      font-size: 18px;
       color: var(--primary);
       line-height: 1;
-      min-width: 24px;
       opacity: 0.5;
     }
+
+    .strength-card.core .strength-num { opacity: 1; }
+
+    .strength-count-badge {
+      font-size: 9px;
+      font-family: 'IBM Plex Mono', monospace;
+      background: #f0e8e0;
+      color: var(--muted);
+      padding: 2px 5px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .strength-card.core .strength-count-badge {
+      background: #f5c4b4;
+      color: var(--primary);
+    }
+
+    .strength-body { flex: 1; }
 
     .strength-text {
       font-size: 14px;
       line-height: 1.6;
       color: var(--text);
-      flex: 1;
     }
 
-    .strength-source {
+    .strength-card.core .strength-text { font-weight: 600; }
+
+    .strength-meta {
       font-size: 10px;
       color: var(--muted);
       font-family: 'IBM Plex Mono', monospace;
       margin-top: 4px;
+    }
+
+    .core-label {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--primary);
+      background: #fde8df;
+      padding: 2px 7px;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.05em;
     }
 
     .no-data-box {
@@ -352,6 +398,33 @@
       margin-bottom: 12px;
     }
 
+    .style-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .style-tab {
+      flex: 1;
+      padding: 7px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .style-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
     .intro-result {
       font-size: 13px;
       line-height: 1.9;
@@ -360,15 +433,55 @@
       border-radius: 10px;
       padding: 12px 14px;
       display: none;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       white-space: pre-wrap;
+      min-height: 60px;
     }
 
     .intro-result.show { display: block; }
 
+    .intro-actions {
+      display: none;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .intro-actions.show { display: flex; }
+
+    .btn-copy {
+      flex: 1;
+      padding: 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+
+    .btn-copy:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-copy.copied { background: #e8f7ef; border-color: #2d8c5a; color: #2d8c5a; }
+
     .btn-gen {
+      flex: 2;
+      padding: 9px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .btn-gen-full {
       width: 100%;
-      padding: 11px;
+      padding: 10px;
       background: var(--primary);
       color: #fff;
       border: none;
@@ -379,8 +492,8 @@
       font-family: inherit;
     }
 
-    .btn-gen:hover { background: #a85640; }
-    .btn-gen:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-gen:hover, .btn-gen-full:hover { background: #a85640; }
+    .btn-gen:disabled, .btn-gen-full:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -486,9 +599,18 @@
 <div class="section">
   <div class="section-title">自己紹介文のたたき台</div>
   <div class="intro-box">
-    <div class="intro-hint">会話と強みのデータをもとに、自己紹介文のたたき台を生成します。</div>
+    <div class="intro-hint">会話と強みのデータをもとに、AIが自然な自己紹介文を生成します。</div>
+    <div class="style-tabs">
+      <button class="style-tab active" onclick="selectStyle(this,'sns')" data-style="sns">SNS</button>
+      <button class="style-tab" onclick="selectStyle(this,'pitch')" data-style="pitch">営業・提案</button>
+      <button class="style-tab" onclick="selectStyle(this,'casual')" data-style="casual">交流会</button>
+    </div>
     <div class="intro-result" id="introResult"></div>
-    <button class="btn-gen" id="btnGenIntro" onclick="generateIntro()">生成する</button>
+    <div class="intro-actions" id="introActions">
+      <button class="btn-copy" id="btnCopy" onclick="copyIntro()">コピー</button>
+      <button class="btn-gen" id="btnReGen" onclick="generateIntro()">再生成</button>
+    </div>
+    <button class="btn-gen-full" id="btnGenIntro" onclick="generateIntro()">AIで生成する ✦</button>
   </div>
 </div>
 
@@ -528,23 +650,32 @@
   }
 
   function extractStrengthTags(sessions) {
-    const tags = [];
-    const seen = new Set();
+    // 重複カウント対応: 同じ強みが複数セッションに出たらcountを増やす
+    const countMap = {};   // text -> { count, firstDate, text }
     sessions.forEach(s => {
       const sum = s.messages?.find(m => m.role === 'summary');
       if (!sum) return;
       const lines = sum.content.split('\n');
       let inStrength = false;
+      const seenInSession = new Set();
       lines.forEach(line => {
         if (line.includes('強み') || line.includes('視点')) inStrength = true;
         else if (line.startsWith('■')) inStrength = false;
         if (inStrength && line.trim().startsWith('・')) {
-          const tag = line.replace(/^・/, '').trim().slice(0, 30);
-          if (!seen.has(tag)) { seen.add(tag); tags.push({ text: tag, session: s }); }
+          const tag = line.replace(/^・/, '').trim().slice(0, 35);
+          if (!tag || seenInSession.has(tag)) return;
+          seenInSession.add(tag);
+          const date = new Date(s.createdAt);
+          if (!countMap[tag]) {
+            countMap[tag] = { text: tag, count: 1, firstDate: date };
+          } else {
+            countMap[tag].count++;
+            if (date < countMap[tag].firstDate) countMap[tag].firstDate = date;
+          }
         }
       });
     });
-    return tags;
+    return Object.values(countMap).sort((a, b) => b.count - a.count);
   }
 
   function buildHeatmap(sessions) {
@@ -644,12 +775,22 @@
     msg.classList.add('show');
   }
 
-  function generateIntro() {
+  let selectedIntroStyle = 'sns';
+
+  function selectStyle(el, style) {
+    selectedIntroStyle = style;
+    document.querySelectorAll('.style-tab').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  async function generateIntro() {
     const sessions = loadSessions();
     const profile = loadProfile();
     const tags = extractStrengthTags(sessions);
-    const btn = document.getElementById('btnGenIntro');
+    const btnFull = document.getElementById('btnGenIntro');
+    const btnRegen = document.getElementById('btnReGen');
     const result = document.getElementById('introResult');
+    const actions = document.getElementById('introActions');
 
     if (tags.length === 0 && !profile.name) {
       result.textContent = 'まずはプロフィールを入力するか、チャットのまとめを生成してみてください。';
@@ -657,26 +798,73 @@
       return;
     }
 
-    btn.disabled = true;
-    btn.textContent = '生成中…';
+    // ボタン無効化
+    [btnFull, btnRegen].forEach(b => { if (b) { b.disabled = true; b.textContent = '生成中…'; } });
+    result.textContent = '';
+    result.classList.add('show');
+    actions.classList.remove('show');
 
-    const name = profile.name || '';
-    const job = profile.jobType || profile.workContent || '';
-    const strengthList = tags.slice(0, 5).map(t => t.text).join('、');
+    // プロフィール文字列を組み立て
+    const profileParts = [];
+    if (profile.name) profileParts.push(`名前：${profile.name}`);
+    if (profile.jobType) profileParts.push(`職種：${profile.jobType}`);
+    if (profile.workContent) profileParts.push(`仕事内容：${profile.workContent}`);
+    if (profile.goals) profileParts.push(`目標：${profile.goals}`);
+    if (profile.keywords) profileParts.push(`キーワード：${profile.keywords}`);
 
-    const intro = [
-      name ? `${name}と申します。` : '',
-      job ? `${job}として活動しています。` : '',
-      strengthList ? `\n強みとして感じているのは、${strengthList}といった点です。` : '',
-      '\n現在、自分の働き方や強みをより深く理解しながら、前に進んでいる最中です。',
-    ].filter(Boolean).join('');
+    try {
+      const res = await fetch('/api/intro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile: profileParts.join('\n') || '（未設定）',
+          strengths: tags.slice(0, 6),
+          style: selectedIntroStyle,
+        }),
+      });
 
-    setTimeout(() => {
-      result.textContent = intro || '（プロフィールと会話データから生成します）';
-      result.classList.add('show');
-      btn.disabled = false;
-      btn.textContent = '再生成する';
-    }, 600);
+      if (!res.ok) throw new Error();
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data:')) continue;
+          const data = line.slice(5).trim();
+          if (data === '[DONE]') continue;
+          try {
+            const json = JSON.parse(data);
+            const delta = json.delta?.text || '';
+            if (delta) { fullText += delta; result.textContent = fullText; }
+          } catch {}
+        }
+      }
+    } catch {
+      result.textContent = '生成に失敗しました。もう一度お試しください。';
+    }
+
+    [btnFull, btnRegen].forEach(b => { if (b) { b.disabled = false; b.textContent = b === btnFull ? 'AIで生成する ✦' : '再生成'; } });
+    btnFull.style.display = 'none';
+    actions.classList.add('show');
+  }
+
+  function copyIntro() {
+    const text = document.getElementById('introResult').textContent;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('btnCopy');
+      btn.textContent = 'コピーしました ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
+    });
   }
 
   function init() {
@@ -732,14 +920,26 @@
     // Strengths
     const wrap = document.getElementById('strengthsWrap');
     if (tags.length > 0) {
+      const maxCount = tags[0].count;
       wrap.innerHTML = `<div class="strength-list">${
-        tags.map((t, i) => `
-          <div class="strength-card">
-            <div class="strength-num">${i+1}</div>
-            <div>
-              <div class="strength-text">${t.text}</div>
+        tags.map((t, i) => {
+          const isCore = t.count >= 2 || (maxCount === 1 && i === 0);
+          const dateStr = t.firstDate
+            ? `${t.firstDate.getMonth()+1}/${t.firstDate.getDate()} 初出`
+            : '';
+          return `
+          <div class="strength-card${isCore ? ' core' : ''}">
+            <div class="strength-left">
+              <div class="strength-num">${i+1}</div>
+              <div class="strength-count-badge">${t.count}回</div>
             </div>
-          </div>`).join('')
+            <div class="strength-body">
+              ${isCore ? '<div class="core-label">CORE</div>' : ''}
+              <div class="strength-text">${t.text}</div>
+              ${dateStr ? `<div class="strength-meta">${dateStr}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')
       }</div>`;
     }
 
