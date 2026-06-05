@@ -735,6 +735,104 @@
     </table>
   </section>
 
+  <!-- System Spec -->
+  <section>
+    <div class="section-label">
+      <span>🔧</span> SYSTEM SPEC
+    </div>
+    <h2 class="section-title">現時点の仕様</h2>
+
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left; padding:10px 12px; color:var(--muted); font-weight:500; width:30%;">項目</th>
+          <th style="text-align:left; padding:10px 12px; color:var(--muted); font-weight:500;">内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">フロントエンド</td>
+          <td style="padding:12px; color:var(--muted);">Plain HTML + CSS + Vanilla JS（フレームワークなし、ビルドステップなし）</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">バックエンド</td>
+          <td style="padding:12px; color:var(--muted);">Vercel Serverless Functions（TypeScript）— api/chat.ts, api/embed.ts, api/intro.ts, api/feedback.ts</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">AI</td>
+          <td style="padding:12px; color:var(--muted);">Anthropic Claude（claude-sonnet-4-6）— SSEストリーミング応答</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">記憶・Embedding</td>
+          <td style="padding:12px; color:var(--muted);">OpenAI text-embedding-3-small → Supabase pgvector（session_memoriesテーブル）</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">認証</td>
+          <td style="padding:12px; color:var(--muted);">Supabase Auth（メール＋パスワード方式）— JWTトークンをAPIに渡してRLS適用</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">データベース</td>
+          <td style="padding:12px; color:var(--muted);">Supabase（PostgreSQL）— プロジェクト: znezjmhkzdhlxdigajbo（hayashi-bit所有）</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">ホスティング</td>
+          <td style="padding:12px; color:var(--muted);">Vercel — hajimari-dashboard.vercel.app（内部名。ユーザーには「miiiro」として提示）</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; font-weight:500;">APIキー管理</td>
+          <td style="padding:12px; color:var(--muted);">OpenAI・Anthropic・Supabase service_role → Vercel環境変数のみ。コードには記載しない</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14px; font-weight:500; margin:32px 0 16px; color:var(--fg);">記憶の保持方法</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left; padding:10px 12px; color:var(--muted); font-weight:500; width:30%;">何を保持</th>
+          <th style="text-align:left; padding:10px 12px; color:var(--muted); font-weight:500;">どこに・どうやって</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">会話のまとめ</td>
+          <td style="padding:12px; color:var(--muted);">セッション終了時にClaudeが自動生成 → Supabase session_memoriesテーブルにテキスト保存</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">ベクトル検索用Embedding</td>
+          <td style="padding:12px; color:var(--muted);">まとめをOpenAI Embeddingでベクトル化 → pgvector（1536次元）として同テーブルに保存</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">思考の癖・話し方の癖</td>
+          <td style="padding:12px; color:var(--muted);">まとめ生成時にClaudeが自動抽出 → thinking_patterns / speech_patternsカラムに保存。/meで可視化</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px; font-weight:500;">記憶の利用</td>
+          <td style="padding:12px; color:var(--muted);">次の会話開始時、現在の発言に近い過去まとめをベクトル類似検索で取得 → systemプロンプトに注入</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; font-weight:500;">ユーザー分離</td>
+          <td style="padding:12px; color:var(--muted);">user_id = auth.uid()。RLSにより自分のデータのみ読み書き可能。他ユーザーのデータには一切アクセス不可</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14px; font-weight:500; margin:32px 0 16px; color:var(--fg);">新規ユーザー登録フロー</h3>
+    <div style="font-size:13px; color:var(--muted); line-height:2; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 24px;">
+      <div>1. <strong style="color:var(--fg);">hajimari-dashboard.vercel.app/login</strong> にアクセス</div>
+      <div>2. 「新規登録」タブをタップ</div>
+      <div>3. メールアドレス + パスワード（8文字以上）を入力して登録</div>
+      <div>4. 登録完了後、自動でログインしてホーム画面へ遷移</div>
+      <div>5. 次回以降は「ログイン」タブからメール・パスワードでログイン</div>
+      <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+        <strong style="color:var(--fg);">マルチデバイス：</strong>同じメール・パスワードでスマホ・PCどちらからでもログイン可能。会話記憶は全デバイスで共有される。
+      </div>
+      <div style="margin-top:8px;">
+        <strong style="color:var(--fg);">上限：</strong>Supabase無料プランで最大50,000ユーザーまで対応。現在は誰でも登録可能（招待制に変更可）。
+      </div>
+    </div>
+  </section>
+
   <!-- Update history -->
   <section>
     <div class="section-label">
