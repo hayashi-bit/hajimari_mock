@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>miiiro Sprint Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C1694F;
+      --navy: #0F3752;
+      --warm: #FFFBF5;
+      --border: #e8e0d8;
+      --muted: #9a8a7a;
+      --text: #1a1a1a;
+      --bg: #f8f5f0;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+
+    header {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      gap: 8px;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .header-sub { font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    nav a:hover { background: #f0e8e0; color: var(--navy); }
+    nav a.active { background: var(--primary); color: #fff; }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+    }
+
+    /* Section header */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+
+    /* Sprint cards */
+    .sprint-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sprint-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      transition: box-shadow 0.15s;
+    }
+
+    .sprint-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+    .sprint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sprint-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .sprint-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .badge-done { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+    .badge-progress { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+    .badge-upcoming { background: #f5f3ff; color: #7c3aed; border-color: #ddd6fe; }
+
+    .sprint-week {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .sprint-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .sprint-goal {
+      background: #f8f5f0;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .goal-icon { color: var(--primary); flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+    .sprint-deliverables {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .deliverable {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      color: #4a4a4a;
+      line-height: 1.5;
+    }
+
+    .deliverable::before {
+      content: '→';
+      color: var(--primary);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Release Gates */
+    .gates-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .gate-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+
+    .gate-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .gate-icon { color: var(--primary); font-size: 18px; }
+
+    .gate-conditions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gate-condition {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      color: #3a3a3a;
+      line-height: 1.6;
+    }
+
+    .gate-condition::before {
+      content: '→';
+      color: var(--primary);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Tech Stack */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #f8f5f0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #f0ebe4;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    td.layer {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      width: 100px;
+    }
+
+    td.tech { font-weight: 600; color: var(--navy); }
+    td.detail { color: #6b5a4a; font-size: 13px; }
+
+    /* Update history */
+    .update-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .update-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .update-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .update-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .update-version {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      background: #f0e8ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .update-type {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .type-fix { background: #fef3f2; color: #b91c1c; }
+    .type-feature { background: #f0fdf4; color: #15803d; }
+    .type-design { background: #eff6ff; color: #1d4ed8; }
+
+    .update-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .update-changes { display: flex; flex-direction: column; gap: 6px; }
+
+    .update-change {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      color: #4a4a4a;
+      line-height: 1.5;
+    }
+
+    .update-change::before {
+      content: '·';
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    /* Feedback section */
+    .feedback-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 18px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: #f8f5f0;
+      color: #6b5a4a;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab:hover { border-color: var(--primary); color: var(--primary); }
+    .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .feedback-textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #faf8f6;
+      resize: none;
+      outline: none;
+      line-height: 1.6;
+      min-height: 100px;
+      color: var(--text);
+      transition: border-color 0.15s;
+      margin-bottom: 16px;
+    }
+
+    .feedback-textarea:focus { border-color: var(--primary); }
+    .feedback-textarea::placeholder { color: #c8b8a8; }
+
+    .feedback-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .submit-btn {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .submit-btn:hover { background: #0a2840; }
+    .submit-btn:active { transform: scale(0.97); }
+
+    .voices-link {
+      font-size: 14px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .voices-link:hover { text-decoration: underline; }
+
+    .toast {
+      display: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toast.success { color: #16a34a; }
+    .toast.error { color: #b91c1c; }
+
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 32px 16px 60px; gap: 48px; }
+      .sprint-card, .gate-card { padding: 18px 20px; }
+      nav a { padding: 5px 8px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">miiiro</a>
+  <span class="header-sub">— 開発ダッシュボード</span>
+  <nav>
+    <a href="/" class="active">ダッシュボード</a>
+    <a href="/docs">設計ドキュメント</a>
+    <a href="/home">トップ画面</a>
+    <a href="/chat">壁打ちチャット</a>
+    <a href="/profile">プロフィール</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Sprint plan -->
+  <section>
+    <div class="section-label">
+      <span>⚡</span> SPRINT PLAN
+    </div>
+    <h2 class="section-title">スプリント計画</h2>
+    <div class="sprint-grid">
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 1</span>
+          <span class="sprint-badge badge-done">完了</span>
+          <span class="sprint-week">Week 1-2</span>
+        </div>
+        <div class="sprint-title">AIと対話できるプロトタイプの構築</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          ターゲット層がスマホで実際にAIメンターと会話できる状態にする
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">スマホブラウザで開くだけでAIメンターと対話できるURL</div>
+          <div class="deliverable">共感的で温かいメンタートーンのシステムプロンプト</div>
+          <div class="deliverable">事業カルテ＋会話履歴の永続化</div>
+          <div class="deliverable">壁打ちインタビュアー型プロンプト</div>
+          <div class="deliverable">音声入力（Web Speech API）</div>
+        </div>
+      </div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 2</span>
+          <span class="sprint-badge badge-progress">進行中</span>
+          <span class="sprint-week">Week 3-4</span>
+        </div>
+        <div class="sprint-title">壁打ち・ SNS投稿生成機能の実装</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          「インタビュー形式の壁打ち」と「SNS投稿生成」をチャットの中の機能として実装する
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">壁打ちモード（AIが深掘り質問を繰り返す）</div>
+          <div class="deliverable">SNS投稿生成機能（会話から投稿文を自動生成）</div>
+          <div class="deliverable">モード切り替えUIの実装</div>
+        </div>
+      </div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 3</span>
+          <span class="sprint-badge badge-upcoming">未着手</span>
+          <span class="sprint-week">Week 5-6</span>
+        </div>
+        <div class="sprint-title">第1回モニターテスト → UI/UX改善</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          操作の「摩擦」を極限まで減らし、「話すだけで完結する」体験に近づける
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">摩擦が最小化された直感的UI</div>
+          <div class="deliverable">壁打ち後の自動構造化機能</div>
+          <div class="deliverable">音声入力の強化</div>
+        </div>
+      </div>
+
+      <div class="sprint-card">
+        <div class="sprint-header">
+          <span class="sprint-num">Sprint 4</span>
+          <span class="sprint-badge badge-upcoming">未着手</span>
+          <span class="sprint-week">Week 7-8</span>
+        </div>
+        <div class="sprint-title">第2回モニターテスト → 事業性ジャッジ</div>
+        <div class="sprint-goal">
+          <span class="goal-icon">◎</span>
+          「お金を払ってでも使い続けたいか」の最終判断を下す
+        </div>
+        <div class="sprint-deliverables">
+          <div class="deliverable">PMF（Product-Market Fit）の判断材料</div>
+          <div class="deliverable">本格開発 or ピボットの明確な意思決定</div>
+          <div class="deliverable">モニター定量・定性フィードバックレポート</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Release Gates -->
+  <section>
+    <div class="section-label">
+      <span>🛡</span> RELEASE GATES
+    </div>
+    <h2 class="section-title">リリース・正式オープン条件</h2>
+    <div class="gates-grid">
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          モニターテスト開始条件
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">壁打ちプロンプトが安定動作（5往復以上破綻なく会話継続）</div>
+          <div class="gate-condition">まとめ生成が正常に機能する</div>
+          <div class="gate-condition">スマホブラウザでログイン不要で利用可能</div>
+          <div class="gate-condition">音声入力が動作する</div>
+        </div>
+      </div>
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          正式オープン条件（Sprint 4完了後）
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">「月額1,100円で使い続けるか？」にYESが過半数</div>
+          <div class="gate-condition">継続利用率（翌日以降も開く）が50%以上</div>
+          <div class="gate-condition">「自分で考えた感覚が残る」と回答したモニターが過半数</div>
+          <div class="gate-condition">致命的なUIフリクションが解消されている</div>
+        </div>
+      </div>
+
+      <div class="gate-card">
+        <div class="gate-header">
+          <span class="gate-icon">👥</span>
+          ピボット判断基準
+        </div>
+        <div class="gate-conditions">
+          <div class="gate-condition">YESが30%未満 → コンセプト変更を検討</div>
+          <div class="gate-condition">「話しにくい」が過半数 → プロンプト設計を根本的に見直し</div>
+          <div class="gate-condition">「使いたいが月額は払いたくない」 → 収益モデル変更を検討</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section>
+    <div class="section-label">
+      <span>⚙</span> TECH STACK
+    </div>
+    <h2 class="section-title">技術スタック</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>レイヤー</th>
+            <th>技術</th>
+            <th>詳細</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="layer">フロントエンド</td>
+            <td class="tech">React 19 + TypeScript + Tailwind CSS 4</td>
+            <td class="detail">Vite, Wouter, Framer Motion, shadcn/ui</td>
+          </tr>
+          <tr>
+            <td class="layer">バックエンド</td>
+            <td class="tech">Express 4 + tRPC 11</td>
+            <td class="detail">型安全なRPC、Superjson、publicProcedure/protectedProcedure</td>
+          </tr>
+          <tr>
+            <td class="layer">DB</td>
+            <td class="tech">MySQL (TiDB) + Drizzle ORM</td>
+            <td class="detail">スキーマファースト、drizzle-kit migrate</td>
+          </tr>
+          <tr>
+            <td class="layer">AI</td>
+            <td class="tech">OpenAI API (GPT-4o-mini)</td>
+            <td class="detail">invokeLLM helper、構造化JSON出力、モード判定</td>
+          </tr>
+          <tr>
+            <td class="layer">認証</td>
+            <td class="tech">Manus OAuth + 匿名デバイスID</td>
+            <td class="detail">管理者はOAuth、モニターはdeviceIdベース</td>
+          </tr>
+          <tr>
+            <td class="layer">ホスティング</td>
+            <td class="tech">Manus Platform</td>
+            <td class="detail">自動デプロイ、カスタムドメイン対応</td>
+          </tr>
+          <tr>
+            <td class="layer">テスト</td>
+            <td class="tech">Vitest</td>
+            <td class="detail">サーバーサイドユニットテスト、モック活用</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- User feedback analysis -->
+  <section>
+    <div class="section-label">
+      <span>🗣️</span> USER FEEDBACK
+    </div>
+    <h2 class="section-title">ユーザーフィードバック分析</h2>
+
+    <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px 24px; margin-bottom:20px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <div style="width:36px; height:36px; border-radius:50%; background:#f0e8e0; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">👤</div>
+        <div>
+          <div style="font-weight:700; font-size:14px; color:var(--navy);">磯崎（大沼）亜樹さん</div>
+          <div style="font-size:12px; color:var(--muted); font-family:'IBM Plex Mono',monospace;">2026-05-23 · テストユーザー</div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <blockquote style="margin:0; padding:12px 16px; background:#f8f5f0; border-left:3px solid var(--primary); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:#3a3a3a;">「全然理解してない人と上っ面の会話してる感じ。説明コストだけかかる…」</blockquote>
+        <blockquote style="margin:0; padding:12px 16px; background:#f8f5f0; border-left:3px solid var(--primary); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:#3a3a3a;">「仕事の説明をしたら質問がフワフワしてきて、会話が上滑りしてる感じになって😱。大丈夫これ？と思ってたら突然会話が終わった」</blockquote>
+        <blockquote style="margin:0; padding:12px 16px; background:#f8f5f0; border-left:3px solid var(--primary); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:#3a3a3a;">「強みとかってシゴトの中身と組織の状態、進め方など詳しく話さないと分からないように思っていて、深掘りしてくのかな？って始まった感じで想像してたけど、そうはならず」</blockquote>
+        <blockquote style="margin:0; padding:12px 16px; background:#f8f5f0; border-left:3px solid var(--primary); border-radius:0 8px 8px 0; font-size:13px; line-height:1.7; color:#3a3a3a;">「こういうことをやりたいなら、30分の音声チャット形式で会社で使ってる公開可の資料を使うとかしないと、仕事の説明ってできないような💧」</blockquote>
+      </div>
+    </div>
+
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th style="width:36px;">#</th>
+          <th>課題</th>
+          <th>解決策</th>
+          <th style="width:80px;">状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">1</td>
+          <td>
+            <strong>コンテキスト不足</strong><br>
+            <span style="font-size:12px; color:var(--muted);">毎回ゼロから仕事を説明しなければならない</span>
+          </td>
+          <td style="font-size:13px;">プロフィール登録 → システムプロンプト注入</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f0fdf4; color:#15803d;">✓ 完了</span></td>
+        </tr>
+        <tr>
+          <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">2</td>
+          <td>
+            <strong>質問がフワフワ</strong><br>
+            <span style="font-size:12px; color:var(--muted);">AIが業務の具体性を引き出せていない</span>
+          </td>
+          <td style="font-size:13px;">構造化ヒアリング（現状→課題→理想の順で深掘り）</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+        </tr>
+        <tr>
+          <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">3</td>
+          <td>
+            <strong>会話が突然終わる</strong><br>
+            <span style="font-size:12px; color:var(--muted);">終了条件が不明瞭でユーザーが置いてきぼり</span>
+          </td>
+          <td style="font-size:13px;">進捗インジケーター＋終了時の要約表示</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#fff7ed; color:#c2410c;">未着手</span></td>
+        </tr>
+        <tr>
+          <td style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">4</td>
+          <td>
+            <strong>テキストだけでは業務説明が困難</strong><br>
+            <span style="font-size:12px; color:var(--muted);">複雑な仕事内容はテキストで伝わらない</span>
+          </td>
+          <td style="font-size:13px;">資料アップロード / 音声入力 / テンプレート</td>
+          <td><span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#f1f5f9; color:#64748b;">検討中</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Update history -->
+  <section>
+    <div class="section-label">
+      <span>📋</span> CHANGELOG
+    </div>
+    <h2 class="section-title">アップデート履歴</h2>
+    <div class="update-list">
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.3.1</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">思考・話し方の癖を記録・表示</div>
+        <div class="update-changes">
+          <div class="update-change">まとめ生成時に「思考の癖」「話し方の癖」セクションを自動抽出</div>
+          <div class="update-change">過去記憶から癖を取り出してsystem promptに専用注入（AIが話し方に自然に合わせる）</div>
+          <div class="update-change">/me に「思考・話し方の癖」セクション追加（Supabaseから取得・複数回出現は×N表示）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.3.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">Supabase Auth ログイン機能・マルチデバイス対応</div>
+        <div class="update-changes">
+          <div class="update-change">login.html 新規作成（パスワード方式ログイン）</div>
+          <div class="update-change">home.html / me.html / chat.html に認証チェック追加</div>
+          <div class="update-change">session_memories RLSポリシーをauth.uid()ベースに更新</div>
+          <div class="update-change">api/embed.ts・api/chat.ts をユーザーJWT対応に変更</div>
+          <div class="update-change">スマホ・PCどちらでも同じデータを使えるマルチデバイス基盤完成</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.2.1</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">わたしの可視化：強みカード刷新・自己紹介文AI生成</div>
+        <div class="update-changes">
+          <div class="update-change">強みカード：複数セッションの重複カウント対応・COREラベル・初出日・出現回数バッジ表示</div>
+          <div class="update-change">自己紹介文：テンプレート → Claude API ストリーミング生成に刷新</div>
+          <div class="update-change">スタイル選択タブ（SNS / 営業・提案 / 交流会）追加</div>
+          <div class="update-change">生成後にコピーボタン表示</div>
+          <div class="update-change">api/intro.ts 新設</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.2.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">AI記憶：pgvector + OpenAI Embedding 実装</div>
+        <div class="update-changes">
+          <div class="update-change">Supabase に session_memories テーブル作成（pgvector / 1536次元）</div>
+          <div class="update-change">api/embed.ts 新設：まとめ生成後に OpenAI text-embedding-3-small でベクトル化・保存</div>
+          <div class="update-change">api/chat.ts：送信ごとに類似セッションを意味検索し、system prompt に注入</div>
+          <div class="update-change">chat.html：まとめ生成後に /api/embed を非同期呼び出し</div>
+          <div class="update-change">Vercel 環境変数 OPENAI_API_KEY 設定済み</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.1.3</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">全ページ共通：フッターフィードバック・ナビ整備</div>
+        <div class="update-changes">
+          <div class="update-change">/home にフッターフィードバックフォーム追加（チャットと同仕様）</div>
+          <div class="update-change">今後の全ページにヘッダー・フッター・フィードバックを共通実装する方針確立</div>
+          <div class="update-change">ダッシュボード・設計ドキュメントのナビに「トップ画面」「壁打ちチャット」リンク追加</div>
+          <div class="update-change">チャット画面のナビに「🏠 トップ」リンク追加</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.1.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">/me ページ刷新・タイトル修正・5クリック開発モード追加</div>
+        <div class="update-changes">
+          <div class="update-change">/me タイトルを「わたしの可視化」に統一（「hajimari」残存修正）</div>
+          <div class="update-change">/me ページ刷新：先週vs今週比較・強みカードリスト・思考傾向4項目・自己紹介文生成ボタン</div>
+          <div class="update-change">/home・/me のロゴ5クリックで開発モードトースト表示（ダッシュボード/設計ドキュメントへのリンク）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.1.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">トップ画面（/home）・わたしの状態（/me）新設</div>
+        <div class="update-changes">
+          <div class="update-change">/home：機能ランチャー。壁打ちチャット有効・SNS/タスク/議事録/メールは準備中表示</div>
+          <div class="update-change">/me：わたしの状態ページ。連続利用日数・今週の会話数・強みタグ・活動ヒートマップ・AIメッセージ</div>
+          <div class="update-change">サービス名をhajimariからmiiiroに統一（ロゴ・タイトル）</div>
+          <div class="update-change">chat.htmlのロゴを/homeへのリンクに変更</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.0.2</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">AI応答設計をロジャーズ式傾聴に刷新</div>
+        <div class="update-changes">
+          <div class="update-change">「毎回1質問」ルールを廃止。質問は3〜4往復に1回以下に</div>
+          <div class="update-change">反映（ミラーリング）を最優先：相手の言葉をそのまま返す傾聴技法を導入</div>
+          <div class="update-change">テンション自動読みを強化：短文は相槌のみ・長文のみ深掘り</div>
+          <div class="update-change">モード別プロンプトも反映スタイルに合わせて再設計</div>
+          <div class="update-change">「沈黙・余白」の概念をプロンプトに明示</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.0.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">モード選択UI改善・まとめをチャット内表示</div>
+        <div class="update-changes">
+          <div class="update-change">モード選択をフルスクリーン→チャット上部の小バーに変更</div>
+          <div class="update-change">選ばなくてもそのままチャット可能（デフォルト：傾聴）</div>
+          <div class="update-change">まとめ促進・まとめ結果をチャットの流れの中に表示</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v1.0.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">会話モード選択機能</div>
+        <div class="update-changes">
+          <div class="update-change">チャット開始時に「壁打ち / 傾聴 / 雑談」の3モードを選択</div>
+          <div class="update-change">会話中いつでも「モードを変える」ボタンで切り替え可能</div>
+          <div class="update-change">モード別にAIの振る舞い（質問頻度・共感量）を制御</div>
+          <div class="update-change">テンション自動読み：短文には共感のみ、長文には質問1つ</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.9.2</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">天気機能・居住地プロフィール追加</div>
+        <div class="update-changes">
+          <div class="update-change">プロフィールに居住地フィールドを追加</div>
+          <div class="update-change">Open-Meteo API（無料・キー不要）で現在の天気を自動取得</div>
+          <div class="update-change">居住地設定済みなら天気情報をシステムプロンプトに注入し即答</div>
+          <div class="update-change">未設定時はAIが会話の中で自然に居住地を聞く</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.9.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">フィードバックフォーム・履歴ボタン改善</div>
+        <div class="update-changes">
+          <div class="update-change">フィードバックフォームに✕ボタン追加、フォーム外クリックで自動で閉じる</div>
+          <div class="update-change">履歴の★・×ボタンを常時表示（ホバー不要）</div>
+          <div class="update-change">現在時刻をシステムプロンプトに注入し時間帯を正しく認識</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.9.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">AI記憶機能・UX大幅改善</div>
+        <div class="update-changes">
+          <div class="update-change">過去セッションのまとめをシステムプロンプトに注入し、AIが会話の傾向・癖を記憶</div>
+          <div class="update-change">匿名ユーザーID生成（pgvector連携の準備）</div>
+          <div class="update-change">吹き出し2重表示バグを修正</div>
+          <div class="update-change">「ここまでをまとめる」をアコーディオンバーに変更（チャット領域を圧迫しない）</div>
+          <div class="update-change">AIアバターを✦に変更、フェーズラベルにアイコン追加で人間味アップ</div>
+          <div class="update-change">ダッシュボード・設計ドキュメントのナビを非表示（モニター表示対応）</div>
+          <div class="update-change">miiiroロゴを5回クリックで開発モード解放（隠しリンク表示）</div>
+          <div class="update-change">サイドバー下部にフィードバックフォームを追加</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.8.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">チャット履歴サイドバー追加</div>
+        <div class="update-changes">
+          <div class="update-change">左サイドバーに会話履歴を自動保存・一覧表示</div>
+          <div class="update-change">星マークでお気に入り登録、サイドバー上部に固定表示</div>
+          <div class="update-change">過去の会話を選択してそのまま再開可能</div>
+          <div class="update-change">削除ボタンで不要な履歴を整理</div>
+          <div class="update-change">☰ボタンでサイドバーの開閉切り替え</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.7.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">PDF添付の読み取り対応</div>
+        <div class="update-changes">
+          <div class="update-change">PDF.jsをCDNから読み込み、ブラウザ側でPDFテキストをリアルタイム抽出</div>
+          <div class="update-change">最大20ページ・8000文字までのテキストをAIのコンテキストに追加</div>
+          <div class="update-change">スキャンPDF（画像化）の場合はその旨を案内するメッセージを表示</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-04</span>
+          <span class="update-version">v0.7.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">チャット体験の大幅改善（磯崎さんFB対応）</div>
+        <div class="update-changes">
+          <div class="update-change">【課題1】プロフィール登録ページ（/profile）を新設。職種・業務内容・課題・目標を事前登録し、チャット開始時からAIがコンテキストを把握</div>
+          <div class="update-change">【課題2】構造化ヒアリングフロー実装。「解決したいこと→現状→理想」の3フェーズで自然に深掘り。共感ファーストで責めない聞き方を設計</div>
+          <div class="update-change">【課題3】会話進捗バー＋フェーズラベルを表示。8往復後に「ここまでをまとめる」ボタンが出現。押すと強み・現状・理想の構造化サマリーカードを生成</div>
+          <div class="update-change">【課題4】📎資料アップロード機能。txt/md/csv/pdfを添付するとAIが内容を参照して会話に活用</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-03</span>
+          <span class="update-version">v0.6.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">Claude Code環境への開発移行</div>
+        <div class="update-changes">
+          <div class="update-change">開発環境をClaude Codeに全面移行</div>
+          <div class="update-change">フロントエンドをReact → Plain HTML/CSS/JSに刷新（ビルドステップ廃止）</div>
+          <div class="update-change">バックエンドをVercel Serverless Functions（TypeScript）に移行</div>
+          <div class="update-change">AIをOpenAI → Anthropic Claude（claude-sonnet-4-6）に変更</div>
+          <div class="update-change">スプリントダッシュボード・設計ドキュメント・チャット・みんなの声を再実装</div>
+          <div class="update-change">フィードバック機能をSupabaseで実装</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.5.1</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">フィードバックUI強化・スマホ不具合修正</div>
+        <div class="update-changes">
+          <div class="update-change">フィードバックFABボタン: PC/スマホともに常時表示に修正</div>
+          <div class="update-change">みんなの声ページ（/voices）新規追加 + フォーム内導線</div>
+          <div class="update-change">フィードバック管理（/ideas）ステータス管理UI追加</div>
+          <div class="update-change">Homeにアイディア入力フォーム埋め込み</div>
+          <div class="update-change">PCサイドバー常時表示（閉じられないバグ修正）</div>
+          <div class="update-change">スマホ: 入力時の画面ブレ修正（visualViewportハンドラー削除）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.5.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">匿名セッション・ヘッダーUI改善</div>
+        <div class="update-changes">
+          <div class="update-change">ログイン不要化: デバイスIDベースの匿名セッション実装</div>
+          <div class="update-change">ヘッダーUI: アイコン+テキストラベル（「履歴」「+ 新規」）</div>
+          <div class="update-change">ダッシュボードへの隠しボタン（miiiroロゴ5回タップ）</div>
+          <div class="update-change">/chat, /history から認証ゲートを完全削除</div>
+          <div class="update-change">モニターはURLを開くだけで壁打ち開始可能</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-18</span>
+          <span class="update-version">v0.4.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">履歴・続きチャット・お気に入り機能</div>
+        <div class="update-changes">
+          <div class="update-change">セッション履歴一覧ページ（/history）</div>
+          <div class="update-change">まとめ付きセッションカードUI</div>
+          <div class="update-change">続きチャット（?session=パラメータで既存セッション再開）</div>
+          <div class="update-change">お気に入りトグル（ハートアイコン）</div>
+          <div class="update-change">履歴フィルタリング（すべて / お気に入り）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-17</span>
+          <span class="update-version">v0.3.0</span>
+          <span class="update-type type-design">design</span>
+        </div>
+        <div class="update-title">壁打ちプロンプト・トーン修正</div>
+        <div class="update-changes">
+          <div class="update-change">問い詰め感の排除 → 共感ファーストに全面修正</div>
+          <div class="update-change">語尾を「〜ですか？」→「〜かな？」「〜だったりする？」に統一</div>
+          <div class="update-change">共感だけで返す回を許容（毎回質問で終わらなくてよい）</div>
+          <div class="update-change">getGreetingのトーンもカジュアル化</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-17</span>
+          <span class="update-version">v0.2.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">壁打ち機能の全面実装</div>
+        <div class="update-changes">
+          <div class="update-change">インタビュアー型システムプロンプト（アドバイス禁止・質問で引き出す）</div>
+          <div class="update-change">6モード自動判定（LLMベース）</div>
+          <div class="update-change">4往復ごとの途中整理ロジック</div>
+          <div class="update-change">まとめ生成（構造化JSON出力 → DB保存）</div>
+          <div class="update-change">記憶保存（keywords/strengths/uncertainties/nextTheme）</div>
+          <div class="update-change">次回起動時の記憶引き継ぎ（前回バナー + greeting生成時参照）</div>
+          <div class="update-change">初回ウェルカム画面（コンセプト・GPTとの違い・使い方）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-05-16</span>
+          <span class="update-version">v0.1.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">初期プロトタイプ</div>
+        <div class="update-changes">
+          <div class="update-change">チャットUI（スマホ最適化）</div>
+          <div class="update-change">OpenAI API連携（GPT-4o-mini）</div>
+          <div class="update-change">オンボーディング（事業カルテ対話形式取得）</div>
+          <div class="update-change">音声入力（Web Speech API）</div>
+          <div class="update-change">会話履歴の永続化（MySQL/TiDB）</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Feedback -->
+  <section>
+    <div class="section-label">
+      <span>💡</span> FEEDBACK
+    </div>
+    <h2 class="section-title">開発アイディアを入れる</h2>
+    <div class="feedback-box">
+      <div class="tab-row">
+        <button class="tab active" onclick="selectTab(this, 'アイデア')">アイデア</button>
+        <button class="tab" onclick="selectTab(this, '感想')">感想</button>
+        <button class="tab" onclick="selectTab(this, '不具合')">不具合</button>
+        <button class="tab" onclick="selectTab(this, '要望')">要望</button>
+      </div>
+      <textarea class="feedback-textarea" id="feedbackText" placeholder="思いついたことを書いてください..." rows="4"></textarea>
+      <div class="feedback-actions">
+        <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">送信</button>
+        <a href="/voices" class="voices-link">みんなの声を見る →</a>
+        <span class="toast" id="toast"></span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Last updated: 2026-05-18 | 技術顧問: 門倉 悠真</footer>
+
+<script>
+  let selectedTab = 'アイデア';
+
+  function selectTab(el, tab) {
+    selectedTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  async function submitFeedback() {
+    const text = document.getElementById('feedbackText').value.trim();
+    if (!text) return;
+
+    const btn = document.getElementById('submitBtn');
+    const toast = document.getElementById('toast');
+    btn.disabled = true;
+    btn.textContent = '送信中...';
+    toast.style.display = 'none';
+
+    const SUPA_URL = 'https://znezjmhkzdhlxdigajbo.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc';
+    try {
+      const res = await fetch(`${SUPA_URL}/rest/v1/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ type: selectedTab, content: text }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      document.getElementById('feedbackText').value = '';
+      toast.textContent = '送信しました';
+      toast.className = 'toast success';
+      toast.style.display = 'inline';
+    } catch {
+      toast.textContent = '送信に失敗しました。もう一度お試しください';
+      toast.className = 'toast error';
+      toast.style.display = 'inline';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '送信';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+  }
+</script>
+
+</body>
+</html>

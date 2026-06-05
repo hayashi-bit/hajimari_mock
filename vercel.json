@@ -1,5 +1,20 @@
 {
-  "buildCommand": "pnpm vite build",
-  "outputDirectory": "dist/public",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "buildCommand": "echo 'no build step needed'",
+  "outputDirectory": "public",
+  "framework": null,
+  "functions": {
+    "api/chat.ts": { "maxDuration": 30 },
+    "api/feedback.ts": { "maxDuration": 10 },
+    "api/embed.ts": { "maxDuration": 20 },
+    "api/intro.ts": { "maxDuration": 30 }
+  },
+  "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/home", "destination": "/home.html" },
+    { "source": "/me", "destination": "/me.html" },
+    { "source": "/docs", "destination": "/docs.html" },
+    { "source": "/chat", "destination": "/chat.html" },
+    { "source": "/voices", "destination": "/voices.html" },
+    { "source": "/profile", "destination": "/profile.html" }
+  ]
 }
