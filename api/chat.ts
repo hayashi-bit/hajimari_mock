@@ -151,6 +151,17 @@ async function fetchSimilarMemories(userId: string, embedding: number[], userTok
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  try {
+    return await _handler(req, res);
+  } catch (err) {
+    console.error("[chat] Unhandled exception:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: String(err) });
+    }
+  }
+}
+
+async function _handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "POST のみ対応しています" });
     return;
