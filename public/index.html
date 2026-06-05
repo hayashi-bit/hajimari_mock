@@ -746,6 +746,36 @@
       <div class="update-item">
         <div class="update-meta">
           <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.3.1</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">思考・話し方の癖を記録・表示</div>
+        <div class="update-changes">
+          <div class="update-change">まとめ生成時に「思考の癖」「話し方の癖」セクションを自動抽出</div>
+          <div class="update-change">過去記憶から癖を取り出してsystem promptに専用注入（AIが話し方に自然に合わせる）</div>
+          <div class="update-change">/me に「思考・話し方の癖」セクション追加（Supabaseから取得・複数回出現は×N表示）</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.3.0</span>
+          <span class="update-type type-feature">feature</span>
+        </div>
+        <div class="update-title">Supabase Auth ログイン機能・マルチデバイス対応</div>
+        <div class="update-changes">
+          <div class="update-change">login.html 新規作成（パスワード方式ログイン）</div>
+          <div class="update-change">home.html / me.html / chat.html に認証チェック追加</div>
+          <div class="update-change">session_memories RLSポリシーをauth.uid()ベースに更新</div>
+          <div class="update-change">api/embed.ts・api/chat.ts をユーザーJWT対応に変更</div>
+          <div class="update-change">スマホ・PCどちらでも同じデータを使えるマルチデバイス基盤完成</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
           <span class="update-version">v1.2.1</span>
           <span class="update-type type-feature">feature</span>
         </div>
