@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "curl -sf -X POST http://localhost:3000/api/notify 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
+            "command": "curl -sf -X POST http://localhost:39876/notify 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
             "timeout": 5
           }
         ]
