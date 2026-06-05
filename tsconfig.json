@@ -3,8 +3,8 @@
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "noEmit": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "target": "ES2022",
     "strict": true,
     "lib": ["ES2022", "dom"],

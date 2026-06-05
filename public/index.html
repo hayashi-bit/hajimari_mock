@@ -746,6 +746,20 @@
       <div class="update-item">
         <div class="update-meta">
           <span class="update-date">2026-06-05</span>
+          <span class="update-version">v1.5.0</span>
+          <span class="update-type type-fix">fix</span>
+        </div>
+        <div class="update-title">チャットAPI：500エラーの根本修正（バックエンド全体見直し）</div>
+        <div class="update-changes">
+          <div class="update-change">tsconfig.json の module を ESNext→CommonJS に修正（Vercel CJS互換）</div>
+          <div class="update-change">api/chat.ts を VercelRequest/VercelResponse 型に戻してSSEストリーミング復元</div>
+          <div class="update-change">Anthropic claude-sonnet-4-6 SSEストリーミング・システムプロンプト完全復元</div>
+        </div>
+      </div>
+
+      <div class="update-item">
+        <div class="update-meta">
+          <span class="update-date">2026-06-05</span>
           <span class="update-version">v1.4.1</span>
           <span class="update-type type-fix">fix</span>
         </div>
