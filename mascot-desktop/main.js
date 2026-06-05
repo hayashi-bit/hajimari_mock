@@ -2,10 +2,11 @@ const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const https = require("https");
 const path = require("path");
 
-const SUPABASE_URL = "kwmulkworqsswmiqbabd.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE";
+const GITHUB_API = "api.github.com";
+const NOTIFY_PATH = "/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify";
 
 let win;
+let lastTs = 0;
 
 function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -30,49 +31,47 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
 }
 
-function supabaseRequest(method, path, body) {
-  return new Promise((resolve, reject) => {
+function fetchNotify() {
+  return new Promise((resolve) => {
     const options = {
-      hostname: SUPABASE_URL,
-      path,
-      method,
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=representation",
-      },
+      hostname: GITHUB_API,
+      path: NOTIFY_PATH,
+      method: "GET",
+      headers: { "User-Agent": "hajimari-mascot" },
     };
     const req = https.request(options, (res) => {
       let data = "";
       res.on("data", (chunk) => { data += chunk; });
       res.on("end", () => {
-        try { resolve(JSON.parse(data)); } catch { resolve(data); }
+        try {
+          const json = JSON.parse(data);
+          const content = Buffer.from(json.content, "base64").toString("utf8");
+          const { ts } = JSON.parse(content);
+          resolve(ts);
+        } catch {
+          resolve(null);
+        }
       });
     });
-    req.on("error", reject);
-    if (body) req.write(JSON.stringify(body));
+    req.on("error", () => resolve(null));
     req.end();
   });
 }
 
 function startPolling() {
   setInterval(async () => {
-    try {
-      const rows = await supabaseRequest("GET", "/rest/v1/mascot_notify?id=eq.1&select=done", null);
-      if (Array.isArray(rows) && rows[0]?.done) {
-        // Reset flag
-        await supabaseRequest("PATCH", "/rest/v1/mascot_notify?id=eq.1", { done: false });
-        win?.webContents.send("show-complete");
-      }
-    } catch (e) {
-      console.error("Poll error:", e.message);
+    const ts = await fetchNotify();
+    if (ts && ts !== lastTs && ts > (Date.now() / 1000 - 60)) {
+      lastTs = ts;
+      win?.webContents.send("show-complete");
     }
-  }, 2000);
+    if (ts) lastTs = ts;
+  }, 3000);
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
+  lastTs = (await fetchNotify()) ?? 0;
   startPolling();
 });
 
