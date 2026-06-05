@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/user/hajimari_mock/scripts/notify.sh 2>/dev/null; echo '{\"systemMessage\": \"✅ 開発完了！\"}'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

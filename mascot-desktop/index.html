@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: transparent;
+      overflow: hidden;
+      user-select: none;
+      -webkit-app-region: drag;
+    }
+    .container {
+      width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 8px;
+      gap: 4px;
+    }
+    .bubble {
+      background: white;
+      border: 2px solid #E0603A;
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+      color: #333;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: #E0603A;
+    }
+    .bubble.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mascot {
+      cursor: pointer;
+      -webkit-app-region: drag;
+      transition: transform 0.1s;
+    }
+    .mascot:active {
+      transform: scale(0.95);
+    }
+    .mascot.bounce {
+      animation: bounce 0.5s ease 3;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .close-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      background: rgba(0,0,0,0.2);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 9px;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    body:hover .close-btn { opacity: 1; }
+  </style>
+</head>
+<body>
+  <button class="close-btn" id="closeBtn">✕</button>
+  <div class="container">
+    <div class="bubble" id="bubble">完了したよ！✅</div>
+    <svg class="mascot" id="mascot" width="80" height="80" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="16" y="20" width="32" height="28" rx="4" fill="#E0603A"/>
+      <rect x="18" y="8" width="28" height="20" rx="4" fill="#E0603A"/>
+      <rect x="23" y="14" width="6" height="6" rx="1" fill="white"/>
+      <rect x="35" y="14" width="6" height="6" rx="1" fill="white"/>
+      <rect x="25" y="16" width="3" height="3" rx="0.5" fill="#333"/>
+      <rect x="37" y="16" width="3" height="3" rx="0.5" fill="#333"/>
+      <rect x="26" y="23" width="12" height="3" rx="1.5" fill="white"/>
+      <rect x="20" y="48" width="10" height="10" rx="2" fill="#C94E2A"/>
+      <rect x="34" y="48" width="10" height="10" rx="2" fill="#C94E2A"/>
+      <rect x="30" y="2" width="4" height="8" rx="2" fill="#C94E2A"/>
+      <circle cx="32" cy="2" r="3" fill="#FFB347"/>
+    </svg>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    const bubble = document.getElementById("bubble");
+    const mascot = document.getElementById("mascot");
+    const closeBtn = document.getElementById("closeBtn");
+
+    function showMessage(msg, duration = 4000) {
+      bubble.textContent = msg;
+      bubble.classList.add("show");
+      mascot.classList.add("bounce");
+      setTimeout(() => {
+        bubble.classList.remove("show");
+        mascot.classList.remove("bounce");
+      }, duration);
+    }
+
+    // Click to say hello
+    mascot.addEventListener("click", () => {
+      showMessage("こんにちは！👋", 2000);
+    });
+
+    // Receive completion notification from Stop hook
+    ipcRenderer.on("show-complete", () => {
+      showMessage("完了したよ！✅", 5000);
+    });
+
+    closeBtn.addEventListener("click", () => {
+      ipcRenderer.send("close-app");
+    });
+  </script>
+</body>
+</html>
