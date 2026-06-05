@@ -20,6 +20,6 @@
     { "source": "/chat", "destination": "/chat.html" },
     { "source": "/voices", "destination": "/voices.html" },
     { "source": "/profile", "destination": "/profile.html" },
-    { "source": "/dashboard", "destination": "/index.html" }
+    { "source": "/dashboard", "destination": "/dev-dashboard.html" }
   ]
 }
