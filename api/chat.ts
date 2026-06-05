@@ -78,10 +78,42 @@ const SUMMARIZE_PROMPT = `これまでの会話を以下の形式でまとめて
 ■ 見えてきた強み・視点
 （箇条書き 2〜4個）
 
+■ 思考の癖
+この人特有の考え方のパターンを2〜3個。例：「感覚で判断する」「全体像から入る」「完璧主義的」など。
+（箇条書き 2〜3個）
+
+■ 話し方の癖
+この会話で観察できた言葉の使い方・文体の特徴を2〜3個。例：「体言止めが多い」「「でも」から始める」「短文で区切る」など。
+（箇条書き 2〜3個）
+
 シンプルに、本人の言葉を活かしてまとめてください。`;
 
 const SUPA_URL = process.env.SUPABASE_URL!;
 const SUPA_KEY = process.env.SUPABASE_ANON_KEY!;
+
+function extractSection(text: string, sectionName: string): string {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inSection = false;
+  for (const line of lines) {
+    if (line.startsWith(`■ ${sectionName}`)) { inSection = true; continue; }
+    if (inSection && line.startsWith('■ ')) break;
+    if (inSection && line.trim()) result.push(line.trim());
+  }
+  return result.join('\n');
+}
+
+function removePatternSections(text: string): string {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let skip = false;
+  for (const line of lines) {
+    if (line.startsWith('■ 思考の癖') || line.startsWith('■ 話し方の癖')) { skip = true; continue; }
+    if (skip && line.startsWith('■ ')) skip = false;
+    if (!skip) result.push(line);
+  }
+  return result.join('\n').trim();
+}
 
 async function getEmbedding(text: string): Promise<number[] | null> {
   const key = process.env.OPENAI_API_KEY;
@@ -166,7 +198,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (embedding) {
       const similarMemories = await fetchSimilarMemories(userId, embedding, userToken);
       if (similarMemories) {
-        systemPrompt += `\n\n---\n【過去の会話から見えてきた傾向（意味的に近いもの）】\n以下は過去のセッションで記録された内容です。今の話題と関連する部分を自然に活かしてください。\n${similarMemories}`;
+        // 思考の癖・話し方の癖を抽出して専用セクションとして注入
+        const thinkingPatterns = extractSection(similarMemories, '思考の癖');
+        const speechPatterns = extractSection(similarMemories, '話し方の癖');
+        const otherMemories = removePatternSections(similarMemories);
+
+        if (thinkingPatterns || speechPatterns) {
+          systemPrompt += `\n\n---\n【この人の思考・話し方の傾向（複数回の会話から）】\n以下の傾向を踏まえて、言葉の選び方・問いの立て方を自然に合わせてください。押しつけにならないよう、あくまで「その人の言葉に寄り添う」感覚で。`;
+          if (thinkingPatterns) systemPrompt += `\n\n思考の癖:\n${thinkingPatterns}`;
+          if (speechPatterns) systemPrompt += `\n\n話し方の癖:\n${speechPatterns}`;
+        }
+        if (otherMemories) {
+          systemPrompt += `\n\n---\n【過去の会話から見えてきた傾向】\n${otherMemories}`;
+        }
       }
     }
   }

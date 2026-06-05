@@ -494,6 +494,46 @@
 
     .btn-gen:hover, .btn-gen-full:hover { background: #a85640; }
     .btn-gen:disabled, .btn-gen-full:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) { .pattern-grid { grid-template-columns: 1fr; } }
+
+    .pattern-block {
+      background: #fff;
+      border: 1px solid #e8e0d8;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .pattern-block-title {
+      font-size: 12px;
+      color: #9a8a7a;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .pattern-tag {
+      display: inline-block;
+      background: #f5f0eb;
+      border: 1px solid #e8e0d8;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #5a4a3a;
+      margin: 3px 3px 3px 0;
+      line-height: 1.5;
+    }
+
+    .pattern-empty {
+      font-size: 12px;
+      color: #bbb;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -582,6 +622,21 @@
   </div>
 </div>
 
+<!-- ===== 思考・話し方の癖 ===== -->
+<div class="section">
+  <div class="section-title">思考・話し方の癖</div>
+  <div class="pattern-grid">
+    <div class="pattern-block">
+      <div class="pattern-block-title">🧠 思考の癖</div>
+      <div id="thinkingPatterns"><span class="pattern-empty">会話を重ねると表示されます</span></div>
+    </div>
+    <div class="pattern-block">
+      <div class="pattern-block-title">💬 話し方の癖</div>
+      <div id="speechPatterns"><span class="pattern-empty">会話を重ねると表示されます</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 生活リズム ===== -->
 <div class="section">
   <div class="section-title">生活リズム（時間帯 × 曜日）</div>
@@ -628,8 +683,49 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE'
   );
   _sb.auth.getSession().then(({ data }) => {
-    if (!data.session) window.location.href = '/login';
+    if (!data.session) { window.location.href = '/login'; return; }
+    loadPatterns(data.session);
   });
+
+  function extractSectionText(text, sectionName) {
+    const lines = text.split('\n');
+    const result = [];
+    let inSection = false;
+    for (const line of lines) {
+      if (line.startsWith(`■ ${sectionName}`)) { inSection = true; continue; }
+      if (inSection && line.startsWith('■ ')) break;
+      if (inSection && line.trim()) result.push(line.replace(/^[・\-]\s*/, '').trim());
+    }
+    return result;
+  }
+
+  async function loadPatterns(session) {
+    try {
+      const res = await fetch(
+        'https://kwmulkworqsswmiqbabd.supabase.co/rest/v1/session_memories?select=summary&order=created_at.desc&limit=20',
+        { headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE', 'Authorization': `Bearer ${session.access_token}` } }
+      );
+      if (!res.ok) return;
+      const rows = await res.json();
+
+      const thinkingMap = {}, speechMap = {};
+      for (const row of rows) {
+        extractSectionText(row.summary, '思考の癖').forEach(t => { thinkingMap[t] = (thinkingMap[t] || 0) + 1; });
+        extractSectionText(row.summary, '話し方の癖').forEach(t => { speechMap[t] = (speechMap[t] || 0) + 1; });
+      }
+
+      const renderTags = (map, el) => {
+        const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
+        if (sorted.length === 0) return;
+        el.innerHTML = sorted.map(([text, count]) =>
+          `<span class="pattern-tag">${text}${count > 1 ? ` <small style="opacity:.6">×${count}</small>` : ''}</span>`
+        ).join('');
+      };
+
+      renderTags(thinkingMap, document.getElementById('thinkingPatterns'));
+      renderTags(speechMap, document.getElementById('speechPatterns'));
+    } catch {}
+  }
 
   const SESSIONS_KEY = 'hajimari_sessions';
   const PROFILE_KEY = 'hajimari_profile';
