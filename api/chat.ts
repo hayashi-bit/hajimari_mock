@@ -231,6 +231,7 @@ async function _handler(req: VercelRequest, res: VercelResponse) {
   if (fileContext) systemPrompt += `\n\n---\n【添付資料】\n${fileContext}`;
   if (summarize) systemPrompt += `\n\n---\n${SUMMARIZE_PROMPT}`;
 
+  console.log("[chat] calling anthropic api");
   let upstream: Response;
   try {
     upstream = await fetch("https://api.anthropic.com/v1/messages", {
@@ -245,52 +246,31 @@ async function _handler(req: VercelRequest, res: VercelResponse) {
         max_tokens: 1024,
         system: systemPrompt,
         messages,
-        stream: true,
+        stream: false,
       }),
     });
-  } catch {
-    res.status(502).json({ error: "Anthropic への接続に失敗しました" });
+  } catch (fetchErr) {
+    console.error("[chat] fetch threw:", fetchErr);
+    res.status(502).json({ error: "Anthropic への接続に失敗しました: " + String(fetchErr) });
     return;
   }
 
-  if (!upstream.ok || !upstream.body) {
+  console.log("[chat] anthropic status:", upstream.status);
+  if (!upstream.ok) {
     const text = await upstream.text().catch(() => "");
     console.error(`[chat] Anthropic API error: ${upstream.status} ${text}`);
     res.status(upstream.status || 502).json({ error: text || "AI応答に失敗しました" });
     return;
   }
 
+  const data = await upstream.json() as { content?: { text?: string }[] };
+  const content = data?.content?.[0]?.text ?? "";
+  console.log("[chat] got response, length:", content.length);
+
+  // SSE形式でクライアントに返す（クライアント側の既存コードと互換）
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-
-  const reader = upstream.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-
-    for (const line of lines) {
-      if (!line.startsWith("data: ")) continue;
-      const data = line.slice(6).trim();
-      try {
-        const json = JSON.parse(data);
-        if (json.type === "content_block_delta") {
-          const content = json.delta?.text;
-          if (content) res.write(`data: ${JSON.stringify({ content })}\n\n`);
-        }
-      } catch {
-        // ignore partial JSON
-      }
-    }
-  }
-
+  res.write(`data: ${JSON.stringify({ content })}\n\n`);
   res.write("data: [DONE]\n\n");
   res.end();
 }
