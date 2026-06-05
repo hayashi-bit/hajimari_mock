@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
-const http = require("http");
+const https = require("https");
 const path = require("path");
+
+const SUPABASE_URL = "kwmulkworqsswmiqbabd.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE";
 
 let win;
 
@@ -27,27 +30,50 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
 }
 
-// HTTP server to receive notifications from Stop hook
-function startNotifyServer() {
-  const server = http.createServer((req, res) => {
-    if (req.method === "POST" && req.url === "/notify") {
-      win?.webContents.send("show-complete");
-      res.writeHead(200);
-      res.end("ok");
-    } else {
-      res.writeHead(404);
-      res.end();
-    }
+function supabaseRequest(method, path, body) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: SUPABASE_URL,
+      path,
+      method,
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation",
+      },
+    };
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        try { resolve(JSON.parse(data)); } catch { resolve(data); }
+      });
+    });
+    req.on("error", reject);
+    if (body) req.write(JSON.stringify(body));
+    req.end();
   });
+}
 
-  server.listen(39876, "127.0.0.1", () => {
-    console.log("Notify server running on port 39876");
-  });
+function startPolling() {
+  setInterval(async () => {
+    try {
+      const rows = await supabaseRequest("GET", "/rest/v1/mascot_notify?id=eq.1&select=done", null);
+      if (Array.isArray(rows) && rows[0]?.done) {
+        // Reset flag
+        await supabaseRequest("PATCH", "/rest/v1/mascot_notify?id=eq.1", { done: false });
+        win?.webContents.send("show-complete");
+      }
+    } catch (e) {
+      console.error("Poll error:", e.message);
+    }
+  }, 2000);
 }
 
 app.whenReady().then(() => {
   createWindow();
-  startNotifyServer();
+  startPolling();
 });
 
 app.on("window-all-closed", () => app.quit());
