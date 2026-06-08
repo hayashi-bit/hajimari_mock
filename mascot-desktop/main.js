@@ -110,3 +110,4 @@ app.on("window-all-closed", () => app.quit());
 
 ipcMain.on("close-app", () => app.quit());
 
+ 
