@@ -1,5 +1,4 @@
-const { app, BrowserWindow, ipcMain, screen } = require("electron");
-const https = require("https");
+const { app, BrowserWindow, ipcMain, screen, net } = require("electron");
 
 let win;
 let lastTs = 0;
@@ -26,49 +25,40 @@ function createWindow() {
 
 function fetchTs() {
   return new Promise((resolve) => {
-    const t = Date.now();
-    const options = {
-      hostname: "raw.githubusercontent.com",
-      path: `/hayashi-bit/hajimari_mock/notify/notify.json?t=${t}`,
-      method: "GET",
-      headers: {
-        "User-Agent": "hajimari-mascot",
-        "Cache-Control": "no-cache, no-store",
-        "Pragma": "no-cache",
-      },
-    };
-    const req = https.request(options, (res) => {
-      let data = "";
-      res.on("data", (chunk) => { data += chunk; });
-      res.on("end", () => {
-        try {
-          const { ts } = JSON.parse(data);
-          resolve(ts || 0);
-        } catch { resolve(0); }
+    const url = `https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/notify/notify.json?_=${Date.now()}`;
+    const request = net.request({ url, method: "GET" });
+    request.setHeader("Cache-Control", "no-cache");
+    let body = "";
+    request.on("response", (response) => {
+      response.on("data", (chunk) => { body += chunk.toString(); });
+      response.on("end", () => {
+        try { resolve(JSON.parse(body).ts || 0); }
+        catch { resolve(0); }
       });
     });
-    req.on("error", () => resolve(0));
-    req.end();
+    request.on("error", () => resolve(0));
+    request.end();
   });
 }
 
 async function poll() {
   try {
     const ts = await fetchTs();
-    if (ts && ts !== lastTs && ts > (Date.now() / 1000 - 300)) {
-      if (lastTs !== 0) {
+    if (ts > 0 && ts !== lastTs) {
+      const now = Math.floor(Date.now() / 1000);
+      if (lastTs > 0 && ts > now - 300) {
         win?.webContents.send("show-complete");
       }
       lastTs = ts;
     }
   } catch {}
-  setTimeout(poll, 5000);
+  setTimeout(poll, 4000);
 }
 
 app.whenReady().then(async () => {
   createWindow();
   lastTs = await fetchTs();
-  setTimeout(poll, 5000);
+  setTimeout(poll, 4000);
 });
 
 app.on("window-all-closed", () => app.quit());
