@@ -131,14 +131,23 @@
       ipcRenderer.send("close-app");
     });
 
-    // Poll GitHub directly using fetch()
+    // Poll GitHub Contents API with ETag (304 responses don't count against rate limit)
     let lastTs = 0;
+    let etag = "";
     async function checkNotify() {
       try {
-        const url = "https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/notify/notify.json?_=" + Date.now();
-        const res = await fetch(url, { cache: "no-store" });
+        const headers = { "User-Agent": "hajimari-mascot" };
+        if (etag) headers["If-None-Match"] = etag;
+        const res = await fetch(
+          "https://api.github.com/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify",
+          { headers }
+        );
+        if (res.status === 304) return;
+        if (!res.ok) return;
+        etag = res.headers.get("etag") || "";
         const data = await res.json();
-        const ts = data.ts || 0;
+        const content = JSON.parse(atob(data.content.replace(/\n/g, "")));
+        const ts = content.ts || 0;
         if (ts > 0 && ts !== lastTs) {
           const now = Math.floor(Date.now() / 1000);
           if (lastTs > 0 && ts > now - 300) {
