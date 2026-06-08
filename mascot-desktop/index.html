@@ -123,7 +123,6 @@
       showMessage("こんにちは！👋", 2000);
     });
 
-    // Receive completion notification from Stop hook
     ipcRenderer.on("show-complete", () => {
       showMessage("完了したよ！✅", 5000);
     });
@@ -131,6 +130,26 @@
     closeBtn.addEventListener("click", () => {
       ipcRenderer.send("close-app");
     });
+
+    // Poll GitHub directly using fetch()
+    let lastTs = 0;
+    async function checkNotify() {
+      try {
+        const url = "https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/notify/notify.json?_=" + Date.now();
+        const res = await fetch(url, { cache: "no-store" });
+        const data = await res.json();
+        const ts = data.ts || 0;
+        if (ts > 0 && ts !== lastTs) {
+          const now = Math.floor(Date.now() / 1000);
+          if (lastTs > 0 && ts > now - 300) {
+            showMessage("完了したよ！✅", 5000);
+          }
+          lastTs = ts;
+        }
+      } catch(e) {}
+    }
+    checkNotify();
+    setInterval(checkNotify, 5000);
   </script>
 </body>
 </html>
