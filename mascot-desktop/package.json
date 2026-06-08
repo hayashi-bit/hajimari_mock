@@ -1,6 +1,6 @@
 {
   "name": "hajimari-mascot",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Hajimari desktop mascot",
   "main": "main.js",
   "scripts": {

@@ -1,5 +1,4 @@
-const { app, BrowserWindow, ipcMain, screen } = require("electron");
-const https = require("https");
+const { app, BrowserWindow, ipcMain, screen, net } = require("electron");
 
 let win;
 let lastTs = 0;
@@ -20,7 +19,6 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      webSecurity: false,
     },
   });
   win.loadFile("index.html");
@@ -28,15 +26,14 @@ function createWindow() {
 
 function fetchNotify() {
   return new Promise((resolve) => {
-    const headers = { "User-Agent": "hajimari-mascot/1.7" };
+    const headers = { "User-Agent": "hajimari-mascot/1.8" };
     if (etag) headers["If-None-Match"] = etag;
-    const options = {
-      hostname: "api.github.com",
-      path: "/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify",
+    const req = net.request({
       method: "GET",
+      url: "https://api.github.com/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify",
       headers,
-    };
-    const req = https.request(options, (res) => {
+    });
+    req.on("response", (res) => {
       if (res.statusCode === 304) { resolve(null); return; }
       if (res.statusCode !== 200) { resolve(null); return; }
       etag = res.headers["etag"] || etag;
@@ -71,6 +68,7 @@ async function poll() {
 
 app.whenReady().then(async () => {
   createWindow();
+  await new Promise((r) => setTimeout(r, 1000));
   const ts = await fetchNotify();
   if (ts) lastTs = ts;
   setTimeout(poll, 5000);
