@@ -2,12 +2,10 @@ const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const https = require("https");
 const path = require("path");
 
-const GITHUB_API = "api.github.com";
-const NOTIFY_PATH = "/repos/hayashi-bit/hajimari_mock/contents/notify.json?ref=notify";
+const SUPABASE_URL = "kwmulkworqsswmiqbabd.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE";
 
 let win;
-let lastEtag = "";
-let lastTs = 0;
 
 function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -32,82 +30,73 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
 }
 
-function fetchNotify() {
+function supabaseGet() {
   return new Promise((resolve) => {
-    const headers = { "User-Agent": "hajimari-mascot" };
-    if (lastEtag) headers["If-None-Match"] = lastEtag;
-
     const options = {
-      hostname: GITHUB_API,
-      path: NOTIFY_PATH,
+      hostname: SUPABASE_URL,
+      path: "/rest/v1/mascot_notify?id=eq.1&select=done",
       method: "GET",
-      headers,
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+      },
     };
-
     const req = https.request(options, (res) => {
-      // 304 = not modified, free request, no change
-      if (res.statusCode === 304) {
-        resolve({ changed: false });
-        return;
-      }
-
-      // 403 = rate limited, back off
-      if (res.statusCode === 403) {
-        resolve({ changed: false, rateLimit: true });
-        return;
-      }
-
-      const etag = res.headers["etag"] || "";
       let data = "";
       res.on("data", (chunk) => { data += chunk; });
       res.on("end", () => {
         try {
-          const json = JSON.parse(data);
-          const content = Buffer.from(json.content, "base64").toString("utf8");
-          const { ts } = JSON.parse(content);
-          lastEtag = etag;
-          resolve({ changed: true, ts });
-        } catch {
-          resolve({ changed: false });
-        }
+          const rows = JSON.parse(data);
+          resolve(rows[0]?.done ?? false);
+        } catch { resolve(false); }
       });
     });
-    req.on("error", () => resolve({ changed: false }));
+    req.on("error", () => resolve(false));
     req.end();
   });
 }
 
-let pollInterval = 5000;
-
-async function poll() {
-  const result = await fetchNotify();
-
-  if (result.rateLimit) {
-    // rate limited, slow down
-    pollInterval = 60000;
-  } else if (result.changed) {
-    pollInterval = 5000;
-    const { ts } = result;
-    if (ts && ts !== lastTs && ts > (Date.now() / 1000 - 120)) {
-      lastTs = ts;
-      win?.webContents.send("show-complete");
-    }
-    if (ts) lastTs = ts;
-  }
-
-  setTimeout(poll, pollInterval);
+function supabaseReset() {
+  return new Promise((resolve) => {
+    const body = JSON.stringify({ done: false });
+    const options = {
+      hostname: SUPABASE_URL,
+      path: "/rest/v1/mascot_notify?id=eq.1",
+      method: "PATCH",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(body),
+      },
+    };
+    const req = https.request(options, (res) => {
+      res.on("data", () => {});
+      res.on("end", resolve);
+    });
+    req.on("error", resolve);
+    req.write(body);
+    req.end();
+  });
 }
 
-app.whenReady().then(async () => {
+function startPolling() {
+  setInterval(async () => {
+    try {
+      const done = await supabaseGet();
+      if (done) {
+        await supabaseReset();
+        win?.webContents.send("show-complete");
+      }
+    } catch {}
+  }, 3000);
+}
+
+app.whenReady().then(() => {
   createWindow();
-  // Initial fetch to get current ts and etag (baseline)
-  const init = await fetchNotify();
-  if (init.changed && init.ts) lastTs = init.ts;
-  setTimeout(poll, pollInterval);
+  startPolling();
 });
 
 app.on("window-all-closed", () => app.quit());
 
 ipcMain.on("close-app", () => app.quit());
-
- 
