@@ -227,6 +227,23 @@
         </div>
         <button class="btn" id="loginBtn" onclick="signIn()">ログイン</button>
         <div class="message" id="loginMessage"></div>
+        <div style="text-align:center; margin-top:12px;">
+          <a href="#" onclick="showResetForm(); return false;" style="font-size:13px; color:#9a8a7a; text-decoration:none;">パスワードを忘れた方はこちら</a>
+        </div>
+      </div>
+
+      <!-- パスワードリセットフォーム -->
+      <div id="resetForm" style="display:none;">
+        <p style="font-size:14px; color:#5a4a3a; margin-bottom:16px;">登録したメールアドレスにリセット用リンクを送ります。</p>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="resetEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="btn" id="resetBtn" onclick="sendReset()">リセットメールを送る</button>
+        <div class="message" id="resetMessage"></div>
+        <div style="text-align:center; margin-top:12px;">
+          <a href="#" onclick="switchTab('login'); return false;" style="font-size:13px; color:#9a8a7a; text-decoration:none;">← ログインに戻る</a>
+        </div>
       </div>
 
       <!-- 新規登録フォーム -->
@@ -270,8 +287,38 @@
     function switchTab(tab) {
       document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
       document.getElementById('signupForm').style.display = tab === 'signup' ? '' : 'none';
+      document.getElementById('resetForm').style.display = 'none';
       document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
       document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+    }
+
+    function showResetForm() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('resetForm').style.display = '';
+      document.getElementById('tabLogin').classList.remove('active');
+      document.getElementById('tabSignup').classList.remove('active');
+    }
+
+    async function sendReset() {
+      const email = document.getElementById('resetEmail').value.trim();
+      if (!email) {
+        showMessage('resetMessage', 'メールアドレスを入力してください', 'error');
+        return;
+      }
+      const btn = document.getElementById('resetBtn');
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: `${location.origin}/me`
+      });
+      btn.disabled = false;
+      btn.textContent = 'リセットメールを送る';
+      if (error) {
+        showMessage('resetMessage', '送信に失敗しました。もう一度お試しください', 'error');
+        return;
+      }
+      showMessage('resetMessage', 'メールを送りました。受信ボックスを確認してください', 'success');
     }
 
     async function signIn() {
