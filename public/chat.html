@@ -837,17 +837,16 @@
 
   async function initAuth() {
     const { data } = await sb.auth.getSession();
-    if (!data.session) {
-      window.location.href = '/login';
-      return false;
+    if (data.session) {
+      currentUser = data.session.user;
+      currentAccessToken = data.session.access_token;
+      sb.auth.onAuthStateChange((event, session) => {
+        if (session) {
+          currentUser = session.user;
+          currentAccessToken = session.access_token;
+        }
+      });
     }
-    currentUser = data.session.user;
-    currentAccessToken = data.session.access_token;
-    sb.auth.onAuthStateChange((event, session) => {
-      if (!session) { window.location.href = '/login'; return; }
-      currentUser = session.user;
-      currentAccessToken = session.access_token;
-    });
     return true;
   }
 

@@ -683,7 +683,6 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc'
   );
   _sb.auth.getSession().then(({ data }) => {
-    if (!data.session) { window.location.href = '/login'; return; }
     loadPatterns(data.session);
   });
 
