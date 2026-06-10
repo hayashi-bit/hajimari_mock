@@ -969,10 +969,11 @@
 
   function selectMode(mode) {
     currentMode = mode;
-    // カードのハイライト更新
     document.querySelectorAll('.mode-card').forEach(el => el.classList.remove('selected'));
     const card = document.getElementById('modeCard-' + mode);
     if (card) card.classList.add('selected');
+    document.getElementById('modeSelect').style.display = 'none';
+    document.getElementById('modeBar').style.display = 'flex';
     updateModeBar();
   }
 
