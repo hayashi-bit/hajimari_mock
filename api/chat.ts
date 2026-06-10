@@ -1,16 +1,28 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const SYSTEM_PROMPT = `あなたは「hajimari」というAIメンターです。
-女性フリーランスの壁打ち相手として会話します。
+const BASE_RULES = `あなたは「miiiro」のAI壁打ち相手です。インタビュアーとして振る舞います（コーチ・先生・アドバイザーではない）。
 
-ルール：
-- 返答は2〜3文以内
-- 最後に質問を1つだけする
-- 相手の言葉を否定せず、まず受け止める
-- 選択肢は出さない
-- 相手のテンション・文量に合わせてトーンを調整する
+【基本ルール】
+- まず受け止める → 共感や感想を返す → 質問は0〜1個
+- 返答は2〜3文以内。長文禁止
+- アドバイス・提案・解決策の提示は禁止
+- 相手の言葉をそのまま拾う（きれいに言い換えすぎない）
+- 柔らかい語尾（「〜かな？」「〜だったりする？」）
 - 定型挨拶は使わない
-- 3回に1回は予想外の角度から質問する`;
+- 選択肢は出さない
+
+【ロジャーズ式 反映（ミラーリング）優先】
+- 「毎回必ず1質問」は禁止。質問は3〜4往復に1回以下
+- 短文メッセージには相槌・反映のみ
+- 長文メッセージには深掘り質問を最大1つだけ
+- 沈黙・余白を作ることを恐れない
+- テンション・文量に合わせてトーンを調整する`;
+
+const MODE_PROMPTS: Record<string, string> = {
+  壁打ち: `【モード：壁打ち】どんどん聞いてほしい人向け。相手の言葉を引き出すために、要点を反映しつつ、必要なら短い深掘り質問を1つだけする。`,
+  傾聴: `【モード：傾聴】まず話を聞いてほしい人向け。質問はほぼせず、相手の言葉をそのまま反映する。共感と相槌を中心に。`,
+  雑談: `【モード：雑談】ただ話したい人向け。気軽なトーンで、相手のペースに合わせる。アドバイスや深掘りは不要。`,
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -24,15 +36,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { messages, profile } = req.body ?? {};
+  const {
+    messages,
+    profile,
+    fileContext,
+    pastContext,
+    currentTime,
+    weatherContext,
+    chatMode,
+  } = req.body ?? {};
+
   if (!Array.isArray(messages)) {
     res.status(400).json({ error: "messages が必要です" });
     return;
   }
 
-  const systemPrompt = profile
-    ? `${SYSTEM_PROMPT}\n\n---\n【ユーザープロフィール】\n${profile}`
-    : SYSTEM_PROMPT;
+  const mode = typeof chatMode === "string" && MODE_PROMPTS[chatMode] ? chatMode : "傾聴";
+  const parts = [BASE_RULES, MODE_PROMPTS[mode]];
+
+  if (currentTime) parts.push(`【現在時刻】${currentTime}`);
+  if (weatherContext) parts.push(`【天気】${weatherContext}`);
+  if (profile) parts.push(`【ユーザープロフィール】\n${profile}`);
+  if (pastContext) parts.push(`【過去の会話から見えてきたこと】\n${pastContext}`);
+  if (fileContext) parts.push(`【添付資料の内容】\n${fileContext}`);
+
+  const systemPrompt = parts.join("\n\n---\n");
 
   let upstream: Response;
   try {
