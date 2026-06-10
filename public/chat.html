@@ -841,14 +841,7 @@
       currentUser = data.session.user;
       currentAccessToken = data.session.access_token;
       sb.auth.onAuthStateChange((event, session) => {
-<<<<<<< HEAD
-        if (session) {
-          currentUser = session.user;
-          currentAccessToken = session.access_token;
-        }
-=======
         if (session) { currentUser = session.user; currentAccessToken = session.access_token; }
->>>>>>> main
       });
     }
     return true;
