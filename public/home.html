@@ -334,7 +334,7 @@
       margin-top: 4px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>
 </head>
 <body>
 
@@ -398,15 +398,6 @@
 </div>
 
 <script>
-  // Auth check
-  const _sb = supabase.createClient(
-    'https://kwmulkworqsswmiqbabd.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE'
-  );
-  _sb.auth.getSession().then(({ data }) => {
-    if (!data.session) window.location.href = '/login';
-  });
-
   const SESSIONS_KEY = 'hajimari_sessions';
   const PROFILE_KEY = 'hajimari_profile';
 
@@ -414,7 +405,6 @@
     try { return JSON.parse(localStorage.getItem(SESSIONS_KEY) || '[]'); } catch { return []; }
   }
 
-  // ===== GREETING =====
   function setGreeting() {
     const now = new Date();
     const h = now.getHours();
@@ -433,7 +423,6 @@
     document.getElementById('greetingMain').textContent = msg;
   }
 
-  // ===== STATUS CHIPS =====
   function getWeekRange() {
     const now = new Date();
     const day = now.getDay();
@@ -482,7 +471,6 @@
     const el = document.getElementById('statusChips');
     if (chips.length > 0) el.innerHTML = chips.join('');
 
-    // 深夜アラート
     const lateNight = sessions.filter(s => {
       const d = new Date(s.createdAt);
       return d >= weekStart && d.getHours() >= 22;
@@ -497,9 +485,8 @@
   setGreeting();
   buildStatusChips();
 
-  // ===== FEEDBACK =====
-  const SUPA_URL = 'https://kwmulkworqsswmiqbabd.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXVsa3dvcnFzc3dtaXFiYWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDQwMzcsImV4cCI6MjA5MjcyMDAzN30.yT9dssLbf6gjIzisahhRy8CJpzjxyQxpXdg_tI63imE';
+  const SUPA_URL = 'https://znezjmhkzdhlxdigajbo.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc';
   let feedbackFormOpen = false;
   let selectedFbType = 'アイデア';
 
@@ -556,7 +543,6 @@
     btn.disabled = false;
   }
 
-  // 5-click dev mode
   let logoClicks = 0, logoTimer;
   document.getElementById('logoBtn').addEventListener('click', () => {
     logoClicks++;
@@ -571,9 +557,8 @@
       setTimeout(() => toast.remove(), 8000);
     }
   });
-</script>
+<\/script>
 
-<!-- ===== FOOTER FEEDBACK ===== -->
 <div class="page-footer">
   <button class="feedback-toggle-btn" id="feedbackToggleBtn" onclick="toggleFeedbackForm()">
     💬 フィードバックを送る
