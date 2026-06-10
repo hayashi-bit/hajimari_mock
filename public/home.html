@@ -334,7 +334,7 @@
       margin-top: 4px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -398,6 +398,16 @@
 </div>
 
 <script>
+<<<<<<< HEAD
+  // Auth check
+  const _sb = supabase.createClient(
+    'https://znezjmhkzdhlxdigajbo.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZXpqbWhremRobHhkaWdhamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzczMDAsImV4cCI6MjA5NjI1MzMwMH0.BQxJAvsF_8Qj1s4N8wlXuaPt_omCleWhnuWIR22sGcc'
+  );
+  // Auth check disabled - open access
+
+=======
+>>>>>>> main
   const SESSIONS_KEY = 'hajimari_sessions';
   const PROFILE_KEY = 'hajimari_profile';
 
@@ -557,7 +567,7 @@
       setTimeout(() => toast.remove(), 8000);
     }
   });
-<\/script>
+</script>
 
 <div class="page-footer">
   <button class="feedback-toggle-btn" id="feedbackToggleBtn" onclick="toggleFeedbackForm()">
