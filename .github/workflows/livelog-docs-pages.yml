@@ -1,11 +1,8 @@
 name: Deploy LiveLog Docs to Pages
 
+# NOTE: GitHub Pages はリポジトリ設定で一度「Source: GitHub Actions」を
+# 有効化する必要がある。有効化後は手動実行(workflow_dispatch)で公開できる。
 on:
-  push:
-    branches: ["claude/vibrant-meitner-tbc76w"]
-    paths:
-      - "docs/livelog-site/**"
-      - ".github/workflows/livelog-docs-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -26,8 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/livelog-site
