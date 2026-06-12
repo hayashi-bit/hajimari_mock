@@ -182,6 +182,14 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('env',this)"><i class="ti ti-settings"></i>環境変数</div>
       <div class="nav-item" onclick="show('phases',this)"><i class="ti ti-road"></i>実装フェーズ</div>
     </div>
+    <div class="nav-section">
+      <div class="nav-label">事業・新仕様</div>
+      <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
+      <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
+      <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
+      <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
+      <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
+    </div>
   </nav>
 
   <main class="main">
@@ -677,6 +685,168 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">Phase 2</div><div><div class="phase-title">プレミアムプラン管理</div><div class="phase-desc">ユーザー権限スキーマ・機能制限ロジック・UI更新</div></div></div>
           <div class="phase-item"><div class="phase-num">Phase 3</div><div><div class="phase-title">利用統計ダッシュボード</div><div class="phase-desc">分析指標定義・データ収集・ダッシュボードUI</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">Phase 7</div><div><div class="phase-title">Gmail OAuth 連携</div><div class="phase-desc">Gmail OAuth認証フロー・チケットメール検索・メール本文解析</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRATEGY -->
+    <div id="page-strategy" class="page">
+      <div class="topbar"><div class="topbar-title">事業戦略・ロードマップ</div><span class="topbar-badge">2026-06</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-target hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>事業の核</h2>
+          <p>「複数現場を追うライブ好きが、チケット期限を一度も逃さず、行ったライブを自動で記録できる」。製品は完成済み。今の課題は機能ではなく流通（ユーザー獲得）と課金の実証。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flag"></i> 当面の目標</div>
+        <div class="card"><p style="font-size:15px;font-weight:600;color:var(--navy)">2026年7月：有料顧客 100人</p>
+        <p style="font-size:13px;color:var(--text2);margin-top:6px">課金形態は買い切り（¥2,000前後）を主軸。送客・チケットサイト買取は規模が出るまで棚上げ。</p></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-road"></i> ロードマップ</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">Stage 0</div><div><div class="phase-title">核を決める</div><div class="phase-desc">ターゲット・課金理由・無料/有料の壁を確定</div></div></div>
+          <div class="phase-item"><div class="phase-num">Stage 1</div><div><div class="phase-title">価値が伝わる入口</div><div class="phase-desc">LP（主役はAI自動取り込み）+ オンボーディング改善</div></div></div>
+          <div class="phase-item"><div class="phase-num">Stage 2</div><div><div class="phase-title">課金の壁を立てる</div><div class="phase-desc">Stripe / 買い切り・AI機能と通知をプレミアムゲートに</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">Stage 3</div><div><div class="phase-title">継続と差別化</div><div class="phase-desc">期限リマインダー通知・Gmail連携・統計ダッシュボード・コミュニティ</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-device-mobile"></i> 開発形態</div>
+        <div class="card"><p style="font-size:13px;color:var(--text2)">Web + PWA化（ホーム画面アイコン・プッシュ通知）。ネイティブは後でラップ可能。iOSのApple課金強制を避け、Stripeの利益率を守るためWeb継続が合理的。</p></div>
+      </div>
+    </div>
+
+    <!-- MONETIZE -->
+    <div id="page-monetize" class="page">
+      <div class="topbar"><div class="topbar-title">マネタイズ戦略</div></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-coin"></i> 課金モデル（near-term の結論）</div>
+        <div class="card">
+          <p style="font-size:14px"><span class="badge badge-green">主軸</span> 買い切り（単体買取）¥2,000前後</p>
+          <p style="font-size:13px;color:var(--text2);margin-top:6px">churnを気にせず「売れた数」を積める。7月100人スプリントに最も素直。月額/年額サブスクは継続管理が必要で不利。</p>
+          <p style="font-size:14px;margin-top:14px"><span class="badge badge-amber">棚上げ</span> 送客マージン / チケットサイト買取</p>
+          <p style="font-size:13px;color:var(--text2);margin-top:6px">現状の知名度・利用者数ではB2B交渉が成立しない。会員が伸びて送客できる規模になれば立場・戦略は大きく変わる → その時点で再検討。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-fork"></i> 出口シナリオ</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)"><b style="color:var(--navy)">(A) 自社運営で買い切り販売 → 利益化</b>（現在の主軸）</p>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">(B) 事業売却</b>：想定以上に伸びた場合のupside。有料100人等の実績が買い手向けの価値になる。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> 最優先で潰すべきリスク（機能ではない）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1</div><div><div class="phase-title">課金の実証</div><div class="phase-desc">プレセールで実際に金が動くか検証。LPに価格を出し先行N名で事前決済。機能の実証 ≠ 課金の実証。</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">2</div><div><div class="phase-title">最初の100人のチャネル</div><div class="phase-desc">未定だと「100人」は願望。広告で自然流入は今の規模では起きない。最初の数十人は手売り前提。</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checkbox"></i> オープンな決定事項</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">最初の100人を取るチャネルの特定 <small>最大のブロッカー</small></div>
+            <div class="mini-item">プレセールの具体 <small>価格・先行特典・決済手段</small></div>
+            <div class="mini-item">買い切りで提供する価値の線引き <small>無料との差</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="page-login" class="page">
+      <div class="topbar"><div class="topbar-title">① Googleログイン化（Manusアカ不要）</div><span class="topbar-badge">仕様確定</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-brand-google hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>Manus OAuth → Google OAuth</h2>
+          <p>Manusアカウント必須をやめ、Googleアカウントでログイン。無料・データ保持・マルチデバイス対応。後続のGmail連携と同じGoogle基盤を使う。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database"></i> DBスキーマ変更（users）</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">googleId <small>追加・unique・nullable。Googleのsub</small></div>
+            <div class="mini-item">openId <small>残す・移行照合用</small></div>
+            <div class="mini-item">email <small>移行の照合キー</small></div>
+            <div class="mini-item">avatarUrl / authProvider <small>追加</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-transfer"></i> 既存ユーザーのデータ引き継ぎ</div>
+        <div class="card"><p style="font-size:13px;color:var(--text2)">初回Googleログイン時、emailで既存usersを照合 → ヒットすればgoogleIdを追記して引き継ぎ（lives等は内部userId紐付けのため移行不要）。ヒットなしなら新規作成。<b style="color:var(--navy)">メールが同じならユーザー操作ゼロで自動移行。</b></p></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-settings"></i> 追加環境変数</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">GOOGLE_CLIENT_ID</div>
+          <div class="mini-item">GOOGLE_CLIENT_SECRET</div>
+          <div class="mini-item">GOOGLE_REDIRECT_URI</div>
+        </div></div>
+      </div>
+      <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/01_google_login_spec.md</code></p>
+    </div>
+
+    <!-- GMAIL SPEC -->
+    <div id="page-gmailspec" class="page">
+      <div class="topbar"><div class="topbar-title">③ Gmail連携仕様</div><span class="topbar-badge">仕様確定</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-mail hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>チケットメール自動取り込み（汎用設計）</h2>
+          <p>3大サイトに乗らない小規模イベント（Peatix/ZAIKO/LivePocket/teket等）を販売元を問わず取得。特定サービスにハードコードせず、LLMで汎用解析。Googleログインにgmail.readonlyスコープを追加して実現。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-stack-2"></i> 提供価値（2層）</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-plus"></i> ① 新規登録</div><div class="mini-items">
+            <div class="mini-item">公演名・日付・会場・アーティスト</div>
+            <div class="mini-item">価格・紙/電子</div>
+            <div class="mini-item">小規模イベントの取りこぼし解消</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-refresh"></i> ② ステータス自動更新</div><div class="mini-items">
+            <div class="mini-item">抽選申込 → lottery_pending</div>
+            <div class="mini-item">当落 → lottery_won / lost</div>
+            <div class="mini-item">入金 → payment_pending</div>
+            <div class="mini-item">発券 → print_pending</div>
+            <div class="mini-item">購入完了 → ticket_secured</div>
+          </div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-route"></i> パイプライン</div>
+        <div class="card"><p style="font-size:13px;color:var(--text2)">Gmail検索（汎用クエリ）→ 本文取得 → 重複チェック（sourceMessageId）→ LLMで構造化抽出 → 新規登録 or ステータス更新に振り分け。ステータスは前進方向のみ自動更新。</p></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-lock"></i> プライバシー / 審査</div>
+        <div class="card"><p style="font-size:13px;color:var(--text2)">スコープはreadonlyのみ・本文は保存しない・refreshTokenは暗号化。gmail.readonlyは制限付きスコープのため一般公開にGoogleのセキュリティ審査（CASA含む・数週間）が必要。MVPはテストユーザー運用で先行検証、並行して審査申請。</p></div>
+      </div>
+      <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/03_gmail_integration_spec.md</code></p>
+    </div>
+
+    <!-- BACKLOG -->
+    <div id="page-backlog" class="page">
+      <div class="topbar"><div class="topbar-title">開発バックログ</div></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-file-check"></i> 確定済み / 仕様書あり</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">①</div><div><div class="phase-title">Google ログイン化</div><div class="phase-desc">Manusアカ不要・仕様確定</div></div></div>
+          <div class="phase-item"><div class="phase-num">③</div><div><div class="phase-title">Gmail連携</div><div class="phase-desc">チケットメール自動取込・仕様確定</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">②</div><div><div class="phase-title">Stripe / プレミアム</div><div class="phase-desc">構想（未仕様化）</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> アイデア / 未仕様化</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">B-1</div><div><div class="phase-title">ユーザー向け一斉メール配信</div><div class="phase-desc">運営→全ユーザーへお知らせ送信。Resend流用・管理画面に配信フォーム。配信対象の絞り込み・オプトアウト・送信履歴。優先度：中</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">B-2</div><div><div class="phase-title">アプリ内コミュニティ</div><div class="phase-desc">顧客同士がアプリ内で交流。既存の友達機能/公開プロフィールを発展。公演ごとの参戦者一覧+ひとことコメントからMVP。モデレーション・コールドスタート対策が論点。優先度：中〜高</div></div></div>
         </div>
       </div>
     </div>
