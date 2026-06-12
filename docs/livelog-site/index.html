@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiveLog Developer Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f8f8f7;--bg3:#f2f2f0;
+  --text:#111;--text2:#555;--text3:#888;
+  --border:#e5e5e3;--border2:#d4d4d0;
+  --navy:#1a3a52;--gold:#d4af37;
+  --blue-bg:#E6F1FB;--blue-text:#0C447C;
+  --green-bg:#EAF3DE;--green-text:#27500A;
+  --amber-bg:#FAEEDA;--amber-text:#633806;
+  --teal-bg:#E1F5EE;--teal-text:#085041;
+  --gray-bg:#F1EFE8;--gray-text:#444441;
+  --radius:8px;--radius-lg:12px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg3);color:var(--text);font-size:15px;line-height:1.6}
+a{color:var(--blue-text);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;min-width:240px;background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:10}
+.main{margin-left:240px;flex:1;padding:2rem 2.5rem;max-width:900px}
+
+/* Sidebar */
+.sidebar-logo{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid var(--border)}
+.logo-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;display:inline-block;letter-spacing:.03em}
+.logo-title{font-size:15px;font-weight:600;color:var(--text);margin-top:6px}
+.logo-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.nav-section{padding:.75rem 0 .25rem}
+.nav-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:.25rem 1.25rem .375rem}
+.nav-item{display:flex;align-items:center;gap:7px;padding:.4rem 1.25rem;font-size:13px;color:var(--text2);cursor:pointer;border-left:2px solid transparent;transition:all .12s}
+.nav-item i{font-size:15px;opacity:.7}
+.nav-item:hover{color:var(--text);background:var(--bg2)}
+.nav-item.active{color:var(--navy);border-left-color:var(--gold);background:var(--bg2);font-weight:500}
+.nav-item.active i{opacity:1}
+
+/* Page */
+.page{display:none}
+.page.active{display:block}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.topbar-title{font-size:22px;font-weight:600;color:var(--text);flex:1}
+.topbar-badge{font-size:12px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);padding:3px 10px;border-radius:20px}
+.search-wrap{position:relative;margin-bottom:1.5rem}
+.search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px}
+.search-input{width:100%;max-width:320px;height:34px;font-size:13px;border:1px solid var(--border);border-radius:var(--radius);padding:0 .75rem 0 2.25rem;background:var(--bg);color:var(--text);outline:none}
+.search-input:focus{border-color:var(--navy)}
+
+/* Section */
+.section{margin-bottom:2rem}
+.section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.875rem;display:flex;align-items:center;gap:8px}
+
+/* Cards */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:.75rem}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:1.5rem}
+.mini-card{background:var(--bg2);border-radius:var(--radius);padding:.875rem 1rem}
+.mini-label{font-size:11px;color:var(--text3);margin-bottom:.5rem;font-weight:500}
+.mini-items{display:flex;flex-direction:column;gap:3px}
+.mini-item{font-size:13px;color:var(--text)}
+.mini-item small{color:var(--text3);font-size:11px}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.badge-navy{background:var(--navy);color:#fff}
+.badge-blue{background:var(--blue-bg);color:var(--blue-text)}
+.badge-green{background:var(--green-bg);color:var(--green-text)}
+.badge-amber{background:var(--amber-bg);color:var(--amber-text)}
+.badge-teal{background:var(--teal-bg);color:var(--teal-text)}
+.badge-gray{background:var(--gray-bg);color:var(--gray-text)}
+
+/* Procedure */
+.proc-block{border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:1rem;overflow:hidden}
+.proc-header{display:flex;align-items:center;gap:8px;padding:.75rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
+.proc-name{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--navy)}
+.proc-body{padding:.875rem 1rem}
+.proc-desc{font-size:13px;color:var(--text2);margin-bottom:.75rem;line-height:1.6}
+
+/* Code */
+.code{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;overflow-x:auto;white-space:pre}
+
+/* Table */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:.5rem .875rem;font-size:11px;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:.625rem .875rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+td:first-child{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+
+/* Status grid */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.status-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.5rem .875rem;display:flex;align-items:center;gap:10px}
+.status-key{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);flex:1}
+.status-label{font-size:13px;color:var(--text);font-weight:500}
+
+/* Pages grid */
+.page-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.page-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;transition:border-color .15s,box-shadow .15s}
+.page-card:hover{border-color:var(--navy);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.page-url{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:4px}
+.page-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.page-feat{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* Phase */
+.phase-item{display:flex;gap:1rem;padding:.875rem 0;border-bottom:1px solid var(--border)}
+.phase-item:last-child{border-bottom:none}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2px 8px;color:var(--text2);white-space:nowrap;height:fit-content;margin-top:2px}
+.phase-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.phase-desc{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* Env */
+.env-item{display:grid;grid-template-columns:220px 1fr;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:8px}
+.env-key{font-family:'JetBrains Mono',monospace;font-size:12px;padding:.5rem .875rem;background:var(--bg2);border-right:1px solid var(--border);color:var(--text);font-weight:500}
+.env-val{font-size:12px;padding:.5rem .875rem;color:var(--text2)}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:2rem 0}
+
+/* Hero strip */
+.hero-strip{background:var(--navy);color:#fff;border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.hero-strip-text h2{font-size:16px;font-weight:600;margin-bottom:4px}
+.hero-strip-text p{font-size:13px;opacity:.75;line-height:1.5}
+.hero-strip-icon{font-size:32px;opacity:.6}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .2s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:1rem}
+  .topbar-title{font-size:18px}
+  .env-item{grid-template-columns:1fr}
+  .env-key{border-right:none;border-bottom:1px solid var(--border)}
+  .hamburger{display:flex}
+}
+.hamburger{display:none;position:fixed;top:12px;right:12px;z-index:20;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;cursor:pointer;align-items:center;gap:6px;font-size:13px;color:var(--text2)}
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i> メニュー</button>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-badge">LiveLog</div>
+      <div class="logo-title">Developer Docs</div>
+      <div class="logo-sub">v1.0.0 — 2026</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">はじめに</div>
+      <div class="nav-item active" onclick="show('overview',this)"><i class="ti ti-home"></i>アプリ概要</div>
+      <div class="nav-item" onclick="show('stack',this)"><i class="ti ti-stack-2"></i>技術スタック</div>
+      <div class="nav-item" onclick="show('status',this)"><i class="ti ti-tag"></i>ステータス仕様</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">バックエンド</div>
+      <div class="nav-item" onclick="show('arch',this)"><i class="ti ti-server"></i>サーバー構成</div>
+      <div class="nav-item" onclick="show('lives',this)"><i class="ti ti-calendar-event"></i>lives ルーター</div>
+      <div class="nav-item" onclick="show('artists',this)"><i class="ti ti-music"></i>artists ルーター</div>
+      <div class="nav-item" onclick="show('setlist',this)"><i class="ti ti-list"></i>setlist ルーター</div>
+      <div class="nav-item" onclick="show('memos',this)"><i class="ti ti-note"></i>memos ルーター</div>
+      <div class="nav-item" onclick="show('auth',this)"><i class="ti ti-lock"></i>auth / feedbacks</div>
+      <div class="nav-item" onclick="show('db',this)"><i class="ti ti-database"></i>DBスキーマ</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">フロントエンド</div>
+      <div class="nav-item" onclick="show('pages',this)"><i class="ti ti-layout"></i>ページ一覧</div>
+      <div class="nav-item" onclick="show('components',this)"><i class="ti ti-components"></i>コンポーネント</div>
+      <div class="nav-item" onclick="show('hooks',this)"><i class="ti ti-plug"></i>tRPCフック</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">インフラ</div>
+      <div class="nav-item" onclick="show('env',this)"><i class="ti ti-settings"></i>環境変数</div>
+      <div class="nav-item" onclick="show('phases',this)"><i class="ti ti-road"></i>実装フェーズ</div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div id="page-overview" class="page active">
+      <div class="topbar">
+        <div class="topbar-title">LiveLog — アプリ概要</div>
+        <span class="topbar-badge">v1.0.0</span>
+      </div>
+      <div class="hero-strip">
+        <i class="ti ti-music hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>LiveLog — ライブ参加記録・管理アプリ</h2>
+          <p>ユーザーが参加したライブ・コンサートの記録・管理・共有を簡単にするアプリ。e+連携、AI解析、セットリスト記録、友達機能などを提供。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bolt"></i> 主な機能</div>
+        <div class="card-grid">
+          <div class="mini-card">
+            <div class="mini-label"><i class="ti ti-calendar"></i> 記録管理</div>
+            <div class="mini-items">
+              <div class="mini-item">ライブ記録 <small>予定・参加・不参加</small></div>
+              <div class="mini-item">ステータス管理 <small>13種類</small></div>
+              <div class="mini-item">期限日時管理</div>
+              <div class="mini-item">チケット種類 <small>紙 / 電子</small></div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label"><i class="ti ti-sparkles"></i> AI機能</div>
+            <div class="mini-items">
+              <div class="mini-item">e+テキスト解析</div>
+              <div class="mini-item">画像からライブ情報抽出</div>
+              <div class="mini-item">開場・開演時間提案</div>
+              <div class="mini-item">フェス出演者自動取得</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label"><i class="ti ti-list"></i> セットリスト</div>
+            <div class="mini-items">
+              <div class="mini-item">手動追加</div>
+              <div class="mini-item">setlist.fm連携</div>
+              <div class="mini-item">LiveFans.jp連携</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label"><i class="ti ti-users"></i> ソーシャル</div>
+            <div class="mini-items">
+              <div class="mini-item">友達ページ</div>
+              <div class="mini-item">公開プロフィール</div>
+              <div class="mini-item">Google Calendar連携</div>
+              <div class="mini-item">バックアップ・復元</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield"></i> ユーザーロール</div>
+        <div class="card">
+          <div style="display:flex;gap:2rem;flex-wrap:wrap">
+            <div><span class="badge badge-blue">user</span><p style="font-size:13px;color:var(--text2);margin-top:6px">通常ユーザー。protectedProcedure にアクセス可能。</p></div>
+            <div><span class="badge badge-amber">admin</span><p style="font-size:13px;color:var(--text2);margin-top:6px">管理者。adminProcedure（フィードバック管理等）にアクセス可能。</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-globe"></i> 本番URL</div>
+        <div class="card"><a href="https://livelogapp-nhdbwh2e.manus.space/" target="_blank">https://livelogapp-nhdbwh2e.manus.space/ <i class="ti ti-external-link" style="font-size:13px"></i></a></div>
+      </div>
+    </div>
+
+    <!-- STACK -->
+    <div id="page-stack" class="page">
+      <div class="topbar"><div class="topbar-title">技術スタック</div></div>
+      <div class="card-grid">
+        <div class="mini-card"><div class="mini-label">フロントエンド</div><div class="mini-items"><div class="mini-item">React 19</div><div class="mini-item">Tailwind CSS 4</div><div class="mini-item">shadcn/ui</div><div class="mini-item">Vite</div><div class="mini-item">TypeScript</div></div></div>
+        <div class="mini-card"><div class="mini-label">バックエンド</div><div class="mini-items"><div class="mini-item">Express 4</div><div class="mini-item">tRPC 11</div><div class="mini-item">Node.js</div><div class="mini-item">Vitest</div></div></div>
+        <div class="mini-card"><div class="mini-label">データベース</div><div class="mini-items"><div class="mini-item">MySQL / TiDB</div><div class="mini-item">Drizzle ORM</div></div></div>
+        <div class="mini-card"><div class="mini-label">外部サービス</div><div class="mini-items"><div class="mini-item">Manus OAuth <small>SSO</small></div><div class="mini-item">Stripe <small>決済 Phase1</small></div><div class="mini-item">setlist.fm API</div><div class="mini-item">Manus LLM API</div><div class="mini-item">Resend <small>メール</small></div><div class="mini-item">Google Maps</div></div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">コマンド</div>
+        <div class="card tbl-wrap"><table><thead><tr><th>コマンド</th><th>説明</th></tr></thead><tbody>
+          <tr><td>pnpm dev</td><td>開発サーバー起動（ポート 3000）</td></tr>
+          <tr><td>pnpm build</td><td>本番ビルド（dist/ + client/dist/）</td></tr>
+          <tr><td>pnpm start</td><td>本番環境起動</td></tr>
+          <tr><td>pnpm test</td><td>Vitestでテスト実行</td></tr>
+          <tr><td>pnpm test --coverage</td><td>カバレッジ計測</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section">
+        <div class="section-title">ファイル構成（主要）</div>
+        <div class="card"><div class="code">client/src/
+  pages/          # ページコンポーネント
+  components/     # 共有コンポーネント
+  hooks/          # カスタムフック
+  lib/trpc.ts     # tRPCクライアント
+
+server/
+  routers.ts      # tRPCルーター定義
+  db.ts           # DBクエリヘルパー
+  _core/          # Express・OAuth・LLM等
+
+drizzle/
+  schema.ts       # テーブル定義
+  relations.ts    # リレーション定義
+  migrations/     # マイグレーションSQL</div></div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div id="page-status" class="page">
+      <div class="topbar"><div class="topbar-title">ステータス仕様（13種類）</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">lives テーブルの <code style="font-family:monospace;background:var(--bg2);padding:1px 5px;border-radius:4px">status</code> カラムに格納される値の一覧。チケット入手から参加後まで全ライフサイクルをカバー。</p>
+      <div class="status-grid">
+        <div class="status-item"><span class="status-key">pre_sale</span><span class="status-label">受付前</span></div>
+        <div class="status-item"><span class="status-key">on_sale</span><span class="status-label">先着販売中</span></div>
+        <div class="status-item"><span class="status-key">pre_lottery</span><span class="status-label">抽選申込前</span></div>
+        <div class="status-item"><span class="status-key">lottery_pending</span><span class="status-label">抽選受付中</span></div>
+        <div class="status-item"><span class="status-key">lottery_won</span><span class="status-label">当選</span></div>
+        <div class="status-item"><span class="status-key">lottery_lost</span><span class="status-label">落選</span></div>
+        <div class="status-item"><span class="status-key">payment_pending</span><span class="status-label">支払い待ち</span></div>
+        <div class="status-item"><span class="status-key">print_pending</span><span class="status-label">発券待ち</span></div>
+        <div class="status-item"><span class="status-key">ticket_secured</span><span class="status-label">チケット確保</span></div>
+        <div class="status-item"><span class="status-key">attended</span><span class="status-label">参加</span></div>
+        <div class="status-item"><span class="status-key">not_attended</span><span class="status-label">不参加</span></div>
+        <div class="status-item"><span class="status-key">cancelled</span><span class="status-label">キャンセル</span></div>
+        <div class="status-item"><span class="status-key">resale</span><span class="status-label">リセール</span></div>
+      </div>
+    </div>
+
+    <!-- ARCH -->
+    <div id="page-arch" class="page">
+      <div class="topbar"><div class="topbar-title">サーバー構成</div></div>
+      <div class="section">
+        <div class="section-title">Procedure タイプ</div>
+        <div class="card tbl-wrap"><table><thead><tr><th>タイプ</th><th>アクセス</th><th>エラー</th></tr></thead><tbody>
+          <tr><td>publicProcedure</td><td>誰でも</td><td>—</td></tr>
+          <tr><td>protectedProcedure</td><td>ログインユーザー</td><td>UNAUTHORIZED</td></tr>
+          <tr><td>adminProcedure</td><td>role === 'admin'</td><td>FORBIDDEN</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section">
+        <div class="section-title">外部API連携</div>
+        <div class="card tbl-wrap"><table><thead><tr><th>サービス</th><th>用途</th><th>呼び出し元</th></tr></thead><tbody>
+          <tr><td>Manus LLM API</td><td>テキスト・画像解析、時間提案</td><td>llm.ts — invokeLLM()</td></tr>
+          <tr><td>setlist.fm</td><td>セットリスト取得</td><td>fetch() + x-api-key header</td></tr>
+          <tr><td>Google Maps</td><td>ジオコーディング</td><td>map.ts — makeRequest()</td></tr>
+          <tr><td>Resend</td><td>メール送信</td><td>Resend SDK</td></tr>
+          <tr><td>Stripe</td><td>決済（Phase1）</td><td>/api/webhooks/stripe</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section">
+        <div class="section-title">tRPC コンテキスト型</div>
+        <div class="card"><div class="code">export type Context = {
+  user: {
+    id: string;
+    openId: string;
+    name: string;
+    email: string;
+    role: 'user' | 'admin';
+  } | null;
+};</div></div>
+      </div>
+    </div>
+
+    <!-- LIVES -->
+    <div id="page-lives" class="page">
+      <div class="topbar"><div class="topbar-title">lives ルーター</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">ライブのCRUD・ステータス管理・AI解析・バックアップを担当するコアルーター。</p>
+
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.list</span><span class="badge badge-teal" style="margin-left:4px">public</span><span class="badge badge-gray" style="margin-left:4px">query</span></div>
+        <div class="proc-body"><div class="proc-desc">ユーザーのライブ一覧を取得。statusフィルターを任意指定可能。</div><div class="code">input?: { status?: string }  // 'pre_sale' | 'lottery_won' | 'attended' | ...</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.create</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">新規ライブを作成する。</div><div class="code">input: {
+  title: string
+  artistName?: string
+  liveDate: Date
+  status?: string        // default: 'pre_sale'
+  ticketFormat?: 'paper' | 'digital'
+  venue?: string
+  prefecture?: string
+  price?: number
+  seatInfo?: string
+}</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.update</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">ライブ情報を部分更新する。id以外は全て任意。</div><div class="code">input: {
+  id: string
+  title?: string
+  artistName?: string
+  liveDate?: Date
+  status?: string
+  isConsidering?: boolean
+  ticketFormat?: 'paper' | 'digital'
+  deadlineDate?: Date
+  deadlineTime?: string
+  openTime?: string
+  startTime?: string
+  venue?: string
+  prefecture?: string
+  price?: number
+  seatInfo?: string
+}</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.delete</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: string  // liveId</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.getById</span><span class="badge badge-teal" style="margin-left:4px">public</span><span class="badge badge-gray" style="margin-left:4px">query</span></div>
+        <div class="proc-body"><div class="proc-desc">ライブ詳細を取得。アーティスト・セットリスト・メモを含む。</div><div class="code">input: string  // liveId</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.updateStatus</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: { id: string, status: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.suggestTimes</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">LLMでライブの開場・開演時間を提案する。</div><div class="code">input: string  // liveId
+output: { openTime: string, startTime: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.parseEplusText</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">e+ページのテキストをLLMで解析してライブ情報配列を返す。</div><div class="code">input: string  // e+テキスト
+output: [{ title, artistName, liveDate, venue, ... }]</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.importParsedLives</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">parseEplusTextの解析結果をまとめてインポートする。</div><div class="code">input: [{ title, artistName?, liveDate, venue?, ... }]</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.importFromBookmarklet</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">ブックマークレットから取り込む。</div><div class="code">input: { title, artistName?, liveDate, venue?, ... }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.parseImageLive</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">画像URLからLLMでライブ情報を抽出する。</div><div class="code">input: { imageUrl: string }
+output: { title, artistName, liveDate, venue, ... }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.exportFullBackup</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-gray" style="margin-left:4px">query</span></div>
+        <div class="proc-body"><div class="proc-desc">全ライブデータをCSV形式でエクスポートする。</div><div class="code">output: string  // CSV文字列</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">lives.importFullBackup</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">CSVファイルをインポート。重複チェック・日付正規化処理を含む。</div><div class="code">input: { csv: string }
+output: { success: number, error: number }</div></div>
+      </div>
+    </div>
+
+    <!-- ARTISTS -->
+    <div id="page-artists" class="page">
+      <div class="topbar"><div class="topbar-title">artists ルーター</div></div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">artists.addArtist</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: { liveId: string, name: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">artists.removeArtist</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: string  // artistId</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">artists.fetchFestivalLineup</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">LLMでフェスの出演者一覧を取得してアーティストに追加する。</div><div class="code">input: string  // liveId</div></div>
+      </div>
+    </div>
+
+    <!-- SETLIST -->
+    <div id="page-setlist" class="page">
+      <div class="topbar"><div class="topbar-title">setlist ルーター</div></div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">setlist.addItem</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: { liveId: string, title: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">setlist.removeItem</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: string  // itemId</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">setlist.fetchFromSetlistFm</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">setlist.fm APIからセットリストを自動取得する。</div><div class="code">input: string  // liveId</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">setlist.fetchFromLiveFans</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="proc-desc">LiveFans.jpからセットリストをスクレイピング取得する。</div><div class="code">input: string  // liveId</div></div>
+      </div>
+    </div>
+
+    <!-- MEMOS -->
+    <div id="page-memos" class="page">
+      <div class="topbar"><div class="topbar-title">memos ルーター</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">ライブに紐づくメモ・感想の作成・更新・削除。非公開メモと共有用感想の2種類を管理。</p>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">memos.create</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: { liveId: string, content: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">memos.update</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: { id: string, content: string }</div></div>
+      </div>
+      <div class="proc-block">
+        <div class="proc-header"><span class="proc-name">memos.delete</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+        <div class="proc-body"><div class="code">input: string  // memoId</div></div>
+      </div>
+    </div>
+
+    <!-- AUTH -->
+    <div id="page-auth" class="page">
+      <div class="topbar"><div class="topbar-title">auth / feedbacks ルーター</div></div>
+      <div class="section">
+        <div class="section-title">auth ルーター</div>
+        <div class="proc-block">
+          <div class="proc-header"><span class="proc-name">auth.me</span><span class="badge badge-teal" style="margin-left:4px">public</span><span class="badge badge-gray" style="margin-left:4px">query</span></div>
+          <div class="proc-body"><div class="proc-desc">現在のユーザー情報を返す。未ログイン時はnull。</div><div class="code">output: { id, openId, name, email, role } | null</div></div>
+        </div>
+        <div class="proc-block">
+          <div class="proc-header"><span class="proc-name">auth.logout</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+          <div class="proc-body"><div class="proc-desc">セッションクッキーを削除してログアウトする。</div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">feedbacks ルーター</div>
+        <div class="proc-block">
+          <div class="proc-header"><span class="proc-name">feedbacks.submit</span><span class="badge badge-blue" style="margin-left:4px">protected</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+          <div class="proc-body"><div class="code">input: {
+  content: string
+  category: 'feature_request' | 'bug_report' | 'praise' | 'other'
+}</div></div>
+        </div>
+        <div class="proc-block">
+          <div class="proc-header"><span class="proc-name">feedbacks.list</span><span class="badge badge-amber" style="margin-left:4px">admin</span><span class="badge badge-gray" style="margin-left:4px">query</span></div>
+          <div class="proc-body"><div class="proc-desc">フィードバック一覧取得（管理者のみ）。</div></div>
+        </div>
+        <div class="proc-block">
+          <div class="proc-header"><span class="proc-name">feedbacks.markRead</span><span class="badge badge-amber" style="margin-left:4px">admin</span><span class="badge badge-green" style="margin-left:4px">mutation</span></div>
+          <div class="proc-body"><div class="code">input: string  // feedbackId</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DB -->
+    <div id="page-db" class="page">
+      <div class="topbar"><div class="topbar-title">DBスキーマ</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">MySQL/TiDB + Drizzle ORM。<code style="font-family:monospace;background:var(--bg2);padding:1px 5px;border-radius:4px">drizzle/schema.ts</code> にテーブル定義、<code style="font-family:monospace;background:var(--bg2);padding:1px 5px;border-radius:4px">drizzle/relations.ts</code> にリレーション定義。</p>
+      <div class="card tbl-wrap"><table><thead><tr><th>テーブル</th><th>説明</th><th>主なカラム</th></tr></thead><tbody>
+        <tr><td>users</td><td>ユーザー情報</td><td>id, openId, name, email, role, createdAt</td></tr>
+        <tr><td>lives</td><td>ライブ情報</td><td>id, userId, title, artistName, liveDate, status, isConsidering, ticketFormat, deadlineDate, deadlineTime, openTime, startTime, venue, prefecture, price, seatInfo</td></tr>
+        <tr><td>artists</td><td>アーティスト情報</td><td>id, liveId, name, type, spotifyId</td></tr>
+        <tr><td>setlist_items</td><td>セットリスト</td><td>id, liveId, order, title, artistName</td></tr>
+        <tr><td>memos</td><td>メモ・感想</td><td>id, liveId, content, sharedContent</td></tr>
+        <tr><td>import_tokens</td><td>e+インポートトークン</td><td>id, userId, token, expiresAt</td></tr>
+        <tr><td>gmail_tokens</td><td>Gmail OAuthトークン</td><td>id, userId, accessToken, refreshToken, expiresAt</td></tr>
+        <tr><td>feedbacks</td><td>フィードバック</td><td>id, userId, content, category, isRead</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- PAGES -->
+    <div id="page-pages" class="page">
+      <div class="topbar"><div class="topbar-title">ページ一覧</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">client/src/pages/ 配下のページコンポーネント。Wouter ルーターで管理。</p>
+      <div class="page-grid">
+        <div class="page-card"><div class="page-url">/</div><div class="page-name">Home.tsx</div><div class="page-feat">ランディング。ログイン済みなら /upcoming にリダイレクト。</div></div>
+        <div class="page-card"><div class="page-url">/upcoming</div><div class="page-name">Upcoming.tsx</div><div class="page-feat">予定ライブ一覧。ステータスフィルター・期限表示・ライブ追加ダイアログ。</div></div>
+        <div class="page-card"><div class="page-url">/history</div><div class="page-name">History.tsx</div><div class="page-feat">参加済みライブ。年別タブ・参加/不参加/キャンセル分類。</div></div>
+        <div class="page-card"><div class="page-url">/friends</div><div class="page-name">Friends.tsx</div><div class="page-feat">友達ライブ履歴閲覧。モーダルでセトリ・感想を確認。</div></div>
+        <div class="page-card"><div class="page-url">/settings</div><div class="page-name">Settings.tsx</div><div class="page-feat">e+連携・画像取り込み・バックアップ・フィードバック送信。</div></div>
+        <div class="page-card"><div class="page-url">/live/:id</div><div class="page-name">LiveDetail.tsx</div><div class="page-feat">ライブ詳細。基本情報・セットリスト・アーティスト・感想の4タブ。</div></div>
+        <div class="page-card"><div class="page-url">/profile/:userId</div><div class="page-name">UserProfile.tsx</div><div class="page-feat">公開プロフィール。ユーザーのライブ履歴を外部公開。</div></div>
+        <div class="page-card"><div class="page-url">/admin/feedback</div><div class="page-name">AdminFeedback.tsx</div><div class="page-feat">管理者専用。フィードバック一覧・既読管理。</div></div>
+      </div>
+    </div>
+
+    <!-- COMPONENTS -->
+    <div id="page-components" class="page">
+      <div class="topbar"><div class="topbar-title">コンポーネント</div></div>
+      <div class="section">
+        <div class="section-title">共有コンポーネント</div>
+        <div class="card tbl-wrap"><table><thead><tr><th>コンポーネント</th><th>用途</th><th>主な機能</th></tr></thead><tbody>
+          <tr><td>DashboardLayout.tsx</td><td>共通レイアウト</td><td>サイドバー・ボトムナビ（モバイル）・ユーザーメニュー</td></tr>
+          <tr><td>AddLiveDialog.tsx</td><td>ライブ追加</td><td>タイトル・日付・会場・ステータス入力フォーム</td></tr>
+          <tr><td>SetlistSection.tsx</td><td>セットリスト管理</td><td>一覧・手動追加・setlist.fm / LiveFans 取得ボタン</td></tr>
+          <tr><td>ArtistsSection.tsx</td><td>アーティスト管理</td><td>一覧・お目当/新発見チェック・手動追加</td></tr>
+          <tr><td>MemoSection.tsx</td><td>メモ・感想</td><td>非公開メモ・共有感想の編集フォーム</td></tr>
+          <tr><td>AIChatBox.tsx</td><td>AIチャット</td><td>Manus LLM とのインタラクション</td></tr>
+          <tr><td>Map.tsx</td><td>地図表示</td><td>Google Maps による会場表示</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section">
+        <div class="section-title">レスポンシブ設計</div>
+        <div class="card tbl-wrap"><table><thead><tr><th>ブレークポイント</th><th>幅</th><th>ナビゲーション</th></tr></thead><tbody>
+          <tr><td>モバイル</td><td>320px – 640px</td><td>ボトムナビ（4タブ）</td></tr>
+          <tr><td>タブレット</td><td>641px – 1024px</td><td>サイドバー</td></tr>
+          <tr><td>デスクトップ</td><td>1025px 以上</td><td>サイドバー（広幅）</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="section">
+        <div class="section-title">テーマカラー</div>
+        <div class="card"><div class="code">@layer base {
+  :root {
+    --primary: #1a3a52;  /* ディープネイビー */
+    --accent:  #d4af37;  /* ゴールド */
+  }
+}</div></div>
+      </div>
+    </div>
+
+    <!-- HOOKS -->
+    <div id="page-hooks" class="page">
+      <div class="topbar"><div class="topbar-title">tRPCフック使用パターン</div></div>
+      <div class="section">
+        <div class="section-title">クエリ（読み取り）</div>
+        <div class="card"><div class="code">const { data, isLoading, error } = trpc.lives.list.useQuery();
+
+// 条件付きクエリ
+const { data } = trpc.lives.list.useQuery(
+  { status: 'attended' },
+  { enabled: !!userId }
+);</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">ミューテーション（書き込み）</div>
+        <div class="card"><div class="code">const createLive = trpc.lives.create.useMutation({
+  onSuccess: () => {
+    trpc.useUtils().lives.list.invalidate();  // キャッシュ無効化
+  },
+  onError: (error) => { console.error(error); }
+});
+
+await createLive.mutateAsync({ title: '...' });</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">楽観的更新</div>
+        <div class="card"><div class="code">const updateLive = trpc.lives.update.useMutation({
+  onMutate: async (newData) => {
+    await trpc.useUtils().lives.getById.cancel();
+    const previousData = trpc.useUtils().lives.getById.getData();
+    trpc.useUtils().lives.getById.setData(undefined, newData);
+    return { previousData };
+  },
+  onError: (err, newData, context) => {
+    if (context?.previousData) {
+      trpc.useUtils().lives.getById.setData(undefined, context.previousData);
+    }
+  }
+});</div></div>
+      </div>
+    </div>
+
+    <!-- ENV -->
+    <div id="page-env" class="page">
+      <div class="topbar"><div class="topbar-title">環境変数</div></div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem"><code style="font-family:monospace;background:var(--bg2);padding:1px 5px;border-radius:4px">server/_core/env.ts</code> で定義。本番環境では Manus WebDev の環境変数設定から注入する。</p>
+      <div class="env-item"><div class="env-key">DATABASE_URL</div><div class="env-val">MySQL接続文字列。例: mysql://user:pass@host/db</div></div>
+      <div class="env-item"><div class="env-key">JWT_SECRET</div><div class="env-val">セッション署名キー</div></div>
+      <div class="env-item"><div class="env-key">VITE_APP_ID</div><div class="env-val">Manus OAuth アプリID</div></div>
+      <div class="env-item"><div class="env-key">OAUTH_SERVER_URL</div><div class="env-val">OAuth サーバーURL（例: https://api.manus.im）</div></div>
+      <div class="env-item"><div class="env-key">VITE_OAUTH_PORTAL_URL</div><div class="env-val">OAuth ポータルURL</div></div>
+      <div class="env-item"><div class="env-key">SETLIST_FM_API_KEY</div><div class="env-val">setlist.fm API キー</div></div>
+      <div class="env-item"><div class="env-key">RESEND_API_KEY</div><div class="env-val">Resend メール送信APIキー</div></div>
+      <div class="env-item"><div class="env-key">BUILT_IN_FORGE_API_KEY</div><div class="env-val">Manus LLM APIキー</div></div>
+      <div class="env-item"><div class="env-key">BUILT_IN_FORGE_API_URL</div><div class="env-val">Manus LLM APIエンドポイント</div></div>
+      <div class="env-item"><div class="env-key">STRIPE_SECRET_KEY</div><div class="env-val">Stripe シークレットキー（Phase 1 — 未実装）</div></div>
+    </div>
+
+    <!-- PHASES -->
+    <div id="page-phases" class="page">
+      <div class="topbar"><div class="topbar-title">実装フェーズ</div></div>
+      <div class="section">
+        <div class="section-title">完了済み <span class="badge badge-green" style="margin-left:8px">v1.0.0</span></div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1–5</div><div><div class="phase-title">基本機能</div><div class="phase-desc">DBスキーマ・tRPCルーター・フロントエンドUI・ボトムナビ・テスト・デプロイ</div></div></div>
+          <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">e+ ブックマークレット取り込み</div><div class="phase-desc">importFromBookmarklet エンドポイント・設定画面3ステップガイド</div></div></div>
+          <div class="phase-item"><div class="phase-num">7</div><div><div class="phase-title">e+ テキストペースト取り込み</div><div class="phase-desc">parseEplusText / importParsedLives procedure・解析結果プレビュー</div></div></div>
+          <div class="phase-item"><div class="phase-num">9</div><div><div class="phase-title">フェス出演者・セットリスト自動取得</div><div class="phase-desc">setlist.fm API連携・fetchFestivalLineup</div></div></div>
+          <div class="phase-item"><div class="phase-num">11</div><div><div class="phase-title">LiveFans.jp スクレイピング</div><div class="phase-desc">fetchFromLiveFans procedure</div></div></div>
+          <div class="phase-item"><div class="phase-num">12–14</div><div><div class="phase-title">チケット種類・ステータス・期限</div><div class="phase-desc">ticketFormat enum・13種類ステータス・deadlineDate・isConsidering</div></div></div>
+          <div class="phase-item"><div class="phase-num">15</div><div><div class="phase-title">開場・開演時間・カレンダー・友達機能</div><div class="phase-desc">suggestTimes（AI補完）・Google Calendar登録・公開プロフィール</div></div></div>
+          <div class="phase-item"><div class="phase-num">16–17</div><div><div class="phase-title">フィードバック・オンボーディング</div><div class="phase-desc">feedbacksテーブル・/admin/feedback・CTA・共有ボタン</div></div></div>
+          <div class="phase-item"><div class="phase-num">18–20</div><div><div class="phase-title">SNS・画像取り込み強化</div><div class="phase-desc">parseImageLive・uploadImageForParsing・複数アーティスト対応</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">21</div><div><div class="phase-title">完全バックアップ・復元</div><div class="phase-desc">exportFullBackup / importFullBackup・CSV・日付正規化ロジック</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">予定 <span class="badge badge-amber" style="margin-left:8px">v1.1.0</span></div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">Phase 1</div><div><div class="phase-title">Stripe 決済連携</div><div class="phase-desc">subscriptionsテーブル・createCheckoutSession / getStatus / cancel procedures・webhook処理</div></div></div>
+          <div class="phase-item"><div class="phase-num">Phase 2</div><div><div class="phase-title">プレミアムプラン管理</div><div class="phase-desc">ユーザー権限スキーマ・機能制限ロジック・UI更新</div></div></div>
+          <div class="phase-item"><div class="phase-num">Phase 3</div><div><div class="phase-title">利用統計ダッシュボード</div><div class="phase-desc">分析指標定義・データ収集・ダッシュボードUI</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">Phase 7</div><div><div class="phase-title">Gmail OAuth 連携</div><div class="phase-desc">Gmail OAuth認証フロー・チケットメール検索・メール本文解析</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+</script>
+</body>
+</html>
