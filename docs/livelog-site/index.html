@@ -884,7 +884,16 @@ function show(id, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
-  if (el) el.classList.add('active');
+  // ナビ項目をアクティブ化（直接クリック時は el、ハッシュ遷移時は onclick から逆引き）
+  if (el) {
+    el.classList.add('active');
+  } else {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      const oc = n.getAttribute('onclick') || '';
+      if (oc.indexOf("show('" + id + "'") !== -1) n.classList.add('active');
+    });
+  }
+  try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
@@ -892,6 +901,19 @@ function show(id, el) {
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
 }
+// URLハッシュ（例 #monetize）があれば、その固定ページを直接開く
+(function () {
+  function openFromHash() {
+    var id = (location.hash || '').replace(/^#/, '');
+    if (id && document.getElementById('page-' + id)) show(id);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openFromHash);
+  } else {
+    openFromHash();
+  }
+  window.addEventListener('hashchange', openFromHash);
+})();
 </script>
 </body>
 </html>
