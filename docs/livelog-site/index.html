@@ -761,6 +761,36 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-list-details"></i> 詳細内訳（前提・LLM呼び出し・稼働シナリオ）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">前提条件</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">総ユーザー数 <small>5,000人</small></div>
+            <div class="mini-item">月間アクティブ率 <small>40%（2,000人）</small></div>
+            <div class="mini-item">1人あたり月間ライブ参加 <small>2〜3本</small></div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">1ユーザーあたり月間LLM呼び出し内訳</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">テキスト解析（e+コピペ） <small>3回 × 1,000tok ≒ $0.013</small></div>
+            <div class="mini-item">画像解析（チケット画像） <small>2回 × 2,000tok ≒ $0.030</small></div>
+            <div class="mini-item">Gmail自動スキャン <small>20通 × 800tok ≒ $0.064</small></div>
+            <div class="mini-item">1ユーザー合計 <small>約 $0.11（約16円）/月</small></div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">稼働シナリオ別 月間LLMコスト</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">40%稼働（2,000人） <small>約 $220（約33,000円）</small></div>
+            <div class="mini-item">100%稼働（5,000人） <small>約 $550（約82,500円）</small></div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">買い切り¥2,000 損益分岐シナリオ</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">黒字化ライン <small>月50,000円 ÷ 2,000 = 月25人の販売</small></div>
+            <div class="mini-item">5,000人全員購入 <small>売上1,000万円 − 年間コスト60万円 = 年940万円利益</small></div>
+            <div class="mini-item">有料転換5%（250人） <small>売上50万円 − 月コスト5万円 = 月45万円利益</small></div>
+          </div>
+          <p style="font-size:12px;color:var(--text2);margin-top:12px">※ LLM単価はManus非公開のため同等モデル市場価格で試算（GPT-4o相当 in$2.5/out$10、Claude Sonnet相当 in$3/out$15 / 1Mトークン）。クロード試算と独立に概ね一致。</p>
+        </div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-stairs"></i> 買い切りリスクと統合結論（2階建てハイブリッド）</div>
         <div class="card">
           <p style="font-size:13px;color:var(--text2)">技術顧問・門倉さんの指摘 ①永久に原価が出る ②毎月売り続けないと収益ゼロ → どちらも「継続コストのある機能を永久販売に含めるな」に集約。<b style="color:var(--navy)">機能をコスト性質で2階建てにする。</b></p>
