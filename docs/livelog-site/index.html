@@ -841,17 +841,56 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card-grid">
           <div class="card">
             <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">月間コスト構成（5,000人・40%稼働）</p>
-            <div style="height:240px"><canvas id="chartCost"></canvas></div>
+            <div style="height:230px"><svg viewBox="0 0 420 230" style="width:100%;height:100%" font-family="sans-serif">
+              <text x="78" y="36" font-size="12" text-anchor="end" fill="#1a3a52">サーバー</text>
+              <rect x="82" y="24" width="23" height="20" fill="#9aa3ab"/><text x="110" y="39" font-size="11" fill="#5a636b">¥2,500</text>
+              <text x="78" y="78" font-size="12" text-anchor="end" fill="#1a3a52">DB</text>
+              <rect x="82" y="66" width="45" height="20" fill="#9aa3ab"/><text x="132" y="81" font-size="11" fill="#5a636b">¥5,000</text>
+              <text x="78" y="120" font-size="12" text-anchor="end" fill="#1a3a52">ストレージ</text>
+              <rect x="82" y="108" width="6" height="20" fill="#9aa3ab"/><text x="93" y="123" font-size="11" fill="#5a636b">¥700</text>
+              <text x="78" y="162" font-size="12" text-anchor="end" fill="#1a3a52">メール</text>
+              <rect x="82" y="150" width="27" height="20" fill="#9aa3ab"/><text x="114" y="165" font-size="11" fill="#5a636b">¥3,000</text>
+              <text x="78" y="204" font-size="12" text-anchor="end" fill="#1a3a52">LLM</text>
+              <rect x="82" y="192" width="300" height="20" fill="#d4af37"/><text x="378" y="206" font-size="11" text-anchor="end" fill="#3a2e00">¥33,000</text>
+            </svg></div>
             <p style="font-size:12px;color:var(--text2);margin-top:6px">LLMが支配的。固定費は小さい。</p>
           </div>
           <div class="card">
             <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">損益分岐：月間販売数 × 月間利益</p>
-            <div style="height:240px"><canvas id="chartBreakeven"></canvas></div>
+            <div style="height:240px"><svg viewBox="0 0 420 240" style="width:100%;height:100%" font-family="sans-serif">
+              <line x1="50" y1="20" x2="50" y2="210" stroke="#ccc"/><line x1="50" y1="210" x2="390" y2="210" stroke="#ccc"/>
+              <line x1="50" y1="115" x2="390" y2="115" stroke="#bbb" stroke-dasharray="4 3"/>
+              <line x1="50" y1="210" x2="390" y2="20" stroke="#1a3a52" stroke-width="2.5"/>
+              <circle cx="220" cy="115" r="4" fill="#d4af37"/><text x="226" y="108" font-size="11" fill="#1a3a52">25人で黒字</text>
+              <text x="46" y="24" font-size="10" text-anchor="end" fill="#5a636b">+5万</text>
+              <text x="46" y="119" font-size="10" text-anchor="end" fill="#5a636b">0</text>
+              <text x="46" y="213" font-size="10" text-anchor="end" fill="#5a636b">−5万</text>
+              <text x="50" y="224" font-size="10" text-anchor="middle" fill="#5a636b">0</text>
+              <text x="220" y="224" font-size="10" text-anchor="middle" fill="#5a636b">25</text>
+              <text x="390" y="224" font-size="10" text-anchor="middle" fill="#5a636b">50</text>
+              <text x="220" y="236" font-size="10" text-anchor="middle" fill="#9aa3ab">月間販売数（人）</text>
+            </svg></div>
             <p style="font-size:12px;color:var(--text2);margin-top:6px">月25人の販売で黒字化（コスト¥50,000/月）。</p>
           </div>
           <div class="card">
             <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">買い切り¥2,000 原価回収（1人あたり累積コスト）</p>
-            <div style="height:240px"><canvas id="chartPayback"></canvas></div>
+            <div style="height:240px"><svg viewBox="0 0 420 240" style="width:100%;height:100%" font-family="sans-serif">
+              <line x1="50" y1="20" x2="50" y2="210" stroke="#ccc"/><line x1="50" y1="210" x2="390" y2="210" stroke="#ccc"/>
+              <line x1="50" y1="58" x2="390" y2="58" stroke="#d4af37" stroke-width="2" stroke-dasharray="5 3"/>
+              <line x1="50" y1="210" x2="390" y2="159" stroke="#1a3a52" stroke-width="2.5"/>
+              <line x1="50" y1="210" x2="390" y2="19" stroke="#c0392b" stroke-width="2.5"/>
+              <circle cx="320" cy="58" r="4" fill="#c0392b"/><text x="314" y="50" font-size="10" text-anchor="end" fill="#c0392b">≈33ヶ月で原価到達</text>
+              <text x="386" y="53" font-size="10" text-anchor="end" fill="#8a6d00">買い切り¥2,000</text>
+              <text x="386" y="150" font-size="10" text-anchor="end" fill="#1a3a52">¥16/月（軽め）</text>
+              <text x="305" y="32" font-size="10" text-anchor="end" fill="#c0392b">¥60/月（Gmail重用）</text>
+              <text x="46" y="24" font-size="10" text-anchor="end" fill="#5a636b">¥2,500</text>
+              <text x="46" y="214" font-size="10" text-anchor="end" fill="#5a636b">¥0</text>
+              <text x="50" y="224" font-size="10" text-anchor="middle" fill="#5a636b">0</text>
+              <text x="147" y="224" font-size="10" text-anchor="middle" fill="#5a636b">12</text>
+              <text x="244" y="224" font-size="10" text-anchor="middle" fill="#5a636b">24</text>
+              <text x="341" y="224" font-size="10" text-anchor="middle" fill="#5a636b">36</text>
+              <text x="220" y="236" font-size="10" text-anchor="middle" fill="#9aa3ab">利用月数</text>
+            </svg></div>
             <p style="font-size:12px;color:var(--text2);margin-top:6px">軽め(¥16/月)は約10年で余裕。Gmail重用(¥60/月)は約2.8年で原価到達=要対策。</p>
           </div>
         </div>
@@ -966,7 +1005,6 @@ await createLive.mutateAsync({ title: '...' });</div></div>
   </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 function show(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -983,79 +1021,9 @@ function show(id, el) {
     });
   }
   try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
-  if (id === 'costqa') renderMonetizeCharts();
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
-}
-
-var _monetizeChartsDone = false;
-function renderMonetizeCharts() {
-  if (_monetizeChartsDone) return;
-  if (typeof Chart === 'undefined') { setTimeout(renderMonetizeCharts, 200); return; }
-  _monetizeChartsDone = true;
-  setTimeout(function () {
-    var navy = '#1a3a52', gold = '#d4af37', gray = '#9aa3ab';
-    // ① コスト構成（横棒）
-    new Chart(document.getElementById('chartCost'), {
-      type: 'bar',
-      data: {
-        labels: ['サーバー', 'DB', 'ストレージ', 'メール', 'LLM API'],
-        datasets: [{
-          label: '月額（円）',
-          data: [2500, 5000, 700, 3000, 33000],
-          backgroundColor: [gray, gray, gray, gray, gold]
-        }]
-      },
-      options: {
-        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } } }
-      }
-    });
-    // ② 損益分岐（折れ線）
-    var sales = [0, 5, 10, 15, 20, 25, 30, 40, 50];
-    new Chart(document.getElementById('chartBreakeven'), {
-      type: 'line',
-      data: {
-        labels: sales,
-        datasets: [{
-          label: '月間利益（円）',
-          data: sales.map(function (n) { return n * 2000 - 50000; }),
-          borderColor: navy, backgroundColor: 'rgba(26,58,82,.1)', fill: true, tension: .1, pointRadius: 3
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return '利益 ¥' + c.parsed.y.toLocaleString(); } } } },
-        scales: {
-          x: { title: { display: true, text: '月間販売数（人）' } },
-          y: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } }
-        }
-      }
-    });
-    // ③ 原価回収（折れ線・累積コスト vs 価格）
-    var months = [0, 12, 24, 36, 48, 60, 84, 120];
-    new Chart(document.getElementById('chartPayback'), {
-      type: 'line',
-      data: {
-        labels: months,
-        datasets: [
-          { label: '累積コスト 軽め(¥16/月)', data: months.map(function (m) { return m * 16; }), borderColor: navy, tension: .1, pointRadius: 2 },
-          { label: '累積コスト Gmail重用(¥60/月)', data: months.map(function (m) { return m * 60; }), borderColor: '#c0392b', tension: .1, pointRadius: 2 },
-          { label: '買い切り価格 ¥2,000', data: months.map(function () { return 2000; }), borderColor: gold, borderDash: [6, 4], pointRadius: 0 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { labels: { boxWidth: 12, font: { size: 10 } } } },
-        scales: {
-          x: { title: { display: true, text: '利用月数' } },
-          y: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } }
-        }
-      }
-    });
-  }, 60);
 }
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
