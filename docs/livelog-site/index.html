@@ -186,6 +186,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
+      <div class="nav-item" onclick="show('costqa',this)"><i class="ti ti-calculator"></i>コスト試算・回答</div>
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
       <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
       <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
@@ -746,7 +747,47 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
-        <div class="section-title"><i class="ti ti-server-2"></i> ランニングコスト試算（5,000ユーザー/月・クロード×マナス）</div>
+        <div class="section-title"><i class="ti ti-server-2"></i> ランニングコスト・損益分岐</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">5,000人規模の月間ランニングコスト試算（クロード×マナス）、買い切りリスクの検証、損益分岐・原価回収のグラフ、2階建てハイブリッド結論は専用ページにまとめています。</p>
+          <p style="font-size:14px;margin-top:10px"><a href="#costqa" onclick="show('costqa');return false;" style="color:var(--navy);font-weight:600;text-decoration:underline">→ コスト試算・門倉さんへの回答 ページを見る</a></p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checkbox"></i> オープンな決定事項</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">最初の100人を取るチャネルの特定 <small>最大のブロッカー</small></div>
+            <div class="mini-item">プレセールの具体 <small>価格・先行特典・決済手段</small></div>
+            <div class="mini-item">買い切りで提供する価値の線引き <small>無料との差</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COST Q&A -->
+    <div id="page-costqa" class="page">
+      <div class="topbar"><div class="topbar-title">コスト試算 — 門倉さんへの回答</div><span class="topbar-badge">2026-06</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-calculator hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>5,000ユーザー規模のランニングコストと買い切り戦略</h2>
+          <p>技術顧問・門倉さんからの問いに、クロード試算 × マナス試算をマージして回答。固定費は小さく、変動費（LLM）が支配的。結論は「コスト性質で2階建て」。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-help-circle"></i> 門倉さんの論点（整理）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">Q1</div><div><div class="phase-title">5,000人規模で1ユーザーあたりの月間ランニングコストは？</div><div class="phase-desc">マナス／クロードに試算依頼</div></div></div>
+          <div class="phase-item"><div class="phase-num">Q2</div><div><div class="phase-title">コスト次第で買い切りはリスク</div><div class="phase-desc">永久に使われ続けると原価割れ</div></div></div>
+          <div class="phase-item"><div class="phase-num">Q3</div><div><div class="phase-title">買い切りは毎月一定数を売り続けないと収益ゼロ</div><div class="phase-desc">事業モデルとしての懸念</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">Q4</div><div><div class="phase-title">100人は短期ゴールでなく通過点であるべき</div><div class="phase-desc">次につながる目標設定</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-server-2"></i> A1. ランニングコスト概算（5,000人・40%稼働）— クロード×マナス一致</div>
         <div class="card">
           <p style="font-size:13px;color:var(--text2)">2つの独立試算が「<b style="color:var(--navy)">LLMが支配的・固定費は小さい・1人あたり月¥15〜25</b>」で一致。手動のみなら約¥5。</p>
           <div class="mini-items" style="margin-top:10px">
@@ -755,11 +796,11 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <div class="mini-item">ストレージ <small>450〜900円</small></div>
             <div class="mini-item">メール(Resend) <small>3,000円</small></div>
             <div class="mini-item">LLM API <small>33,000円・最大変動要因</small></div>
-            <div class="mini-item">合計 <small>約39,000〜50,000円/月（40%稼働）</small></div>
+            <div class="mini-item">合計 <small>約39,000〜50,000円/月</small></div>
           </div>
-          <p style="font-size:13px;color:var(--text2);margin-top:10px">損益分岐 = 月¥50,000 ÷ ¥2,000 = <b style="color:var(--navy)">月25人の販売で黒字</b>。</p>
         </div>
       </div>
+
       <div class="section">
         <div class="section-title"><i class="ti ti-list-details"></i> 詳細内訳（前提・LLM呼び出し・稼働シナリオ）</div>
         <div class="card">
@@ -781,15 +822,20 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <div class="mini-item">40%稼働（2,000人） <small>約 $220（約33,000円）</small></div>
             <div class="mini-item">100%稼働（5,000人） <small>約 $550（約82,500円）</small></div>
           </div>
-          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">買い切り¥2,000 損益分岐シナリオ</p>
-          <div class="mini-items" style="margin-top:6px">
-            <div class="mini-item">黒字化ライン <small>月50,000円 ÷ 2,000 = 月25人の販売</small></div>
-            <div class="mini-item">5,000人全員購入 <small>売上1,000万円 − 年間コスト60万円 = 年940万円利益</small></div>
-            <div class="mini-item">有料転換5%（250人） <small>売上50万円 − 月コスト5万円 = 月45万円利益</small></div>
-          </div>
-          <p style="font-size:12px;color:var(--text2);margin-top:12px">※ LLM単価はManus非公開のため同等モデル市場価格で試算（GPT-4o相当 in$2.5/out$10、Claude Sonnet相当 in$3/out$15 / 1Mトークン）。クロード試算と独立に概ね一致。</p>
+          <p style="font-size:12px;color:var(--text2);margin-top:12px">※ LLM単価はManus非公開のため同等モデル市場価格で試算（GPT-4o相当 in$2.5/out$10、Claude Sonnet相当 in$3/out$15 / 1Mトークン）。</p>
         </div>
       </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> A2. 買い切り¥2,000リスクの検証 → 門倉さんが正しい</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">永久に使われ続けた場合の原価回収期間。<b style="color:var(--navy)">差別化の目玉「Gmail自動取込」こそ継続的にLLMコストを垂れ流す</b>ため、これを買い切りに含めるとヘビーユーザーほど赤字。</p>
+          <div class="phase-item" style="margin-top:8px"><div class="phase-num">¥20</div><div><div class="phase-title">軽め → 約100ヶ月（8年）　◎ 問題なし</div></div></div>
+          <div class="phase-item"><div class="phase-num">¥50</div><div><div class="phase-title">中 → 約40ヶ月（3.3年）　△ 微妙</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">¥70</div><div><div class="phase-title">Gmail重用 → 約28ヶ月（2.3年）　✕ 危険</div></div></div>
+        </div>
+      </div>
+
       <div class="section">
         <div class="section-title"><i class="ti ti-chart-bar"></i> 可視化（グラフ）</div>
         <div class="card-grid">
@@ -810,23 +856,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </div>
         </div>
       </div>
+
       <div class="section">
-        <div class="section-title"><i class="ti ti-stairs"></i> 買い切りリスクと統合結論（2階建てハイブリッド）</div>
+        <div class="section-title"><i class="ti ti-stairs"></i> A3・A4. 統合結論（2階建てハイブリッド）</div>
         <div class="card">
-          <p style="font-size:13px;color:var(--text2)">技術顧問・門倉さんの指摘 ①永久に原価が出る ②毎月売り続けないと収益ゼロ → どちらも「継続コストのある機能を永久販売に含めるな」に集約。<b style="color:var(--navy)">機能をコスト性質で2階建てにする。</b></p>
+          <p style="font-size:13px;color:var(--text2)">論点②③④は「<b style="color:var(--navy)">継続コストのある機能は継続収益（サブスク）で受ける</b>」に集約。機能をコスト性質で2階建てにする。</p>
           <div class="phase-item" style="margin-top:8px"><div class="phase-num">土台</div><div><div class="phase-title">手動記録・管理・セトリ・メモ（原価ほぼ0）</div><div class="phase-desc">無料 / 買い切り。永久提供しても赤字にならない</div></div></div>
-          <div class="phase-item" style="border-bottom:none"><div class="phase-num">課金</div><div><div class="phase-title">Gmail自動取込・AI解析・期限通知（継続コスト）</div><div class="phase-desc">月額サブスクでLLMコストを継続収益(MRR)で回収</div></div></div>
-          <p style="font-size:13px;color:var(--text2);margin-top:8px">抑制策：①Gmail自動はプレミアム限定 ②月間スキャン上限 ③同一メールはキャッシュ再利用 ④分類は安価モデル。<br><b style="color:var(--navy)">100人は通過点</b>＝課金検証のマイルストーン。その先はMRRの積み上げが本命。</p>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-title"><i class="ti ti-checkbox"></i> オープンな決定事項</div>
-        <div class="card">
-          <div class="mini-items">
-            <div class="mini-item">最初の100人を取るチャネルの特定 <small>最大のブロッカー</small></div>
-            <div class="mini-item">プレセールの具体 <small>価格・先行特典・決済手段</small></div>
-            <div class="mini-item">買い切りで提供する価値の線引き <small>無料との差</small></div>
-          </div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">課金</div><div><div class="phase-title">Gmail自動取込・AI解析・期限通知（継続コスト）</div><div class="phase-desc">月額サブスク（¥300〜500）でLLMコストを継続収益(MRR)で回収</div></div></div>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">コスト抑制策</b>：①Gmail自動はプレミアム限定 ②月間スキャン上限（例 フリー0／プレミアム50通） ③同一メールはサーバー側キャッシュで再解析しない ④分類は安価モデル。</p>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">100人の位置づけ</b>：短期ゴールでなく「課金が動くことの検証マイルストーン」。その先はMRRの積み上げが本命（門倉さん指摘に全面同意）。併用も可：土台は¥2,000買い切りで初速、AI機能はサブスク。</p>
         </div>
       </div>
     </div>
@@ -945,7 +983,7 @@ function show(id, el) {
     });
   }
   try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
-  if (id === 'monetize') renderMonetizeCharts();
+  if (id === 'costqa') renderMonetizeCharts();
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
