@@ -746,6 +746,30 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-server-2"></i> ランニングコスト試算（5,000ユーザー/月・クロード×マナス）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">2つの独立試算が「<b style="color:var(--navy)">LLMが支配的・固定費は小さい・1人あたり月¥15〜25</b>」で一致。手動のみなら約¥5。</p>
+          <div class="mini-items" style="margin-top:10px">
+            <div class="mini-item">サーバー <small>0〜5,000円（Manus込みでほぼ0）</small></div>
+            <div class="mini-item">DB(TiDB) <small>3,000〜7,500円</small></div>
+            <div class="mini-item">ストレージ <small>450〜900円</small></div>
+            <div class="mini-item">メール(Resend) <small>3,000円</small></div>
+            <div class="mini-item">LLM API <small>33,000円・最大変動要因</small></div>
+            <div class="mini-item">合計 <small>約39,000〜50,000円/月（40%稼働）</small></div>
+          </div>
+          <p style="font-size:13px;color:var(--text2);margin-top:10px">損益分岐 = 月¥50,000 ÷ ¥2,000 = <b style="color:var(--navy)">月25人の販売で黒字</b>。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-stairs"></i> 買い切りリスクと統合結論（2階建てハイブリッド）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">技術顧問・門倉さんの指摘 ①永久に原価が出る ②毎月売り続けないと収益ゼロ → どちらも「継続コストのある機能を永久販売に含めるな」に集約。<b style="color:var(--navy)">機能をコスト性質で2階建てにする。</b></p>
+          <div class="phase-item" style="margin-top:8px"><div class="phase-num">土台</div><div><div class="phase-title">手動記録・管理・セトリ・メモ（原価ほぼ0）</div><div class="phase-desc">無料 / 買い切り。永久提供しても赤字にならない</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">課金</div><div><div class="phase-title">Gmail自動取込・AI解析・期限通知（継続コスト）</div><div class="phase-desc">月額サブスクでLLMコストを継続収益(MRR)で回収</div></div></div>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px">抑制策：①Gmail自動はプレミアム限定 ②月間スキャン上限 ③同一メールはキャッシュ再利用 ④分類は安価モデル。<br><b style="color:var(--navy)">100人は通過点</b>＝課金検証のマイルストーン。その先はMRRの積み上げが本命。</p>
+        </div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-checkbox"></i> オープンな決定事項</div>
         <div class="card">
           <div class="mini-items">
