@@ -791,6 +791,26 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-chart-bar"></i> 可視化（グラフ）</div>
+        <div class="card-grid">
+          <div class="card">
+            <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">月間コスト構成（5,000人・40%稼働）</p>
+            <div style="height:240px"><canvas id="chartCost"></canvas></div>
+            <p style="font-size:12px;color:var(--text2);margin-top:6px">LLMが支配的。固定費は小さい。</p>
+          </div>
+          <div class="card">
+            <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">損益分岐：月間販売数 × 月間利益</p>
+            <div style="height:240px"><canvas id="chartBreakeven"></canvas></div>
+            <p style="font-size:12px;color:var(--text2);margin-top:6px">月25人の販売で黒字化（コスト¥50,000/月）。</p>
+          </div>
+          <div class="card">
+            <p style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px">買い切り¥2,000 原価回収（1人あたり累積コスト）</p>
+            <div style="height:240px"><canvas id="chartPayback"></canvas></div>
+            <p style="font-size:12px;color:var(--text2);margin-top:6px">軽め(¥16/月)は約10年で余裕。Gmail重用(¥60/月)は約2.8年で原価到達=要対策。</p>
+          </div>
+        </div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-stairs"></i> 買い切りリスクと統合結論（2階建てハイブリッド）</div>
         <div class="card">
           <p style="font-size:13px;color:var(--text2)">技術顧問・門倉さんの指摘 ①永久に原価が出る ②毎月売り続けないと収益ゼロ → どちらも「継続コストのある機能を永久販売に含めるな」に集約。<b style="color:var(--navy)">機能をコスト性質で2階建てにする。</b></p>
@@ -908,6 +928,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 function show(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -924,9 +945,79 @@ function show(id, el) {
     });
   }
   try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
+  if (id === 'monetize') renderMonetizeCharts();
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
+}
+
+var _monetizeChartsDone = false;
+function renderMonetizeCharts() {
+  if (_monetizeChartsDone) return;
+  if (typeof Chart === 'undefined') { setTimeout(renderMonetizeCharts, 200); return; }
+  _monetizeChartsDone = true;
+  setTimeout(function () {
+    var navy = '#1a3a52', gold = '#d4af37', gray = '#9aa3ab';
+    // ① コスト構成（横棒）
+    new Chart(document.getElementById('chartCost'), {
+      type: 'bar',
+      data: {
+        labels: ['サーバー', 'DB', 'ストレージ', 'メール', 'LLM API'],
+        datasets: [{
+          label: '月額（円）',
+          data: [2500, 5000, 700, 3000, 33000],
+          backgroundColor: [gray, gray, gray, gray, gold]
+        }]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } } }
+      }
+    });
+    // ② 損益分岐（折れ線）
+    var sales = [0, 5, 10, 15, 20, 25, 30, 40, 50];
+    new Chart(document.getElementById('chartBreakeven'), {
+      type: 'line',
+      data: {
+        labels: sales,
+        datasets: [{
+          label: '月間利益（円）',
+          data: sales.map(function (n) { return n * 2000 - 50000; }),
+          borderColor: navy, backgroundColor: 'rgba(26,58,82,.1)', fill: true, tension: .1, pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return '利益 ¥' + c.parsed.y.toLocaleString(); } } } },
+        scales: {
+          x: { title: { display: true, text: '月間販売数（人）' } },
+          y: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } }
+        }
+      }
+    });
+    // ③ 原価回収（折れ線・累積コスト vs 価格）
+    var months = [0, 12, 24, 36, 48, 60, 84, 120];
+    new Chart(document.getElementById('chartPayback'), {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          { label: '累積コスト 軽め(¥16/月)', data: months.map(function (m) { return m * 16; }), borderColor: navy, tension: .1, pointRadius: 2 },
+          { label: '累積コスト Gmail重用(¥60/月)', data: months.map(function (m) { return m * 60; }), borderColor: '#c0392b', tension: .1, pointRadius: 2 },
+          { label: '買い切り価格 ¥2,000', data: months.map(function () { return 2000; }), borderColor: gold, borderDash: [6, 4], pointRadius: 0 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { boxWidth: 12, font: { size: 10 } } } },
+        scales: {
+          x: { title: { display: true, text: '利用月数' } },
+          y: { ticks: { callback: function (v) { return '¥' + v.toLocaleString(); } } }
+        }
+      }
+    });
+  }, 60);
 }
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
