@@ -1331,8 +1331,107 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-id-badge-2"></i> 競合プロファイル（個別）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>サービス</th><th>形態/運営</th><th>強み</th><th>弱み（＝我々の隙）</th></tr></thead>
+          <tbody>
+            <tr><td><b>LiveNote</b><br><small>コンセプト最接近</small></td><td>iOS/Android・個人(Flutter)・活発(v2.11)・評価4.0超</td><td>記録項目の網羅（整理番号/チケ代/座席/MCメモ/対バン/マイタイテ）・統計自動グラフ・トップ10シェア画像</td><td>AI自動取込なし／セトリ手入力が重い・発熱／双方向つながりなし／「公演名だけで保存不可」等の入力摩擦</td></tr>
+            <tr><td><b>LIVE DIARY🍊</b><br><small>Web・見た目近い</small></td><td>Web/PWA・GitHub Pages・個人・2026年1月開始の超新参・無料+投げ銭</td><td>ダーク基調で洗練されたUI・アートワーク表示・聴いた曲ランキング・Apple Music/Spotifyリンク・インストール不要</td><td>データは端末ローカル保存＝消失リスク／マルチデバイス同期なし／収益基盤が脆弱／認知薄い</td></tr>
+            <tr><td><b>Live Rock</b></td><td>iOS/Android・個人・2025年頃</td><td>写真からセトリ読取・Apple Music連携・会場マップ・iCloud保存で機種変安全</td><td>つながり弱い／規模小／自動化は写真→セトリ止まり</td></tr>
+            <tr><td><b>LIVE×LIFE</b></td><td>iOS/Android・個人・2022年</td><td>デザイン良・参戦予定/済み・共有</td><td>写真複数でスクロール重い・入力しづらいVOC／AIなし／つながり弱い</td></tr>
+            <tr><td><b>Livelog</b><br><small>同名・先行</small></td><td>iOS/Android・個人(littlebird)・実質更新停止(2018)</td><td>ライブ特化・シンプル・広告なし</td><td>端末内保存でデータ消失多発→★1連発／更新停止／英語UI</td></tr>
+            <tr><td><b>LiveFans</b><br><small>最大手</small></td><td>SKIYAKI(2024スペースシャワー統合)・2011〜</td><td>セトリ約46万件・公演147万件・60年分DB・月間120万UU/1000万PV・ライブ再現プレイヤー・Apple Music連携(2024/12)</td><td>本体はメディア/データ事業＋主力はBitfan(FC/EC)＝個人の参戦体験はサブ／コミュニティ・ポイント2025/7終了＝つながり空白／強制終了・不安定・サポート遅のVOC（不満86%との集計も）／Spotify未対応</td></tr>
+            <tr><td><b>setlist.fm</b></td><td>Web・海外(Live Nation系)</td><td>世界規模のセトリDB</td><td>日本のライブ網羅・参戦記録UIが弱い</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12px;color:var(--text2);margin-top:6px">※ LiveFansは既存調査分（深掘りは未完）。○△の精度は実機確認で更新予定。</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-table"></i> ベンチマーク比較（機能マトリクス）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>我々(新)</th><th>LiveNote</th><th>LIVE DIARY</th><th>Live Rock</th><th>Livelog</th><th>LiveFans</th></tr></thead>
+          <tbody>
+            <tr><td>参戦記録・セトリ</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>◎(DB)</td></tr>
+            <tr><td>統計・ランキング</td><td>○</td><td>◎</td><td>◎</td><td>○</td><td>△</td><td>○</td></tr>
+            <tr><td>アートワーク/顔表示</td><td>✗(予定E4)</td><td>△</td><td>○</td><td>○</td><td>✗</td><td>○</td></tr>
+            <tr><td><b>AI自動取込(画像/メール)</b></td><td><b>◎ 目玉</b></td><td>✗</td><td>✗</td><td>△(写真→セトリ)</td><td>✗</td><td>✗</td></tr>
+            <tr><td><b>クラウド同期(消えない)</b></td><td><b>◎</b></td><td>?</td><td>✗(ローカル)</td><td>○(iCloud)</td><td>✗(端末内)</td><td>○</td></tr>
+            <tr><td>マルチデバイス</td><td>○</td><td>?</td><td>✗</td><td>△</td><td>✗</td><td>○</td></tr>
+            <tr><td><b>双方向つながり(SNS)</b></td><td><b>◎ 目玉</b></td><td>✗(一方向)</td><td>✗</td><td>✗</td><td>△</td><td>△(2025/7終了)</td></tr>
+            <tr><td>期限通知・チケット状態</td><td>○</td><td>△</td><td>✗</td><td>✗</td><td>△</td><td>△</td></tr>
+            <tr><td>課金/収益</td><td>買い切り+サブスク(予定)</td><td>フリーミアム</td><td>無料+投げ銭</td><td>無料+課金</td><td>無料</td><td>課金/B2B</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12px;color:var(--text2);margin-top:6px">◎強い ○あり △一部/弱い ✗なし ?不明。AI自動取込・双方向つながり・クラウド消えないが我々の優位、アートワーク/デザインは劣位。</p>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">戦う土俵の整理</b>：LiveFansはDBの巨人（46万セトリ・月間120万UU）だがメディア/データ事業で個人の参戦体験・つながりは手薄。<b style="color:var(--navy)">直接の競合は個人開発組（LiveNote / LIVE DIARY / Live Rock）。</b>DB規模では勝てないが、個人の「体験×自動化×つながり×消えない」で勝負する。</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-trophy"></i> 勝負できる点（我々の勝ち筋・フラット）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">◎ 勝てる軸</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">クラウド同期で「データが消えない」 <small>LIVE DIARY/Livelog/旧世代の致命傷＝VOC最大の地雷を回避</small></div>
+            <div class="mini-item">AI/Gmail自動取込 <small>競合は手入力中心。Live Rockの写真→セトリが唯一近い</small></div>
+            <div class="mini-item">双方向の「つながり」 <small>各社は一方向シェアのみ。LiveFansがコミュニティ撤退＝空白地帯。※ただし開放型コミュニティは最大手でも続かず（2017開設→2025/7終了）＝重いフォーラムでなく「共通ライブバッジ・公開プロフィール」等の軽く"溶け込む"つながりにすべき</small></div>
+            <div class="mini-item">期限通知・チケット状態の自動化 <small>「失念しない」価値</small></div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">△ 正直な劣位・課題</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">デザインの洗練 <small>LIVE DIARY/LiveNoteが上。要追い上げ</small></div>
+            <div class="mini-item">アートワーク/顔表示が未実装 <small>E4で対応予定</small></div>
+            <div class="mini-item">未公開・ユーザーゼロ <small>先行各社は稼働中</small></div>
+            <div class="mini-item">AI精度（特にフェス出演者）が未成熟</div>
+            <div class="mini-item">セトリDB規模はLiveFansに到底及ばない <small>自前DBは堀だが重い</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-big-up-lines"></i> これを踏まえた機能開発の優先</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1</div><div><div class="phase-title">クラウド同期の信頼性＋「消えない」体験</div><div class="phase-desc">最大の差別化。バックアップ・復元・マルチデバイスの安心を前面に</div></div></div>
+          <div class="phase-item"><div class="phase-num">2</div><div><div class="phase-title">AI/Gmail自動取込の精度</div><div class="phase-desc">手入力ゼロ＝VOC最大の不満を解消。フェス出演者の精度改善が鍵</div></div></div>
+          <div class="phase-item"><div class="phase-num">3</div><div><div class="phase-title">双方向つながり（共通ライブ・友達・発信）</div><div class="phase-desc">LiveFans撤退の空白を取る。共通ライブバッジ・公開プロフィール</div></div></div>
+          <div class="phase-item"><div class="phase-num">4</div><div><div class="phase-title">アートワーク/顔表示＋統計の"映え"</div><div class="phase-desc">LIVE DIARY/LiveNoteに見た目で並ぶ。参戦数ランキングの視覚化</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">5</div><div><div class="phase-title">クイック入力・セトリ編集</div><div class="phase-desc">「公演名だけで保存」「メモ改行」「曲順入替」等VOC不満の解消</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-speakerphone"></i> マーケティング戦略</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">ポジショニング（一言）</p>
+          <p style="font-size:14px;color:var(--ink);margin-top:4px">「<b style="color:var(--navy)">消えない・自動・つながる</b> ライブ記録」── 競合の弱点（消える／手入力／孤独）を真正面から突く。</p>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">ターゲット</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">コア：複数現場を追うヘビー層（10〜20代）</div>
+            <div class="mini-item">拡張：30〜40代の「久々に行く」再燃層</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">チャネル</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">SNS（Instagram/X）で特定アーティスト・フェスのファンクラスタ</div>
+            <div class="mini-item">ライブ仲間・現場・ライブハウスへの手売り（最初の数十人）</div>
+            <div class="mini-item">AIでアプリを作る系セミナー（副次・林の強み）</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">拡散装置（バイラル）</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">共通ライブバッジ「一緒に参戦」＝つながりが拡散を生む</div>
+            <div class="mini-item">参戦歴の"映え"シェア画像（競合の強い導線を取り込む）</div>
+            <div class="mini-item">公開プロフィールURLをSNSに貼る → 相互流入</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">マネタイズ訴求 / 中長期</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">無料で始める → AI/通知/Gmailはプレミアム（2階建て）＋先行キャンペーン</div>
+            <div class="mini-item">会員増→チケットサイトへの送客（B2B・将来の収益軸）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-link"></i> 出典・補足</div>
-        <div class="card"><p style="font-size:12px;color:var(--text2)">Livelogの不満/要望/満足はGoogle Play実レビュー（オーナー取得スクショ）からの逐語。競合VOCは検索要約ベース（App Store/Google Play本体はbot拒否のため要約）。一次ソース：littlebird.mobi、apps.apple.com/jp/app/id1330442649、play.google.com（mobi.littlebird.livelog）、livefans.jp、livediary-app.com、各APPLIONページ等。確定値は実機確認推奨。</p></div>
+        <div class="card"><p style="font-size:12px;color:var(--text2)">Livelogの不満/要望/満足はGoogle Play実レビュー（オーナー取得スクショ）からの逐語。競合VOC・規模・事業情報は検索要約＋GitHub APIメタデータ等（App Store/Google Play・SKIYAKI公式・PR TIMES等は403のため要約）。一次ソース：littlebird.mobi、apps.apple.com/jp/app/id1330442649、play.google.com、livefans.jp（規模実数）、skiyaki.com、musicman.co.jp、livediary-app.com、github.com/thumpman-graffitti、appmatch.jp、各APPLIONページ等。確定値（星評価・DL数・正確な売上）は実機/IR直接確認推奨。</p></div>
       </div>
     </div>
 
