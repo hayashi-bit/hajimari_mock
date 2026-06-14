@@ -181,6 +181,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-label">インフラ</div>
       <div class="nav-item" onclick="show('env',this)"><i class="ti ti-settings"></i>環境変数</div>
       <div class="nav-item" onclick="show('phases',this)"><i class="ti ti-road"></i>実装フェーズ</div>
+      <div class="nav-item" onclick="show('envdb',this)"><i class="ti ti-database-cog"></i>環境・DB設計</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
@@ -935,6 +936,86 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">コスト抑制策</b>：①Gmail自動はプレミアム限定 ②月間スキャン上限（例 フリー0／プレミアム50通） ③同一メールはサーバー側キャッシュで再解析しない ④分類は安価モデル。</p>
           <p style="font-size:13px;color:var(--text2);margin-top:8px"><b style="color:var(--navy)">100人の位置づけ</b>：短期ゴールでなく「課金が動くことの検証マイルストーン」。その先はMRRの積み上げが本命（門倉さん指摘に全面同意）。併用も可：土台は¥2,000買い切りで初速、AI機能はサブスク。</p>
         </div>
+      </div>
+    </div>
+
+    <!-- ENV / DB DESIGN -->
+    <div id="page-envdb" class="page">
+      <div class="topbar"><div class="topbar-title">環境・DB設計</div><span class="topbar-badge">確定</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-database-cog hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>Manus=計算 / データ・コード・認証=自分所有</h2>
+          <p>ロックインを避け、将来Manusから移せる状態を保つ。本番と開発はDBを分けて安全に開発する。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-check"></i> 基本方針（確定）</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">データ（DB）は自分所有の外部DBに置く <small>ロックイン回避・YES</small></div>
+            <div class="mini-item">将来Manusから移せる状態を保つ <small>保険として確保・YES</small></div>
+            <div class="mini-item">Manusは「計算（アプリ実行）」だけ担当 <small>借家。いつでも乗り換え可</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-layout-2"></i> 環境トポロジー</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th></th><th>本番 Production</th><th>開発 Development</th></tr></thead>
+          <tbody>
+            <tr><td>URL</td><td>app.livelog.live（Publish済）</td><td>3000-xxx.manus.computer（右パネル）</td></tr>
+            <tr><td>コードの実体</td><td>最後にPublishしたもの</td><td>編集中の最新コード</td></tr>
+            <tr><td>NODE_ENV</td><td>production</td><td>development</td></tr>
+            <tr><td>認証</td><td>Google OAuth（本物）</td><td>開発バイパス（自動ログイン）</td></tr>
+            <tr><td>DB</td><td>本番DB（外部・TiDB）</td><td>開発DB（外部・TiDB 2つ目）</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px">コードは <b style="color:var(--navy)">Publishゲート</b> で、データは <b style="color:var(--navy)">DB分離</b> で守る。右パネルの有無は安全装置ではない。</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database"></i> DB方針：TiDB Serverless（自分所有）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">本番・開発とも <b style="color:var(--navy)">TiDB Serverless（無料枠・MySQL互換）</b> を自分のアカウントで持ち、Manusの <code>DATABASE_URL</code> を外部DBに向ける。</p>
+          <div class="mini-items" style="margin-top:10px">
+            <div class="mini-item">採用：TiDB Serverless <small>無料枠・MySQL互換・既存Drizzle構成に合致</small></div>
+            <div class="mini-item">不採用：PlanetScale <small>2024年に無料枠廃止（最低$39/月）</small></div>
+            <div class="mini-item">不採用：Neon <small>Postgres（DB方言が変わる）</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-lock"></i> 安全ガードレール</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1</div><div><div class="phase-title">開発DB必須（フォールバック禁止）</div><div class="phase-desc">NODE_ENV=development で DATABASE_URL_DEV が無ければ起動エラー。本番DBへの誤接続を構造的に防止</div></div></div>
+          <div class="phase-item"><div class="phase-num">2</div><div><div class="phase-title">認証バイパスは二重ガード</div><div class="phase-desc">NODE_ENV=development かつ DEV_AUTH_BYPASS=true のときだけ。本番では絶対発動しない</div></div></div>
+          <div class="phase-item"><div class="phase-num">3</div><div><div class="phase-title">本番DB変更は Publish 時のみ＋事前バックアップ</div><div class="phase-desc">破壊的変更を開発から本番に直接当てない</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">4</div><div><div class="phase-title">開発環境は noindex・非公開リンク</div><div class="phase-desc">任意で「DEV」バナー表示</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-git-branch"></i> マイグレーション運用</div>
+        <div class="card"><p style="font-size:13px;color:var(--text2)">「倉庫の棚を組み替える作業」。Drizzleの同じmigrationファイルを<b style="color:var(--navy)">両DBに適用</b>。流れ：①開発DBにmigration → ②開発で検証 → ③Publish時に本番DBへ適用（事前バックアップ）。</p></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-luggage"></i> ポータビリティ（将来Manusから移す）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>持ち物</th><th>場所</th><th>移行</th></tr></thead>
+          <tbody>
+            <tr><td>コード</td><td>GitHub</td><td>◎ そのまま持ち出せる</td></tr>
+            <tr><td>データ</td><td>外部TiDB（自分所有）</td><td>◎ 接続先を向けるだけ</td></tr>
+            <tr><td>認証</td><td>Google</td><td>◎ どこでも使える</td></tr>
+            <tr><td>LLM API</td><td>Manus（BUILT_IN_FORGE）</td><td>△ 別プロバイダに差し替え</td></tr>
+            <tr><td>画像ストレージ</td><td>Manus S3プロキシ</td><td>△ 外部S3に差し替え</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px">コード・データ・認証を自分所有にしておけば、Manusから抜けるのは「計算の引っ越し」だけ。LLMとストレージのみ移行時に付け替え。</p>
       </div>
     </div>
 
