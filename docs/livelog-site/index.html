@@ -189,6 +189,7 @@ tr:hover td{background:var(--bg2)}
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
+      <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlist',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
@@ -1448,6 +1449,33 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-player-play"></i> 名前を待たず「今すぐ進められる」こと（並行）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">名前は検討中だが、<b style="color:var(--navy)">大半の作業は名前に依存しない</b>。待つのはドメインと最終リネームだけ。以下を並行で進める。</p>
+          <div class="mini-items" style="margin-top:8px">
+            <div class="mini-item">① 開発環境整備：開発バイパス＋外部DB＋本番/開発分離（B2/B3・Manus）<small>安全の土台</small></div>
+            <div class="mini-item">② AI先行開発：フェス出演者補完の精度／Gmail解析の技術検証／セトリのAI入力（写真・X貼付）<small>差別化の本丸・ドメイン不要</small></div>
+            <div class="mini-item">③ UX改善（VOC由来）：クイック入力・セトリ編集・メモ改行・日本語UX・「消えない」訴求</div>
+            <div class="mini-item">④ フリーミアム設計＋Stripe実装（C1/C2）</div>
+            <div class="mini-item">⑤ 法務ドラフト（利用規約・プライバシー・特商法）<small>クロコが叩き台。名前はプレースホルダで後差替</small></div>
+            <div class="mini-item">⑥ アートワーク/顔表示＋統計の映え（E4）<small>デザイン追い上げ</small></div>
+            <div class="mini-item">⑦ 集客チャネルの特定（F2・最大ブロッカー）<small>名前不要で決められる</small></div>
+            <div class="mini-item">⑧ LPの構成・コピー磨き<small>名前部分だけ後差替</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-player-pause"></i> 名前の確定を「待つ」もの（少しだけ）</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">ドメイン取得→接続→OAuth更新（D2）</div>
+            <div class="mini-item">最終リネーム（アプリ/LP/docsの名称一斉差替・E1）</div>
+            <div class="mini-item">Gmail審査の本申請<small>プライバシーポリシーURL＝確定ドメインが要る</small></div>
+            <div class="mini-item">Googleログインの本番設定<small>リダイレクトURI＝確定ドメイン（開発はテスト用URLで先行可）</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-gavel"></i> A. 法務・規約（最優先・専門家確認推奨）</div>
         <div class="card">
           <div class="phase-item"><div class="phase-num">A1</div><div><div class="phase-title">利用規約</div><div class="phase-desc">※LIVE DIARYの例はローカル保存前提で流用不可。我々はクラウドDBに個人データ(email等)を保持するため、データ保護責任・個人情報取扱い・退会/データ削除・決済/返金・サービス継続を盛り込む必要あり。クロコが叩き台→専門家確認</div></div></div>
@@ -1525,6 +1553,38 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">LP磨き込み＋集客チャネル決定</div><div class="phase-desc">担当：クロコ（LP）＋林（チャネル）</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">7</div><div><div class="phase-title">プレセールで課金実証→キャンペーンで100人</div><div class="phase-desc">担当：林＋クロコ</div></div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- RISKS -->
+    <div id="page-risks" class="page">
+      <div class="topbar"><div class="topbar-title">懸念点・リスク台帳</div></div>
+      <div class="hero-strip">
+        <i class="ti ti-alert-triangle hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>今ある懸念点と、その代替案・対応</h2>
+          <p>本格リリースに向けて把握しておくべき論点を一覧化。状態（解決/方針あり/要検討/未定）で管理する。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-clipboard-list"></i> リスク一覧</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>#</th><th>懸念点</th><th>代替案・対応</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>商標（LiveLog同名・同ジャンル先行）</td><td>改名</td><td>検討中（りおんちゃんと相談）</td></tr>
+            <tr><td>2</td><td>セトリ取得＝スクレイピングの法的リスク</td><td>自前UGC＋AI入力＋setlist.fm API（→セトリ取得方針ページ）</td><td>要検討</td></tr>
+            <tr><td>3</td><td>データ消失（競合の致命傷）</td><td>クラウドDB同期</td><td>解決（設計済）</td></tr>
+            <tr><td>4</td><td>市場飽和＋デザイン劣位</td><td>自動化×つながり×クラウドで差別化／デザイン追い上げ(E4)</td><td>方針あり</td></tr>
+            <tr><td>5</td><td>買い切りの継続収益/原価割れ（門倉さん指摘）</td><td>2階建て（買い切り＋サブスク）</td><td>方針確定</td></tr>
+            <tr><td>6</td><td>コールドスタート（自前DB空）</td><td>AI入力で手間ゼロ＋パワーユーザー初期投入</td><td>緩和策あり</td></tr>
+            <tr><td>7</td><td>Manus依存／ポータビリティ</td><td>コード=Git／DB=外部所有／認証=Google</td><td>方針確定</td></tr>
+            <tr><td>8</td><td>法務未整備（規約/特商法/プライバシー）</td><td>クロコ叩き台→専門家確認</td><td>TODO</td></tr>
+            <tr><td>9</td><td>Gmail審査（数週間）</td><td>テストユーザー先行＋早期申請</td><td>計画済</td></tr>
+            <tr><td>10</td><td>集客チャネル未定 ★最大ブロッカー</td><td>手売り／SNS／現場</td><td>未定</td></tr>
+            <tr><td>11</td><td>右パネル見えない／本番・開発混在</td><td>開発バイパス＋NODE_ENVでDB分離</td><td>Manus実装中</td></tr>
+            <tr><td>12</td><td>AI精度（フェス出演者等）</td><td>精度改善・先行開発（ドメイン不要）</td><td>着手可</td></tr>
+          </tbody>
+        </table></div>
       </div>
     </div>
 
