@@ -160,6 +160,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item active" onclick="show('overview',this)"><i class="ti ti-home"></i>アプリ概要</div>
       <div class="nav-item" onclick="show('concept',this)"><i class="ti ti-bulb"></i>コンセプト</div>
       <div class="nav-item" onclick="show('naming',this)"><i class="ti ti-signature"></i>ネーミング検討</div>
+      <div class="nav-item" onclick="show('people',this)"><i class="ti ti-users"></i>関係者</div>
       <div class="nav-item" onclick="show('stack',this)"><i class="ti ti-stack-2"></i>技術スタック</div>
       <div class="nav-item" onclick="show('status',this)"><i class="ti ti-tag"></i>ステータス仕様</div>
     </div>
@@ -1202,6 +1203,26 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <div class="mini-item">らいぶり <small>ライブ＋陽気・ひらがなで可愛いポップ</small></div>
           </div>
           <p style="font-size:12px;color:var(--text2);margin-top:10px">※ 決定後、商標（J-PlatPat）＋既存サービス＋ドメイン空きを実チェックして最終確認する。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PEOPLE -->
+    <div id="page-people" class="page">
+      <div class="topbar"><div class="topbar-title">関係者</div></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users"></i> 関係者</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num"><i class="ti ti-user-star"></i></div><div><div class="phase-title">技術顧問</div><div class="phase-desc">門倉悠真（門倉さん）</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num"><i class="ti ti-user-heart"></i></div><div><div class="phase-title">開発パートナー・モニター</div><div class="phase-desc">俵山鈴音（りおんちゃん）</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-robot"></i> 開発体制</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num"><i class="ti ti-user"></i></div><div><div class="phase-title">オーナー・企画・意思決定・検収</div><div class="phase-desc">林英史（スリーウェイ）</div></div></div>
+          <div class="phase-item"><div class="phase-num"><i class="ti ti-message-code"></i></div><div><div class="phase-title">クロコ（Claude Code）</div><div class="phase-desc">仕様検討・設計・ドキュメント・Manusへの指示文・LP/開発サイト制作</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num"><i class="ti ti-device-desktop-code"></i></div><div><div class="phase-title">マナス（Manus）</div><div class="phase-desc">アプリ本体の実装・テスト・デプロイ</div></div></div>
         </div>
       </div>
     </div>
