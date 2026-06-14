@@ -189,6 +189,7 @@ tr:hover td{background:var(--bg2)}
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
+      <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
       <div class="nav-item" onclick="show('costqa',this)"><i class="ti ti-calculator"></i>コスト試算・回答</div>
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
@@ -1224,6 +1225,113 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num"><i class="ti ti-message-code"></i></div><div><div class="phase-title">クロコ（Claude Code）</div><div class="phase-desc">仕様検討・設計・ドキュメント・Manusへの指示文・LP/開発サイト制作</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num"><i class="ti ti-device-desktop-code"></i></div><div><div class="phase-title">マナス（Manus）</div><div class="phase-desc">アプリ本体の実装・テスト・デプロイ</div></div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- MARKET / VOC -->
+    <div id="page-market" class="page">
+      <div class="topbar"><div class="topbar-title">市場・VOC調査</div><span class="topbar-badge">2026-06</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-chart-dots hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>既存「Livelog」と競合・ユーザーの声（VOC）</h2>
+          <p>同名・同ジャンルの先行アプリ「Livelog（littlebird製）」と競合群を徹底調査。事業化・差別化の材料。比較ではなく事実の網羅。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-octagon"></i> 最重要インサイト</div>
+        <div class="card">
+          <p style="font-size:14px;color:var(--ink)"><b style="color:var(--navy)">Livelogは"機能"で負けたのではなく、"端末内保存・クラウド同期なし"によるデータ消失で死んだ。</b></p>
+          <p style="font-size:13px;color:var(--text2);margin-top:6px">Google Play ★3.2/13件・iOS ★3.7/23件と低めだが、低評価の主因は機能不満ではなく「データが全部消えた」という信頼性の事故。ユーザーは気に入っていたのに★1を付けている。→ 我々は外部DB（TiDB）でクラウド保存＝この致命傷を構造的に回避済み。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-map-2"></i> 市場マップ（競合3層）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>層</th><th>主なアプリ</th><th>特徴</th></tr></thead>
+          <tbody>
+            <tr><td>大手DB型</td><td>LiveFans / setlist.fm</td><td>セトリDB（LiveFans 46万件超）・ライブ再現再生。LiveFansはコミュニティ/ポイントを2025/7終了＝縮小傾向</td></tr>
+            <tr><td>個人開発・参戦記録（2022〜乱立／主戦場）</td><td>LiveNote / LIVE×LIFE / Live Rock / LIVE DIARY / OTOAKA / LiveSoul</td><td>参戦記録＋セトリ＋写真＋統計＋SNS映え。機能はコモディティ化</td></tr>
+            <tr><td>予定/チケット寄り</td><td>Livelog / チケットカレンダー</td><td>予定・チケットステータス管理。旧世代は更新停滞</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px">市場は<b style="color:var(--navy)">飽和気味</b>。機能の差別化は難しく、堀は「セトリDBの自前構築コスト」と「集客・継続の仕組み」。</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-message-report"></i> VOC①：Livelog 実レビュー（Google Play 逐語）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">😱 不満（致命傷＝データ消失・UI）</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">★1「5年分のライブの記録が今朝見たら全て消えてた。最悪」</div>
+            <div class="mini-item">★1「今までのデータが全部消えてしまった…数年分入れ直さないと駄目なのかなぁ」</div>
+            <div class="mini-item">★1「ライブ一覧画面が真っ白で見えない。使い物にならない」</div>
+            <div class="mini-item">★1「項目が英語で意味がわからない」（2022・最新レビュー）</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">🙏 要望（作るべき機能のヒント）</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">セトリの曲順入れ替え・挿入・削除（編集の柔軟性）</div>
+            <div class="mini-item">日付をカレンダーから選択・会場をプルダウン（マスタ）</div>
+            <div class="mini-item">メモに画像添付（チケット・タイムテーブル写真）</div>
+            <div class="mini-item">同じツアーをコピーして一部だけ変更</div>
+            <div class="mini-item">アーティスト別ソート・統計／複数日にわたる予定</div>
+            <div class="mini-item">入力済み情報（アーティスト名等）の自動サジェスト</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">😊 満足（残すべき価値）</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">「開場・開演時間を記録できて便利」</div>
+            <div class="mini-item">「ライブ特化・シンプル・広告なし」</div>
+            <div class="mini-item">「見た本数を自動で数えてくれる」</div>
+            <div class="mini-item">「質問したらすぐ返事」（運営対応の速さ）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-messages"></i> VOC②：競合ジャンル（要約）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">共通の不満</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">手入力の手間（最大の共通不満。セトリ曲数増で重い・面倒）</div>
+            <div class="mini-item">写真複数でスクロールが重い／強制終了（パフォーマンス）</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">共通の要望</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">入力サジェスト・公演情報の自動取り込み・セトリ一括/コピペ</div>
+            <div class="mini-item">行けなかったライブ（落選・中止）も記録したい ← 我々の13ステータスで既に対応</div>
+            <div class="mini-item">共演者/フェス名で検索・イベントカテゴリ追加</div>
+            <div class="mini-item">フェスのセトリをアーティストごとでなく一括作成</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:14px">満足・市場の原体験</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">参戦数の自動集計・過去遡り登録・SNS映え画像が好評</div>
+            <div class="mini-item">iCloud/エクスポートでの機種変復元が安心要因</div>
+            <div class="mini-item">「Excelでの参戦履歴管理の面倒さ」が専用アプリへの参入動機（LIVE DIARY開発者談）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-guide"></i> 我々への示唆（地雷回避＋刺さりどころ）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>市場の声</th><th>我々の打ち手</th></tr></thead>
+          <tbody>
+            <tr><td>データ消失で離脱（最大の地雷）</td><td>✅ クラウドDB同期（構造的に解決）</td></tr>
+            <tr><td>手入力が面倒・サジェスト欲しい</td><td>✅ AI/Gmail自動取込（乱立組はまだ手入力中心）＝最大の差別化</td></tr>
+            <tr><td>落選・中止も記録したい</td><td>✅ 13ステータスで対応済み</td></tr>
+            <tr><td>会場プルダウン・カレンダー・複製</td><td>会場マスタ・日付ピッカー・複製（軽実装）</td></tr>
+            <tr><td>画像添付（チケ・タイテ）</td><td>画像添付（検討候補）</td></tr>
+            <tr><td>英語UI・表示バグで離脱</td><td>日本語UX・オンボーディング・安定性</td></tr>
+            <tr><td>飽和市場・機能はコモディティ</td><td>勝負は「自動化×つながり×事業としての集客・継続」</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-link"></i> 出典・補足</div>
+        <div class="card"><p style="font-size:12px;color:var(--text2)">Livelogの不満/要望/満足はGoogle Play実レビュー（オーナー取得スクショ）からの逐語。競合VOCは検索要約ベース（App Store/Google Play本体はbot拒否のため要約）。一次ソース：littlebird.mobi、apps.apple.com/jp/app/id1330442649、play.google.com（mobi.littlebird.livelog）、livefans.jp、livediary-app.com、各APPLIONページ等。確定値は実機確認推奨。</p></div>
       </div>
     </div>
 
