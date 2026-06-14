@@ -195,6 +195,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
       <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
       <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
+      <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
     </div>
   </nav>
 
@@ -1332,6 +1333,97 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-link"></i> 出典・補足</div>
         <div class="card"><p style="font-size:12px;color:var(--text2)">Livelogの不満/要望/満足はGoogle Play実レビュー（オーナー取得スクショ）からの逐語。競合VOCは検索要約ベース（App Store/Google Play本体はbot拒否のため要約）。一次ソース：littlebird.mobi、apps.apple.com/jp/app/id1330442649、play.google.com（mobi.littlebird.livelog）、livefans.jp、livediary-app.com、各APPLIONページ等。確定値は実機確認推奨。</p></div>
+      </div>
+    </div>
+
+    <!-- RELEASE TODO -->
+    <div id="page-release" class="page">
+      <div class="topbar"><div class="topbar-title">リリースまでのTODO</div><span class="topbar-badge">有料リリース前提</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-rocket hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>本気の有料リリースまでに、やること全部</h2>
+          <p>7月・有料100人を目標に、法務・基盤・課金・ドメイン・プロダクト・集客・運用を網羅。担当を分けて進める。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-gavel"></i> A. 法務・規約（最優先・専門家確認推奨）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">A1</div><div><div class="phase-title">利用規約</div><div class="phase-desc">※LIVE DIARYの例はローカル保存前提で流用不可。我々はクラウドDBに個人データ(email等)を保持するため、データ保護責任・個人情報取扱い・退会/データ削除・決済/返金・サービス継続を盛り込む必要あり。クロコが叩き台→専門家確認</div></div></div>
+          <div class="phase-item"><div class="phase-num">A2</div><div><div class="phase-title">プライバシーポリシー</div><div class="phase-desc">Googleログイン/Gmail連携の審査に必須＋個人データ保持に必須。Gmailは「チケット情報のみ読み取り・本文非保存」等のLimited Use明記</div></div></div>
+          <div class="phase-item"><div class="phase-num">A3</div><div><div class="phase-title">特定商取引法に基づく表記（特商法）</div><div class="phase-desc">有料販売（買い切り/サブスク）に法的必須。事業者情報・価格・支払方法・返金/キャンセル・問い合わせ先</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">A4</div><div><div class="phase-title">非公式ファンツールである旨の明記</div><div class="phase-desc">特定アーティスト・事務所・レコード会社・公式FCと無関係。アートワーク/アーティスト画像表示の権利配慮（E4と関連）</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database-cog"></i> B. 認証・データ基盤</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">B1</div><div><div class="phase-title">Googleログイン化</div><div class="phase-desc">Manusアカ不要に（仕様確定済→Manus実装）</div></div></div>
+          <div class="phase-item"><div class="phase-num">B2</div><div><div class="phase-title">外部DB(TiDB)移行＋本番/開発DB分離</div><div class="phase-desc">設計確定済→Manus実装。クラウド保存＝VOC最大の地雷「データ消失」を構造的に解決</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">B3</div><div><div class="phase-title">バックアップ体制</div><div class="phase-desc">既存exportFullBackup＋DBプロバイダのバックアップ</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-coin"></i> C. 課金・マネタイズ</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">C1</div><div><div class="phase-title">フリーミアム設計（体験版→有料）</div><div class="phase-desc">例) 無料＝ライブ登録3件まで／AI機能10ライブまで。プレミアム＝無制限＋Gmail自動取込＋期限通知（2階建て）</div></div></div>
+          <div class="phase-item"><div class="phase-num">C2</div><div><div class="phase-title">Stripe決済実装</div><div class="phase-desc">買い切り＋サブスク。webhook・プラン管理</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">C3</div><div><div class="phase-title">キャンペーン企画</div><div class="phase-desc">例) 先行100名 ¥2,000→¥1,500、期間限定など。プレセールで課金実証</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-world"></i> D. 名称・ドメイン・ホスティング</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">D1</div><div><div class="phase-title">新名称の確定（改名）</div><div class="phase-desc">LiveLogは商標被り。全表記・ドメインの前提なので最優先で確定</div></div></div>
+          <div class="phase-item"><div class="phase-num">D2</div><div><div class="phase-title">ドメイン取得→接続→OAuth更新</div><div class="phase-desc">（新名）.live等を取得→app.◯◯をManusに接続→Google ConsoleのリダイレクトURI＋GOOGLE_REDIRECT_URI更新</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">D3</div><div><div class="phase-title">LP / 開発docs 公開</div><div class="phase-desc">本番ホスティングに載せ、ルート/サブドメイン割当</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-sparkles"></i> E. プロダクト品質（VOC由来）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">E1</div><div><div class="phase-title">確定名でアプリ/LP/docsを一斉リネーム</div></div></div>
+          <div class="phase-item"><div class="phase-num">E2</div><div><div class="phase-title">VOC必須改善</div><div class="phase-desc">「データは消えない」安心訴求／クイック入力（公演名だけで保存）／メモ改行／セトリ編集（順序入替・挿入削除）／会場・日付サジェスト</div></div></div>
+          <div class="phase-item"><div class="phase-num">E3</div><div><div class="phase-title">日本語UX・オンボーディング・安定性</div><div class="phase-desc">「項目が英語で分からない」「一覧が真っ白」等の地雷回避</div></div></div>
+          <div class="phase-item"><div class="phase-num">E4</div><div><div class="phase-title">アーティストのアートワーク/顔表示（備忘録）</div><div class="phase-desc">参戦数ランキング等でアーティスト画像を表示（LIVE DIARY風）。画像取得元・権利の扱いは要検討（A4と連動）</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">E5</div><div><div class="phase-title">PWA化</div><div class="phase-desc">ホーム画面追加・プッシュ通知（期限リマインダー＝プレミアムの目玉）</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-speakerphone"></i> F. 集客・マーケ</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">F1</div><div><div class="phase-title">LP磨き込み</div><div class="phase-desc">「データは消えない」「入力はAIで自動」を主役訴求（競合の弱点を突く）</div></div></div>
+          <div class="phase-item"><div class="phase-num">F2</div><div><div class="phase-title">集客チャネルの特定 ★最大ブロッカー</div><div class="phase-desc">最初の数十人は手売り前提。SNS（Instagram）・ライブ仲間・現場・ファンクラスタ</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">F3</div><div><div class="phase-title">プレセール／課金実証</div><div class="phase-desc">実際に金が動くか先行で検証→キャンペーンで100人</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-tools"></i> G. 計測・運用・サポート</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">G1</div><div><div class="phase-title">利用統計・分析</div></div></div>
+          <div class="phase-item"><div class="phase-num">G2</div><div><div class="phase-title">フィードバック導線</div><div class="phase-desc">既存feedbacks機能を活用</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">G3</div><div><div class="phase-title">問い合わせ・サポート体制</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-numbers"></i> 優先TODO（おすすめ順）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1</div><div><div class="phase-title">新名称を確定（改名）</div><div class="phase-desc">全表記・ドメインの前提。担当：林＋クロコ</div></div></div>
+          <div class="phase-item"><div class="phase-num">2</div><div><div class="phase-title">法務3点の叩き台（利用規約・プライバシーポリシー・特商法）</div><div class="phase-desc">クロコがドラフト→専門家確認。担当：クロコ＋林</div></div></div>
+          <div class="phase-item"><div class="phase-num">3</div><div><div class="phase-title">Googleログイン＋外部DB＋本番/開発分離</div><div class="phase-desc">担当：Manus（クロコ指示）</div></div></div>
+          <div class="phase-item"><div class="phase-num">4</div><div><div class="phase-title">フリーミアム制限＋Stripe決済</div><div class="phase-desc">担当：Manus（クロコ指示）</div></div></div>
+          <div class="phase-item"><div class="phase-num">5</div><div><div class="phase-title">ドメイン取得→接続→OAuth更新</div><div class="phase-desc">担当：林（クロコ手順案内）＋Manus</div></div></div>
+          <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">LP磨き込み＋集客チャネル決定</div><div class="phase-desc">担当：クロコ（LP）＋林（チャネル）</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">7</div><div><div class="phase-title">プレセールで課金実証→キャンペーンで100人</div><div class="phase-desc">担当：林＋クロコ</div></div></div>
+        </div>
       </div>
     </div>
 
