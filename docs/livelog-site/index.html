@@ -190,6 +190,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
+      <div class="nav-item" onclick="show('setlist',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
       <div class="nav-item" onclick="show('costqa',this)"><i class="ti ti-calculator"></i>コスト試算・回答</div>
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
@@ -1452,7 +1453,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">A1</div><div><div class="phase-title">利用規約</div><div class="phase-desc">※LIVE DIARYの例はローカル保存前提で流用不可。我々はクラウドDBに個人データ(email等)を保持するため、データ保護責任・個人情報取扱い・退会/データ削除・決済/返金・サービス継続を盛り込む必要あり。クロコが叩き台→専門家確認</div></div></div>
           <div class="phase-item"><div class="phase-num">A2</div><div><div class="phase-title">プライバシーポリシー</div><div class="phase-desc">Googleログイン/Gmail連携の審査に必須＋個人データ保持に必須。Gmailは「チケット情報のみ読み取り・本文非保存」等のLimited Use明記</div></div></div>
           <div class="phase-item"><div class="phase-num">A3</div><div><div class="phase-title">特定商取引法に基づく表記（特商法）</div><div class="phase-desc">有料販売（買い切り/サブスク）に法的必須。事業者情報・価格・支払方法・返金/キャンセル・問い合わせ先</div></div></div>
-          <div class="phase-item" style="border-bottom:none"><div class="phase-num">A4</div><div><div class="phase-title">非公式ファンツールである旨の明記</div><div class="phase-desc">特定アーティスト・事務所・レコード会社・公式FCと無関係。アートワーク/アーティスト画像表示の権利配慮（E4と関連）</div></div></div>
+          <div class="phase-item"><div class="phase-num">A4</div><div><div class="phase-title">非公式ファンツールである旨の明記</div><div class="phase-desc">特定アーティスト・事務所・レコード会社・公式FCと無関係。アートワーク/アーティスト画像表示の権利配慮（E4と関連）</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">A5</div><div><div class="phase-title">セトリ取得の法的リスク見直し（LiveFansスクレイピング差し替え）</div><div class="phase-desc">有料リリース前に必須。自前UGC＋AI入力＋setlist.fm API へ。詳細は「セトリ取得方針(要検討)」ページ</div></div></div>
         </div>
       </div>
 
@@ -1522,6 +1524,74 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">5</div><div><div class="phase-title">ドメイン取得→接続→OAuth更新</div><div class="phase-desc">担当：林（クロコ手順案内）＋Manus</div></div></div>
           <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">LP磨き込み＋集客チャネル決定</div><div class="phase-desc">担当：クロコ（LP）＋林（チャネル）</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">7</div><div><div class="phase-title">プレセールで課金実証→キャンペーンで100人</div><div class="phase-desc">担当：林＋クロコ</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETLIST POLICY -->
+    <div id="page-setlist" class="page">
+      <div class="topbar"><div class="topbar-title">セトリ取得方針（要検討）</div><span class="topbar-badge">要検討</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-license hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>セットリストの取得を、合法かつ"堀"になる形に</h2>
+          <p>日本のセトリは setlist.fm にほぼ無く、事実上 LiveFans が唯一の大規模DB。現状はスクレイピング依存だが、有料事業ではリスクが高いため方針を見直す。※最終判断は法律専門家の確認が必要。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> 課題・法的リスク</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">日本のセトリは setlist.fm にほぼ無い <small>事実上 LiveFans が唯一の大規模DB（約46万件）</small></div>
+            <div class="mini-item">現状「LiveFansから取得」＝スクレイピング <small>有料・規模化でリスク</small></div>
+            <div class="mini-item">想定リスク <small>ToS違反／データベースの権利／不正競争防止法。警告・差止の標的になりやすい（※専門家確認）</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-check"></i> 代替策（合法性 × 実現性で順位付け）</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">◎A</div><div><div class="phase-title">自前セトリDBを「ユーザー投稿＋AI入力支援」で育てる ← 本命の堀</div><div class="phase-desc">LiveFansも投稿型。自前で持てば唯一の自分資産＆合法。入力負担はAIで激減：①セトリ掲示の写真→AI構造化 ②X投稿テキストを貼る→AI整形 ③友達のセトリをコピー（＝つながりがそのままセトリ自動補完）</div></div></div>
+          <div class="phase-item"><div class="phase-num">◎B</div><div><div class="phase-title">ユーザーが貼る「公開投稿(X)」をAI整形 ← 合法寄り・即効</div><div class="phase-desc">スクレイピングでなく「ユーザーが持ってきた公開データの整形」。e+テキストペースト方式と同じ発想。今すぐ作れて精度も出しやすい</div></div></div>
+          <div class="phase-item"><div class="phase-num">○C</div><div><div class="phase-title">setlist.fm 公式API ← 海外公演/一部のみ補助</div><div class="phase-desc">日本は薄いが洋楽・来日は取れる。公式APIなので安全。補助的に併用</div></div></div>
+          <div class="phase-item"><div class="phase-num">△D</div><div><div class="phase-title">LiveFans 正規提携（将来）</div><div class="phase-desc">スクレイピングでなくデータ提携/API/送客の話に。SKIYAKIはB2Bデータ事業＝交渉余地はゼロでない。ただし実績（100人）後</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">✕</div><div><div class="phase-title">アプリによる自動スクレイピング(LiveFans) ← 避ける</div><div class="phase-desc">有料・規模化でToS違反/DB権/不競法リスク</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> 戦略の再フレーム</div>
+        <div class="card">
+          <p style="font-size:14px;color:var(--ink)">我々の勝ち筋はもともと「セトリDBの規模」ではない（46万件のLiveFansには勝てない）。武器は <b style="color:var(--navy)">AI入力支援＋つながり＋クラウド</b>。</p>
+          <p style="font-size:14px;color:var(--navy);font-weight:600;margin-top:8px">「巨大DBから引っ張る」のではなく、「AIで一瞬入力＋友達のをコピー」で"体感的に自動"を作る。</p>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px">→ 合法＋自前資産(堀)＋つながり差別化が全部噛み合う。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-snowflake"></i> コールドスタートのトレードオフ</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)">初期はDBが空＝LiveFansほどの即補完は出ない。緩和策：</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">AI入力(写真/X貼付)で手入力を限りなくゼロに（空でも苦痛が少ない）</div>
+            <div class="mini-item">パワーユーザー（俵山鈴音 等）＋オーナーで初期投入</div>
+            <div class="mini-item">ユーザーの過去記録インポート</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checkbox"></i> 要検討・決定事項</div>
+        <div class="card">
+          <div class="mini-items">
+            <div class="mini-item">[ ] LiveFansスクレイピングの差し替え時期（有料リリース前に必須）</div>
+            <div class="mini-item">[ ] 自前UGCセトリDBの設計（投稿・共有・コピー・重複統合）</div>
+            <div class="mini-item">[ ] X投稿/画像からのAI整形パイプライン</div>
+            <div class="mini-item">[ ] setlist.fm APIキー取得・利用規約/帰属/商用条件の確認</div>
+            <div class="mini-item">[ ] 法律専門家への確認（スクレイピング/DB権/利用規約）</div>
+          </div>
         </div>
       </div>
     </div>
