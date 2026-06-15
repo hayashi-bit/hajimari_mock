@@ -201,6 +201,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
       <div class="nav-item" onclick="show('roadmap',this)"><i class="ti ti-map-pin"></i>実装ロードマップ・優先度</div>
+      <div class="nav-item" onclick="show('checklist',this)"><i class="ti ti-checkup-list"></i>実装チェックリスト</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
@@ -1564,6 +1565,113 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">LP磨き込み＋集客チャネル決定</div><div class="phase-desc">担当：クロコ（LP）＋林（チャネル）</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">7</div><div><div class="phase-title">プレセールで課金実証→キャンペーンで100人</div><div class="phase-desc">担当：林＋クロコ</div></div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div id="page-checklist" class="page">
+      <div class="topbar"><div class="topbar-title">実装チェックリスト</div></div>
+      <div class="hero-strip">
+        <i class="ti ti-checkup-list hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>まとめて実装する単位（塊）＋ 状態</h2>
+          <p>状態バッジで進捗を可視化。<b>新規機能は既定「要確認」</b>＝Manusに確認後、判明したら「実装済/一部/未」に更新する。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:12px;color:var(--text2)">凡例：</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-check"></i> 既存 v1.0（基盤・実装済）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>ライブCRUD・13ステータス・期限管理</td><td>予定/履歴/ステータス/締切</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>セトリ（手動・setlist.fm・LiveFans）</td><td>※LiveFans取得は法的に差替予定</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>メモ・友達・公開プロフィール</td><td>共有感想/履歴閲覧</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>e+取込・画像解析(parseImage)</td><td>AI取込の基盤</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>カウントダウン表示・カレンダー登録・バックアップ・フィードバック</td><td>—</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-stack-2"></i> 塊1：土台（開発環境）※最初・名前不要</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>外部DB＋本番/開発分離</td><td>データを外部TiDB所有、NODE_ENVでDB切替（フォールバック禁止）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>開発バイパス（右パネル解決）</td><td>開発時のみ自動ログイン</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flame"></i> 塊2：AI機能＋フリーミアム（一体で）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>AI種別自動判定（8分類）</td><td>タイトル/会場/出演者数→種別</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>アーティスト出演者補完</td><td>フライヤー画像/公開URL/検索→AI、友達コピー（基盤parseImageは有）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>セトリのAI入力</td><td>写真/X貼付/Pixel/友達コピー→AI整形</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>フリーミアム制限ロジック</td><td>無料=ライブ3件/AI10回 等。AI機能と同時に組込</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bolt"></i> 塊3：クイックウィン（安く尖る）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>つながり共通ライブバッジ</td><td>他人プロフィールで共通ライブにバッジ＋本数（友達基盤は有）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>個人ダッシュボード/年間振り返り</td><td>参戦数・出費総額（本人のみ）・最多アーティスト</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>ビジュアル：フライヤー投稿＋アー写表示</td><td>フライヤー=ユーザー投稿／アー写=Spotify/Apple Music API（表示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-mail"></i> 塊4：Gmail仕込み＋法務</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>Gmail自動取込（技術検証/仕込み）</td><td>検索→LLM判定→構造化。審査は後</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>プライバシーポリシー（クロコ叩き台）</td><td>Gmail審査に必須</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-coin"></i> 塊5：課金</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>Stripe決済（買い切り＋サブスク）</td><td>webhook・subscriptionsテーブル・特商法表記</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>Googleログイン（実装）</td><td>現状Manus OAuth→Google。開発はバイパス/テストURL</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-player-pause"></i> 塊6：名前・ドメイン後</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>ドメイン接続＋Googleログイン本番化</td><td>リダイレクトURI＝確定ドメイン</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>SNS映え画像＋友達リンクの拡散</td><td>プロフィールURL/QRを焼く（ドメイン確定後に拡散）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>予習プレイリストの音楽サービス連携</td><td>Spotify/Apple MusicのOAuth（リダイレクト＝ドメイン）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>期限プッシュ通知（本番）</td><td>PWA push（origin固定）。期限ロジックは先行可</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>特商法本番・最終リネーム</td><td>事業者情報/サイトURL・名称一斉差替</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
       </div>
     </div>
 
