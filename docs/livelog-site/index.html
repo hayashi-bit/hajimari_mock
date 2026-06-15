@@ -141,6 +141,16 @@ tr:hover td{background:var(--bg2)}
   .hamburger{display:flex}
 }
 .hamburger{display:none;position:fixed;top:12px;right:12px;z-index:20;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;cursor:pointer;align-items:center;gap:6px;font-size:13px;color:var(--text2)}
+.acc{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.acc-h{padding:13px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:600;color:var(--navy);font-size:14px}
+.acc-h:hover{background:var(--bg2)}
+.acc-h .chev{transition:transform .2s;color:var(--gold);flex:0 0 auto}
+.acc.open .acc-h .chev{transform:rotate(90deg)}
+.acc-h .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--bg3);color:var(--text2);flex:0 0 auto}
+.acc-b{display:none;padding:2px 16px 16px;font-size:13px;color:var(--text2);line-height:1.7}
+.acc.open .acc-b{display:block}
+.acc-b .lbl{font-weight:700;color:var(--navy);display:block;margin:12px 0 5px;font-size:12px;letter-spacing:.5px}
+.acc-b pre{background:#1a2230;color:#e7edf5;border-radius:8px;padding:12px;overflow-x:auto;font-size:12px;white-space:pre-wrap;word-break:break-word;font-family:'JetBrains Mono',monospace;line-height:1.55}
 </style>
 </head>
 <body>
@@ -191,6 +201,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
       <div class="nav-item" onclick="show('roadmap',this)"><i class="ti ti-map-pin"></i>実装ロードマップ・優先度</div>
+      <div class="nav-item" onclick="show('prompts',this)"><i class="ti ti-code"></i>実装プロンプト集</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
@@ -1557,6 +1568,73 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
     </div>
 
+    <!-- PROMPTS -->
+    <div id="page-prompts" class="page">
+      <div class="topbar"><div class="topbar-title">実装プロンプト集</div></div>
+      <div class="hero-strip">
+        <i class="ti ti-code hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>各機能の「概要＋Manus用プロンプト」</h2>
+          <p>タイトルをクリックで展開。Manusにそのまま貼れる指示文。クレジット復活時にすぐ実装へ回せる。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-circle-dot"></i> P0：リリース必須</div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> 開発バイパス（右パネル解決）</span><span class="tag">P0</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>開発環境のときだけGoogle認証をスキップし固定ユーザーで自動ログイン。本番では絶対無効。右パネルプレビュー問題を解決。
+        <span class="lbl">Manusプロンプト</span><pre>開発環境でのみGoogle OAuthをバイパスして自動ログインする機能を実装してください。発動条件は NODE_ENV==='development' かつ 環境変数 DEV_AUTH_BYPASS==='true' の両方を満たすときのみ（本番では二重ガードで絶対に発動しない）。server/_core/context.ts の ctx.user 構築箇所で、条件成立時は DEV_USER_EMAIL の開発用ユーザー（無ければ自動作成）を返す。auth.me がそのユーザーを返し protectedProcedure も通ること。受け入れ：右パネルプレビューでGoogleログイン無しで開発ユーザーとして表示／本番は従来通りGoogle必須。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> 外部DB＋本番/開発分離</span><span class="tag">P0</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>データを自分所有の外部TiDB Serverless（MySQL互換）に置き、本番/開発でDBを分離。フォールバック禁止で本番DB誤接続を防ぐ。
+        <span class="lbl">Manusプロンプト</span><pre>DB接続先を外部のTiDB Serverless（MySQL互換）に切り替え、本番と開発でDBを分離してください。NODE_ENV==='development' のとき DATABASE_URL_DEV を使い、本番は DATABASE_URL を使う。重要：開発で DATABASE_URL_DEV が未設定なら起動時にエラーで止める（本番DBへのフォールバック禁止）。Drizzleのmigrationは両DBに適用。本番DBへのmigrationはPublish時のみ＋事前バックアップ。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> フリーミアム＋Stripe決済</span><span class="tag">P0</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>無料は制限（ライブ3件/AI10回）、プレミアムは無制限＋Gmail自動＋通知。Stripeで買い切り＋サブスク。
+        <span class="lbl">Manusプロンプト</span><pre>フリーミアム＋Stripe決済を実装してください。無料プラン＝ライブ登録3件まで／AI機能（取込・補完）10回まで等の制限。プレミアム＝無制限＋Gmail自動取込＋期限通知。決済はStripeで買い切り＋月額サブスク、webhookで状態管理、subscriptionsテーブル＋機能制限ロジック。特定商取引法に基づく表記ページも用意。</pre></div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flame"></i> P1：差別化の核</div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> AI種別自動判定（8分類）</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>登録時にタイトル・会場・日付からAIでライブ種別を自動判定。ユーザー訂正可、eventTypeとして保持し統計/フィルタに利用。
+        <span class="lbl">Manusプロンプト</span><pre>新規ライブ登録時に、タイトル・会場・日付（あれば出演者/URL）からLLMでライブ種別を自動判定してください。種別8分類：ワンマン／ワンマン＋ゲスト／ツーマン／スリーマン／対バン・イベント／サーキットフェス／屋外フェス／アーティスト主催フェス。判定ヒント＝タイトル語(ONEMAN→ワンマン、×・vs→ツーマン、presents/vol./周年→対バン、FESTIVAL/CALLING/COUNTDOWN→フェス)、会場(野外/特設/スタジアム→屋外、〇〇エリア=複数会場→サーキット)、出演者数。結果は eventType としてDB保持、フィルタ/統計に使用、ユーザーが手で訂正可。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> アーティスト出演者補完</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>種別に応じて出演者を補完。フライヤー画像/公開ラインナップURL/検索→AI抽出、友達コピー。競合DBのスクレイピングは使わない。
+        <span class="lbl">Manusプロンプト</span><pre>ライブの出演者を補完する機能を実装してください。ワンマンも出演者としてアーティストを登録する。複数出演の種別では次から出演者リストを取得：(a)フライヤー/タイムテーブル画像をアップロード→AIで出演者抽出（最優先、既存parseImage基盤流用）(b)ユーザーが貼った公式/メディアの公開ラインナップURL→AI抽出（出典リンク保持）(c)公演名で検索→公開情報からAI抽出 (d)友達/他ユーザーが登録済みなら「コピー」。抽出→プレビュー→ユーザー承認→自前DBに保存(UGC蓄積)。各出演者に「お目当て/新発見/未分類」タグ（既定=未分類）。※LiveFans等の競合DBの自動スクレイピングは使わない。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> セトリのAI入力</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>セトリを写真/X投稿/Pixel履歴/友達コピーからAIで構造化。手入力ゼロを目指す。早期VOCの本命。
+        <span class="lbl">Manusプロンプト</span><pre>セットリストの入力をAIで支援する機能を実装してください。入力チャネル：①セトリ掲示の写真→AIで曲順を構造化 ②X等の公開投稿テキストを貼る→AI整形（e+ペースト方式と同じ）③(任意)Pixelの「Now Playing」履歴を貼る→整形 ④友達/他ユーザーが同じ公演を登録済みならコピー ⑤手入力。曲は順序入替・挿入・削除可、アンコール/MCも自由入力。抽出→プレビュー→承認→自前DB保存。※LiveFansスクレイピングは使わない。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> ビジュアル表示（アー写API＋フライヤー）</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>アー写/ジャケ＝Spotify/Apple Music API。フライヤー＝ユーザー投稿（私的・範囲選択）。本人写真とフライヤーは別フィールド。
+        <span class="lbl">Manusプロンプト</span><pre>ビジュアル表示を実装してください。①アーティストの顔/アー写/ジャケ＝Spotify/Apple Music公式APIで取得・表示（規約準拠・リンクバック、自前で画像収集しない）。②イベントのフライヤー/ポスター＝ユーザーがアップロード（自分の記録に添付、公開範囲は「自分のみ/友達のみ/公開」を選択、既定は友達まで）。アーティスト本人写真とフライヤーは別フィールドで表示。同じフライヤー画像を出演者補完(画像→AI)のソースにも使う。自動スクレイピング＋公開再配布はしない。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> つながり：共通ライブバッジ</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>他人の公開プロフィールで、自分も参加した共通ライブにバッジ＋共通本数を表示。つながりの差別化。
+        <span class="lbl">Manusプロンプト</span><pre>ログイン中のユーザーが他人の公開プロフィールを見たとき、両者がともに「参加済み(attended)」のライブに「🤝 一緒に参戦」バッジを表示し、上部に「あなたと共通のライブ ○本」を表示してください。同一ライブ判定＝開催日が同じ かつ 会場/アーティスト名/公演名のいずれか一致（表記ゆれは正規化）。未ログイン時・自分のプロフィール時は非表示。配色はアプリのピンク→オレンジ。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> 通知強化（プッシュ＋期限カウントダウン）</span><span class="tag">P1</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>画面内カウントダウンは実装済。追加でプッシュ通知＋抽選/支払/発券の期限カウントダウン通知。失念防止＝コア価値。
+        <span class="lbl">Manusプロンプト</span><pre>通知を強化してください。①PWAのプッシュ通知で「明日ライブ！」「本日開演」をアプリ未起動でも届ける ②抽選申込締切・入金期限・発券開始日の「あと○日」カウントダウン＋通知（既存の13ステータス/deadlineを活用）。画面内カウントダウン表示は実装済なので、プッシュ通知と期限通知を追加する。</pre></div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-trending-up"></i> P2：集客・継続</div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> SNS映え画像＋友達登録リンク</span><span class="tag">P2</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>参戦トップ10等の映え画像を生成、友達登録/プロフィールへのリンク(URL+QR)を付与。バイラルの集客導線。
+        <span class="lbl">Manusプロンプト</span><pre>SNS投稿用の映え画像を生成する機能を実装してください。「参戦トップ10アーティスト」「年間参戦数」「参戦サマリー」等をグラフィカルな画像として生成・ダウンロード/シェアできる（アー写はSpotify/Apple Music API）。生成画像に本人の公開プロフィール/友達登録への導線（URL＋QRコード）を付与し、シェアされた画像から見た人がワンタップで友達登録/プロフィールに来られるようにする（集客・バイラル導線）。</pre></div></div>
+
+        <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> 予習プレイリスト / ダッシュボード / 新公演通知 ほか</span><span class="tag">P2</span></div>
+        <div class="acc-b"><span class="lbl">概要</span>B-4予習プレイリスト（連携音楽サービスで生成）、B-6個人ダッシュボード/年間振り返り（出費は本人のみ非共有）、B-5フォロー中アーティスト新公演通知（UGC＋Gmail＋ユーザー貼付）。<span class="lbl">プロンプト</span>準備中（個別に詰めて追記予定）。詳細は「開発バックログ」B-4〜B-10参照。</div></div>
+      </div>
+    </div>
+
     <!-- ROADMAP -->
     <div id="page-roadmap" class="page">
       <div class="topbar"><div class="topbar-title">実装ロードマップ・優先度</div></div>
@@ -1866,6 +1944,7 @@ function show(id, el) {
     document.getElementById('sidebar').classList.remove('open');
   }
 }
+function toggleAcc(h){ h.parentElement.classList.toggle('open'); }
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
 }
