@@ -190,6 +190,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
+      <div class="nav-item" onclick="show('roadmap',this)"><i class="ti ti-map-pin"></i>実装ロードマップ・優先度</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
@@ -1552,6 +1553,89 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">5</div><div><div class="phase-title">ドメイン取得→接続→OAuth更新</div><div class="phase-desc">担当：林（クロコ手順案内）＋Manus</div></div></div>
           <div class="phase-item"><div class="phase-num">6</div><div><div class="phase-title">LP磨き込み＋集客チャネル決定</div><div class="phase-desc">担当：クロコ（LP）＋林（チャネル）</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">7</div><div><div class="phase-title">プレセールで課金実証→キャンペーンで100人</div><div class="phase-desc">担当：林＋クロコ</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div id="page-roadmap" class="page">
+      <div class="topbar"><div class="topbar-title">実装ロードマップ・優先度</div></div>
+      <div class="hero-strip">
+        <i class="ti ti-map-pin hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>実現性 × 効果 × リリース必須度で優先度付け</h2>
+          <p>これまでの検討・実装アイデアを一覧化。P0(必須)→P1(差別化の核)→P2(集客/継続)→P3(余力)。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-circle-dot"></i> P0：リリース必須</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>実現性</th><th>効果</th></tr></thead>
+          <tbody>
+            <tr><td>Googleログイン化</td><td>○</td><td>基盤・Manus脱却</td></tr>
+            <tr><td>外部DB＋本番/開発分離</td><td>○</td><td>信頼(消えない)＝差別化＋安全</td></tr>
+            <tr><td>開発バイパス(右パネル)</td><td>◎</td><td>開発効率</td></tr>
+            <tr><td>法務(規約/プライバシー/特商法)</td><td>○※専門家確認</td><td>リリース要件</td></tr>
+            <tr><td>フリーミアム＋Stripe</td><td>△〜○</td><td>マネタイズ</td></tr>
+            <tr><td>名前確定→ドメイン→リネーム</td><td>◎※名前次第</td><td>ブランド</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flame"></i> P1：差別化の核（早く効く・VOC・尖り）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>実現性</th><th>効果</th></tr></thead>
+          <tbody>
+            <tr><td><b>セトリのAI入力</b>(写真/X/友達コピー)</td><td>○</td><td>★差別化最大・早期VOC・VOC直撃</td></tr>
+            <tr><td><b>アーティスト出演者補完</b>(画像/URL→AI)</td><td>○</td><td>★差別化・VOC直撃</td></tr>
+            <tr><td><b>AI種別自動判定</b>(8分類)</td><td>◎</td><td>差別化・UX・統計の土台</td></tr>
+            <tr><td><b>つながり共通ライブバッジ</b></td><td>◎</td><td>★差別化＋集客</td></tr>
+            <tr><td>ビジュアル(アー写API＋フライヤー)</td><td>○</td><td>見た目追い上げ・映え</td></tr>
+            <tr><td>通知強化(プッシュ＋期限カウントダウン)</td><td>○</td><td>★継続・失念防止=コア価値</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-trending-up"></i> P2：集客・継続を伸ばす</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>実現性</th><th>効果</th></tr></thead>
+          <tbody>
+            <tr><td>B-3 SNS映え画像＋友達リンク</td><td>○</td><td>★集客(バイラルの肝)</td></tr>
+            <tr><td>B-6 ダッシュボード/年間振り返り</td><td>◎</td><td>継続・映え共有</td></tr>
+            <tr><td>B-4 予習プレイリスト</td><td>○</td><td>体験(前のワクワク)</td></tr>
+            <tr><td>B-5 フォロー中アーティスト新公演通知</td><td>△(データ源難)</td><td>★継続の本命(難)</td></tr>
+            <tr><td>Gmail自動取込</td><td>△(審査数週)</td><td>差別化大・長リード=仕込み先行</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-dots"></i> P3：余力で／後回し</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>実現性</th><th>効果</th></tr></thead>
+          <tbody>
+            <tr><td>B-8 セトリ予想→答え合わせ</td><td>○</td><td>体験</td></tr>
+            <tr><td>B-9 グッズ管理</td><td>◎</td><td>体験・将来送客</td></tr>
+            <tr><td>B-10 待ち合わせ場所</td><td>◎</td><td>体験(細かい)</td></tr>
+            <tr><td>B-1 一斉メール</td><td>◎</td><td>運営(獲得後)</td></tr>
+            <tr><td>B-2 アプリ内コミュニティ</td><td>△(重い・墓場リスク)</td><td>慎重に・軽い形で</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-route"></i> おすすめ着手順</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">1</div><div><div class="phase-title">P0の土台</div><div class="phase-desc">開発バイパス→外部DB/分離。今すぐ・名前不要</div></div></div>
+          <div class="phase-item"><div class="phase-num">2</div><div><div class="phase-title">P1のクイックウィン</div><div class="phase-desc">AI種別判定・共通バッジ・ダッシュボード・通知・フライヤー投稿（実現性◎×効果高＝安く尖る）</div></div></div>
+          <div class="phase-item"><div class="phase-num">3</div><div><div class="phase-title">P1の本丸＋Gmail仕込み</div><div class="phase-desc">セトリAI入力・出演者補完（時間かかる）＋Gmailは審査が長いので並行先行</div></div></div>
+          <div class="phase-item"><div class="phase-num">4</div><div><div class="phase-title">名前確定後</div><div class="phase-desc">ドメイン・リネーム・Gmail本申請</div></div></div>
+          <div class="phase-item"><div class="phase-num">5</div><div><div class="phase-title">マネタイズ＋P2集客</div><div class="phase-desc">フリーミアム＋Stripe／SNS映え＋友達リンク</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">6</div><div><div class="phase-title">プレセール→100人</div></div></div>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px">※「早期提示でVOC＋差別化＋時間かかる」＝<b style="color:var(--navy)">セトリAI入力</b>が今すぐ動かす本命。Gmailは仕込み先行。</p>
         </div>
       </div>
     </div>
