@@ -15,6 +15,7 @@
     { "source": "/docs", "destination": "/docs.html" },
     { "source": "/chat", "destination": "/chat.html" },
     { "source": "/voices", "destination": "/voices.html" },
-    { "source": "/profile", "destination": "/profile.html" }
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/seminar-report", "destination": "/seminar-report.html" }
   ]
 }

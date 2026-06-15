@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セミナー実績｜女性のための開業・副業・転職講座 — Three way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E8923B;
+      --navy: #3E5C76;
+      --navy-dark: #2C4257;
+      --ink: #2b2b2b;
+      --muted: #6b6b6b;
+      --line: #e3e3e3;
+      --bg: #ffffff;
+      --soft: #f6f7f9;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: #eef0f2;
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sheet {
+      max-width: 1000px;
+      margin: 32px auto;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 56px 64px 64px;
+    }
+
+    /* Header */
+    .badge {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      padding: 6px 22px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .seminar-no {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-bottom: 28px;
+    }
+
+    /* Layout */
+    .top {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .top .photo {
+      flex: 0 0 240px;
+    }
+    .top .photo .circle {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d9dee4, #c3cdd6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8090a0;
+      font-size: 13px;
+      text-align: center;
+      padding: 20px;
+    }
+    .top .body { flex: 1; min-width: 0; }
+
+    .place {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .place .note { font-weight: 400; color: var(--muted); display: block; font-size: 14px; }
+
+    .lead-label {
+      font-weight: 700;
+      font-size: 16px;
+      margin: 26px 0 10px;
+      padding-left: 12px;
+      border-left: 4px solid var(--orange);
+    }
+
+    p.body-text {
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .hl { color: var(--orange); font-weight: 700; }
+
+    /* Testimonials */
+    .voices { margin-top: 8px; }
+    .voice {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+    .voice .avatar {
+      flex: 0 0 56px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+    .voice .text { font-size: 14.5px; }
+    .voice .who { color: var(--muted); }
+
+    .site-link {
+      margin: 28px 0 36px;
+      font-size: 14px;
+    }
+    .site-link b { display: block; margin-bottom: 2px; }
+    .site-link a { color: var(--navy); }
+
+    /* Demo cards */
+    .demos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+    .demo {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .demo .demo-head {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .demo .demo-head .tw { font-size: 11px; opacity: .85; font-weight: 500; }
+    .ba {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .ba > div { padding: 18px 14px; text-align: center; }
+    .ba .before { background: #eef1f4; }
+    .ba .after { background: #fdeee2; }
+    .ba .tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .ba .after .tag { color: var(--orange); }
+    .ba .desc { font-size: 12.5px; line-height: 1.6; min-height: 56px; }
+    .ba .num {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 4px 0 2px;
+    }
+    .ba .before .num { color: var(--navy); }
+    .ba .after .num { color: var(--orange); }
+    .ba .unit { font-size: 11px; color: var(--muted); }
+
+    .note-box {
+      margin-top: 40px;
+      background: var(--soft);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .note-box b { color: var(--ink); }
+
+    @media (max-width: 720px) {
+      .sheet { padding: 32px 22px 40px; margin: 0; }
+      .top { flex-direction: column; gap: 22px; }
+      .top .photo, .top .photo .circle { flex: none; width: 100%; }
+      .top .photo .circle { height: 200px; border-radius: 12px; }
+      .demos { grid-template-columns: 1fr; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sheet">
+
+    <span class="badge">セミナー</span>
+    <div class="seminar-no">02</div>
+    <h1>「hajimari」とAIで、夢を小さく・やさしく・現実に。<br>女性のための開業・副業・転職講座を開催</h1>
+
+    <div class="top">
+      <div class="photo">
+        <div class="circle">当日の講演会の様子<br>（写真）</div>
+      </div>
+      <div class="body">
+        <p class="place">開催場所：山陽小野田市西高1764-2<br>
+          <span class="note">主催：女性のキャリア応援サービス「hajimari」／Three way</span>
+        </p>
+
+        <div class="lead-label">・セミナー内容</div>
+        <p class="body-text">
+          “あなたらしい働き方”の実現を応援するサービス「hajimari」をテーマに、開業・副業・転職に役立つ
+          <span class="hl">生成AIの活用法を体験できる講演会</span>を開催しました。
+        </p>
+        <p class="body-text">
+          当日は、<b>ビジネス設計・発信／お客様対応・業務効率化</b>の3つの業務シーンに沿って、ペルソナ設定や
+          サービス価格の設計、SNS投稿文やキャッチコピーの作成、確定申告準備や収支計画書の構成案づくりなど、
+          すぐに実務へ取り入れられる活用方法をご紹介。お茶会チラシをAIで構成からデザインまで作成する
+          <span class="hl">デモンストレーション</span>も実施しました。
+        </p>
+        <p class="body-text">
+          参加者の皆さまからは、「一人で悩まず始められそう」「AIを身近に感じられた」といった声をいただき、
+          <span class="hl">講演会後はお茶会を実施。気軽に個別相談ができる場</span>としてもご好評いただきました。
+        </p>
+
+        <div class="lead-label">・参加いただいた方からの感想</div>
+        <div class="voices">
+          <div class="voice">
+            <div class="avatar">🙂</div>
+            <div class="text">
+              開業準備って何から手をつければいいか分からなかったのですが、<b>ToDoの整理までAIが手伝ってくれる</b>と知って、最初の一歩のハードルが下がりました。（30代・Aさん）
+            </div>
+          </div>
+          <div class="voice">
+            <div class="avatar">😊</div>
+            <div class="text">
+              好きなことで収入を得たいと思っていましたが、価格やサービス内容の決め方まで具体的に教えていただけて、<b>実現方法のイメージが湧きました</b>。（40代・Yukariさん）
+            </div>
+          </div>
+          <div class="voice">
+            <div class="avatar">🙂</div>
+            <div class="text">
+              チラシがAIで形になる様子を実際に見られて、とても参考になりました。お茶会で個別に相談できたのも良かったです。（50代・Mさん）
+            </div>
+          </div>
+        </div>
+
+        <div class="site-link">
+          <b>hajimari の詳細はこちら</b>
+          <a href="/home">インスタグラムで女性のキャリアに役立つ「実践アイデア」発信中</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="demos">
+      <div class="demo">
+        <div class="demo-head"><span>デモ1：チラシ作成アシスタント</span><span class="tw">Three way</span></div>
+        <div class="ba">
+          <div class="before">
+            <div class="tag">BEFORE</div>
+            <div class="desc">ゼロから手作業で<br>レイアウト・文章作成</div>
+            <div class="num">180</div>
+            <div class="unit">分／1枚</div>
+          </div>
+          <div class="after">
+            <div class="tag">AFTER</div>
+            <div class="desc">生成AIに構成案と<br>デザインを指示</div>
+            <div class="num">15</div>
+            <div class="unit">分／1枚</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-head"><span>デモ2：発信・お客様対応アシスタント</span><span class="tw">Three way</span></div>
+        <div class="ba">
+          <div class="before">
+            <div class="tag">BEFORE</div>
+            <div class="desc">SNS投稿文を<br>毎回ゼロから執筆</div>
+            <div class="num">30</div>
+            <div class="unit">分／1投稿</div>
+          </div>
+          <div class="after">
+            <div class="tag">AFTER</div>
+            <div class="desc">キーワードを渡して<br>AIで下書き作成</div>
+            <div class="num">3</div>
+            <div class="unit">分／1投稿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <b>※ 掲載用ドラフトです。</b>
+      当日の写真・参加人数・アンケート評価（例：5点満点中◯◯点）・感想の実コメント・デモの実測値は、
+      開催後の実績に差し替えてご利用ください。感想の掲載可否は、終了後アンケートの「活用許諾」欄の回答に従ってください。
+      アイコンは「男性⇒女性⇒男性」の順を想定しています。
+    </div>
+
+  </div>
+
+</body>
+</html>
