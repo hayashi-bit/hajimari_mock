@@ -215,6 +215,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
       <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
       <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
+      <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
     </div>
   </nav>
@@ -1717,7 +1718,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-trending-up"></i> P2：集客・継続</div>
         <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">SNS映え画像＋友達リンク</span><span class="col">実現性 ○</span><span class="col eff">★集客(バイラルの肝)</span></div><div class="acc-b"><span class="lbl">概要</span>参戦トップ10等の映え画像を生成、友達登録/プロフィールへのリンク(URL+QR)を付与。<span class="lbl">Manusプロンプト</span><pre>SNS投稿用の映え画像を生成する機能を実装してください。『参戦トップ10アーティスト』『年間参戦数』等をグラフィカルな画像として生成・シェア（アー写はSpotify/Apple Music API）。生成画像に本人の公開プロフィール/友達登録への導線（URL＋QRコード）を付与し、見た人がワンタップで友達登録に来られるようにする。</pre></div></div>
-        <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">個人ダッシュボード/年間振り返り</span><span class="col">実現性 ◎</span><span class="col eff">継続・映え共有</span></div><div class="acc-b"><span class="lbl">概要</span>参戦数・出費総額（本人のみ・非共有）・最多アーティスト等を可視化（Wrapped的）。<br><span class="lbl">プロンプト</span>準備中（個別に詰めて追記予定）</div></div>
+        <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">個人ダッシュボード/年間振り返り</span><span class="col">実現性 ◎</span><span class="col eff">継続・映え共有</span></div><div class="acc-b"><span class="lbl">概要</span>参戦数・月別参戦・アーティスト/会場ランキング・制覇マップ・種別比率・出費総額（🔒本人のみ）・年間振り返り画像、さらに「音楽シンクロ率」「次の推しレコメンド(AI)」「参戦タイプ診断」「実績バッジ」「1年前の今日」など、振り返って楽しく友達と話せる指標を盛り込む。<b>候補の全リストは「ダッシュボード構想」ページ参照。</b><br><span class="lbl">プロンプト</span>準備中（候補確定後に詰める）</div></div>
         <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">予習プレイリスト</span><span class="col">実現性 ○</span><span class="col eff">体験(前のワクワク)</span></div><div class="acc-b"><span class="lbl">概要</span>出演者の曲をユーザー連携の音楽サービス（Spotify/Apple Music）でプレイリスト化。※音楽サービス連携(OAuth)はドメイン後。<br><span class="lbl">プロンプト</span>準備中</div></div>
         <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">フォロー中アーティスト新公演通知</span><span class="col">実現性 △</span><span class="col eff">★継続の本命(難)</span></div><div class="acc-b"><span class="lbl">概要</span>取得＝UGC（他ユーザー登録→フォロワーに通知）＋Gmail（FC/メルマガ）＋ユーザー貼付/AI検索。完全自動は提携待ち。<br><span class="lbl">プロンプト</span>準備中</div></div>
         <div class="acc"><div class="acc-h row" onclick="toggleAcc(this)"><i class="ti ti-chevron-right chev"></i><span class="ttl">Gmail自動取込</span><span class="col">実現性 △</span><span class="col eff">差別化大・長リード</span></div><div class="acc-b"><span class="lbl">概要</span>チケットメールから自動取込・ステータス更新。技術検証は先行、審査(数週間)はドメイン＋プライバシーポリシー後。<br><span class="lbl">詳細</span>「Gmail連携仕様」ページ参照</div></div>
@@ -1742,6 +1743,114 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
     </div>
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page">
+      <div class="topbar"><div class="topbar-title">ダッシュボード構想</div></div>
+      <div class="hero-strip">
+        <i class="ti ti-chart-pie hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>振り返って楽しい × 友達と話せる × また開きたくなる</h2>
+          <p>B-6（個人ダッシュボード/年間振り返り）の候補一覧。★=映える/盛り上がる、🔒=本人のみ（出費系）。取捨選択は後で。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-calendar-stats"></i> 参戦量・頻度</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">総参戦数（全期間/今年）★</div>
+          <div class="mini-item">月別の参戦数（グラフ）★</div>
+          <div class="mini-item">曜日別参戦数（土日型/平日型）</div>
+          <div class="mini-item">最多参戦月・最長連続参戦（ストリーク）</div>
+          <div class="mini-item">年別の推移／ライブ歴○年（初参戦から）</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-microphone-2"></i> アーティスト</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">よく行くアーティストランキング ★</div>
+          <div class="mini-item">初参戦（新規開拓）アーティスト数 ★</div>
+          <div class="mini-item">お目当て vs 新発見の比率／リピート率</div>
+          <div class="mini-item">推し度（参戦数×頻度）で数値化</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-map-pin"></i> 会場・地理</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">よく行ったライブハウスランキング ★</div>
+          <div class="mini-item">一番遠く / 一番近くの会場 ★（位置情報が必要）</div>
+          <div class="mini-item">制覇した会場数・都道府県数（制覇マップ）★</div>
+          <div class="mini-item">遠征回数・遠征距離合計／会場マップ（ピン）★</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-coin"></i> 出費 🔒本人のみ・非共有</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">総額（チケ＋グッズ＋交通＋宿泊＋飲食）</div>
+          <div class="mini-item">項目別内訳・1ライブ平均単価・最高/最安</div>
+          <div class="mini-item">月別出費／グッズ購入額・点数</div>
+          <div class="mini-item">※グッズ・交通・宿泊は新しい入力項目が必要</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-music"></i> セトリ・曲 ／ 体験・種別</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">ライブで一番多く聴いた曲ランキング ★</div>
+          <div class="mini-item">聴いた総曲数・アンコール率・レア曲遭遇</div>
+          <div class="mini-item">ワンマン/対バン/フェスの比率（8種別の内訳）★</div>
+          <div class="mini-item">フェス参加数</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users"></i> つながり（友達と話す用）</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">友達との共通ライブ数 ★</div>
+          <div class="mini-item">一緒に行った回数ランキング（同行者）★</div>
+          <div class="mini-item">友達と被ってる推しアーティスト ★</div>
+        </div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-sparkles"></i> クロコ提案（競合になし × 我々の武器が活きる）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--navy);font-weight:600">診断・パーソナリティ</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">★参戦タイプ診断（フェス型/ワンマン型/対バン開拓型）＝SNS拡散の鉄板</div>
+            <div class="mini-item">★音楽の広がりマップ（AIでジャンル付与）＝AIが活きる</div>
+            <div class="mini-item">推し変遷タイムライン（年ごとの一番）</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:12px">つながり</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">★音楽シンクロ率（友達との一致度を%で）＝会話＆拡散</div>
+            <div class="mini-item">★すれ違い発見（同じ現場に○回いた）＝共通バッジの進化</div>
+            <div class="mini-item">友達内ランキング（参戦数○位）</div>
+          </div>
+          <p style="font-size:13px;color:var(--navy);font-weight:600;margin-top:12px">達成・未来・エモ</p>
+          <div class="mini-items" style="margin-top:6px">
+            <div class="mini-item">★実績バッジ（初フェス/10会場制覇/年50本/遠征マスター）＝継続動機</div>
+            <div class="mini-item">★次の推しレコメンド（AIで未参戦アーティスト提案）＝発見・再燃</div>
+            <div class="mini-item">★1年前の今日（フラッシュバック）＝エモ・再訪</div>
+            <div class="mini-item">会場スタンプラリー／今年の着地予測／数字で見るあなたのライブ（総時間・移動距離）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-thumb-up"></i> まず作る（映え×友達と話せる×既存データで可）</div>
+        <div class="card"><div class="mini-items">
+          <div class="mini-item">月別参戦数・アーティストランキング・会場ランキング</div>
+          <div class="mini-item">制覇マップ・種別比率・共通ライブ</div>
+          <div class="mini-item">年間振り返り画像（Wrapped的・B-3と相乗り）</div>
+          <div class="mini-item">クロコ推し5：音楽シンクロ率／次の推しレコメンド／参戦タイプ診断／実績バッジ／1年前の今日</div>
+        </div></div>
+        <p style="font-size:12px;color:var(--text2);margin-top:8px">※ 出費系は本人のみ・非共有。距離は既存のGoogle Maps連携を利用。</p>
+      </div>
+    </div>
+
     <!-- RISKS -->
     <div id="page-risks" class="page">
       <div class="topbar"><div class="topbar-title">懸念点・リスク台帳</div></div>
