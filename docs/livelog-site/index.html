@@ -201,7 +201,6 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
       <div class="nav-item" onclick="show('roadmap',this)"><i class="ti ti-map-pin"></i>実装ロードマップ・優先度</div>
-      <div class="nav-item" onclick="show('prompts',this)"><i class="ti ti-code"></i>実装プロンプト集</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
@@ -1568,14 +1567,14 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
     </div>
 
-    <!-- PROMPTS -->
-    <div id="page-prompts" class="page">
-      <div class="topbar"><div class="topbar-title">実装プロンプト集</div></div>
+    <!-- ROADMAP (merged: priority + prompts) -->
+    <div id="page-roadmap" class="page">
+      <div class="topbar"><div class="topbar-title">実装ロードマップ・優先度</div></div>
       <div class="hero-strip">
-        <i class="ti ti-code hero-strip-icon"></i>
+        <i class="ti ti-map-pin hero-strip-icon"></i>
         <div class="hero-strip-text">
-          <h2>各機能の「概要＋Manus用プロンプト」</h2>
-          <p>タイトルをクリックで展開。Manusにそのまま貼れる指示文。クレジット復活時にすぐ実装へ回せる。</p>
+          <h2>優先度（実現性×効果）＋ 実装プロンプト</h2>
+          <p>各機能をクリックで展開（概要＋Manus用プロンプト）。下部に優先度マトリクスと着手順。</p>
         </div>
       </div>
 
@@ -1633,21 +1632,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span><i class="ti ti-chevron-right chev"></i> 予習プレイリスト / ダッシュボード / 新公演通知 ほか</span><span class="tag">P2</span></div>
         <div class="acc-b"><span class="lbl">概要</span>B-4予習プレイリスト（連携音楽サービスで生成）、B-6個人ダッシュボード/年間振り返り（出費は本人のみ非共有）、B-5フォロー中アーティスト新公演通知（UGC＋Gmail＋ユーザー貼付）。<span class="lbl">プロンプト</span>準備中（個別に詰めて追記予定）。詳細は「開発バックログ」B-4〜B-10参照。</div></div>
       </div>
-    </div>
-
-    <!-- ROADMAP -->
-    <div id="page-roadmap" class="page">
-      <div class="topbar"><div class="topbar-title">実装ロードマップ・優先度</div></div>
-      <div class="hero-strip">
-        <i class="ti ti-map-pin hero-strip-icon"></i>
-        <div class="hero-strip-text">
-          <h2>実現性 × 効果 × リリース必須度で優先度付け</h2>
-          <p>これまでの検討・実装アイデアを一覧化。P0(必須)→P1(差別化の核)→P2(集客/継続)→P3(余力)。</p>
-        </div>
-      </div>
-
       <div class="section">
-        <div class="section-title"><i class="ti ti-circle-dot"></i> P0：リリース必須</div>
+        <div class="section-title"><i class="ti ti-circle-dot"></i> P0：リリース必須（優先度マトリクス）</div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>機能</th><th>実現性</th><th>効果</th></tr></thead>
           <tbody>
