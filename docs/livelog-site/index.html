@@ -217,6 +217,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
+      <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
     </div>
   </nav>
 
@@ -2223,6 +2224,220 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div class="phase-item"><div class="phase-num">B-9</div><div><div class="phase-title">グッズ管理</div><div class="phase-desc">事前にWEBで公開されるグッズの<b>商品・メニュー・購入リンク</b>を保管。買うもの計画。将来は送客にも</div></div></div>
           <div class="phase-item"><div class="phase-num">B-10</div><div><div class="phase-title">待ち合わせ場所の管理</div><div class="phase-desc">ライブ会場とは<b>別に</b>集合場所を保持（同行メモと連動）</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">調整</div><div><div class="phase-title">プライバシー/表示の方針</div><div class="phase-desc">①チケ代/出費は既定で非共有 ②参戦予定は既定で非公開＝友達追加時にチェックボックスでオプトイン共有 ③アー写（本人写真）とフライヤーは別フィールドで表示</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH / GTM -->
+    <div id="page-growth" class="page">
+      <div class="topbar"><div class="topbar-title">認知・集客・モニター獲得施策</div><span class="topbar-badge">初期検討メモ</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-speakerphone hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>熱量ある小さな層から、自然に広げる</h2>
+          <p>いきなり大規模広告や一般展開は狙わない。ライブ好き・フェス好き・音楽好きの熱量ある層から始め、実際にライブに行く人のフィードバックで磨きながら、SNS・音楽イベント・AIセミナーを通じて少しずつ認知を広げる。最初の一手は林さん本人のInstagramストーリーと音楽仲間への個別DM。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-target"></i> 目的と初期方針</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          認知拡大・初期ユーザー獲得・モニター増加を整理。初期段階で重視するのは:
+          <ul style="margin:8px 0 0;padding-left:1.2em">
+            <li>実際にライブに行く人からフィードバックを得る</li>
+            <li>LiveLogの価値が刺さるユーザー像を明確にする</li>
+            <li>SNSや音楽イベントを通じて自然に認知を広げる</li>
+            <li>AI活用事例としても見せられる形にする</li>
+            <li>コミュニティや友達機能につながる導線を育てる</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-diamond"></i> 前提価値（核は3点）</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-calendar"></i> ① ライブ前の管理が楽</div><div class="mini-items">
+            <div class="mini-item">予定・申込・当落・支払・発券のステータス管理</div>
+            <div class="mini-item">e+等をAI解析して登録を楽に</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-photo-heart"></i> ② ライブ後の思い出が残る</div><div class="mini-items">
+            <div class="mini-item">参加記録・セトリ・感想</div>
+            <div class="mini-item">月次/年次の振り返り</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-users-group"></i> ③ 友達やAIで新しい音楽と出会える</div><div class="mini-items">
+            <div class="mini-item">友達のライブ履歴・同行</div>
+            <div class="mini-item">フェス出演者整理・新発見</div>
+          </div></div>
+        </div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">初期訴求＝<b>「ライブ管理が楽になる」</b>／継続理由＝<b>「思い出が残る」</b>／拡散理由＝<b>「友達と共有したくなる」</b>／長期価値＝<b>「新しい音楽と出会える」</b>。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-user-search"></i> 初期ターゲット</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>層</th><th>なぜ刺さるか</th></tr></thead>
+          <tbody>
+            <tr><td>① 年5〜10本以上行く人</td><td>予定・申込・当落・支払・発券・同行管理の課題が明確</td></tr>
+            <tr><td>② フェス参加者</td><td>出演者多数・TT管理が複雑→AI整理（お目当て/気になる/新発見）が刺さる</td></tr>
+            <tr><td>③ 複数アーティストを追う人</td><td>申込・当落日・支払/発券が重なり管理ニーズ高</td></tr>
+            <tr><td>④ 感想/セトリを残したい人</td><td>X/Instagram/note投稿層＝記録機能と好相性、転用で拡散</td></tr>
+            <tr><td>⑤ 林さんの音楽仲間・SNSの近い人</td><td>最初の10〜20人は近い関係から集めるのが現実的</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> 初期訴求（あるあるから入る）</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-alert-circle"></i> 訴求すべき課題</div><div class="mini-items">
+            <div class="mini-item">申し込んだこと自体を忘れる</div>
+            <div class="mini-item">当落発表日を忘れる</div>
+            <div class="mini-item">支払期限を忘れそうになる</div>
+            <div class="mini-item">発券がまだか分からなくなる</div>
+            <div class="mini-item">予定がカレンダー/メモに散らばる</div>
+            <div class="mini-item">去年どのライブに行ったか思い出せない</div>
+            <div class="mini-item">セトリ・感想を残せていない</div>
+            <div class="mini-item">フェス出演者が多すぎて整理できない</div>
+            <div class="mini-item">友達がどのライブに行ってるか知りたい</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-message"></i> 初期メッセージ案</div><div class="mini-items">
+            <div class="mini-item">「ライブ好きすぎて、自分用にライブ管理アプリを作りました」</div>
+            <div class="mini-item">予定・申込・当落・支払・発券・参加履歴・セトリ・感想までまとめて残せる</div>
+            <div class="mini-item">まだ開発中なので、ライブ好きのモニターを募集</div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-instagram"></i> SNS施策</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">IG</div><div><div class="phase-title">Instagramストーリー（本命）</div><div class="phase-desc">完成品の宣伝でなく「開発中の共有」。開発ログ/困りごと募集/この機能いる？投票/管理方法アンケート/e+のAI登録実演/フェス出演者AI整理実演/友達履歴の楽しさ/モニター募集/利用者の声/不具合も正直に。投票例:「予定何で管理？(カレンダー/メモ/SNS/頭の中)」「当落・発券忘れる?(ある/めちゃくちゃある/あまりない)」「履歴残してる?(残す/たまに/残さない/面倒)」</div></div></div>
+          <div class="phase-item"><div class="phase-num">X</div><div><div class="phase-title">X（あるある＋開発共有）</div><div class="phase-desc">「ライブ好きあるある。申し込んだライブ・当落日・支払期限・発券日、全部バラバラで管理が地味に面倒。なので自分用にライブ管理アプリを作りました。モニター募集中」</div></div></div>
+          <div class="phase-item"><div class="phase-num">note</div><div><div class="phase-title">note（開発ストーリー）</div><div class="phase-desc">「ライブ好きすぎて自分用のライブ管理アプリを作った話」「ライブの思い出はもっとちゃんと残せると思った」「AIで趣味アプリを作ると生活がちょっと楽しくなる」「申込・当落・発券・履歴を全部まとめたかった」</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">短尺</div><div><div class="phase-title">TikTok / YouTube Shorts（画面録画中心）</div><div class="phase-desc">e+情報をコピペ→AI登録／予定を一瞬で登録／去年のライブを見返す／フェス出演者AI整理／ライブ後にセトリ・感想記録／友達履歴から新アーティスト発見</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-presentation"></i> AIセミナーとの接続</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          LiveLogは<b>主役でなくAI活用の具体例</b>として紹介。「ライブ好き→管理に困っていた→AIで自分用アプリを作った→e+解析や画像読み取りもAI→業務だけでなく趣味/生活にもAI→AIは"自分ごと"にすると一気に活用できる」。
+          期待効果＝AIの可能性を具体的に伝える／林さん自身の実践例で説得力／音楽好き参加者やその知人にモニターを促す／セミナー後の雑談・個別相談のきっかけ。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-microphone-2"></i> 音楽イベント施策</div>
+        <div class="card">
+          <div class="phase-item"><div class="phase-num">QR</div><div><div class="phase-title">小規模ライブ・弾き語りでQRカード配布</div><div class="phase-desc">文言案:「ライブ好きが作った、ライブ好きのための記録アプリ。今日のライブ、記録してみませんか？ モニター募集中」</div></div></div>
+          <div class="phase-item"><div class="phase-num">対面</div><div><div class="phase-title">カラオケ会・音楽交流会</div><div class="phase-desc">営業っぽくせず使ってる画面を見せる。「最近自分用にライブ管理アプリ作ってて。予定や当落や発券が全部まとまるようにしてる。触ってもらって感想聞きたい」</div></div></div>
+          <div class="phase-item" style="border-bottom:none"><div class="phase-num">投稿</div><div><div class="phase-title">ライブ後の投稿支援（将来）</div><div class="phase-desc">記録内容をSNS転用：ライブ記録画像／セトリ共有画像／感想テンプレ／IGストーリー用画像／X投稿テキスト／月次・年次まとめ。プロダクト内から拡散を生む</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-clipboard-check"></i> モニター募集設計（第1期）</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-users"></i> 募集</div><div class="mini-items">
+            <div class="mini-item">10〜20名</div>
+            <div class="mini-item">対象：年5本以上 or 音楽イベント好きでFB可能な人</div>
+            <div class="mini-item">条件：1週間使用・感想・使いにくい点・欲しい機能</div>
+            <div class="mini-item">特典：リリース後一定期間無料／初期モニター紹介／意見反映／クローズド先行</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-forms"></i> 応募フォーム（増やしすぎない）</div><div class="mini-items">
+            <div class="mini-item">必須：名前/ニックネーム・連絡先・年間本数・ジャンル・管理方法・困りごと・FB協力可否</div>
+            <div class="mini-item">任意：チケットサービス・フェス頻度・推し数・SNS掲載可否・欲しい機能</div>
+          </div></div>
+        </div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7">
+          <b>募集文案：</b>ライブ好き向けのアプリを作っています。予定・申込・当落・支払・発券・参加履歴・セトリ・感想をまとめて管理できます。まだ開発中ですが、実際にライブに行く人の声を入れて育てたいので、モニターを10名ほど募集します。年5本以上行く方で、1週間ほど使って感想を送ってくれる方がいたらぜひ。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-route"></i> 必要な導線</div>
+        <div class="card" style="font-size:13px;color:var(--text2)">大きなLPは不要。最低限＝<b>サービス紹介ページ／モニター応募フォーム／使い方の簡単な説明／フィードバックフォーム／SNSシェア用画像／開発状況の発信場所</b>。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users-group"></i> コミュニティ施策 / 提携候補</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-message-circle"></i> コミュニティ（機能単体より強い）</div><div class="mini-items">
+            <div class="mini-item">ライブ記録部：月1で履歴を振り返り共有</div>
+            <div class="mini-item">フェス予習部：出演者AI整理・お目当て/気になる/新発見/予習曲を共有</div>
+            <div class="mini-item">セトリ・思い出共有部：熱量高いユーザーが集まる</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-handshake"></i> 提携候補（小さく試せる相手優先）</div><div class="mini-items">
+            <div class="mini-item">ライブハウス／インディーズアーティスト／音楽スクール</div>
+            <div class="mini-item">カラオケバー／音楽系交流会／フェス好きコミュニティ</div>
+            <div class="mini-item">バンドマンの友人／弾き語り主催者／音楽系YouTuber・インフルエンサー／地域イベント運営</div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-ad"></i> 広告施策（初期は最小・テスト程度）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          初期は広告費より<b>モニター募集とSNS発信を優先</b>。使う場合は少額テスト。<br>
+          <b>ターゲット案：</b>ライブ/フェス/邦ロック/ボカロ/アイドル/バンド/カラオケ好き・チケットサービス利用者。<br>
+          <b>訴求案：</b>「ライブの予定・当落・発券・参加履歴をまとめて管理したい人へ。ライブ好きが作った、ライブ好きのための記録アプリ。モニター募集中」
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-numbers"></i> 優先順位 / 直近1週間の実行案</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-sort-ascending"></i> 最初にやること（順番）</div><div class="mini-items">
+            <div class="mini-item">1. モニター募集文を作る</div>
+            <div class="mini-item">2. IGストーリーでアンケート</div>
+            <div class="mini-item">3. 近い音楽仲間に個別DM</div>
+            <div class="mini-item">4. 10人に使ってもらう</div>
+            <div class="mini-item">5. 使いにくい点を回収</div>
+            <div class="mini-item">6. 利用者の声を投稿</div>
+            <div class="mini-item">7. 20〜30人へ拡大</div>
+            <div class="mini-item">8. 小規模イベントでQR配布</div>
+            <div class="mini-item">9. AIセミナーで事例紹介</div>
+            <div class="mini-item">10. 共有画像・投稿支援を検討</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-calendar-week"></i> 直近1週間</div><div class="mini-items">
+            <div class="mini-item">1日目：IGストーリーでアンケート</div>
+            <div class="mini-item">2日目：開発中画面を投稿</div>
+            <div class="mini-item">3日目：モニター募集開始（10名限定）</div>
+            <div class="mini-item">4日目：音楽/ライブ/カラオケ仲間へ個別DM</div>
+            <div class="mini-item">5日目：使い方の簡易ページ（スクショ3枚）</div>
+            <div class="mini-item">6日目：初期フィードバック回収</div>
+            <div class="mini-item">7日目：モニターの声をもとに投稿</div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb-filled"></i> 今後検討したい機能</div>
+        <div class="card-grid">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-share"></i> SNS拡散</div><div class="mini-items">
+            <div class="mini-item">参加記録の画像化</div>
+            <div class="mini-item">月間/年間ライブ履歴の共有</div>
+            <div class="mini-item">セトリ共有画像</div>
+            <div class="mini-item">IGストーリーテンプレ・X投稿文生成</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-robot"></i> AI</div><div class="mini-items">
+            <div class="mini-item">e+情報の自動解析・画像読み取り</div>
+            <div class="mini-item">フェス出演者整理・気になるアーティスト推薦</div>
+            <div class="mini-item">セトリ→プレイリスト・感想整理・投稿文生成</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-users"></i> コミュニティ</div><div class="mini-items">
+            <div class="mini-item">友達のライブ履歴・同じライブに行く人</div>
+            <div class="mini-item">行きたいライブ共有・フェス同行者探し</div>
+            <div class="mini-item">感想共有・おすすめアーティスト共有</div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-trophy"></i> 初期の勝ち筋</div>
+        <div class="card" style="background:linear-gradient(90deg,#feeaf0,#fff3e0);border:1px dashed #c0398a;color:#a3306f;font-size:13px;line-height:1.9">
+          広告で一気に広げるより、<b>ライブ好きの熱量を起点に広げる</b>のが向いている。作るべき状態＝<b>記録したくなる／見返したくなる／共有したくなる／友達を招待したくなる／新しい音楽と出会いたくなる</b>。<br>
+          LiveLogは林さん本人のSNS・音楽活動・AIセミナー・音楽イベントと相性が非常に高い。まず10〜20人の熱量あるモニターを集め、フィードバックで磨き、声とSNS共有で少しずつ広げる。<b>最初の一手は、林さん本人のInstagramストーリーと音楽仲間への個別DM。</b>
         </div>
       </div>
     </div>
