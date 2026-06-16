@@ -4,8 +4,13 @@
 LiveLogアプリの開発者向けドキュメントサイト。
 単一HTMLファイル（index.html）で構成されており、Netlifyでホスティング。
 
-## 現在の公開URL
-https://peaceful-bonbon-b14dd5.netlify.app/
+## 現在の公開URL（htmlpreview経由・ユーザー作業ゼロ）
+ブランチ最新（ブックマーク用・数分キャッシュ）:
+https://htmlpreview.github.io/?https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/claude/vibrant-meitner-tbc76w/docs/livelog-site/index.html
+
+即時確認したいときは、上記URLの `claude/vibrant-meitner-tbc76w` を最新コミットのSHAに差し替える（rawキャッシュを無視できる）。
+
+※ Netlifyは環境のネットワーク制限で使えず、GitHub raw + htmlpreview方式に切替済み（旧URL https://peaceful-bonbon-b14dd5.netlify.app/ は不使用）。
 
 ## ファイル構成
 ```
