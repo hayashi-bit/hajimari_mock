@@ -1681,7 +1681,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td>外部DB＋本番/開発分離</td><td>データを外部TiDB所有、NODE_ENVでDB切替（フォールバック禁止） <small>（実装済。『フォールバック禁止』の厳密制御は要確認）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td></tr>
+            <tr><td>外部DB＋本番/開発分離</td><td>開発DBを自前の外部TiDB Serverless（東京・無料枠）に分離完了。DATABASE_URL_DEV設定済・全10テーブル作成済・起動ログ「Connected to DEV database (TiDB)」確認済。フォールバック禁止（開発でDEV未設定なら起動エラー）も実動作で確認済。本番DBは未変更。 <small>（2026-06-16 完了）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
             <tr><td>開発バイパス（右パネル解決）</td><td>開発時のみ自動ログイン</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
           </tbody>
         </table></div>
