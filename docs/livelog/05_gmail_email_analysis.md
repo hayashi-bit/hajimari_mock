@@ -163,3 +163,41 @@
 
 ### 次のアクション
 - 上記フィールドを前提に、184通をLLMで一括構造化し、完全な参戦履歴データ（CSV/JSON）を生成して取得率の実効を検証する。
+
+---
+
+## 8. 構造化データ生成結果（2026-06-16・正規表現ベースライン）
+
+確定した項目セットで184通を構造化し、`gmail_extract_sample.csv` / `gmail_extract_sample.json` として出力した。
+**これは正規表現での実測ベースライン**であり、G1-1（LLM化）後の精度目標を測る基準値になる。
+
+### 取得率（184通中）
+
+| フィールド | 取得率 | 備考 |
+|---|---|---|
+| status | 100% | 下記内訳 |
+| ticketCompany | 100% | 送信元＋本文で確定 |
+| ticketFormat | 100%（うちunknown 22通） | digital 116 / paper 46 / unknown 22 |
+| venue | 92% | |
+| liveDate（YYYY-MM-DD正規化） | 85% | |
+| title | 83% | |
+| ticketCount（枚数） | 62% | 同行者推定の元 |
+| prefecture | 59% | 会場名→地名マップで補完 |
+| seatInfo | 54% | |
+| ticketingDeadline | 16% | ラベル差で取りこぼし |
+| price | 7% | 本文にあるがラベル差。LLMで改善見込み大 |
+| paymentDeadline | 7% | 同上 |
+| sourceUrl | 2% | LivePocketのみ。LLMで改善見込み |
+
+### status 内訳
+ticket_secured 67 / payment_pending 53 / print_pending 21 / lottery_won 19 / lottery_lost 11 / unknown 13
+
+### 所見（LLM化で改善すべき点が数値で確定）
+- **price 7% / paymentDeadline 7% / sourceUrl 2%** が極端に低いのは情報欠如ではなく、販売元ごとのラベル差を正規表現が吸収できないため。サンプル（ぴあ「合計金額 計4,325円」、ローチケ「入金期間」等）から、本文には存在することを確認済み。→ G1-1のLLM化で最も伸びる項目。
+- title 83% / liveDate 85% の取りこぼしは、転送メールやフェス系のフォーマット差が原因。LLMで95%+を目標とする。
+- ticketFormat unknown 22通は、申込/落選など「チケット形態が確定する前」の段階のメールが中心で、欠損ではなく仕様上妥当。
+
+### 成果物
+- `docs/livelog/gmail_extract_sample.csv` … 184行 × 16列の構造化データ
+- `docs/livelog/gmail_extract_sample.json` … 同内容のJSON
+- ※個人情報（氏名・払込票番号・メールアドレス）は出力列に含めていない。sourceMessageId は重複防止キーとして保持。
