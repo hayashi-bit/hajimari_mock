@@ -2108,6 +2108,42 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-shield-lock"></i> プライバシー / 審査</div>
         <div class="card"><p style="font-size:13px;color:var(--text2)">スコープはreadonlyのみ・本文は保存しない・refreshTokenは暗号化。gmail.readonlyは制限付きスコープのため一般公開にGoogleのセキュリティ審査（CASA含む・数週間）が必要。MVPはテストユーザー運用で先行検証、並行して審査申請。</p></div>
       </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-clipboard-check"></i> 現状（2026-06-16 コード監査）＝手動の一周は実装済</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>要素</th><th>状況</th><th>根拠</th></tr></thead>
+          <tbody>
+            <tr><td>Gmail連携 ON/OFF・状態表示</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>gmailRouter: getAuthUrl/handleCallback/disconnect/status</td></tr>
+            <tr><td>トークン保存・自動リフレッシュ</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>gmail_tokens、期限60秒前で自動更新</td></tr>
+            <tr><td>チケットメール検索（7社）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>fetchTicketEmails（e+/ローチケ/ぴあ/チケボ/LivePocket/セブン/CN）</td></tr>
+            <tr><td>取得→プレビュー→除外→ライブ登録（重複チェック付）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>Settings.tsx → importFromText 経由</td></tr>
+            <tr><td>本文の解析方式</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">正規表現</span></td><td>gmailParser（仕様の「LLMで汎用解析」とは乖離＝要置換）</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-check"></i> やること整理（本番公開ルート＝テストモードで当面運用）</div>
+        <div class="card" style="background:linear-gradient(90deg,#feeaf0,#fff3e0);border:1px dashed #c0398a;color:#a3306f;line-height:1.7;font-size:13px">
+          <b>方針決定（2026-06-16）：</b>gmail.readonly＝制限付きスコープのGoogle審査（CASA・重い）は当面回避し、<b>OAuth同意画面を「テスト」公開ステータス（最大100テストユーザー）</b>で運用する。<br>
+          → <b>7月「有料100人」ゴールと上限が一致</b>。審査ブロックなしで即リリース可能。100人を超えたら「フル審査」or「転送アドレス方式」へ移行を再検討。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:12px"><table>
+          <thead><tr><th>#</th><th>タスク</th><th>内容</th><th>名前/ドメイン</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>G1-1</td><td>解析をLLM化（製品価値の核）</td><td>gmailParser を正規表現→LLM解析に置換。本文を安価モデルに渡し {公演名/アーティスト/日付/開演/会場/都道府県/ステータス/抽選or先着} を構造化。7社＋未知フォーマットも拾う。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>G1-2</td><td>再解析しないキャッシュ</td><td>sourceMessageId をライブに保持し、同一メールは再解析・再登録しない（コスト＆重複対策）。重複検出 findDuplicates と連動。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>G1-3</td><td>ステータス前進更新</td><td>抽選申込→当落→入金→発券→確保の順方向のみ自動更新（後退させない）。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>G2-1</td><td>プライバシーポリシー（クロコ叩き台）</td><td>readonly・本文非保存・トークン暗号化を明記。テストモードでも同意画面に必要。</td><td>不要(URLは後)</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>G2-2</td><td>OAuth同意画面＝テスト公開＋テストユーザー登録</td><td>Google Cloudで gmail.readonly を追加、公開ステータス「テスト」、テストユーザーに自分＋初期ユーザーのGmailを登録（最大100）。</td><td>テストURLで可</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>G2-3</td><td>再連携導線（テストモードの7日切れ対策）</td><td>テスト公開ではrefresh_tokenが約7日で失効。status=expired を検知して「再連携してください」を表示・ワンタップ再認可。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>G3-1</td><td>フリーミアム制限（プレミアム限定＋月上限）</td><td>Gmail自動取込はプレミアム限定、無料は0通／プレミアムは月50通など上限。※P0-4 課金と連動。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+            <tr><td>G3-2</td><td>自動定期取込</td><td>scheduledHandlers で定期実行（プレミアムのみ・上限内）。今は手動ボタンのみ。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>着手順のおすすめ：</b> G1-1（LLM解析）→ G1-2/G1-3（キャッシュ・ステータス）→ G2-1（プライバシーポリシー）→ G2-2/G2-3（テスト公開＋再連携）。<b>G3はP0-4課金の後</b>。G1群は<b>名前・ドメイン不要で今すぐ着手可</b>。</div>
+      </div>
       <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/03_gmail_integration_spec.md</code></p>
     </div>
 
