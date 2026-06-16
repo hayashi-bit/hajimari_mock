@@ -2144,7 +2144,51 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>着手順のおすすめ：</b> G1-1（LLM解析）→ G1-2/G1-3（キャッシュ・ステータス）→ G2-1（プライバシーポリシー）→ G2-2/G2-3（テスト公開＋再連携）。<b>G3はP0-4課金の後</b>。G1群は<b>名前・ドメイン不要で今すぐ着手可</b>。</div>
       </div>
-      <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/03_gmail_integration_spec.md</code></p>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database-search"></i> 実データ調査（実ユーザーGmail 304通を解析）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.7">
+          実ヘビーユーザーのGmail <b>9 ZIP・全345通（ユニーク304通）</b>を解析。<b>購入実績系184通 → 約54公演</b>の参戦履歴が「手入力ゼロ」で復元できると実証。
+          = 新規ユーザーが<b>初日から54公演保有のアクティブユーザー</b>になり、コールドスタート（最初データが空で離脱）を一発で解消。これが本機能の最大価値。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:12px"><table>
+          <thead><tr><th>区分</th><th>件数</th><th>扱い</th></tr></thead>
+          <tbody>
+            <tr><td>購入実績系（当選/発券/DL/入金/購入/落選）</td><td><b>184</b></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">取込対象</span></td></tr>
+            <tr><td>宣伝/先行案内</td><td>68</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">弾く</span></td></tr>
+            <tr><td>その他（ログイン通知・パスワード等）</td><td>71</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">弾く</span></td></tr>
+            <tr><td>野球</td><td>17</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">弾く</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7">
+          <b>大小すべて対象：</b>COUNTDOWN JAPAN / ROCK IN JAPAN / SUMMER SONIC / KNOCKOUT FES / TOKYO CALLING 等の大型フェスも、新宿LOFT等の小箱も両方実在。<br>
+          <b>LLM必須の根拠：</b>巨人戦もe+から届く＝<b>送信元では弾けない</b>。本文を読んで「購入実績か宣伝か」を判定する必要がある。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-columns-3"></i> 項目仕分け（メールから取れるもの）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>区分</th><th>項目</th><th>取得率/状況</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="6" style="background:#e7f6ec;color:#1b8a4b;font-weight:700">🟢 既存項目<br>そのまま埋まる</td><td>ステータス / チケット会社 / 受信日時 / messageId</td><td>100%</td></tr>
+            <tr><td>会場</td><td>92%</td></tr>
+            <tr><td>公演日時（開場/開演）</td><td>88%</td></tr>
+            <tr><td>公演名</td><td>83%（LLMで95%+）</td></tr>
+            <tr><td>チケット形態（紙/電子）</td><td>判別可（電子117・紙109通）</td></tr>
+            <tr><td>券種/金額/座席/締切</td><td>本文にあり→LLMで改善</td></tr>
+            <tr><td rowspan="2" style="background:#fff8e6;color:#9a7400;font-weight:700">🟡 弱い<br>LLMで強化</td><td>アーティスト/出演者（単独=公演名/フェス=出演者リスト21通・対バン17通）</td><td>判定にLLM必須</td></tr>
+            <tr><td>都道府県（会場名から地名補完）</td><td>19%→LLMで改善</td></tr>
+            <tr><td rowspan="5" style="background:#fdeef7;color:#c0398a;font-weight:700">🔴 新項目<br>（2026-06-16 確定）</td><td>購入/申込締切日 <code>applyDeadline</code></td><td>94通 <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">採用</span></td></tr>
+            <tr><td>当落発表日 <code>lotteryResultDate</code></td><td>24通 <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">採用</span></td></tr>
+            <tr><td>入金期限 <code>paymentDeadline</code> / 発券期限 <code>ticketingDeadline</code></td><td>入金20・発券34通 <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">採用</span></td></tr>
+            <tr><td>枚数 <code>ticketCount</code>（同行者は枚数>1で推定）</td><td>123通 <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">採用</span></td></tr>
+            <tr><td>詳細URL <code>sourceUrl</code> 採用 ／ ゲスト</td><td>URLあり <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">採用</span> ／ ゲスト2通 <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#eef1f6;color:#46566b">見送り</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7"><b>決定の要点：</b>既存スキーマの単一 <code>deadlineDate</code> を「申込締切・当落発表・入金期限・発券期限」に<b>種類分離</b>（混在すると正しいリマインドが出せないため）。失念防止＝アプリのコア価値に直結する4項目＋枚数＋詳細URLを採用、ゲストは出現2通で見送り。</div>
+      </div>
+
+      <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/03_gmail_integration_spec.md</code> ／ 実データ調査・項目仕様: <code>docs/livelog/05_gmail_email_analysis.md</code></p>
     </div>
 
     <!-- BACKLOG -->
