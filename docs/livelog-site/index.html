@@ -781,9 +781,79 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
     <!-- MONETIZE -->
     <div id="page-monetize" class="page">
-      <div class="topbar"><div class="topbar-title">マネタイズ戦略</div></div>
+      <div class="topbar"><div class="topbar-title">マネタイズ戦略</div><span class="topbar-badge">月額モデルへ転換</span></div>
+
+      <div class="hero-strip">
+        <i class="ti ti-rotate-2 hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>買い切り → 月額サブスクへ大転換（2026-06）</h2>
+          <p>門倉さん提案＋林合意。買い切りは<b>サービス終了時にクレームが起きやすい</b>ため、月額ベースに変更。AI機能は独立した上位プランに分け、年/月の両方を用意。継続課金の燃料は「過去の記録」ではなく<b>「未来のライブ発見（好きなアーティストの新公演ニュース）」</b>に置く。</p>
+        </div>
+      </div>
+
       <div class="section">
-        <div class="section-title"><i class="ti ti-coin"></i> 課金モデル（near-term の結論）</div>
+        <div class="section-title"><i class="ti ti-stack-2"></i> 料金体系（3段階・各有料プランに年/月）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>項目</th><th>① 無料</th><th>② 有料（ベース）</th><th>③ AI機能（上位）</th></tr></thead>
+          <tbody>
+            <tr><td><b>月額</b></td><td>¥0</td><td><b>¥300/月</b></td><td><b>¥600/月</b></td></tr>
+            <tr><td><b>年額</b></td><td>—</td><td><b>¥2,000/年</b></td><td><b>¥6,000/年</b></td></tr>
+            <tr><td>記録・ステータス管理・友達</td><td>◯</td><td>◯</td><td>◯</td></tr>
+            <tr><td>記録無制限・公開プロフィール強化</td><td>一部制限</td><td>◯</td><td>◯</td></tr>
+            <tr><td>未来ライブニュース（UGC通知＝他ユーザー登録から）</td><td>✕</td><td>◯（〜10組）</td><td>◯ 無制限</td></tr>
+            <tr><td>Gmail自動取込</td><td>✕</td><td>✕</td><td>◯</td></tr>
+            <tr><td>画像/メールAI解析</td><td>お試し月1回</td><td>✕</td><td>◯</td></tr>
+            <tr><td>AI未来監視（SNS/公式/Web検索で先回り発見）</td><td>✕</td><td>✕</td><td>◯</td></tr>
+            <tr><td>予習プレイリスト/SNS映え画像/優先処理</td><td>✕</td><td>✕</td><td>◯</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          <b>線引きの考え方：</b>② 有料＝<b>AIを使わないプレミアム</b>（記録無制限・友達・<b>UGCベースの未来通知＝原価ほぼゼロ</b>）。③ AI機能＝<b>LLMコストが乗るもの全部</b>（Gmail取込・画像/メール解析・AI能動監視・プレイリスト）。<br>
+          <b>価格心理：</b>②は月300×12=3,600 ＞ 年2,000／③は月600×12=7,200 ＞ 年6,000 ＝ <b>年額が明確にお得</b>に見える（門倉案の狙い）。③は②に対し「+¥300/月・+¥4,000/年」とも見せられる。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-broadcast"></i> 月額成立の鍵：未来ライブニュース（継続課金の燃料）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          <b>課題：</b>月額は「毎月価値を感じる理由」が要る。今のLiveLogは<b>過去データ中心</b>で、<b>ライブに行かない月は価値ゼロ</b>に感じる＝解約されやすい。<br>
+          <b>解決：</b>好きなアーティストのライブ情報を<b>アプリが常に自動チェック（SNS・公式サイト・世の中すべて）</b>し、ユーザーが「検討中」にする<b>前段階で"ニュース"として先回り通知</b>する。チケぴ等のアラートはしょぼく、多くの人はSNSで発見→見逃す。そこをLiveLogが代わりに網を張る。<br>
+          <b>効果：</b>「行かない月も新公演ニュースが届く」＝毎月開く理由・<b>払い続ける理由</b>になる。価値が「過去（記録）→過去＋未来（発見）」に変わる。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:12px"><table>
+          <thead><tr><th>情報源</th><th>現実度</th><th>プラン</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>UGC（誰かが登録→同アーティストのフォロワーに通知）</td><td>◎ すぐ可能</td><td>② 有料</td><td>原価ゼロ・ユーザー増で強化（B-5）</td></tr>
+            <tr><td>Gmail（FC/メルマガのツアー告知）</td><td>◎ 実装済連携で拾える</td><td>③ AI</td><td>本人会員のものに限る</td></tr>
+            <tr><td>AI Web検索（定期的にアーティスト名で検索）</td><td>○ 精度・コスト要調整</td><td>③ AI</td><td>"世の中すべて"の近似</td></tr>
+            <tr><td>SNS自動監視（X/Instagram公式）</td><td>△ API制限・高コスト</td><td>③ AI（将来）</td><td>完全自動は提携待ち</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>方針：</b>完全自動の"全部監視"は現状ムリ。<b>UGC（②）＋Gmail＋AI検索（③）の組み合わせ</b>で「主要アーティストは網羅、ニッチは徐々に」。<b>未来ニュースの情報源で②/③を分ける</b>（UGC=②／AI監視=③）のが自然。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-calculator"></i> 価格の根拠（原価とマージン・概算）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>プラン</th><th>主なAIコスト要因</th><th>概算原価/月</th><th>価格</th><th>マージン</th></tr></thead>
+          <tbody>
+            <tr><td>② 有料(¥300)</td><td>AI不使用（UGC通知のみ）</td><td>ほぼ¥0</td><td>¥300</td><td>◎ 黒字</td></tr>
+            <tr><td>③ AI(¥600)</td><td>Gmail＋画像解析＋AI未来監視（キャップ運用）</td><td>約¥100-400</td><td>¥600</td><td>◯（要計測）</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>運用：</b>まず<b>無料＋②有料の2段階で開始</b>しAI使用量を計測 → ヘビー層が見えたら<b>③AIを追加（3段階化）</b>が安全。キャップ（フォロー10組・Gmail月50通・解析月20回 等）で原価を制御。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-history"></i> 旧方針（参考・置換済み）</div>
+        <div class="card">
+          <p style="font-size:13px;color:var(--text2)"><span class="badge badge-amber">置換</span> 旧：買い切り（単体買取）¥2,000前後を主軸。7月100人スプリントに素直、という判断だった。<b>→ サービス終了時のクレームリスクを重く見て、上記の月額モデルへ転換。</b></p>
+          <p style="font-size:13px;color:var(--text2);margin-top:8px"><span class="badge badge-amber">棚上げ（継続）</span> 送客マージン / チケットサイト買取：会員が伸びて送客できる規模になれば再検討。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-coin"></i> 課金モデル（旧・near-term の結論）</div>
         <div class="card">
           <p style="font-size:14px"><span class="badge badge-green">主軸</span> 買い切り（単体買取）¥2,000前後</p>
           <p style="font-size:13px;color:var(--text2);margin-top:6px">churnを気にせず「売れた数」を積める。7月100人スプリントに最も素直。月額/年額サブスクは継続管理が必要で不利。</p>
