@@ -16,7 +16,7 @@ import json
 import os
 import urllib.request
 
-MODEL = os.environ.get("LIVELOG_MODEL", "claude-haiku-4-5")
+MODEL = os.environ.get("LIVELOG_MODEL", "claude-sonnet-4-6")
 API_URL = "https://api.anthropic.com/v1/messages"
 
 # 抽出スキーマ（05_gmail_email_analysis.md §7 の確定項目を反映）

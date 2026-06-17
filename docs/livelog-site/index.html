@@ -2193,7 +2193,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-robot"></i> G1-1 実装プロンプト（Manus向け・作成済）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.7">
           gmailParser を正規表現→<b>LLM構造化抽出</b>に置き換える「そのまま貼れる」指示書を <code>06_g1-1_llm_parser_prompt.md</code> に用意。<b>実メール5通をゴールデンテストとして埋め込み</b>（巨人戦＝除外できるかの判定も含む）。<br>
-          推奨モデル：<b>claude-haiku-4-5</b>（1通≒0.03円、月50通×100人でも月150円程度＝コストは無視できる）。構造化出力(JSON Schema)で抽出。受け入れ基準＝5通全通過＋正規表現で取れなかった price/期限/URL の取得率向上。
+          採用モデル：<b>claude-sonnet-4-6</b>（2026-06-16決定。未知メール・宣伝/購入の判定精度を優先、既存api/chat.tsと統一。100人で約$27/月＝プレミアム限定＋上限で収益の1%未満）。構造化出力(JSON Schema)で抽出。受け入れ基準＝5通全通過＋正規表現で取れなかった price/期限/URL の取得率向上。評価ハーネスは <code>tools/gmail_eval/</code>。
         </div>
       </div>
       <p style="font-size:12px;color:var(--text2);padding:0 1.25rem">詳細仕様: <code>docs/livelog/03_gmail_integration_spec.md</code> ／ 実データ調査・項目仕様: <code>docs/livelog/05_gmail_email_analysis.md</code> ／ G1-1実装プロンプト: <code>docs/livelog/06_g1-1_llm_parser_prompt.md</code></p>
