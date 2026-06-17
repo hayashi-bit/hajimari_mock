@@ -218,6 +218,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
+      <div class="nav-item" onclick="show('mobilefb',this)"><i class="ti ti-device-mobile-message"></i>モバイルUXフィードバック</div>
     </div>
   </nav>
 
@@ -2439,6 +2440,33 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           広告で一気に広げるより、<b>ライブ好きの熱量を起点に広げる</b>のが向いている。作るべき状態＝<b>記録したくなる／見返したくなる／共有したくなる／友達を招待したくなる／新しい音楽と出会いたくなる</b>。<br>
           LiveLogは林さん本人のSNS・音楽活動・AIセミナー・音楽イベントと相性が非常に高い。まず10〜20人の熱量あるモニターを集め、フィードバックで磨き、声とSNS共有で少しずつ広げる。<b>最初の一手は、林さん本人のInstagramストーリーと音楽仲間への個別DM。</b>
         </div>
+      </div>
+    </div>
+
+    <!-- MOBILE UX FEEDBACK -->
+    <div id="page-mobilefb" class="page">
+      <div class="topbar"><div class="topbar-title">モバイルUXフィードバック</div><span class="topbar-badge">要修正予定</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-device-mobile-message hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>実機モバイル検証で挙がった改善点</h2>
+          <p>2026-06-17・テスター：加藤ゆかり。スクショはセッションに添付。LiveLog本体(Manus)側の改善項目。P1=体験を明確に損ねる／P2=分かりやすさ向上。詳細: <code>docs/livelog/07_mobile_ux_feedback.md</code></p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-check"></i> 要修正リスト</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>#</th><th>区分</th><th>内容 / 期待する修正</th><th>優先</th></tr></thead>
+          <tbody>
+            <tr><td>M-1</td><td>トースト被り</td><td>画像取込後などの<b>トーストが下のタブバー/ボタンと重なって読みにくい</b>（おそらく全トースト共通）。→ 表示位置を上げ、タブバー上にマージン確保。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">P1</span></td></tr>
+            <tr><td>M-2</td><td>削除ダイアログ</td><td>削除時に「<b>livelogapp-…manus.space の内容／このライブを削除しますか？</b>」という素のブラウザconfirmが出る。→ アプリ内モーダルに置換（公演名表示）。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">P1</span></td></tr>
+            <tr><td>M-3</td><td>null表記</td><td>「<b>発券（null）</b>」「<b>日本武道館（null）</b>」のように null がそのまま表示。→ 空値は非表示 or「—」「未設定」に置換。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">P1</span></td></tr>
+            <tr><td>M-4</td><td>入力欄の例示</td><td>入力欄が何を書く所か分からない。→ グレーのプレースホルダ例を入れる（下のURL欄イメージ）。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff8e6;color:#9a7400">P2</span></td></tr>
+            <tr><td>M-5</td><td>画像取込ガイド</td><td>「画像から取り込む」でどこからどこまでの情報が必要か不明。→ 別ページで例（OK例／✕例＝日付なし等）を提示。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff8e6;color:#9a7400">P2</span></td></tr>
+            <tr><td>M-6</td><td>画像枚数の明記</td><td>何枚まで取り込めるか記載が無い（1枚だと入り切らない場合あり）。→ 取込可能枚数を明記・複数枚対応検討。</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff8e6;color:#9a7400">P2</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7"><b>補足：</b>M-1・M-2 は見た目の完成度に直結するので<b>モニター配布前に修正したい</b>（第一印象に影響）。M-3 はフロント側で null/空を出さない処理。M-5/M-6 は「画像から取り込む」のオンボーディング（別ページのヘルプ or ツールチップ）。</div>
       </div>
     </div>
 
