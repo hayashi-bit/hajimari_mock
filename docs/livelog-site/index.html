@@ -219,6 +219,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
+      <div class="nav-item" onclick="show('accounts',this)"><i class="ti ti-at"></i>アカウント確保チェックリスト</div>
       <div class="nav-item" onclick="show('copy',this)"><i class="ti ti-quote"></i>コピー案</div>
       <div class="nav-item" onclick="show('mobilefb',this)"><i class="ti ti-device-mobile-message"></i>モバイルUXフィードバック</div>
     </div>
@@ -2637,6 +2638,71 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8"><b>順番の理由（依存）：</b>ブランド確保は早い者勝ち＝最優先／リブランドはドメイン確定後にOAuth等をまとめて変更（二度手間回避）／Gmailのフリーミアム上限はStripe実装後でないとゲートを作れない／未来ニュースは月額の継続理由＝マネタイズと一体設計。</div>
+      </div>
+    </div>
+
+    <!-- ACCOUNTS CHECKLIST -->
+    <div id="page-accounts" class="page">
+      <div class="topbar"><div class="topbar-title">アカウント確保チェックリスト</div><span class="topbar-badge">今日のゴール</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-at hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>@liverico を今日のうちに押さえる</h2>
+          <p>各SNSで <b>① 空き確認 → ② 作成 → ③ @liverico → ④ 表示名 → ⑤ bio → ⑥ アイコン → ⑦ 2FA → ⑧ 記録</b>。詳細(チェック可): <code>docs/livelog/10_liverico_account_checklist.md</code></p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-settings"></i> 共通準備（最初に1回）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:2">
+          ☐ 登録メールを運営用に統一　☐ パスワード管理ツール用意　☐ 仮ロゴ（正方形）　☐ 表示名「ライブリコ」(英: LiveRico)<br>
+          ☐ <b>bio共通文</b>：「ライブを軸に、人生を鳴らす📱🔥 行く前のそわそわから参戦記録・仲間とのつながり・推しの新公演まで／ライブ好きのアプリ #ライブリコ」<br>
+          ☐ <b>埋まってた時の代替（全SNS同表記に統一）</b>：liverico → liverico_app → livericoapp → liverico_jp → liverico_official
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flame"></i> ★最優先（今日のゴール）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>SNS</th><th>①空き確認</th><th>②作成</th><th>③@liverico</th><th>④表示名</th><th>⑤bio</th><th>⑥アイコン</th><th>⑦2FA</th><th>⑧記録(取得ハンドル)</th></tr></thead>
+          <tbody>
+            <tr><td><b>X（Twitter）</b></td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+            <tr><td><b>Instagram</b></td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+            <tr><td><b>TikTok</b></td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-down-circle"></i> ★次に押さえる</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>媒体</th><th>①空き確認</th><th>②作成</th><th>③ハンドル</th><th>④表示名</th><th>⑤bio/説明</th><th>⑥アイコン</th><th>⑦記録</th></tr></thead>
+          <tbody>
+            <tr><td><b>YouTube</b></td><td>☐</td><td>☐</td><td>☐ @liverico</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+            <tr><td><b>Threads</b><small>（IG連携）</small></td><td>☐</td><td>☐</td><td>☐ @liverico</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+            <tr><td><b>LinkedIn</b><small>（会社ページ）</small></td><td>☐</td><td>☐</td><td>☐ /company/liverico</td><td>☐</td><td>☐</td><td>☐ ロゴ</td><td>______</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12px;color:var(--text2);padding:4px">LinkedIn＝事業の信頼・採用・提携用の会社ページ。カスタムURL `linkedin.com/company/liverico` を確保。</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-plus"></i> ★補助（記事・拡散）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>媒体</th><th>①空き確認</th><th>②作成</th><th>③ID/ユーザー名</th><th>④表示名</th><th>⑤プロフ</th><th>⑥アイコン</th><th>⑦記録</th></tr></thead>
+          <tbody>
+            <tr><td><b>note</b><small>（開発記事）</small></td><td>☐</td><td>☐</td><td>☐ liverico</td><td>☐</td><td>☐</td><td>☐</td><td>______</td></tr>
+            <tr><td><b>Facebook</b><small>（ページ）</small></td><td>☐</td><td>☐</td><td>☐ @liverico</td><td>☐ ライブリコ</td><td>☐</td><td>☐</td><td>______</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flag-check"></i> 仕上げ・完了の目安</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:2">
+          ☐ 取得ハンドルを全部「記録」欄に記入　☐ 全アカウント2段階認証ONを再確認　☐ プロフィールのリンクは当面空 or 仮（後でliverico.app等）<br>
+          <b>☐ 完了ライン：X・Instagram・TikTok の @liverico 確保＝今日のゴール</b> → 次（YouTube/Threads/LinkedIn）→ 補助（note/FB）
+        </div>
       </div>
     </div>
 
