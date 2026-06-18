@@ -23,30 +23,42 @@
 
 ---
 
-# ① Spotify アー写連携（★1・土台）
+# ① Spotify アー写連携（★1・土台）【最終版・そのままManusへ】
 
 ```
-artists にアーティスト写真を自動付与してください。Spotify Web API を使います。
+artists にアーティスト写真を自動付与してください。Spotify Web API（Client Credentials Flow・ユーザーログイン不要）を使います。
+※実データ検証済み：このアプリの実リストのインディー含むアーティストはSpotifyでほぼ100%ヒット。Apple等の追加プロバイダは現状不要。取れない稀なケースはユーザー投稿で補う。
 
-【セットアップ】
-- Spotify Developer でアプリ登録 → Client ID / Secret を取得。
-- env: SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET
-- 認証は Client Credentials Flow（ユーザーログイン不要）。取得した access_token は約1時間キャッシュして再利用。
+【環境変数】SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET（env管理・秘密情報）
+
+【認証（トークン取得・キャッシュ）】
+- POST https://accounts.spotify.com/api/token
+  header: Authorization: Basic base64("{CLIENT_ID}:{CLIENT_SECRET}") / Content-Type: application/x-www-form-urlencoded
+  body:   grant_type=client_credentials
+- access_token を約55分キャッシュ。401/期限切れ時のみ再取得。
+
+【検索】
+- GET https://api.spotify.com/v1/search?q={アーティスト名}&type=artist&limit=5  header: Authorization: Bearer {token}
+- artists.items[] 各: name, id, images[](大きい順), popularity, followers.total, external_urls.spotify。画像は images[0].url。
 
 【DBスキーマ追加（artists）】
-- imageUrl       varchar  -- Spotifyのアーティスト画像URL
-- spotifyId      varchar  -- SpotifyのアーティストID
-- imageSource    varchar  -- 'spotify' 等
-- imageFetchedAt datetime -- 取得日時（再取得制御）
-- imageStatus    varchar  -- 'ok' | 'not_found' | 'needs_review'（名前が曖昧で複数候補のとき）
+- imageUrl varchar / spotifyId varchar / imageSource varchar('spotify'|'user') / imageStatus varchar('ok'|'not_found'|'needs_review') / imageFetchedAt datetime
 
-【取得ロジック】
-- アーティストが新規作成された時、または imageUrl が空の時に Spotify を検索：
-  GET https://api.spotify.com/v1/search?q={artist名}&type=artist&limit=5
-- マッチ選定：名前を正規化(全半角・大小・空白除去)して完全一致を優先 → 無ければ人気(popularity/followers)最上位。
-  - 完全一致が無く候補が割れる場合は imageStatus='needs_review' にして、UIで手動確認できるようにする。
-- 取得できたら images[0].url / id / name を保存。not_found は imageStatus='not_found' で記録（毎回叩かない）。
-- 既存アーティストの一括バックフィル用に、imageUrl が空のものをまとめて処理するジョブも用意（レート制限対策で逐次＋ディレイ）。
+【マッチ選定】
+- 名前を正規化(NFKC・全半角・小文字・空白除去)して比較。
+  1) 完全一致あり→その中で followers/popularity 最上位を採用='ok'
+  2) 完全一致なしだが候補突出→採用 / 僅差で割れる→'needs_review'（誤写真を出さない）
+  3) 候補ゼロ または images空 →'not_found'
+
+【取得タイミング】新規作成時 or imageUrl空のとき検索。既存空を一括処理するバックフィルJob（逐次＋ディレイ）。一度取れたら再取得しない(imageFetchedAt)。
+
+【フォールバック（重要）】
+- not_found/needs_review/画像なし は UIで「写真を追加」→ユーザー投稿を imageUrl に保存(imageSource='user')。
+- 将来 Apple/Deezer を足せるよう「名前→画像URL」取得関数をプロバイダ差し替え可能に分離（今はSpotifyのみ）。
+
+【エラー/レート制限】429は Retry-After に従い待機・再試行。検索失敗は据え置き＋ログ（処理は止めない）。
+
+【完了報告】追加カラム・実装箇所・テスト結果（例:「ずっと真夜中でいいのに。」「アザミ」「CLAN QUEEN」「meiyo」の imageUrl/imageStatus）・バックフィル結果(対象N/ok/needs_review/not_found)。
 
 【フォールバック（重要）】
 - Spotify で not_found / needs_review / 画像なし の場合は、UIで「写真を追加」をユーザーに促す（imageSource='user'）。
