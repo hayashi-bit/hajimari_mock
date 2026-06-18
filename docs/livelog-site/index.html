@@ -2730,6 +2730,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>着手順：</b>①→②→③。写真基盤(①)を先に作ると、②で追加した出演者にも自動で写真が付き、③含め一気に映える。Gmail（過去5年・スキップ永続化）とは独立に並行可能。</div>
+        <div class="card" style="margin-top:10px;background:linear-gradient(90deg,#e7f6ec,#f2f2f0);border:1px solid #1b8a4b;color:#155e34;font-size:13px;line-height:1.8"><b>カバー率テスト（2026-06-18・実リストで検証）：</b>実際に行ったライブのインディー10組をSpotify在籍確認 → <b>全組ヒット（アザミ＝月間5.1千人でも在籍）</b>。→ <b>このセグメントはSpotifyでほぼ100%カバー。Apple Musicは現状不要</b>。稀の漏れはユーザー投稿で補う。</div>
       </div>
 
       <div class="section">
@@ -2738,6 +2739,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <b>やること：</b>artists にアー写を自動付与。Spotify Web API（Client Credentials・ユーザーログイン不要）でアーティスト名検索→画像URL取得。<br>
           <b>DB追加：</b>artists に <code>imageUrl / spotifyId / imageSource / imageFetchedAt / imageStatus</code>。<br>
           <b>選定：</b>名前正規化で完全一致優先→無ければ人気上位。曖昧なら <code>needs_review</code> に逃がして誤写真を出さない。結果はDBキャッシュ（再取得制御）。<br>
+          <b>フォールバック：</b>not_found/needs_review/画像なし は「写真を追加」でユーザー投稿（imageSource='user'）。検証でSpotifyほぼ100%のため追加プロバイダは今は不要だが、後で差し替えできるよう関数分離。<br>
           <b>注意：</b>日本のアーティストは表記ゆれ。env <code>SPOTIFY_CLIENT_ID/SECRET</code>。既存写真なしを一括バックフィルするジョブも用意。
         </div>
       </div>
