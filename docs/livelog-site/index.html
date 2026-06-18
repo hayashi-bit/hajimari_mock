@@ -221,6 +221,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
       <div class="nav-item" onclick="show('accounts',this)"><i class="ti ti-at"></i>アカウント確保チェックリスト</div>
       <div class="nav-item" onclick="show('domainreq',this)"><i class="ti ti-mail-cog"></i>ドメイン/メール依頼書</div>
+      <div class="nav-item" onclick="show('artwork',this)"><i class="ti ti-photo-music"></i>アートワーク/出演者</div>
       <div class="nav-item" onclick="show('copy',this)"><i class="ti ti-quote"></i>コピー案</div>
       <div class="nav-item" onclick="show('mobilefb',this)"><i class="ti ti-device-mobile-message"></i>モバイルUXフィードバック</div>
     </div>
@@ -2703,6 +2704,67 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:2">
           ☐ 取得ハンドルを全部「記録」欄に記入　☐ 全アカウント2段階認証ONを再確認　☐ プロフィールのリンクは当面空 or 仮（後でliverico.app等）<br>
           <b>☐ 完了ライン：X・Instagram・TikTok の @liverico 確保＝今日のゴール</b> → 次（YouTube/Threads/LinkedIn）→ 補助（note/FB）
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTWORK / LINEUP -->
+    <div id="page-artwork" class="page">
+      <div class="topbar"><div class="topbar-title">アートワーク/出演者</div><span class="topbar-badge">並行検討</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-photo-music hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>写真と出演者で、ライブをもっと"映え"させる</h2>
+          <p>Gmailと並行で進める3機能：①Spotifyアー写 ②フェス出演者の自動追加 ③フライヤー保存。指示書(コピペ用): <code>docs/livelog/14_artwork_lineup_spec.md</code></p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-numbers"></i> 全体像と優先度</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>優先</th><th>機能</th><th>役割</th></tr></thead>
+          <tbody>
+            <tr><td>★1</td><td><b>① Spotifyアー写連携</b></td><td>土台。アーティスト名→写真。全機能に効く</td></tr>
+            <tr><td>★2</td><td><b>② フェス出演者追加</b></td><td>貼付/画像→AI抽出。各出演者は①で写真自動付与</td></tr>
+            <tr><td>★3</td><td><b>③ フライヤー保存</b></td><td>既存の画像取込を流用、低コストで見栄え向上</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>着手順：</b>①→②→③。写真基盤(①)を先に作ると、②で追加した出演者にも自動で写真が付き、③含め一気に映える。Gmail（過去5年・スキップ永続化）とは独立に並行可能。</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-user-circle"></i> ① Spotifyアー写連携（★1・土台）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>やること：</b>artists にアー写を自動付与。Spotify Web API（Client Credentials・ユーザーログイン不要）でアーティスト名検索→画像URL取得。<br>
+          <b>DB追加：</b>artists に <code>imageUrl / spotifyId / imageSource / imageFetchedAt / imageStatus</code>。<br>
+          <b>選定：</b>名前正規化で完全一致優先→無ければ人気上位。曖昧なら <code>needs_review</code> に逃がして誤写真を出さない。結果はDBキャッシュ（再取得制御）。<br>
+          <b>注意：</b>日本のアーティストは表記ゆれ。env <code>SPOTIFY_CLIENT_ID/SECRET</code>。既存写真なしを一括バックフィルするジョブも用意。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users-group"></i> ② フェス出演者の追加（★2）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>目的：</b>フェス登録時に出演者を一括追加し「お目当て/気になる/新発見」で整理（コンセプトの核）。<br>
+          <b>取得：</b>A) ラインナップのテキスト/TT画像を貼付→<b>既存の取込AI(Claude構造化)で出演者抽出</b>（主・確実）。B) AI Web検索「{フェス名}{年}出演者」（補助・要確認）。<br>
+          <b>DB：</b>中間テーブル <code>live_artists(liveId, artistId, interestTag, isHeadliner, sortOrder)</code>。抽出した出演者は artists 化（重複排除）＋①で写真自動付与。<br>
+          <b>フロー：</b>フェス登録→「出演者をAIで追加」→プレビュー→取捨選択→紐付け→お目当て等タグ。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-photo"></i> ③ フライヤー保存（★3・低コスト）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>やること：</b>lives に <code>flyerUrl</code> を追加。<b>「画像から取り込む」でアップした告知画像を、解析だけでなくそのまま保存</b>して flyerUrl に紐付け（追加実装は最小）。詳細画面に手動アップロードも用意。<br>
+          <b>表示：</b>ライブ詳細・カードで flyer 表示（アー写とは別枠）。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> 共通前提・注意</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>ストレージ：</b>既存の画像ストレージを流用（新規導入不要）。<b>LLM：</b>Gmail解析と同じClaude(構造化出力)の仕組みを流用。<br>
+          <b>権利：</b>Spotify画像はガイドライン内で表示（出典/帰属）。フライヤーはユーザー投稿物。<b>リリース前に規約整理（別途）。</b>
         </div>
       </div>
     </div>
