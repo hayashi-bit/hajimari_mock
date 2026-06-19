@@ -2358,6 +2358,23 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-database-heart"></i> カタログ関連情報で作れる機能（アイデア）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px">音楽サービスの「カタログ関連情報（関連アーティスト・レコメンド・ジャンル・人気曲）」を使った機能候補。コンセプト（記録＋発見＋つながり）に直結。詳細: <code>docs/livelog/17_manus_briefing_catalog_ideas.md</code></div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>アイデア</th><th>使うカタログ情報</th><th>コンセプト軸</th></tr></thead>
+          <tbody>
+            <tr><td>予習プレイリスト自動生成</td><td>出演者の人気曲/代表曲</td><td>予習・ワクワク(B-4)</td></tr>
+            <tr><td>「次に好きになるアーティスト」レコメンド</td><td>関連アーティスト</td><td>新しい音楽との出会い</td></tr>
+            <tr><td>未来ライブニュースの自動拡張</td><td>関連アーティストで監視対象を拡張</td><td>リテンション本命(B-5)</td></tr>
+            <tr><td>友達マッチング強化（"見せ合うだけで分かり合える"の数値化）</td><td>ジャンル/関連アーティストで趣味の近さを算出</td><td>つながり</td></tr>
+            <tr><td>参戦履歴の自動タグ＆年間振り返り</td><td>ジャンル/ムード</td><td>振り返り・統計(B-6)</td></tr>
+            <tr><td>セトリ→プレイリスト</td><td>曲マッチング</td><td>予習・思い出</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:8px;font-size:13px;color:var(--text2)">⚠️ これら"発見系"を支える「関連アーティスト/レコメンド」APIは<b>Spotifyが2024年に廃止</b>、<b>Apple Musicは健在</b>。→ サービス選定では「将来この機能群を作れるか」も評価軸にする。</div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bulb"></i> アイデア / 未仕様化</div>
         <div class="card">
           <div class="phase-item"><div class="phase-num">B-1</div><div><div class="phase-title">ユーザー向け一斉メール配信</div><div class="phase-desc">運営→全ユーザーへお知らせ送信。Resend流用・管理画面に配信フォーム。配信対象の絞り込み・オプトアウト・送信履歴。優先度：中</div></div></div>
