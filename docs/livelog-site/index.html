@@ -2734,7 +2734,29 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
-        <div class="section-title"><i class="ti ti-user-circle"></i> ① Spotifyアー写連携（★1・土台）</div>
+        <div class="section-title"><i class="ti ti-ruler-2"></i> 基本方針（クロコ・マナス共通ルール）</div>
+        <div class="card" style="background:linear-gradient(90deg,#feeaf0,#fff3e0);border:1px solid #c0398a;color:#a3306f;font-size:13px;line-height:1.9">
+          <b>外部サービス（アー写・メタデータ取得API等）は、必ず「林の実際の参戦アーティスト実リスト」でカバー率を検証してから採用する。</b>
+          コアユーザーは現場好き＝マイナー/インディーに通う人。メジャー中心の一般論で決めず、<b>「前髪ぱっつん少年のような小規模まで取れるか」を採否の基準</b>にする。詳細: <code>docs/livelog/16_service_evaluation_rule.md</code>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checkup-list"></i> アー写3サービス カバー率（実リスト検証・2026-06-18）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>アーティスト</th><th>Spotify</th><th>Apple Music</th><th>Deezer(無料)</th></tr></thead>
+          <tbody>
+            <tr><td>大手〜中堅（ずとまよ/ReoNa/美波/かいりきベア/MAISONdes 等）</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>紫今/長瀬有花/Empty old City/アザミ/CLAN QUEEN/NOMELON NOLEMON/水槽</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>ポップしなないで</td><td>✅</td><td>✅</td><td>△未確認</td></tr>
+            <tr><td><b>前髪ぱっつん少年（最小・試金石）</b></td><td>✅</td><td>✅</td><td><b>❌</b></td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8"><b>結論：</b>Spotify と Apple Music は実リストをほぼ100%カバー（前髪ぱっつん少年も取れる）。<b>Deezer(無料)は前髪ぱっつん少年が抜ける。</b>→ 無料優先=Deezer＋ユーザー投稿／最小バンドまで自動取得=Spotify(Premium)かApple($99/年)。<br><b>※Last.fmは画像API廃止(2019)で全員プレースホルダ・iTunes無料APIはアー写なし・MusicBrainzはJPインディー薄 ＝ いずれも不可。</b></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-user-circle"></i> ① アー写連携（★1・土台）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>やること：</b>artists にアー写を自動付与。Spotify Web API（Client Credentials・ユーザーログイン不要）でアーティスト名検索→画像URL取得。<br>
           <b>DB追加：</b>artists に <code>imageUrl / spotifyId / imageSource / imageFetchedAt / imageStatus</code>。<br>
