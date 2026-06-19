@@ -217,6 +217,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
+      <div class="nav-item" onclick="show('memolog',this)"><i class="ti ti-clipboard-text"></i>決定・メモログ</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
       <div class="nav-item" onclick="show('accounts',this)"><i class="ti ti-at"></i>アカウント確保チェックリスト</div>
@@ -2934,6 +2935,36 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7"><b>補足：</b>M-1・M-2 は見た目の完成度に直結するので<b>モニター配布前に修正したい</b>（第一印象に影響）。M-3 はフロント側で null/空を出さない処理。M-5/M-6 は「画像から取り込む」のオンボーディング（別ページのヘルプ or ツールチップ）。</div>
+      </div>
+    </div>
+
+    <!-- MEMO LOG -->
+    <div id="page-memolog" class="page">
+      <div class="topbar"><div class="topbar-title">決定・メモログ</div><span class="topbar-badge">随時追記</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-clipboard-text hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>決定事項・メモの記録場所</h2>
+          <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-apple"></i> Apple Developer：個人登録＋法人切替の閾値（2026-06-18）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          <b>現状方針：個人（Individual）で登録。</b>理由＝今はブラウザアプリ＝App Store掲載が無く<b>法人のブランド効果ゼロ</b>／Apple Music APIの性能は個人も法人も<b>同じ</b>／法人はD-U-N-S等で承認に数週間。アプリ化は「売れたら」なのでそのとき法人化でよい。詳細: <code>docs/livelog/18_apple_developer_org_threshold.md</code>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>法人（スリーウェイ）へ切り替える閾値（どれか達したらクロコが提案）</th></tr></thead>
+          <tbody>
+            <tr><td>① <b>ネイティブアプリ(iOS)をApp Storeに公開すると決めたとき</b>（最有力トリガー）</td></tr>
+            <tr><td>② 会社名義で販売者名を出し、ブランド/信頼を確立したいとき</td></tr>
+            <tr><td>③ 事業が軌道に乗ったとき（目安：<b>有料100人達成／MRR継続／7月ゴール達成後</b>）</td></tr>
+            <tr><td>④ アカウントを会社所有・チーム管理したくなったとき</td></tr>
+            <tr><td>⑤ 投資・提携・事業売却など対外的に法人実体が必要になったとき</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">⚠️ <b>D-U-N-S番号取得は数週間</b>かかるため、兆候が見えたら申請だけ前倒し。個人で公開済みアプリがある場合は法人へ<b>移管</b>手続きが要る。<br>📌 参考（Apple個人登録の大変さ・内容未取得）：<a href="https://x.com/umino_chibi/status/2035998090600263840" style="color:var(--navy)">x.com/umino_chibi/status/2035998090600263840</a></div>
       </div>
     </div>
 
