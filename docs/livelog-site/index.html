@@ -2302,9 +2302,9 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card tbl-wrap" style="margin-top:12px"><table>
           <thead><tr><th>#</th><th>タスク</th><th>内容</th><th>名前/ドメイン</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td>G1-1</td><td>解析をLLM化（製品価値の核）</td><td>gmailParser を正規表現→LLM解析に置換。本文を安価モデルに渡し {公演名/アーティスト/日付/開演/会場/都道府県/ステータス/抽選or先着} を構造化。7社＋未知フォーマットも拾う。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
-            <tr><td>G1-2</td><td>再解析しないキャッシュ</td><td>sourceMessageId をライブに保持し、同一メールは再解析・再登録しない（コスト＆重複対策）。重複検出 findDuplicates と連動。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
-            <tr><td>G1-3</td><td>ステータス前進更新</td><td>抽選申込→当落→入金→発券→確保の順方向のみ自動更新（後退させない）。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td></tr>
+            <tr><td>G1-1</td><td>解析をLLM化（製品価値の核）</td><td>gmailParser を正規表現→LLM解析に置換。本文を安価モデルに渡し {公演名/アーティスト/日付/開演/会場/都道府県/ステータス/抽選or先着} を構造化。7社＋未知フォーマットも拾う。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済(E2E待)</span></td></tr>
+            <tr><td>G1-2</td><td>再解析しないキャッシュ</td><td>sourceMessageId をライブに保持し、同一メールは再解析・再登録しない（コスト＆重複対策）。重複検出 findDuplicates と連動。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済(E2E待)</span></td></tr>
+            <tr><td>G1-3</td><td>ステータス前進更新</td><td>抽選申込→当落→入金→発券→確保の順方向のみ自動更新（後退させない）。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済(E2E待)</span></td></tr>
             <tr><td>G2-1</td><td>プライバシーポリシー（クロコ叩き台）</td><td>readonly・本文非保存・トークン暗号化を明記。テストモードでも同意画面に必要。</td><td>不要(URLは後)</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
             <tr><td>G2-2</td><td>OAuth同意画面＝テスト公開＋テストユーザー登録</td><td>Google Cloudで gmail.readonly を追加、公開ステータス「テスト」、テストユーザーに自分＋初期ユーザーのGmailを登録（最大100）。</td><td>テストURLで可</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
             <tr><td>G2-3</td><td>再連携導線（テストモードの7日切れ対策）</td><td>テスト公開ではrefresh_tokenが約7日で失効。status=expired を検知して「再連携してください」を表示・ワンタップ再認可。</td><td>不要</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
@@ -2997,6 +2997,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> Gmail：2段＋増分の実装完了＋環境/E2E方針（2026-06-21 夜）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>① 実装完了（ユニット96通過・E2E検証待ち）：</b>Manusが「広い網→Haiku一次判定→Sonnet抽出」＋増分同期(lastSyncAt)＋本文非保存(gmail_analysis_cache)を実装。ゴールデン9通＋増分＋プライバシーのテスト通過。詳細: <code>docs/livelog/21</code><br>
+          <b>② JSONエラー＝DEV/PRODスキーマdrift再発：</b>「Unexpected token '&lt;' … not valid JSON」の原因は<b>開発DBに lastSyncAt カラムが無く gmail.status が500→HTMLを返していた</b>こと。開発DBにマイグレーション適用で解消。＝メソッドの教訓「DEV/PRODのズレ」が再び出た典型。<br>
+          <b>③ 環境/検証方針：</b>プレビュー(サンドボックス)URLは使い捨てでOAuth/APIが成立しない。<b>今日のスモークテストは方法A</b>（本番URLで環境変数を一時的に開発DB＋dev用OAuthクライアントへ切替→テスト→即戻す。無人時間・戻し忘れ厳禁）。<b>恒久は方法B</b>（独立ステージング＝別固定URL＋開発DB）で本番を絶対汚さない構成に。モニター/有料ユーザーが増える前にBへ。
         </div>
       </div>
 
