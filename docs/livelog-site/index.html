@@ -3199,13 +3199,43 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
 
         <div class="card" style="margin-top:14px">
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px"><i class="ti ti-photo"></i> 実例：決定・仕様をすべて記録する（GitHub上のドキュメント）</div>
-          <img src="https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/claude/vibrant-meitner-tbc76w/docs/livelog-site/assets/screencapture-github-hayashi-bit-hajimari-mock-blob-claude-vibrant-meitner-tbc76w-docs-livelog-19-gmail-account-scope-spec-md-2026-06-21-16_11_20.png"
-               alt="クロコが書いた仕様・Manus指示をGitHubに記録している実例（doc19）"
-               style="max-width:100%;border:1px solid #e6eef7;border-radius:8px;display:block">
-          <div style="font-size:11px;color:#7d8aa0;margin-top:8px;line-height:1.7">
-            クロコが詰めた「仕様・Manusへの指示・決定理由」を、GitHub＋開発サイトに残す。誰でも後から追え、門倉さんも時間あるとき覗ける。<br>
-            <span style="color:#9aa1ad">画像の追加方法：<code>docs/livelog-site/assets/</code> にコミット → 絶対rawURLで &lt;img&gt; 参照（相対パスはhtmlpreviewで崩れる）</span>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px"><i class="ti ti-refresh"></i> 実例：クロコ ↔ マナスの「受け渡し」往復ループ</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:14px">
+            開発は2方向のドキュメントのやり取りで回す。<b>詰まったらマナスが状況をまとめてクロコへ</b>渡し、<b>クロコが検討して指示書＋プロンプトをマナスへ</b>返す。この往復を全部記録するのがミソ。
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:16px">
+            <!-- 方向A: マナス→クロコ -->
+            <div style="flex:1;min-width:280px">
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#f7fbf8;border:1px solid #bfe2cb;color:#1b8a4b;font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;margin-bottom:8px">
+                <i class="ti ti-arrow-left"></i> ① 詰まったら：マナス → クロコ
+              </div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px">
+                マナスが「現状仕様・発見した問題・該当コード」をまとめた<b>状況説明ドキュメント</b>を作り、クロコに渡す（例：「LiveLog Gmail連携 現状仕様と検討事項」）。
+              </div>
+              <div style="border:1px dashed #c9cdd6;border-radius:8px;padding:18px;text-align:center;color:#9aa1ad;font-size:11.5px;line-height:1.8;background:#fbfcfd">
+                ［ここに画像1を差し込み］<br>
+                「LiveLog Gmail連携 現状仕様と検討事項」のスクショ<br>
+                <span style="color:#7d8aa0">※ 今は <code>.docx</code> のみ。PNGで上げてくれれば埋めます</span>
+              </div>
+            </div>
+
+            <!-- 方向B: クロコ→マナス -->
+            <div style="flex:1;min-width:280px">
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#fbfdff;border:1px solid #cfe0f2;color:#1a3a52;font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;margin-bottom:8px">
+                <i class="ti ti-arrow-right"></i> ② 検討して返す：クロコ → マナス
+              </div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px">
+                クロコが検討し、<b>マナスにそのまま渡せる「指示書＋プロンプト」</b>を作って記録する（例：doc19「仕様確定＋Manusへの指示」）。
+              </div>
+              <img src="https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/claude/vibrant-meitner-tbc76w/docs/livelog-site/assets/screencapture-github-hayashi-bit-hajimari-mock-blob-claude-vibrant-meitner-tbc76w-docs-livelog-19-gmail-account-scope-spec-md-2026-06-21-16_11_20.png"
+                   alt="クロコがマナスに渡す指示書＋プロンプト（doc19）"
+                   style="max-width:100%;border:1px solid #e6eef7;border-radius:8px;display:block">
+            </div>
+          </div>
+          <div style="font-size:11px;color:#9aa1ad;margin-top:10px;line-height:1.7">
+            この往復を<b>すべて開発サイト/GitHubに記録</b>するので、誰でも後から追え、門倉さんも時間あるとき覗ける。<br>
+            画像の追加方法：<code>docs/livelog-site/assets/</code> にコミット → 絶対rawURLで &lt;img&gt; 参照（相対パスはhtmlpreviewで崩れる）。
           </div>
         </div>
       </div>
