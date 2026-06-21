@@ -1712,6 +1712,12 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr><td>リブランド（ライブリコ）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>名称（VITE_APP_TITLE）本番反映。残：ロゴ差替・OGP・OAuth同意画面名称・旧表記の一括置換（Manus進行中）</td></tr>
             <tr><td>モバイルUX P1（トースト被り/削除モーダル/null表示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>配布前必須</td></tr>
             <tr><td>プライバシーポリシー・利用規約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>Gmail readonly＋（次フェーズの）課金で法務上必須。公開条件</td></tr>
+            <tr><td>使い方マニュアル（Manual.tsx をライブリコ更新）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>既存マニュアルあり→新ブランド/新機能に更新。モニターが迷わないため</td></tr>
+            <tr><td>サポートメール掲載（hello@liverico.app）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>アプリ/LP/フッターに表示＋“受信できる状態”まで（横断のメール認証とセット）</td></tr>
+            <tr><td>オンボーディング（初回の使い方案内）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>初回離脱の防止</td></tr>
+            <tr><td>LP＋ログイン一体（実物）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>LP第1版プロト作成済（<code>docs/livelog-lp/liverico.html</code>）→Manusがアプリの未ログイン時ホームとして実装</td></tr>
+            <tr><td>OAuth同意画面の名称・ロゴ（ライブリコ）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>テストモードでもユーザーに表示される</td></tr>
+            <tr><td>退会・データ削除の導線</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>Gmail readonly＋個人データ保持で法務上必須。抜けがち</td></tr>
           </tbody>
         </table></div>
 
@@ -1725,6 +1731,28 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr><td>フリーミアム上限（Gmail月通数キャップ等）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>課金実装に依存</td></tr>
             <tr><td>admin最小（ユーザー一覧＋feedback閲覧）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>運用を回す土台</td></tr>
             <tr><td>LP＋オンボ（apex＝LP＋ログイン一体・価格掲示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>集客の玄関＋初回離脱防止＋価格提示</td></tr>
+            <tr><td>ユーザー管理画面（admin・一覧/詳細）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>登録日/プラン/最終ログイン/Gmail連携/記録数・検索・並び替え・<b>アカウント無効化</b></td></tr>
+            <tr><td>特定商取引法に基づく表記（特商法）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td><b>有料に法的必須・抜けやすい</b>。事業者情報/価格/支払/返金/問い合わせ</td></tr>
+            <tr><td>解約導線（ユーザー自身で解約）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>有料の必須</td></tr>
+            <tr><td>課金管理（当面Stripeダッシュボード流用）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>解約・返金。自前画面は後</td></tr>
+            <tr><td>運用メトリクス（登録/有料/MRR/取込実績）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>最初は手動集計でも可</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:14px;border-left:4px solid #9bcb3c">
+          <div style="font-weight:700;color:#5e7d1e;margin-bottom:2px"><i class="ti ti-tools"></i> 横断：運営・サポート・法務・基盤<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">フェーズ0から効く・どの期限に要るかを「要る時期」列に明記</span></div>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:6px"><table>
+          <thead><tr><th>横断項目</th><th>状態</th><th>要る時期</th><th>補足</th></tr></thead>
+          <tbody>
+            <tr><td>サポート受信体制（hello@liverico.app＋Resendドメイン認証 SPF/DKIM）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>フェーズ0</td><td>到達率・なりすまし対策。掲載だけでなく受信できる状態まで</td></tr>
+            <tr><td>FAQ／お問い合わせ→フィードバック集約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0</td><td>feedback機能あり・FAQは未</td></tr>
+            <tr><td>法務3点（プラポリ・利用規約・特商法）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>プラポリ/規約=フェーズ0・特商法=課金フェーズ</td><td>公開・有料の条件</td></tr>
+            <tr><td>非公式ファンツール明記</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0</td><td>LP記載済・アプリ内も</td></tr>
+            <tr><td>ドメイン/メール（liverico.app DNS・メール転送・Resend認証）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0</td><td>要確認</td></tr>
+            <tr><td>独立ステージング（方法B）＋DEV/PROD分離</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0〜（増える前に）</td><td>マイグレーションは本番・開発の両方に必ず当てる（ルール化済）</td></tr>
+            <tr><td>バックアップ体制</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0</td><td>exportFullBackup＋DB側</td></tr>
+            <tr><td>モニター運用（募集・QUOカード¥500・連絡文・テストユーザー追加）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>フェーズ0配布前</td><td>コピー/手順は揃い・配布準備</td></tr>
+            <tr><td>一斉メール（軽量＋オプトアウト）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>課金フェーズ（送るなら）</td><td>マーケメール送るならオプトアウト導線が法務上必須</td></tr>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:12px;color:var(--text3)">補足：詳しい開発バックログは <a href="#backlog" onclick="show('backlog');return false;" style="color:var(--navy)">開発バックログ</a>、優先度・Manus用プロンプトは <a href="#roadmap" onclick="show('roadmap');return false;" style="color:var(--navy)">実装ロードマップ</a> に統合（このページから辿れる）。</div>
