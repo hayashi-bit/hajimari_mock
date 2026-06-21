@@ -1883,6 +1883,20 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> 本番公開済み（2026-06-22 安定化）<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">Manus公開サマリー＋外部スモークで確認</span></div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>機能</th><th>概要 / 確認方法</th><th>状態</th></tr></thead>
+          <tbody>
+            <tr><td>JSON恒久対策（未登録 /api/* を JSON 404）</td><td>「Unexpected token '&lt;'」の元凶を解消。<b>外部スモーク <code>tools/smoke/post_deploy_smoke.sh</code> で JSON 404 をPASS確認</b></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>publicId（公開URLのランダム化 /u/{publicId}）</td><td>連番ID露出の防止。<b>外部スモークで /u/1 が HTTP 200 のまま＝要確認</b>（SPAの200素通しか未反映かをManusに確認中）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td></tr>
+            <tr><td>feedback.json 公開エンドポイント＋CORS</td><td>開発サイト「フィードバック」ページが自動読込</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>Gmailバックグラウンドジョブ化（HTTP 524解消）</td><td>取込処理が長すぎて切れる問題を解消。本番反映済み</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>リブランド：名称「ライブリコ」（VITE_APP_TITLE）</td><td>本番反映済み。<small>（残：ロゴ差替・OGP・OAuth同意画面名称・旧表記の一括置換は進行中）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-stack-2"></i> 塊1：土台（開発環境）※最初・名前不要</div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
@@ -1923,7 +1937,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td>Gmail自動取込（技術検証/仕込み）</td><td>OAuth＋Gmail検索取込(fetchTicketEmails)は実装済。<small>（注：解析は正規表現ベースでLLM判定は未＝仕様と乖離／審査・本番接続は別。2026-06-16監査）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>Gmail自動取込（広い網→2段判定→増分）</td><td>OAuth＋Gmail検索取込(fetchTicketEmails)に加え、<b>「広い網→安いモデルで一次判定→高いモデルで構造化抽出」＋増分同期＋本文非保存をManusが実装（ユニット96通過）</b>。<b>2026-06-22 バックグラウンドジョブ化で本番反映済み</b>。<small>（旧「正規表現ベース・LLM未」は解消。残：E2Eスモーク(A)・初回バックフィル・ステータス誤判定の微調整・審査本申請）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td></tr>
             <tr><td>プライバシーポリシー（クロコ叩き台）</td><td>Gmail審査に必須</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
           </tbody>
         </table></div>
@@ -1935,7 +1949,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <thead><tr><th>機能</th><th>概要</th><th>状態</th></tr></thead>
           <tbody>
             <tr><td>Stripe決済（買い切り＋サブスク）</td><td>webhook・subscriptionsテーブル・特商法表記</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td></tr>
-            <tr><td>Googleログイン（実装）</td><td>Google OAuthをコード実装済（oauth.ts コールバック/トークン交換、db.ts:resolveGoogleUser で email突合マージ・新規作成、schema users に googleId/authProvider/avatarUrl、ログインボタンもGoogle）。Manus OAuthは併存。<small>（残：本番リダイレクトURI＝確定ドメイン登録／OAuth同意画面の本番公開。2026-06-16コード監査で確認）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
+            <tr><td>Googleログイン（実装）</td><td>Google OAuthをコード実装済（oauth.ts コールバック/トークン交換、db.ts:resolveGoogleUser で email突合マージ・新規作成、schema users に googleId/authProvider/avatarUrl、ログインボタンもGoogle）。Manus OAuthは併存。<b>2026-06 unauthorized_client を解消＝本番をWebクライアント1lcb…に統一し、ログイン安定化（本番反映済み）</b>。<small>（残：OAuthは現在テストモード＝テストユーザー最大100人＝7月100人ゴール枠。本番審査・確定ドメインのリダイレクトURIは後）</small></td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td></tr>
           </tbody>
         </table></div>
       </div>
