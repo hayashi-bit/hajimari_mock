@@ -10,9 +10,10 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ライブリコ">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="liverico-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Montserrat:wght@700;800;900&family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
 <style>
   :root{
     --pink:#ff4f7b; --orange:#ff8a3d; --o2:#ff7a1f; --p2:#e5478a;
@@ -29,7 +30,15 @@
   /* header */
   header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:62px}
-  .logo{font-family:"Montserrat",sans-serif;font-weight:900;font-size:24px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* ブランドワードマーク（アプリのロゴ＝ピンクLiveR→オレンジico＋ライブリコに合わせる。正規PNG受領後は画像へ差替可） */
+  .logo{font-family:"Mochiy Pop P One",sans-serif;font-size:26px;line-height:1;letter-spacing:.3px;display:inline-flex;align-items:baseline;gap:2px}
+  .logo .pk{color:#ff2e87}
+  .logo .or{color:#ff8a3d}
+  .brandlock{display:inline-flex;flex-direction:column;align-items:center;line-height:1}
+  .brandlock .en{font-family:"Mochiy Pop P One",sans-serif;font-size:clamp(34px,7vw,60px)}
+  .brandlock .en .pk{color:#ff2e87}
+  .brandlock .en .or{color:#ff8a3d}
+  .brandlock .jp{font-family:"Mochiy Pop P One",sans-serif;color:#ff2e87;font-size:clamp(15px,3vw,22px);letter-spacing:.18em;margin-top:6px}
   .btn{display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;padding:13px 22px;border-radius:999px;text-decoration:none;transition:transform .12s ease,box-shadow .12s ease}
   .btn:hover{transform:translateY(-2px)}
   .btn-google{background:#fff;color:#1c2230;box-shadow:0 6px 20px rgba(28,34,48,.12);border:1px solid var(--line)}
@@ -108,7 +117,7 @@
 <div class="dev-banner">⚙️ これは LP 第1版プロトタイプ（クロコ作）／「Googleではじめる」は本実装でManusがOAuthに接続します</div>
 <header>
   <div class="wrap nav">
-    <div class="logo">LiveRico</div>
+    <div class="logo"><span class="pk">LiveR</span><span class="or">ico</span></div>
     <a href="#start" class="btn btn-google btn-sm">
       <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.3z"/><path fill="#FBBC05" d="M10.3 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.3-5.5l-7.5-5.8c-2 1.4-4.7 2.3-7.8 2.3-6.4 0-11.8-3.8-13.7-9.4l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/></svg>
       Googleではじめる
@@ -119,6 +128,7 @@
 <!-- HERO -->
 <div class="hero">
   <div class="wrap inner">
+    <div class="brandlock" style="margin-bottom:22px"><div class="en"><span class="pk" style="color:#fff">LiveR</span><span class="or" style="color:#ffe6c2">ico</span></div><div class="jp" style="color:#fff;opacity:.95">ライブリコ</div></div>
     <span class="pill">ライブ好きのための、参戦まるごと管理アプリ</span>
     <h1>ライブを軸に、<br>人生を楽しみ尽くす。</h1>
     <p class="sub">そのライブの全部を、ともだちと楽しみつくす。</p>
@@ -232,7 +242,7 @@
   <div class="wrap">
     <div class="foot-note">ライブリコは、特定のアーティスト・事務所・レコード会社・公式ファンクラブとは関係のない、非公式のファンツールです。</div>
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div class="logo" style="font-size:20px">LiveRico</div>
+      <div class="logo" style="font-size:22px"><span class="pk">LiveR</span><span class="or">ico</span></div>
       <div class="foot-links">
         <a href="#">プライバシーポリシー</a>
         <a href="#">利用規約</a>
