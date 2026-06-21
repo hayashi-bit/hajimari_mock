@@ -3350,6 +3350,50 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </table></div>
       </div>
 
+      <!-- 意思決定の型 -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-target-arrow"></i> 意思決定の型（このメソッドの心臓部・再現する人へ）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          林の判断は、毎回ほぼ同じ「型」で回っている。<b>この型をなぞれば、別の人・別の案件でも同じ品質で進められる</b>のが標準化の肝。
+        </div>
+        <div class="card" style="margin-top:10px;background:linear-gradient(90deg,#eef4fb,#f8fbff);border:1px solid #cfe0f2">
+          <div style="font-size:13px;color:#1a3a52;line-height:2.1">
+            <b>① ジピ/クロコで壁打ち</b>（戦略・仕様を発散）<br>
+            → <b>② クロコが「推奨＋理由」で選択肢を提示</b>、林が決める<br>
+            → <b>③ 現場で検証</b>（実参戦リスト／実機Gmail検索／コアユーザー視点で確かめる）<br>
+            → <b>④ 評価ハーネス・テストで回帰</b>（本番に入れる前に実測）<br>
+            → <b>⑤ 決定・指示書・プロンプトを開発サイト/GitHubに記録</b><br>
+            → <b>⑥ 影響が大きければ門倉さん（技術顧問）に報告</b>、それ以外はスピード優先で進める<br>
+            → <b>⑦ クロコの指示書＋コードをマナスに渡して一気に実装</b> → ①へ戻る
+          </div>
+        </div>
+      </div>
+
+      <!-- 実例集（履歴から洗い出し） -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-history"></i> 実例集：このメソッドで実際に下した判断（開発履歴から）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          実際にこの型で進めた意思決定の一覧。<b>「どう考え・どう検証し・どこに記録したか」</b>を他人が追える形で残す＝門倉さんの精査対象であり、再現の教材。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>場面</th><th>このメソッドがどう効いたか</th><th>記録</th></tr></thead>
+          <tbody>
+            <tr><td><b>サービス名の確定（ライブリコ/LiveRico）</b></td><td>思いつきで決めず、<b>商標・クリアランスを徹底調査</b>してから確定。ブランドの土台を先に固める</td><td><a href="#naming" onclick="show('naming');return false;" style="color:var(--navy)">ネーミング検討</a></td></tr>
+            <tr><td><b>マネタイズ転換（買い切り→月額3段階）</b></td><td>門倉さんの「5000人時のランニングコストは？」に<b>コスト試算で回答</b>し、買い切り＋サブスクの2階建てに。<b>質問に数字で答える</b>進め方</td><td><a href="#costqa" onclick="show('costqa');return false;" style="color:var(--navy)">コスト試算</a> / <a href="#monetize" onclick="show('monetize');return false;" style="color:var(--navy)">マネタイズ</a></td></tr>
+            <tr><td><b>アー写サービス選定（Apple Music採用）</b></td><td><b>林の実参戦リストでカバー率検証</b>（前髪ぱっつん少年が試金石）。Manusがアップルを外した件を是正し<b>絶対ルール化</b></td><td><a href="#artwork" onclick="show('artwork');return false;" style="color:var(--navy)">アートワーク/出演者</a></td></tr>
+            <tr><td><b>Spotify 500エラー（DEV/PRODズレ）</b></td><td>原因は<b>修正がPROD側にしか当たっていなかった</b>こと。DEV DBに直接ALTERして解決。教訓「<b>同じ接続で検証する</b>」</td><td><a href="#envdb" onclick="show('envdb');return false;" style="color:var(--navy)">環境・DB設計</a></td></tr>
+            <tr><td><b>Gmail OAuthをテストモードで運用</b></td><td>Google審査（重い）を当面回避し<b>最大100テストユーザー</b>で先行。<b>7月有料100人ゴールと上限が一致</b>する意図的トレードオフ</td><td><a href="#gmailspec" onclick="show('gmailspec');return false;" style="color:var(--navy)">Gmail連携仕様</a></td></tr>
+            <tr><td><b>Gmail取込アーキ（広い網→2段→増分）</b></td><td>ドメイン許可リストの限界を<b>実機Gmail検索で実証</b>し、「<b>AIで吸収する</b>」設計へ。安いモデルで一次判定→高いモデルで抽出</td><td><a href="#gmailspec" onclick="show('gmailspec');return false;" style="color:var(--navy)">Gmail連携仕様</a></td></tr>
+            <tr><td><b>データ自己所有（外部DB＋本番/開発分離）</b></td><td>競合の<b>「手入力データが消えて死亡」をVOC調査で発見</b>→「消えない」を最優先に。Manusロックインも回避</td><td><a href="#market" onclick="show('market');return false;" style="color:var(--navy)">市場・VOC調査</a></td></tr>
+            <tr><td><b>セトリ取得方針</b></td><td>スクレイピングの<b>法務リスクを直視</b>し、正攻法（API交渉）・自前DB（コミュニティの利他）・手動登録を並行検討</td><td><a href="#setlistpolicy" onclick="show('setlistpolicy');return false;" style="color:var(--navy)">セトリ取得方針</a></td></tr>
+            <tr><td><b>機能より「売り方」に比重移動</b></td><td>ジピの「機能は十分、足りないのは売り先と価格の検証」を受け、<b>LPを高速作成し拡散へ</b>。開発の楽しさに溺れず配分を意識</td><td><a href="#growth" onclick="show('growth');return false;" style="color:var(--navy)">認知・集客</a></td></tr>
+            <tr><td><b>モニターテスト計画</b></td><td>現場好きモニター＋<b>QUOカード¥500</b>、加藤/牧野さん用に検証資料を分離。<b>テストページも開発とセットで</b>クロコに作らせる</td><td><a href="#growth" onclick="show('growth');return false;" style="color:var(--navy)">モニター施策</a></td></tr>
+            <tr><td><b>本番移植前に精度を実測</b></td><td>Gmail解析は<b>評価ハーネス（ゴールデン採点）</b>で精度・コストを測ってからマナスに渡す</td><td><code>tools/gmail_eval</code></td></tr>
+            <tr><td><b>環境の引っ越し判断</b></td><td>会社Manusチーム→個人環境へ移行（紹介クレジット狙い）。後に「会社teamが最適」と再評価し<b>GitHub共有でレビュー</b>に着地</td><td><a href="#people" onclick="show('people');return false;" style="color:var(--navy)">関係者</a></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
       <!-- ④ モニター/テスト -->
       <div class="section">
         <div class="section-title"><i class="ti ti-users-group"></i> ④ モニター運用・テスト計画（セットで整理）</div>
