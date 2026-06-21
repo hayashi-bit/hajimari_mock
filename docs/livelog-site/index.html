@@ -221,6 +221,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
       <div class="nav-item" onclick="show('memolog',this)"><i class="ti ti-clipboard-text"></i>決定・メモログ</div>
+      <div class="nav-item" onclick="show('feedback',this);loadFeedback()"><i class="ti ti-message-2-heart"></i>フィードバック</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
       <div class="nav-item" onclick="show('accounts',this)"><i class="ti ti-at"></i>アカウント確保チェックリスト</div>
@@ -3133,6 +3134,25 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
     </div>
 
+    <!-- フィードバック（liverico.app/feedback.json を読み込み表示） -->
+    <div id="page-feedback" class="page">
+      <div class="topbar"><div class="topbar-title">フィードバック</div><span class="topbar-badge">liverico.app/feedback.json</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-message-2-heart hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>ユーザーからの要望・質問・応援</h2>
+          <p>アプリの「ご要望・質問」フォームの投稿をここに集約。5分キャッシュ。本文以外のPII（メール等）は含めない方針。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-inbox"></i> 受信一覧 <span id="fb-count" style="font-weight:400;color:var(--text3)"></span>
+          <span style="margin-left:auto;font-size:12px;color:var(--text3)" id="fb-updated"></span>
+          <span class="nav-item" style="border:1px solid var(--border);border-radius:8px;padding:2px 10px;font-size:12px;margin-left:8px" onclick="loadFeedback()"><i class="ti ti-refresh"></i>更新</span>
+        </div>
+        <div id="fb-list" class="card" style="font-size:13px;color:var(--text2)">読み込み中…（左メニューの「フィードバック」を再クリックで再取得）</div>
+      </div>
+    </div>
+
     <!-- 開発メソッド -->
     <div id="page-method" class="page">
       <div class="topbar"><div class="topbar-title">開発メソッド（クロコ × マナス 運用ガイド）</div><span class="topbar-badge">スリーウェイ標準化</span></div>
@@ -3500,6 +3520,40 @@ function show(id, el) {
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
+}
+var FB_LOADED = false;
+function fbEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fbBadge(cat, label){
+  var map = { request:'badge-amber', question:'badge-blue', support:'badge-green', other:'badge-gray' };
+  return '<span class="b-ok ' + (map[cat]||'badge-gray') + '" style="border-radius:6px">' + fbEsc(label||cat) + '</span>';
+}
+function loadFeedback(){
+  var box = document.getElementById('fb-list');
+  if (!box) return;
+  box.innerHTML = '読み込み中…';
+  fetch('https://liverico.app/feedback.json', { cache: 'no-store' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d){
+      FB_LOADED = true;
+      var items = (d && d.items) || [];
+      document.getElementById('fb-count').textContent = '（' + (d.totalCount != null ? d.totalCount : items.length) + '件）';
+      if (d && d.generatedAt) {
+        document.getElementById('fb-updated').textContent = '更新: ' + new Date(d.generatedAt).toLocaleString('ja-JP');
+      }
+      if (!items.length){ box.innerHTML = 'まだフィードバックはありません。'; return; }
+      box.innerHTML = items.map(function(it){
+        var when = it.postedAt ? new Date(it.postedAt).toLocaleString('ja-JP') : '';
+        var who = it.displayName ? ' ・ ' + fbEsc(it.displayName) : '';
+        return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+          '<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">' + fbBadge(it.category, it.categoryLabel) +
+          '<span style="font-size:11px;color:var(--text3)">' + fbEsc(when) + who + '</span></div>' +
+          '<div style="white-space:pre-wrap;line-height:1.7">' + fbEsc(it.content) + '</div></div>';
+      }).join('');
+    })
+    .catch(function(e){
+      box.innerHTML = '<span style="color:#c0392b">読み込みに失敗しました（' + fbEsc(e.message) + '）。<br>' +
+        'liverico.app/feedback.json に到達できないか、CORS/公開設定を確認してください。</span>';
+    });
 }
 function toggleAcc(h){ h.parentElement.classList.toggle('open'); }
 function toggleSidebar() {
