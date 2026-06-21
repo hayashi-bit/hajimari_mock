@@ -2296,6 +2296,38 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)"><b>着手順のおすすめ：</b> G1-1（LLM解析）→ G1-2/G1-3（キャッシュ・ステータス）→ G2-1（プライバシーポリシー）→ G2-2/G2-3（テスト公開＋再連携）。<b>G3はP0-4課金の後</b>。G1群は<b>名前・ドメイン不要で今すぐ着手可</b>。</div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-user-plus"></i> 運用手順：テストユーザーを追加する（403 access_denied の解消法）</div>
+        <div class="card" style="background:linear-gradient(90deg,#feeaf0,#fff3e0);border:1px dashed #c0398a;color:#a3306f;line-height:1.7;font-size:13px">
+          <b>症状：</b>林さん以外が連携しようとすると <code>エラー 403: access_denied ／ 〜は Google の審査プロセスを完了していません</code> が出る。<br>
+          <b>原因：</b>OAuth同意画面が<b>「テスト中（Testing）」</b>ステータス＝<b>テストユーザーに登録したGmailしか認証を通せない</b>（＝私たちが意図的に選んだテストモード運用の仕様どおり。Google審査なしで最大100人まで使える）。<br>
+          <b>対処：</b>使う人のGmailを<b>テストユーザーに1件ずつ追加</b>する（上限100人＝7月「有料100人」ゴールと同枠）。
+        </div>
+        <div class="card" style="margin-top:12px">
+          <a href="https://console.cloud.google.com/auth/audience?project=livelo-499209" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:13px;padding:10px 16px;border-radius:8px">
+            <i class="ti ti-external-link"></i> 直リンク：テストユーザー追加ページ（LiveLoプロジェクトの「対象」画面）
+          </a>
+          <div style="margin-top:8px;font-size:12px;color:var(--text2);word-break:break-all">
+            https://console.cloud.google.com/auth/audience?project=livelo-499209<br>
+            ※ <b>林さんのアカウント（eiji10hama@gmail.com）でログイン中</b>に開くこと。別アカだとプロジェクトが見えません。
+          </div>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:12px"><table>
+          <thead><tr><th>手順</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>上の<b>直リンク</b>を開く（または Google Cloud Console → APIとサービス → OAuth同意画面 → <b>対象</b>）。</td></tr>
+            <tr><td>2</td><td>左上のプロジェクトが <b>「LiveLo」（livelo-499209）</b> になっているか確認。違えば切替。</td></tr>
+            <tr><td>3</td><td>公開ステータスが <b>「テスト中（Testing）」</b> なのを確認（今は変えなくてOK）。</td></tr>
+            <tr><td>4</td><td>「<b>テストユーザー</b>」セクション → <b>＋ユーザーを追加</b>。</td></tr>
+            <tr><td>5</td><td>追加したい人のGmailを<b>コピペ</b>で入力（余計な空白なし）→ <b>保存</b>。</td></tr>
+            <tr><td>6</td><td>本人に<b>もう一度メール連携ボタンを押して再認証</b>してもらう → 通る。</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7">
+          <b>つまずきポイント：</b>①プロジェクトが「LiveLo」以外だと効かない ②ログインアカウント違い ③スペルミス（コピペ推奨）。<br>
+          <b>全員が事前登録なしで使えるようにするには？</b> → 公開ステータスを「本番（In production）」にして gmail.readonly の Google審査（CASA・数週間・重い）を通す必要がある。<b>100人運用までは不要</b>＝今はやらない方針。
+        </div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-database-search"></i> 実データ調査（実ユーザーGmail 304通を解析）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.7">
           実ヘビーユーザーのGmail <b>9 ZIP・全345通（ユニーク304通）</b>を解析。<b>購入実績系184通 → 約54公演</b>の参戦履歴が「手入力ゼロ」で復元できると実証。
@@ -2946,6 +2978,19 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-user-plus"></i> Gmail連携：403 access_denied の解消＝テストユーザー追加（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          林さん以外（例：yukato.1073@gmail.com）が連携で <code>403: access_denied／審査未完了</code> になった。<b>原因＝OAuth同意画面が「テスト中」</b>＝テストユーザー登録済みのGmailしか通らない（意図したテストモード運用の仕様。Google審査なしで最大100人）。<br>
+          <b>対処：</b>使う人のGmailを<b>テストユーザーに1件ずつ追加</b>（上限100＝7月ゴールと同枠）→ 本人が再認証で通る。手順の全文＆<b>直リンク</b>は「Gmailメール解析」ページに掲載。
+        </div>
+        <div class="card" style="margin-top:10px">
+          <a href="https://console.cloud.google.com/auth/audience?project=livelo-499209" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:13px;padding:10px 16px;border-radius:8px">
+            <i class="ti ti-external-link"></i> 直リンク：テストユーザー追加ページ（LiveLo）
+          </a>
         </div>
       </div>
 
