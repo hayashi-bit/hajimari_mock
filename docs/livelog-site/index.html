@@ -1728,12 +1728,12 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           ・共有URLの manus.computer → liverico.app 固定化（PUBLIC_BASE_URL化）<br>
           <br>
           <b style="color:#c0392b">🔴 残（P0完了に必要）</b><br>
-          ・<b>⚠️ 本番公開：チェックポイント7af3a918を管理UIから公開</b>（これで上の「公開待ち」3点＝JSON対策/publicId/feedbackが一気に本番反映）＋デプロイ後スモークチェック（curl /api/__notfound がJSONか確認）<br>
-          ・<b>Gmail E2Eスモークテスト(A)</b><br>
+          ・<b>⚠️ 本番公開：チェックポイント7af3a918を管理UIから公開</b>（これで上の「公開待ち」3点＝JSON対策/publicId/feedbackが一気に本番反映）＋デプロイ後スモークチェック（curl /api/__notfound がJSONか確認）<span style="color:#1b8a4b">→ スモークスクリプト用意済み <code>tools/smoke/post_deploy_smoke.sh</code>（/api/__notfound のJSON 404 と /u/1 の404/410 を自動判定・FAILで停止）</span><br>
+          ・<b>Gmail E2Eスモークテスト(A)</b><span style="color:#1b8a4b">→ ランブック <code>tools/smoke/README.md</code>（環境変数の一時切替→テスト→即戻す・戻し忘れ厳禁）</span><br>
           ・Gmail本番デプロイ＋初回バックフィル＋ステータス誤判定の微調整<br>
           ・モバイルUX P1（トースト被り/削除モーダル/null表示）<br>
           ・プライバシーポリシー・利用規約（叩き台）<br>
-          詳細: <code>docs/livelog/25_release_plan.md</code>
+          詳細: <code>docs/livelog/25_release_plan.md</code> ／ ランブック <code>tools/smoke/README.md</code>
         </div>
       </div>
 
@@ -3046,6 +3046,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> 本番デプロイ→スモーク→Gmail E2E(A) の段取りを道具化（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>背景：</b>JSON恒久対策・publicId(ランダム公開URL)は<b>実装済だが本番未反映</b>＝本番は古いビルドのまま（<code>/u/1</code>が200）。「古いまま」を毎回人目で気づくのは不確実。<br>
+          <b>道具化：</b>デプロイ後スモークを<b>スクリプト化</b>（<code>tools/smoke/post_deploy_smoke.sh</code>）。①未登録<code>/api/*</code>が<b>JSONで404</b>か（HTML＝旧ビルド＝<code>Unexpected token '&lt;'</code>の元凶）②連番<code>/u/1</code>が<b>404/410</b>か（200＝旧ビルド・人数露出）を自動判定し、<b>FAILなら停止</b>＝「本番が古いまま」を構造的に検知。<br>
+          <b>ランブック：</b><code>tools/smoke/README.md</code>＝①Manus本番デプロイ→②スモーク（合格まで反映待ち）→③<b>Gmail E2E(A)</b>（本番URLの環境変数を一時的に開発DB＋dev用OAuthへ切替→テスト→<b>即戻す・無人放置/戻し忘れ厳禁</b>）。E2Eは連携可否/プレビュー(公演名・日付・会場・枚数・ステータス)/既知の網漏れ2通(eplus.co.jp・pia.co.jp)取込/宣伝の非混入/増分非重複/本文非保存/<b>戻し確認</b>をチェック。<br>
+          <b>※</b>本実行環境はegress制限で<code>liverico.app</code>へ未到達＝<b>デプロイ・E2Eは本番にアクセスできる林さん/マナス側で実行</b>。スクリプトとランブックは到達できる環境でそのまま使える。
         </div>
       </div>
 
