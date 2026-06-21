@@ -50,6 +50,27 @@
 ・OAuth同意画面のアプリ名も「ライブリコ」に更新。
 ```
 
+## 棚卸し結果（マナス報告・2026-06-21）＝置換対象の全箇所
+> 旧表記「LiveLog」「ライブログ」「livelog.app」「manus.space」等が出る箇所。詳細表はマナス報告のとおり。主な所在：
+- 画面UI：`client/src/App.tsx`(29,42,43,50) / `AppLayout.tsx`(71) / `FeedbackAdmin.tsx`(44) / `PublicProfile.tsx`(550)
+- シェア/OGP文言：`ShareButton.tsx`(42,43) / `PublicProfile.tsx`(331,332) / `ProfileEdit.tsx`(105,106)
+- HTMLメタ：`client/index.html`(12=`{{project_title}}`／description・OGP・Twitterカードは**未設定**)
+- ドキュメント：`Docs.tsx`(217,285,287,651,324,329) / `Manual.tsx`(108,161,203,240,443) / `Changelog.tsx`(125)
+- メール(Resend)：`server/mailer.ts`(7,30,33,49,72,75)
+- 内部/その他：`LiveDetail.tsx`(iCal 1119,1121,1134) / `Upcoming.tsx`(90) / `setlistRouter.ts`(UA 170,208) / `livesRouter.ts`(1496) / `Settings.tsx`(531,548,573) / `Friends.tsx`(214 LocalStorageキー) / `profileRouter.ts`(128) / `server/_core/env.ts`(12 旧OAuthコールバック)
+- 画像/PWA：favicon(未確認) / `manifest.json`(無し=新規) / OGP画像(無し=新規)
+
+## ⚠️ 起因（単純置換だと壊れる/要注意の箇所）
+1. **`server/_core/env.ts:12` 旧ドメインのOAuthコールバックURL**（`livelogapp-...manus.space/api/oauth/google/callback`）。**いま格闘中のログイン不具合と直結**。フォールバックでこれが使われると liverico.app でOAuthが壊れる。→ 新ドメインに更新＋「フォールバックが実際に使われていないか」を要確認。**最優先**。
+2. **`Friends.tsx:214` LocalStorageキー `livelog_friends`**。改名すると**既存ユーザーの保存データが迷子**になる。→ キーは変えない、または読み込み時に旧キー→新キー移行を実装。
+3. **`Settings.tsx` バックアップ/CSVのファイル名(531,573)＋復元検証文字列(548)**。検証文字列を変えると**既存の `livelog_backup_*.json` が復元できなくなる**。→ 復元は**新旧両方の目印を受理**するように（後方互換）。
+4. **`client/index.html:12 {{project_title}}`**。コードではなく**Manus管理UI（Settings→General→Website name）で「ライブリコ」に変更**。コード置換と混同しない。
+5. **`server/mailer.ts:7` 送信元 `onboarding@resend.dev`**。ブランド統一なら **`hello@liverico.app`＋Resendのドメイン認証(SPF/DKIM)** が要る。未認証のままだと到達率・なりすまし扱いのリスク。
+6. **画像/PWA：manifest.json新規・OGP画像新規・favicon差し替え**。PWA名/テーマ色/OGP画像は**アプリ本体カラー（ピンク→オレンジ）と新ロゴ**で作る（navy×gold厳禁）。
+7. **表記の使い分け統一**：日本語UI＝**ライブリコ**／英字ロゴ・ハンドル・技術ID＝**LiveRico**（naming-brief表記ルール）。一括置換で混ぜない。
+8. **URL群（`manus.space` / `livelog.app`）の置換先は最終ドメイン構成しだい**（apex=LP＋ログイン一体／開発サイト隔離／FBはアプリ内＝doc構成）。確定まではひとまず `liverico.app` に寄せる。UserAgent内 `livelog.app`(setlistRouter)も要修正。
+9. iCal PRODID(1119)変更は低リスク（既存取込済みイベントには影響なし・識別子のみ）。
+
 ## 残タスク
 - [ ] ロゴ透過PNGを `docs/livelog/assets/` へ配置（林さんがCanvaから書き出し）
 - [ ] マナス：棚卸し報告 → 一括置換 → ロゴ差し替え → OAuth同意画面名称変更

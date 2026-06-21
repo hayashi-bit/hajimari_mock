@@ -3001,6 +3001,23 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-list-search"></i> リブランド棚卸し完了＋“起因”注意点（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>確定：</b>名称=ライブリコ／LiveRico／ロゴ=案2(ピンク→オレンジ・透過PNG)／サブ表記=「そのライブの全部を、ともだちと楽しみつくす。」<br>
+          <b>マナスが旧表記の全箇所を棚卸し済み</b>（App/AppLayout/Manual/Share/PublicProfile/ProfileEdit/Docs/Changelog/mailer/iCal/UA/Settings/Friends/env 等）。全リスト＋下記注意点: <code>docs/livelog/24_rebrand_spec.md</code><br>
+          <b>⚠️ 単純置換だと壊れる“起因”：</b>
+          ①<b>env.ts:12 旧ドメインのOAuthコールバック</b>＝<b>今のログイン不具合と直結</b>（最優先・要確認）／
+          ②<b>LocalStorageキー livelog_friends</b>＝改名すると既存データ迷子（変えない/移行）／
+          ③<b>バックアップ/CSVのファイル名・復元検証文字列</b>＝既存バックアップが復元不可に（新旧両対応）／
+          ④<b>{{project_title}}</b>＝コードでなくManus管理UIで変更／
+          ⑤<b>Resend送信元 onboarding@resend.dev</b>＝hello@liverico.app＋ドメイン認証が必要（到達率）／
+          ⑥<b>manifest.json/OGP画像/favicon</b>＝新規作成（ピンク→オレンジ・新ロゴで）／
+          ⑦表記＝日本語UI「ライブリコ」/英字「LiveRico」を統一／
+          ⑧URL置換先は最終ドメイン構成しだい（当面liverico.app）。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-palette"></i> リブランド確定（LiveLog→ライブリコ）＋カラー取り違えの教訓（2026-06-21）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>確定：</b>サービス名=<b>ライブリコ／LiveRico</b>／ロゴ=ピンク→オレンジのポップなワードマーク(Canva案2・透過PNG)／サブ表記=<b>「そのライブの全部を、ともだちと楽しみつくす。」</b>／メインキャッチ=「ライブを軸に、人生を楽しみ尽くす。」<br>
