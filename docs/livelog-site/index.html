@@ -3066,6 +3066,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-target-arrow"></i> 公式サイトAI検索：v2で8/8達成→Tavily採用（CSE不要）＋自動保存解禁の条件（2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>v2結果（Tavily＋LLM選別＋X二次検索）：8/8（100%）。</b>v1で外したずっと真夜中(zutomayo.net・4位→LLMが選択)・アザミ(azami-jp.com・曖昧さ回避で居酒屋誤判定解消)・meiyo(レーベル公式)・<b>前髪ぱっつん少年(x.com/maegami_tokyo・X公式を一次取得)</b>が全部改善＝設計が効いた。<b>Google CSEは不要</b>。<br>
+          <b>採用：Tavily＋LLM選別＋二次検索(X)で実装へ。</b>ただし「8件は少なく既知リスト寄り＝過信しない」。<b>自動保存の全面解禁は下記を満たしてから：</b>①林の実参戦リストを広く(20〜30組・無名厚め)再測定し誤り(特に同名別人Xの誤採用)を比較表で確認 ②生存確認(HTTP200・パーキング/404でない＋Xはハンドル本人確認)が本番サーバー側で実動作 ③confidence>=0.8かつ生存OKのみ自動保存・未満は候補提示。<br>
+          <b>※生存確認は今回未テスト</b>（サンドボックスはx.comのみ到達）＝本番で要実機確認。詳細: <code>docs/livelog/27_official_site_ai_search.md</code>。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-flask"></i> 公式サイトAI検索：Tavily実リスト試し打ち＋確定前の追試方針（2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>Manusが林の実アー8組で試し打ち：</b>自動判定ヒット率 <b>4〜5/8（50〜63%）</b>。✅ロクデナシ/Aooo(レーベル公式)/紫今/ポップしなないで ／ ❌前髪ぱっつん少年(公式HP無・Eggs/Spotify/ぴあのみ)・ずっと真夜中(zutomayo.netが4位に埋もれ未選択)・アザミ(同名の居酒屋を誤判定) ／ △meiyo(ショップ誤選択)。<br>
