@@ -1713,6 +1713,31 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-checkbox"></i> Phase 0 進捗（済 / 進行中 / 残）<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">2026-06-21時点</span></div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b style="color:#1b8a4b">✅ 済（実装完了）</b><br>
+          ・Googleログイン安定化（unauthorized_client解消＝本番をWebクライアント1lcb…に統一）<br>
+          ・JSONパースエラー恒久対策（未登録 /api/* は必ずJSON 404・SPAフォールバックから /api 除外・生fetch 0件＝全tRPC）<span style="color:#c0392b">※本番デプロイ待ち</span><br>
+          ・公開URLのランダム化（publicId・/u/{連番}→/u/{ランダム}で人数露出を解消）<span style="color:#c0392b">※本番デプロイ待ち</span><br>
+          ・フィードバック導線＋開発サイト集約（liverico.app/feedback.json＋本サイト「フィードバック」ページ）<br>
+          ・ブランド確定＋アセット作成（ロゴ案2・アイコンPNG/SVG・favicon・サブ表記「そのライブの全部を、ともだちと楽しみつくす。」・カラー=ピンク→オレンジ）<br>
+          <br>
+          <b style="color:#633806">🟡 進行中（マナス）</b><br>
+          ・リブランド一括置換（旧表記LiveLog→ライブリコ・ロゴ差替・OGP作成・OAuth同意画面の名称変更）詳細 <code>docs/livelog/24</code><br>
+          ・env.ts のGmailリフレッシュ修正（redirect_uri省略でドメイン非依存に）<br>
+          ・共有URLの manus.computer → liverico.app 固定化（PUBLIC_BASE_URL化）<br>
+          <br>
+          <b style="color:#c0392b">☐ 残（P0完了に必要）</b><br>
+          ・<b>Gmail E2Eスモークテスト(A)</b>（本来の今日のゴール）<br>
+          ・Gmail本番デプロイ＋初回バックフィル＋ステータス誤判定の微調整<br>
+          ・モバイルUX P1（トースト被り/削除モーダル/null表示）<br>
+          ・プライバシーポリシー・利用規約（叩き台）<br>
+          ・<b>本番デプロイ＋デプロイ後スモークチェック</b>（上の「※本番デプロイ待ち」を反映。curl /api/__notfound がJSONを返すか確認＝“本番が古いまま”を構造的に検知）<br>
+          詳細: <code>docs/livelog/25_release_plan.md</code>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-player-play"></i> 名前を待たず「今すぐ進められる」こと（並行）</div>
         <div class="card">
           <p style="font-size:13px;color:var(--text2)">名前は検討中だが、<b style="color:var(--navy)">大半の作業は名前に依存しない</b>。待つのはドメインと最終リネームだけ。以下を並行で進める。</p>
