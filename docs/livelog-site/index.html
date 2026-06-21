@@ -2235,6 +2235,22 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
       <div class="section">
+        <div class="section-title"><i class="ti ti-lock-check"></i> アカウントとメールの基本仕様（確定・2026-06-21）</div>
+        <div class="card" style="background:linear-gradient(90deg,#e7f1fb,#f3f8ff);border:1px solid #9cc1e8;color:#1a3a52;line-height:1.8;font-size:13px">
+          <b>1ユーザー ＝ 自分のGmail1本だけ。</b>各ユーザーは「自分のLiveLogアカウント」で「自分のGmail」を連携し、「自分のチケットメール」だけを取り込む。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:12px"><table>
+          <thead><tr><th>項目</th><th>仕様</th></tr></thead>
+          <tbody>
+            <tr><td>1人が複数のメアドを登録</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">仕様なし</span> 1ユーザーは自分のGmail1本のみ連携。複数Gmailの一括取り込みは提供しない。</td></tr>
+            <tr><td>1人が他人のメアドを見る</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">仕様なし</span> 他人のGmail／チケットメールを自分のアカウントに取り込むことはしない。データは各ユーザーに完全分離。</td></tr>
+            <tr><td>例：yukatoのメールをeijiが取り込む</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b">しない</span> yukatoは自分のアカウントで自分のGmailを連携して使う。</td></tr>
+            <tr><td>PDF問題4（全アカウント並列スキャン）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">実装しない</span> 複数アカウント前提の修正案。本仕様では不要。</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">📌 現状 eiji10hama のDBに yukato.1073 が連携されているのは<b>テスト残骸</b>。この仕様に合わせて<b>連携解除（掃除）</b>する。詳細指示: <code>docs/livelog/19_gmail_account_scope_spec.md</code></div>
+      </div>
+      <div class="section">
         <div class="section-title"><i class="ti ti-stack-2"></i> 提供価値（2層）</div>
         <div class="card-grid">
           <div class="mini-card"><div class="mini-label"><i class="ti ti-plus"></i> ① 新規登録</div><div class="mini-items">
@@ -2978,6 +2994,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-lock-check"></i> Gmail：アカウントとメールの基本仕様を確定（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          <b>1ユーザー＝自分のGmail1本だけ。</b>各自が自分のLiveLogアカウントで自分のGmailを連携し、自分のチケットメールだけを取り込む。<br>
+          <b>・1人が複数のメアドを登録する仕様はない</b>（複数Gmail一括取込は提供しない）。<br>
+          <b>・1人が他人のメアドを見る仕様はない</b>（他人のチケットメールを自分に取り込まない／データは各ユーザーに完全分離）。<br>
+          → よって <b>yukatoのメールを eiji が取り込むことはしない</b>。PDF問題4（全アカウント並列スキャン）は<b>実装しない</b>。現状eijiに紐づくyukato連携は<b>テスト残骸として掃除</b>。Manus指示: <code>docs/livelog/19_gmail_account_scope_spec.md</code>
         </div>
       </div>
 
