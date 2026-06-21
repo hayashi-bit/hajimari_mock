@@ -3284,20 +3284,10 @@ await createLive.mutateAsync({ title: '...' });</div></div>
               <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px">
                 マナスが「現状仕様・発見した問題・該当コード」をまとめた<b>状況説明ドキュメント</b>を作り、クロコに渡す（例：「LiveLog Gmail連携 現状仕様と検討事項」）。
               </div>
-              <div style="background:#fff;border:1px solid #e6eef7;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-                <div style="font-weight:700;color:#222;font-size:13px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:8px">LiveLog Gmail連携 現状仕様と検討事項 <span style="font-weight:400;color:#9aa1ad;font-size:11px">／ マナス作成・2026-06-21</span></div>
-                <div style="font-size:11.5px;color:#46566b;line-height:1.75">
-                  <b>■ 現在の仕様（基本的な流れ）</b><br>
-                  連携→「取得」→Gmailを検索→チケット関連を抽出→プレビュー確認→取込<br>
-                  <b style="color:#c0392b">■ 今日発見した問題</b><br>
-                  ・問題1：ぴあの送信元が <code>bma.www.mp.pia.jp</code>（サブドメイン）で漏れ → <span style="color:#1b8a4b">対応済</span><br>
-                  ・問題2：subject「お知らせ」が広すぎてノイズ混入 → <span style="color:#1b8a4b">除外条件追加</span><br>
-                  ・問題3：転送メールは送信元が自分でヒットせず → <span style="color:#1b8a4b">対象外</span><br>
-                  ・問題4：複数アカウントの2件目が無視（<code>rows[0]</code>のみ）→ 要判断<br>
-                  <b>■ 現在の検索クエリ／検討事項</b> も添付（from・subjectの長いリスト 等）
-                </div>
-              </div>
-              <div style="font-size:10.5px;color:#9aa1ad;margin-top:6px">↑ マナスが作った状況書の中身を再現（実スクショに差し替えたい場合は <code>assets/</code> にPNGを上げてくれれば埋めます）</div>
+              <img src="https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/claude/vibrant-meitner-tbc76w/docs/livelog-site/assets/screencapture-docs-google-document-d-1pudp6n3tZ-NrfmFvjIB37iTXWj4DXOW2-edit-2026-06-21-17_48_47.png"
+                   alt="マナスが作った状況説明ドキュメント（LiveLog Gmail連携 現状仕様と検討事項）"
+                   style="max-width:100%;border:1px solid #e6eef7;border-radius:8px;display:block">
+              <div style="font-size:10.5px;color:#9aa1ad;margin-top:6px">↑ マナス→クロコに渡す状況説明ドキュメント（実スクショ）</div>
             </div>
 
             <!-- 方向B: クロコ→マナス -->
