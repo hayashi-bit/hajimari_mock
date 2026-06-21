@@ -3022,6 +3022,14 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          <b>実証（林Gmail・2026-06-21）：</b><code>eplus.co.jp 未発券</code>=10件、<code>pia.co.jp 未発券</code>=22件ヒット → 漏れは<b>検索（網）段階</b>で確定。<br>
+          <b>アーキ方針【確定】：A（将来像）＋当面C（橋渡し）。Bは応急処置のみ。</b><br>
+          ・<b>A</b>＝from ドメインでなく<b>ベンダー非依存の内容シグナル</b>（抽選結果/発券/入金期限/開演 等）で広く拾い、候補のみLLMが可否判定。<b>新サブドメイン自動対応</b>。<br>
+          ・<b>C</b>＝AIが「チケットっぽい新送信元」を定期検出し<b>ドメイン候補を自動提案</b>（採用承認だけ人）。手作業を激減。<br>
+          ・<b>B</b>＝ドメイン手登録のままは応急処置のみ（恒久解にしない）。<br>
+          → 「新サブドメインが出るたび手作業」を恒久化しない。AIで吸収する設計に寄せる。詳細: <code>docs/livelog/19</code>
+        </div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
           <b>他ユーザーから同様の連絡が来たら：</b>コアユーザーは林が使わないベンダーを使う＝<b>新しい漏れの発見源（財産）</b>。本文非保存のため調査は<b>送信元ドメイン＋件名（メタデータ）のみ</b>収集。網漏れ/解析漏れを切り分け→クエリ or fixture 追加→回帰テスト。ユーザーが詰まらないよう<b>手動追加のフォールバック</b>を常備し、チューニングは裏で回す。詳細: <code>docs/livelog/19_gmail_account_scope_spec.md</code>
         </div>
       </div>
