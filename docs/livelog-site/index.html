@@ -206,22 +206,23 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('envdb',this)"><i class="ti ti-database-cog"></i>環境・DB設計</div>
     </div>
     <div class="nav-section">
+      <div class="nav-label">計画・塊・履歴（3本柱）</div>
+      <div class="nav-item" onclick="show('release',this)"><i class="ti ti-route-2"></i>① 実装計画</div>
+      <div class="nav-item" onclick="show('checklist',this)"><i class="ti ti-stack-2"></i>② 塊開発</div>
+      <div class="nav-item" onclick="show('changelog',this);loadChangelog()"><i class="ti ti-history"></i>③ 開発履歴（自動）</div>
+    </div>
+    <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
-      <div class="nav-item" onclick="show('roadmap',this)"><i class="ti ti-map-pin"></i>実装ロードマップ・優先度</div>
-      <div class="nav-item" onclick="show('checklist',this)"><i class="ti ti-checkup-list"></i>実装チェックリスト</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
       <div class="nav-item" onclick="show('costqa',this)"><i class="ti ti-calculator"></i>コスト試算・回答</div>
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
       <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
-      <div class="nav-item" onclick="show('backlog',this)"><i class="ti ti-list-check"></i>開発バックログ</div>
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
-      <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
       <div class="nav-item" onclick="show('memolog',this)"><i class="ti ti-clipboard-text"></i>決定・メモログ</div>
-      <div class="nav-item" onclick="show('changelog',this);loadChangelog()"><i class="ti ti-history"></i>開発履歴（自動）</div>
       <div class="nav-item" onclick="show('feedback',this);loadFeedback()"><i class="ti ti-message-2-heart"></i>フィードバック</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
@@ -1681,13 +1682,39 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
     <!-- RELEASE TODO -->
     <div id="page-release" class="page">
-      <div class="topbar"><div class="topbar-title">リリースまでのTODO</div><span class="topbar-badge">有料リリース前提</span></div>
+      <div class="topbar"><div class="topbar-title">① 実装計画</div><span class="topbar-badge">公開必須＋段取り</span></div>
       <div class="hero-strip">
-        <i class="ti ti-rocket hero-strip-icon"></i>
+        <i class="ti ti-route-2 hero-strip-icon"></i>
         <div class="hero-strip-text">
-          <h2>本気の有料リリースまでに、やること全部</h2>
-          <p>7月・有料100人を目標に、法務・基盤・課金・ドメイン・プロダクト・集客・運用を網羅。担当を分けて進める。</p>
+          <h2>いつ・何を・どの順で作るか（公開必須が一目で）</h2>
+          <p>「公開までに必須な開発（実装済/未実装）」を先頭に、フェーズ計画（P0〜P5）・法務/基盤/課金などのカテゴリを網羅。作る単位は<b>② 塊開発</b>、やった事実は<b>③ 開発履歴（自動）</b>。</p>
         </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flag-checkered"></i> 公開までに必須な開発 — 実装済 / 未実装が一目で<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">2026-06-22時点</span></div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">プレセール（課金実証）を回すのに<b>“絶対要る”もの＝公開ゲート</b>だけを抜き出し、状態を付けた。詳細フェーズは下の「リリース計画」、作る単位は<a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy)">② 塊開発</a>、実際の記録は<a href="#changelog" onclick="show('changelog');loadChangelog();return false;" style="color:var(--navy)">③ 開発履歴（自動）</a>。</div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>公開必須の開発</th><th>状態</th><th>補足</th></tr></thead>
+          <tbody>
+            <tr><td>Googleログイン</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>本番反映・unauthorized_client解消（Webクライアント1lcb…に統一）。現在テストモード（最大100人＝7月ゴール枠）</td></tr>
+            <tr><td>ライブ記録・管理（13ステータス・チケット期限）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>サービスの核（既存v1.0）</td></tr>
+            <tr><td>友達・公開プロフィール・セトリ・メモ</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>つながり/記録の核（既存v1.0）</td></tr>
+            <tr><td>期限通知（入金/発券/当落・Resend）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>失念防止＝コア価値（既存）</td></tr>
+            <tr><td>Gmail自動取込（広い網→2段→増分）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>2段判定+増分+本文非保存を実装・本番バックグラウンド化済。残：E2Eスモーク(A)・初回バックフィル・ステータス微調整・審査本申請</td></tr>
+            <tr><td>JSON恒久対策（未登録 /api/* を JSON 404）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>本番反映・外部スモークでPASS確認</td></tr>
+            <tr><td>公開URLのランダム化（publicId）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>公開済だが外部スモークで /u/1 が200のまま＝要確認（Manus確認中）</td></tr>
+            <tr><td>フィードバック導線＋開発サイト集約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>feedback.json＋CORS・本番反映</td></tr>
+            <tr><td>リブランド（ライブリコ）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>名称（VITE_APP_TITLE）本番反映。残：ロゴ差替・OGP・OAuth同意画面名称・旧表記の一括置換（Manus進行中）</td></tr>
+            <tr><td>モバイルUX P1（トースト被り/削除モーダル/null表示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>配布前必須</td></tr>
+            <tr><td>プライバシーポリシー・利用規約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>Gmail readonly＋課金で法務上必須（公開条件）</td></tr>
+            <tr><td>課金（Stripe・無料＋②¥300で開始）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>プレセール＝課金実証の本体</td></tr>
+            <tr><td>フリーミアム上限（Gmail月通数キャップ等）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>課金実装に依存</td></tr>
+            <tr><td>admin最小（ユーザー一覧＋feedback閲覧）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>運用を回す土台</td></tr>
+            <tr><td>LP＋オンボ（apex＝LP＋ログイン一体）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>集客の玄関＋初回離脱防止</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:12px;color:var(--text3)">補足：詳しい開発バックログは <a href="#backlog" onclick="show('backlog');return false;" style="color:var(--navy)">開発バックログ</a>、優先度・Manus用プロンプトは <a href="#roadmap" onclick="show('roadmap');return false;" style="color:var(--navy)">実装ロードマップ</a> に統合（このページから辿れる）。</div>
       </div>
 
       <div class="section">
@@ -1849,12 +1876,12 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
     <!-- CHECKLIST -->
     <div id="page-checklist" class="page">
-      <div class="topbar"><div class="topbar-title">実装チェックリスト</div></div>
+      <div class="topbar"><div class="topbar-title">② 塊開発</div><span class="topbar-badge">作る単位＋状態</span></div>
       <div class="hero-strip">
-        <i class="ti ti-checkup-list hero-strip-icon"></i>
+        <i class="ti ti-stack-2 hero-strip-icon"></i>
         <div class="hero-strip-text">
           <h2>まとめて実装する単位（塊）＋ 状態</h2>
-          <p>状態バッジで進捗を可視化。<b>新規機能は既定「要確認」</b>＝Manusに確認後、判明したら「実装済/一部/未」に更新する。</p>
+          <p>状態バッジで進捗を可視化。<b>新規機能は既定「要確認」</b>＝Manusに確認後、判明したら「実装済/一部/未」に更新（“やった事実”の正本は<b>③ 開発履歴（自動）</b>）。優先度・Manus用プロンプトは <a href="#roadmap" onclick="show('roadmap');return false;" style="color:var(--navy)">実装ロードマップ</a>。</p>
         </div>
       </div>
       <div class="section">
@@ -3273,12 +3300,12 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
     <!-- 開発履歴（liverico.app/changelog.json を読み込み表示・Manusが自動追記） -->
     <div id="page-changelog" class="page">
-      <div class="topbar"><div class="topbar-title">開発履歴</div><span class="topbar-badge">liverico.app/changelog.json（自動）</span></div>
+      <div class="topbar"><div class="topbar-title">③ 開発履歴（自動）</div><span class="topbar-badge">liverico.app/changelog.json</span></div>
       <div class="hero-strip">
         <i class="ti ti-history hero-strip-icon"></i>
         <div class="hero-strip-text">
-          <h2>マナスの実装履歴を、大小すべて自動で記録</h2>
-          <p>Manusが実装するたびに <code>changelog.json</code> に1件追記 → このページが自動で読み込み表示。過去分は一括バックフィル。重要度（大/中/小）で絞り込み可。本文以外のPIIは含めない方針。</p>
+          <h2>マナスの実装履歴を、大小すべて自動で記録（画面キャプチャ付き）</h2>
+          <p>Manusが実装するたびに <code>changelog.json</code> に1件追記 → このページが自動で読み込み表示。各件に<b>画面キャプチャ（image/images）</b>を添付でき、サムネイル表示＋クリックで拡大。過去分は一括バックフィル。重要度（大/中/小）で絞り込み可。本文以外のPIIは含めない方針。</p>
         </div>
       </div>
       <div class="section">
@@ -3771,11 +3798,17 @@ function renderChangelog(){
     var meta = '<span style="font-size:11px;color:var(--text3)">' + fbEsc(it.date || '') + '</span>';
     if (it.area) meta += '<span style="font-size:11px;color:var(--text3)">・' + fbEsc(it.area) + '</span>';
     if (it.checkpoint) meta += '<span style="font-size:11px;color:var(--text3)">・CP ' + fbEsc(it.checkpoint) + '</span>';
+    var imgs = it.images || (it.image ? [it.image] : []);
+    var imgHtml = imgs.length ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' + imgs.map(function(u){
+      return '<a href="' + fbEsc(u) + '" target="_blank" rel="noopener">' +
+        '<img src="' + fbEsc(u) + '" alt="capture" loading="lazy" style="max-width:240px;max-height:200px;border:1px solid var(--border);border-radius:8px;object-fit:cover"></a>';
+    }).join('') + '</div>' : '';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">' +
         clImpBadge(it.importance) + clCatBadge(it.category) + meta + '</div>' +
       '<div style="font-weight:600;margin-bottom:2px">' + fbEsc(it.title || '') + '</div>' +
       (it.detail ? '<div style="white-space:pre-wrap;line-height:1.7;color:var(--text2)">' + fbEsc(it.detail) + '</div>' : '') +
+      imgHtml +
     '</div>';
   }).join('');
 }
