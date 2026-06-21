@@ -1693,9 +1693,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
       <div class="section">
         <div class="section-title"><i class="ti ti-flag-checkered"></i> 公開までに必須な開発 — 実装済 / 未実装が一目で<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">2026-06-22時点</span></div>
-        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">プレセール（課金実証）を回すのに<b>“絶対要る”もの＝公開ゲート</b>だけを抜き出し、状態を付けた。詳細フェーズは下の「リリース計画」、作る単位は<a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy)">② 塊開発</a>、実際の記録は<a href="#changelog" onclick="show('changelog');loadChangelog();return false;" style="color:var(--navy)">③ 開発履歴（自動）</a>。</div>
-        <div class="card tbl-wrap" style="margin-top:10px"><table>
-          <thead><tr><th>公開必須の開発</th><th>状態</th><th>補足</th></tr></thead>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">公開ゲートを<b>2フェーズ</b>に分けた。流れ＝<b>フェーズ0で公開（無料でモニターに配る）→ 課金システムを作る → 有料プレセール（課金実証）</b>。詳細フェーズは下の「リリース計画」、作る単位は<a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy)">② 塊開発</a>、実際の記録は<a href="#changelog" onclick="show('changelog');loadChangelog();return false;" style="color:var(--navy)">③ 開発履歴（自動）</a>。</div>
+
+        <div class="card" style="margin-top:12px;border-left:4px solid #2e7bd6">
+          <div style="font-weight:700;color:#1a4e7a;margin-bottom:2px"><i class="ti ti-rocket"></i> フェーズ0：モニター公開までに必須<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">無料でモニター5人に配る土台</span></div>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:6px"><table>
+          <thead><tr><th>フェーズ0の開発</th><th>状態</th><th>補足</th></tr></thead>
           <tbody>
             <tr><td>Googleログイン</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>本番反映・unauthorized_client解消（Webクライアント1lcb…に統一）。現在テストモード（最大100人＝7月ゴール枠）</td></tr>
             <tr><td>ライブ記録・管理（13ステータス・チケット期限）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>サービスの核（既存v1.0）</td></tr>
@@ -1707,11 +1711,20 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr><td>フィードバック導線＋開発サイト集約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">実装済</span></td><td>feedback.json＋CORS・本番反映</td></tr>
             <tr><td>リブランド（ライブリコ）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">一部</span></td><td>名称（VITE_APP_TITLE）本番反映。残：ロゴ差替・OGP・OAuth同意画面名称・旧表記の一括置換（Manus進行中）</td></tr>
             <tr><td>モバイルUX P1（トースト被り/削除モーダル/null表示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>配布前必須</td></tr>
-            <tr><td>プライバシーポリシー・利用規約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>Gmail readonly＋課金で法務上必須（公開条件）</td></tr>
+            <tr><td>プライバシーポリシー・利用規約</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>Gmail readonly＋（次フェーズの）課金で法務上必須。公開条件</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="card" style="margin-top:14px;border-left:4px solid #e5478a">
+          <div style="font-weight:700;color:#a8326a;margin-bottom:2px"><i class="ti ti-coin"></i> 課金フェーズ：有料プレセールまでに必須<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">フェーズ0で公開した後に作る</span></div>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:6px"><table>
+          <thead><tr><th>課金フェーズの開発</th><th>状態</th><th>補足</th></tr></thead>
+          <tbody>
             <tr><td>課金（Stripe・無料＋②¥300で開始）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>プレセール＝課金実証の本体</td></tr>
             <tr><td>フリーミアム上限（Gmail月通数キャップ等）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>課金実装に依存</td></tr>
             <tr><td>admin最小（ユーザー一覧＋feedback閲覧）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>運用を回す土台</td></tr>
-            <tr><td>LP＋オンボ（apex＝LP＋ログイン一体）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>集客の玄関＋初回離脱防止</td></tr>
+            <tr><td>LP＋オンボ（apex＝LP＋ログイン一体・価格掲示）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">未</span></td><td>集客の玄関＋初回離脱防止＋価格提示</td></tr>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:12px;color:var(--text3)">補足：詳しい開発バックログは <a href="#backlog" onclick="show('backlog');return false;" style="color:var(--navy)">開発バックログ</a>、優先度・Manus用プロンプトは <a href="#roadmap" onclick="show('roadmap');return false;" style="color:var(--navy)">実装ロードマップ</a> に統合（このページから辿れる）。</div>
