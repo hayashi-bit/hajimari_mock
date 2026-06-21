@@ -3052,6 +3052,18 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> 【再発防止】DEV/PRODスキーマdrift＝マイグレーションは本番・開発の両方に必ず当てる（2026-06-22）</div>
+        <div class="card" style="background:linear-gradient(90deg,#fff5f5,#fffafa);border:1px solid #f0c0c0;font-size:13px;color:#7a2b2b;line-height:1.9">
+          <b>症状（3回目の同型）：</b>開発環境で <code>lives</code> のクエリが <code>Failed query</code> で落ちた（本番は正常）。原因は<b>開発DBに新カラムが未適用</b>＝コードは新列（<code>issuanceCode/issuanceUrl/issuancePlace/issuanceStartAt/issuanceEndAt/applicationHistoryUrl/applicationId/seatType/serviceFee/issuanceFee/ticketNotes/officialUrl</code> 等）を取りに行くのにDBに無い。<br>
+          <b>過去の同型：</b>①Gmailの <code>lastSyncAt</code> が開発DBに無く gmail.status が500→HTML返却→「Unexpected token '&lt;'」。②今回の lives。＝<b>DEV/PRODのスキーマ（DBの構造）が食い違うと必ず壊れる</b>。<br>
+          <b>恒久ルール（厳守）：</b>
+          ①<b>マイグレーション（表の作り替え）は、本番に当てたら開発にも必ず当てる</b>（逆も同様）。DEV/PRODのスキーマを常に一致させる。<br>
+          ②不具合時は<b>まず「今どのDBに繋いでいるか」と「コードが要求する列がそのDBに在るか」を確認</b>（Gmail E2E(A)の環境変数・戻し忘れも疑う）。<br>
+          ③恒久的には<b>独立ステージング（方法B）</b>で本番を汚さず、マイグレーションを通す経路を一本化する。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-history"></i> 開発履歴を自動記録する仕組みを新設（changelog.json・2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>決定：</b>Manusの実装履歴（大小すべて）を開発サイトに<b>自動集約</b>する。方式は<b>feedback.jsonと同じ</b>＝Manusが <code>liverico.app/changelog.json</code> を持ち、<b>実装ごとに1件追記</b>→開発サイト「<b>開発履歴（自動）</b>」ページが自動で読み込み表示。<br>
