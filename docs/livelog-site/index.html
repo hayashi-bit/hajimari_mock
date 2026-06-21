@@ -3052,6 +3052,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-world-search"></i> 公式サイトAI検索を作り直し（実Web検索グラウンディング・2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>問題：</b>AI検索が外れる。原因は<b>LLMが実検索せずURLを“推測”</b>＝存在しない/誤URLを創作。とくに<b>マイナーはモデルの記憶に無く全滅</b>（前髪ぱっつん少年系）。<br>
+          <b>方針【確定＝案A】：</b>「AIにURLを当てさせない。<b>本物のWeb検索→実在結果からAIが選別→URL生存確認</b>」。確信度0.8以上＋生存OKで自動保存、曖昧なら<b>候補3〜5件を提示し1クリック確定</b>（保険）。<br>
+          <b>狙い：</b>① <b>アーティスト公式HP</b>（日付・会場はクエリに入れない＝HPは日付非依存）。<b>ただしライブ/スケジュール情報が載っている公式HPを優先</b>。フォールバック＝公式HP→X公式→レーベル/事務所→ライブハウス公演ページ。<br>
+          <b>検索API：</b>Tavily/Brave/Google CSE を候補に、<b>林の実参戦リストでヒット率検証してから採用</b>（机上で決めない・比較表必須＝ルール3）。<br>
+          仕様＋LLMプロンプト＋Manus指示: <code>docs/livelog/27_official_site_ai_search.md</code>。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-alert-triangle"></i> 【再発防止】DEV/PRODスキーマdrift＝マイグレーションは本番・開発の両方に必ず当てる（2026-06-22）</div>
         <div class="card" style="background:linear-gradient(90deg,#fff5f5,#fffafa);border:1px solid #f0c0c0;font-size:13px;color:#7a2b2b;line-height:1.9">
           <b>症状（3回目の同型）：</b>開発環境で <code>lives</code> のクエリが <code>Failed query</code> で落ちた（本番は正常）。原因は<b>開発DBに新カラムが未適用</b>＝コードは新列（<code>issuanceCode/issuanceUrl/issuancePlace/issuanceStartAt/issuanceEndAt/applicationHistoryUrl/applicationId/seatType/serviceFee/issuanceFee/ticketNotes/officialUrl</code> 等）を取りに行くのにDBに無い。<br>
