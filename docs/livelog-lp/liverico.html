@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ライブリコ｜ライブを軸に、人生を楽しみ尽くす。</title>
+<meta name="description" content="ライブの予定・チケット・参戦記録をまとめて管理。当落や支払期限も逃さない。参戦リストを見せ合えば、同じ熱量の仲間と一瞬でつながる。ライブ好きのためのアプリ、ライブリコ。">
+<meta property="og:title" content="ライブリコ｜ライブを軸に、人生を楽しみ尽くす。">
+<meta property="og:description" content="そのライブの全部を、ともだちと楽しみつくす。予定・チケット・当落・支払・発券・参戦記録・セトリまで、ライブのぜんぶを楽しみ尽くすアプリ。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ライブリコ">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ff4f7b; --orange:#ff8a3d; --o2:#ff7a1f; --p2:#e5478a;
+    --yellow:#fcd303; --blue:#2e7bd6; --lime:#9bcb3c;
+    --bg:#eef2f7; --card:#ffffff; --ink:#1c2230; --ink2:#54607a; --line:#e6ebf3;
+    --grad:linear-gradient(120deg,#ff4f7b 0%,#ff7a1f 55%,#ff8a3d 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .word{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.01em}
+
+  /* header */
+  header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .logo{font-family:"Montserrat",sans-serif;font-weight:900;font-size:24px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .btn{display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;padding:13px 22px;border-radius:999px;text-decoration:none;transition:transform .12s ease,box-shadow .12s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-google{background:#fff;color:#1c2230;box-shadow:0 6px 20px rgba(28,34,48,.12);border:1px solid var(--line)}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(255,90,80,.35)}
+  .btn-sm{padding:10px 18px;font-size:14px}
+  .g-ico{width:20px;height:20px;flex:0 0 auto}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden;background:var(--grad);color:#fff;text-align:center;padding:84px 0 96px}
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(8px);opacity:.5}
+  .hero::before{width:260px;height:260px;background:var(--yellow);top:-60px;left:-40px}
+  .hero::after{width:220px;height:220px;background:var(--blue);bottom:-70px;right:-30px;opacity:.4}
+  .hero .inner{position:relative;z-index:2}
+  .hero h1{font-size:clamp(30px,6vw,56px);font-weight:900;line-height:1.25;letter-spacing:.01em;text-shadow:0 4px 22px rgba(120,30,0,.18)}
+  .hero .sub{margin-top:16px;font-size:clamp(15px,2.6vw,19px);font-weight:500;opacity:.96}
+  .hero .lede{margin:22px auto 0;max-width:620px;font-size:15px;opacity:.95}
+  .hero .cta{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .pill{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);padding:6px 16px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:22px}
+
+  section{padding:72px 0}
+  .eyebrow{font-weight:900;color:var(--p2);font-size:13px;letter-spacing:.08em}
+  h2{font-size:clamp(23px,4.4vw,34px);font-weight:900;line-height:1.35;margin-top:6px}
+  .lead{color:var(--ink2);margin-top:14px;font-size:15px}
+
+  /* あるある */
+  .pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:34px}
+  .pain{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 20px;font-weight:700;display:flex;gap:12px;align-items:flex-start}
+  .pain .x{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#ffe1e9;color:var(--p2);display:grid;place-items:center;font-weight:900;font-size:15px}
+  .pain small{display:block;color:var(--ink2);font-weight:500;margin-top:4px}
+
+  /* 3本柱 */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:38px}
+  .pillar{background:var(--card);border-radius:20px;padding:30px 26px;border:1px solid var(--line);position:relative;overflow:hidden}
+  .pillar .tag{display:inline-block;font-weight:900;font-size:12px;color:#fff;padding:4px 12px;border-radius:999px;margin-bottom:14px}
+  .pillar h3{font-size:20px;font-weight:900;line-height:1.4}
+  .pillar p{margin-top:10px;color:var(--ink2);font-size:14px}
+  .pillar::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;opacity:.12}
+
+  /* features */
+  .feat-sec{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:36px}
+  .feat{display:flex;gap:14px;align-items:flex-start}
+  .feat .ic{flex:0 0 auto;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:var(--bg)}
+  .feat h4{font-size:16px;font-weight:700}
+  .feat p{color:var(--ink2);font-size:13.5px;margin-top:3px}
+
+  /* voc */
+  .voc{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:34px}
+  .voc-card{border-radius:20px;padding:28px;color:#fff;font-weight:900;font-size:21px;line-height:1.5}
+  .voc-card span{display:block;font-weight:500;font-size:14px;opacity:.95;margin-top:10px}
+  .voc-1{background:linear-gradient(135deg,#2e7bd6,#4aa3ff)}
+  .voc-2{background:linear-gradient(135deg,#e5478a,#ff8a3d)}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px;counter-reset:s}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;position:relative}
+  .step::before{counter-increment:s;content:counter(s);font-family:"Montserrat";font-weight:900;font-size:40px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+  .step h4{margin-top:8px;font-size:17px;font-weight:800}
+  .step p{color:var(--ink2);font-size:13.5px;margin-top:4px}
+
+  /* final cta */
+  .final{background:var(--grad);color:#fff;text-align:center;border-radius:28px;padding:60px 24px;margin:0 0 10px;position:relative;overflow:hidden}
+  .final h2{font-size:clamp(24px,4.6vw,38px)}
+  .final p{opacity:.95;margin-top:12px}
+  .final .cta{margin-top:28px;display:flex;justify-content:center}
+
+  footer{padding:40px 0 60px;color:var(--ink2);font-size:13px}
+  .foot-note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+  .foot-links{display:flex;gap:18px;flex-wrap:wrap}
+  .foot-links a{color:var(--ink2);text-decoration:none}
+  .foot-links a:hover{color:var(--p2)}
+  .dev-banner{background:#fff7e6;border-bottom:1px solid #f0d9a8;color:#7a5b16;font-size:12px;text-align:center;padding:7px 12px}
+</style>
+</head>
+<body>
+<div class="dev-banner">⚙️ これは LP 第1版プロトタイプ（クロコ作）／「Googleではじめる」は本実装でManusがOAuthに接続します</div>
+<header>
+  <div class="wrap nav">
+    <div class="logo">LiveRico</div>
+    <a href="#start" class="btn btn-google btn-sm">
+      <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.3z"/><path fill="#FBBC05" d="M10.3 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.3-5.5l-7.5-5.8c-2 1.4-4.7 2.3-7.8 2.3-6.4 0-11.8-3.8-13.7-9.4l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/></svg>
+      Googleではじめる
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap inner">
+    <span class="pill">ライブ好きのための、参戦まるごと管理アプリ</span>
+    <h1>ライブを軸に、<br>人生を楽しみ尽くす。</h1>
+    <p class="sub">そのライブの全部を、ともだちと楽しみつくす。</p>
+    <p class="lede">ライブは、その日だけのものじゃない。「行きたい」と思った瞬間から、申し込んで、当落にドキドキして、当日を指折り数えて、会場で爆発して、余韻にひたって——また次へ。その“ぜんぶ”が、ライブの楽しみ。</p>
+    <div class="cta">
+      <a href="#start" class="btn btn-google">
+        <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.3z"/><path fill="#FBBC05" d="M10.3 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.3-5.5l-7.5-5.8c-2 1.4-4.7 2.3-7.8 2.3-6.4 0-11.8-3.8-13.7-9.4l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/></svg>
+        Googleではじめる
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- あるある -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">こんなこと、ありませんか？</div>
+    <h2>「楽しみ」が、悲しい思い出に<br>変わってしまう前に。</h2>
+    <div class="pains">
+      <div class="pain"><span class="x">!</span><div>申し込んだの、忘れてた<small>当落も支払期限も、気づいたら過ぎていた</small></div></div>
+      <div class="pain"><span class="x">!</span><div>支払期限を過ぎて、チケットが無効に<small>入金・発券のうっかりで、現場に行けない悲しさ</small></div></div>
+      <div class="pain"><span class="x">!</span><div>去年どのライブ行ったっけ？<small>あの夜の熱も、セトリも、思い出せない</small></div></div>
+      <div class="pain"><span class="x">!</span><div>推しの新ライブ、SNSで見逃してた<small>気づいたときには、もう完売していた</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3本柱 -->
+<section style="padding-top:24px">
+  <div class="wrap">
+    <div class="eyebrow">ライブリコがあれば</div>
+    <h2>管理も、つながりも、ぜんぶ楽しい。</h2>
+    <div class="pillars">
+      <div class="pillar" style="--c:var(--orange)">
+        <span class="tag" style="background:var(--o2)">ステータス管理すら、楽しい時間に</span>
+        <h3>申込・当落・支払・発券。<br>そのドキドキを、ぜんぶ味方に。</h3>
+        <p>抽選に申し込んだ、当落にドキドキ、入金して、発券して、いよいよ当日。ぜんぶ見えるから、忘れない。管理が“作業”じゃなく、当日へ向かう“高揚の時間”になる。</p>
+      </div>
+      <div class="pillar" style="--c:var(--p2)">
+        <span class="tag" style="background:var(--p2)">見せ合うだけで、分かり合える</span>
+        <h3>参戦リストを見せるだけで、<br>「この人とは合う」が伝わる。</h3>
+        <p>同じアーティスト、同じ現場、同じ熱量。言葉はいらない。ライブ好きは、リストで分かり合える。そこから友達が増えて、知らなかったアーティストに出会っていく。</p>
+      </div>
+      <div class="pillar" style="--c:var(--blue)">
+        <span class="tag" style="background:var(--blue)">つながるほど、人生が豊かになる</span>
+        <h3>信頼できる仲間から、<br>次の“好き”が流れてくる。</h3>
+        <p>「この人が行くなら、私も気になる」。推しのライブを見逃さない。仲間と現場で熱狂する。余韻を分かち合う。ライブを軸にした、最高の人生を、まるごと支える。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- できること -->
+<section class="feat-sec">
+  <div class="wrap">
+    <div class="eyebrow">ライブリコでできること</div>
+    <h2>行く前の管理も、行った後の思い出も。</h2>
+    <div class="feats">
+      <div class="feat"><div class="ic">🎫</div><div><h4>チケットをステータス管理</h4><p>申込〜当落〜支払〜発券を13ステータスで。期限も開演時間も、もう逃さない。</p></div></div>
+      <div class="feat"><div class="ic">📝</div><div><h4>参戦をまるごと記録</h4><p>セトリ・感想・写真で、その夜の熱を残す。仲間にも見せられる。</p></div></div>
+      <div class="feat"><div class="ic">👥</div><div><h4>仲間とつながる</h4><p>参戦リストを見せ合えば、同じ熱量の仲間と一瞬でつながる。共通ライブもひと目で。</p></div></div>
+      <div class="feat"><div class="ic">🔔</div><div><h4>推しの新公演を先回り</h4><p>好きなアーティストの新しいライブを、いちばん早く教えてくれる。</p></div></div>
+      <div class="feat"><div class="ic">🤖</div><div><h4>AIでラクに登録</h4><p>メールやチケット画像から、AIが公演名・日付・会場を自動で読み取り。入力の手間をなくす。</p></div></div>
+      <div class="feat"><div class="ic">🎪</div><div><h4>フェスも整理できる</h4><p>出演者が多すぎても、お目当て・気になる・新発見で迷わない。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VOC 主役訴求 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">ライブリコが、いちばん大事にすること</div>
+    <h2>“消えない”と、“ラクして自動”。</h2>
+    <div class="voc">
+      <div class="voc-card voc-1">データは、消えない。<span>クラウドに安全に保存。機種変更しても、アプリが変わっても、あなたの参戦の記録はずっと残る。</span></div>
+      <div class="voc-card voc-2">入力は、AIで自動。<span>メールや画像からAIが自動登録。「めんどくさいから続かない」を、なくす。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- はじめ方 -->
+<section id="start" style="padding-top:24px">
+  <div class="wrap">
+    <div class="eyebrow">はじめ方はかんたん</div>
+    <h2>3ステップで、すぐ始まる。</h2>
+    <div class="steps">
+      <div class="step"><h4>Googleでログイン</h4><p>メールアドレスやパスワードの登録は不要。Googleアカウントですぐに始められる。</p></div>
+      <div class="step"><h4>ライブを追加</h4><p>公演名だけでもOK。メールや画像からAIが自動で読み取って登録もできる。</p></div>
+      <div class="step"><h4>記録を楽しむ</h4><p>ステータスを進め、当日を待ち、セトリと感想を残す。仲間とつながる。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- final CTA -->
+<section style="padding-top:10px">
+  <div class="wrap">
+    <div class="final">
+      <h2>ライブを軸に、人生を楽しみ尽くす。</h2>
+      <p>そのライブの全部を、ともだちと楽しみつくす。</p>
+      <div class="cta">
+        <a href="#" class="btn btn-google" id="google-cta">
+          <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.3z"/><path fill="#FBBC05" d="M10.3 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.5 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.3-5.5l-7.5-5.8c-2 1.4-4.7 2.3-7.8 2.3-6.4 0-11.8-3.8-13.7-9.4l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/></svg>
+          Googleではじめる
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-note">ライブリコは、特定のアーティスト・事務所・レコード会社・公式ファンクラブとは関係のない、非公式のファンツールです。</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div class="logo" style="font-size:20px">LiveRico</div>
+      <div class="foot-links">
+        <a href="#">プライバシーポリシー</a>
+        <a href="#">利用規約</a>
+        <a href="#">特定商取引法に基づく表記</a>
+        <a href="mailto:hello@liverico.app">お問い合わせ</a>
+      </div>
+    </div>
+    <p style="margin-top:18px;color:#9aa6bd">© 2026 LiveRico</p>
+  </div>
+</footer>
+</body>
+</html>
