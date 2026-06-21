@@ -42,6 +42,8 @@ a:hover{text-decoration:underline}
 .nav-item:hover{color:var(--text);background:var(--bg2)}
 .nav-item.active{color:var(--navy);border-left-color:var(--gold);background:var(--bg2);font-weight:500}
 .nav-item.active i{opacity:1}
+.b-ok{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b;white-space:nowrap}
+.b-warn{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fdecea;color:#c0392b;white-space:nowrap}
 
 /* Page */
 .page{display:none}
@@ -177,6 +179,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('concept',this)"><i class="ti ti-bulb"></i>コンセプト</div>
       <div class="nav-item" onclick="show('naming',this)"><i class="ti ti-signature"></i>ネーミング検討</div>
       <div class="nav-item" onclick="show('people',this)"><i class="ti ti-users"></i>関係者</div>
+      <div class="nav-item" onclick="show('method',this)"><i class="ti ti-route-2"></i>開発メソッド</div>
       <div class="nav-item" onclick="show('stack',this)"><i class="ti ti-stack-2"></i>技術スタック</div>
       <div class="nav-item" onclick="show('status',this)"><i class="ti ti-tag"></i>ステータス仕様</div>
     </div>
@@ -3083,6 +3086,205 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">⚠️ <b>D-U-N-S番号取得は数週間</b>かかるため、兆候が見えたら申請だけ前倒し。個人で公開済みアプリがある場合は法人へ<b>移管</b>手続きが要る。<br>📌 参考（Apple個人登録の大変さ・内容未取得）：<a href="https://x.com/umino_chibi/status/2035998090600263840" style="color:var(--navy)">x.com/umino_chibi/status/2035998090600263840</a></div>
+      </div>
+    </div>
+
+    <!-- 開発メソッド -->
+    <div id="page-method" class="page">
+      <div class="topbar"><div class="topbar-title">開発メソッド（クロコ × マナス 運用ガイド）</div><span class="topbar-badge">スリーウェイ標準化</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-route-2 hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>林準拠の開発のやり方を、誰でも再現できる形に</h2>
+          <p>「クロコ（ClaudeCode）で仕様・設計・コードを詰める → マナス（Manus）で実装 → 開発サイトに全部記録」。この回し方・課題・対策をまとめ、外部（例：木下家への発注）でも同じやり方・同じ管理で進められるようにする。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> なぜ体系化するか（スリーウェイの狙い）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          スリーウェイの規模で<b>人ごとにバラバラのやり方</b>をすると管理が破綻する。林の今回の開発知見を<b>標準メソッド</b>にして、たとえば木下さんの旦那さんに開発を頼む場合も<b>同じ流儀・同じ管理</b>で回せるようにする。<br>
+          ＝ ディレクション（木下さん）＋ 開発（旦那さん）でも、<b>本ガイドのやり方に乗れば再現できる</b>状態を目指す。専門理論ではなく「<b>AI（クロコ＋マナス）を使った進め方</b>」を共有資産にするのが主眼。
+        </div>
+      </div>
+
+      <!-- ① やり方 -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-guide"></i> ① やり方（標準フロー）</div>
+
+        <div class="card" style="background:linear-gradient(90deg,#e7f1fb,#f3f8ff);border:1px solid #9cc1e8;padding:18px">
+          <div style="font-size:12px;font-weight:700;color:#1a3a52;letter-spacing:.04em;margin-bottom:12px">基本サイクル（クロコ→マナス→記録）</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:stretch">
+            <div style="flex:1;min-width:150px;background:#fff;border:1px solid #cfe0f2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#1a3a52;font-size:13px"><i class="ti ti-message-chatbot"></i> 1. クロコで詰める</div>
+              <div style="font-size:12px;color:#46566b;margin-top:6px;line-height:1.7">戦略・仕様・設計を壁打ち。コードもクロコが書く。意思決定の理由まで言語化。</div>
+            </div>
+            <div style="display:flex;align-items:center;color:#9cc1e8;font-size:20px">→</div>
+            <div style="flex:1;min-width:150px;background:#fff;border:1px solid #cfe0f2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#1a3a52;font-size:13px"><i class="ti ti-file-text"></i> 2. 開発サイトに記録</div>
+              <div style="font-size:12px;color:#46566b;margin-top:6px;line-height:1.7">決定・仕様・指示書・プロンプトを単一HTMLの開発サイトへ。関係者はURLで共有。</div>
+            </div>
+            <div style="display:flex;align-items:center;color:#9cc1e8;font-size:20px">→</div>
+            <div style="flex:1;min-width:150px;background:#fff;border:1px solid #cfe0f2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#1a3a52;font-size:13px"><i class="ti ti-rocket"></i> 3. マナスで実装</div>
+              <div style="font-size:12px;color:#46566b;margin-top:6px;line-height:1.7">クロコが書いた指示書＋コードをそのまま渡す。手戻り・無駄ラリーが減りクレジット節約。</div>
+            </div>
+            <div style="display:flex;align-items:center;color:#9cc1e8;font-size:20px">↺</div>
+            <div style="flex:1;min-width:150px;background:#fff;border:1px solid #cfe0f2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#1a3a52;font-size:13px"><i class="ti ti-checkup-list"></i> 4. 検証・FB→次へ</div>
+              <div style="font-size:12px;color:#46566b;margin-top:6px;line-height:1.7">モニター/フィードバックサイトの声を開発へ還元。解決したらクロコに指示書・プロンプト化させ記録。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px"><i class="ti ti-arrows-exchange"></i> 受け渡しの実例（クロコが指示書＋コードを書く → マナスが一気に実装）</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:stretch">
+            <div style="flex:1;min-width:240px;background:#fbfdff;border:1px solid #cfe0f2;border-radius:10px;padding:14px">
+              <div style="font-size:11px;font-weight:700;color:#1a3a52;margin-bottom:8px"><i class="ti ti-message-chatbot"></i> クロコ（ClaudeCode）が作る指示書</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#46566b;line-height:1.7;background:#fff;border:1px solid #e6eef7;border-radius:6px;padding:10px">
+                【依頼：Gmail取り込みを2段＋増分に】<br>
+                docs/livelog/21…★実装指示の本体<br>
+                tools/gmail_eval/classify.py…一次判定<br>
+                tools/gmail_eval/extract.py…構造化抽出<br>
+                ■ Step1 広い網 / Step2 安いモデル判定 / Step3 抽出<br>
+                ■ 厳守：本文非保存・1人=自分のGmail1本
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9cc1e8;min-width:44px">
+              <i class="ti ti-arrow-right" style="font-size:24px"></i>
+              <span style="font-size:10px;color:#7d8aa0;margin-top:4px;text-align:center">そのまま<br>渡す</span>
+            </div>
+            <div style="flex:1;min-width:240px;background:#f7fbf8;border:1px solid #bfe2cb;border-radius:10px;padding:14px">
+              <div style="font-size:11px;font-weight:700;color:#1b8a4b;margin-bottom:8px"><i class="ti ti-rocket"></i> マナス（Manus）が受領 → 実装</div>
+              <div style="font-size:12px;color:#46566b;line-height:1.8">
+                クロコの指示書＋コードを受けて<b>一気に実装</b>。<br>
+                <span style="display:inline-block;background:#e7f6ec;color:#1b8a4b;font-weight:700;font-size:11px;padding:2px 8px;border-radius:999px;margin-top:4px">＋9,803行 / 手戻り最小</span><br>
+                <span style="font-size:11px;color:#7d8aa0">※ 無駄なラリーが減り、マナスのクレジット消費が大幅に少ない</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#9aa1ad;margin-top:8px">↑ これは実際のやり取りを図にしたもの。実スクショを足したい場合は下の差し込み枠の方法で。</div>
+        </div>
+
+        <div class="card tbl-wrap" style="margin-top:14px"><table>
+          <thead><tr><th>役割分担</th><th>担当</th><th>やること</th></tr></thead>
+          <tbody>
+            <tr><td>戦略立案</td><td><b>GPT</b></td><td>事業戦略・マネタイズ・集客の壁打ち（叩き台）</td></tr>
+            <tr><td>仕様・設計・コード・ドキュメント</td><td><b>クロコ（ClaudeCode）</b></td><td>仕様を詰める／コードを書く／決定を開発サイトに記録／指示書・プロンプト作成</td></tr>
+            <tr><td>実装・デプロイ・ホスティング</td><td><b>マナス（Manus）</b></td><td>クロコの指示書＋コードを受けて一気に実装。アプリを動かす（計算）</td></tr>
+            <tr><td>方針決定・検証・PR・現場知</td><td><b>林（自分）</b></td><td>最終判断／実機検証／拡散・PR／コアユーザー視点（前髪ぱっつん少年が試金石）</td></tr>
+            <tr><td>技術顧問（重要局面のチェック）</td><td><b>門倉さん</b></td><td>大きな影響のある判断のレビュー。開発サイト/GitHubを時間あるとき覗く</td></tr>
+            <tr><td>クレジット管理</td><td><b>加藤さん</b></td><td>マナス/クロコのチャージ・管理。打ち合わせ調整</td></tr>
+            <tr><td>モニター（現場ユーザー視点）</td><td><b>俵山さん ほか</b></td><td>実ユーザーとしてテスト。新ベンダー/取りこぼしの発見源</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="card-grid" style="margin-top:14px">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-stack-2"></i> 塊（かたまり）開発 ※林命名</div><div class="mini-items">
+            <div class="mini-item">関連タスクをまとめて1単位で開発</div>
+            <div class="mini-item">手戻りを減らす／無駄なクレジット消費を抑える</div>
+            <div class="mini-item">クロコで設計を固めてからマナスに一括投入</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-coin"></i> クレジット節約の要</div><div class="mini-items">
+            <div class="mini-item">コードを先にクロコが書く＝マナスのラリー激減</div>
+            <div class="mini-item">仕様を文章＋コードで確定してから渡す</div>
+            <div class="mini-item">マナス同士の引越しはスムーズ（環境移行知見）</div>
+          </div></div>
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-database-cog"></i> データは自分所有</div><div class="mini-items">
+            <div class="mini-item">DBは外部（TiDB Serverless）＝Manusロックイン回避</div>
+            <div class="mini-item">Manusは計算だけ／コードはGitHub／認証はGoogle</div>
+            <div class="mini-item">本番/開発DB分離・dev未設定なら起動停止（誤接続防止）</div>
+          </div></div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px"><i class="ti ti-photo"></i> 図・スクショの差し込み枠（任意）</div>
+          <div style="border:1px dashed #c9cdd6;border-radius:8px;padding:18px;text-align:center;color:#9aa1ad;font-size:12px;line-height:1.8">
+            ［ここに画像］　例：マナスのCloud Computer画面／クロコ→マナスの実際のやり取り<br>
+            入れ方 → <code>docs/livelog-site/assets/</code> に画像をコミットし、絶対rawURLで &lt;img&gt; 参照<br>
+            <span style="color:#c0392b">相対パス（assets/x.png）はhtmlpreviewで崩れるので使わない</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 課題 -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> ② 課題（実際に詰まった/気にしている点）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>課題</th><th>内容</th><th>現状</th></tr></thead>
+          <tbody>
+            <tr><td>素人が有料サービスを作るリスク</td><td>知見・経験が乏しいまま有料展開。<b>一発アウトの事故</b>（データ消失・課金・個人情報）を本人の努力だけでは防ぎきれない</td><td><span class="b-warn">継続課題</span></td></tr>
+            <tr><td>データ消失＝サービス死</td><td>競合livelogは「手入力データが消えた」で一気に死んでいる。<b>「消えない」は地味だが最重要</b></td><td><span class="b-ok">外部DB+分離で対策中</span></td></tr>
+            <tr><td>Manusホスティングの起動待ち/処理オーバー</td><td>門倉さん指摘。理屈上ありうるが、ライブアプリでは現状未発生（理由は未解明）。一斉アクセス時の挙動も未検証</td><td><span class="b-warn">未検証</span></td></tr>
+            <tr><td>セットリスト自動取得が非正攻法</td><td>skiyaki / livefans を<b>スクレイピング</b>（API無し）。面白さの源泉だが規約・仕様変更リスク。正攻法（API交渉）か自前（手動登録）が必要</td><td><span class="b-warn">要検討</span></td></tr>
+            <tr><td>外部API/送客の交渉力不足</td><td>日本の音楽系はAPIが少ない。チケぴ等は現時点で門前払いの可能性。資金力的に交渉カードが弱い</td><td><span class="b-warn">待ち/構想</span></td></tr>
+            <tr><td>デザイン/アートワークの弱さ</td><td>最大ライバルlivenoteはデザインが秀逸＝テンションに直結。クロコは「実画面を見ていない」ため色/UIがズレる</td><td><span class="b-warn">デザイナー不在</span></td></tr>
+            <tr><td>レビュー体制が薄い</td><td>チェック/テスト保証会社は割高で資本的に使えない。<b>レビューできるのは生成AIと門倉さんだけ</b></td><td><span class="b-warn">体制課題</span></td></tr>
+            <tr><td>コスト構造（買い切り vs サブスク）</td><td>5000人規模のランニングコスト次第で買い切り(¥2,000)はリスク。毎月一定数の販売も必要</td><td><span class="b-ok">2階建てで対応</span></td></tr>
+            <tr><td>クロコの利用上限</td><td>使い込むと上限到達。プラン見直しの余地</td><td><span class="b-ok">運用で対応</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- ③ 対策 -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-check"></i> ③ 対策（標準ルール化）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>対策</th><th>中身</th></tr></thead>
+          <tbody>
+            <tr><td>決定は必ず開発サイトに記録</td><td>仕様・指示書・プロンプト・決定理由を単一HTMLに集約。関係者はURLで共有、門倉さんが時間あるとき覗ける状態に</td></tr>
+            <tr><td>重要局面は門倉さんに報告</td><td>基本は自分の判断でどんどん進める。<b>大きな影響がありそうな所だけ</b>事前確認。スピードを止めない（後戻りはクレジット消費だけ）</td></tr>
+            <tr><td>データ自己所有・ロックイン回避</td><td>外部DB（TiDB Serverless）＋本番/開発分離＋devフォールバック禁止（未設定なら起動停止）。本番適用はPublish時＋事前バックアップ</td></tr>
+            <tr><td>本文非保存などプライバシー原則</td><td>Gmail本文はDBに保存しない（messageId＋構造化結果＋判定のみ）。OAuthはreadonly・トークン暗号化</td></tr>
+            <tr><td>外部サービスは実リスト検証</td><td>アー写/メタデータAPIは<b>林の実参戦アーティスト実リスト</b>でカバー率検証してから採用（前髪ぱっつん少年が試金石）。Apple Music必須候補</td></tr>
+            <tr><td>重い処理は2段＋増分</td><td>例：Gmail取込は「広い網→安いモデル一次判定→高いモデルで抽出」＋初回のみ全期間/以降は増分。コストを読める形に</td></tr>
+            <tr><td>評価ハーネスで回帰</td><td>本番移植前に <code>tools/gmail_eval</code> でゴールデン採点。仕様変更時も回帰で品質担保</td></tr>
+            <tr><td>非正攻法は正攻法と並行で逃げ道確保</td><td>スクレイピングは当面の手段と割り切りつつ、API交渉・自前DB（コミュニティの利他）・Google常時音楽検索・サービス橋渡し(A→B→C)を並行検討</td></tr>
+            <tr><td>コードレビューはGitHubで共有</td><td>非公開リポジトリに全コードをアップ（<a href="https://github.com/eiji10hama-netizen/livelog-dev-docs" style="color:var(--navy)">livelog-dev-docs</a>）。門倉さんが閲覧可。アップは1分以内で低負荷</td></tr>
+            <tr><td>マネタイズは2階建て</td><td>買い切り¥2,000で「売れた数」を積む＋AI機能はサブスク。将来チケットサイト送客でマージン</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- ④ モニター/テスト -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users-group"></i> ④ モニター運用・テスト計画（セットで整理）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          現場好きの<b>ライブ系モニターを数人</b>（俵山さん＋あと3人ほど）。謝礼は<b>クオカード¥500</b>程度を想定（全員に飯はしんどい）。<br>
+          加藤さん・牧野さん向けには<b>ユーザー目線ではなく動作検証用の資料</b>を別途用意。テストページ（テスト項目）も<b>開発とセットでクロコに作らせる</b>。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>テストの2系統（本文非保存の制約で分ける）</th><th>やること</th></tr></thead>
+          <tbody>
+            <tr><td><b>① 林本人</b>（本文も見られる・実データ豊富）＝チューニング母艦</td><td>recall（漏れ）・precision（誤取込）の両方を実測。取りこぼしの実物をゴールデン化して回帰</td></tr>
+            <tr><td><b>② 他モニター</b>（本文非保存・覗けない）</td><td>連携が通るか＋「取り込まれない/これは違う」報告（差出人＋件名のみ）を受ける。抽出の正しさは本人がプレビュー確認</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">
+          <b>フィードバック収集：</b><a href="https://livelogapp-nhdbwh2e.manus.space/admin/feedback" style="color:var(--navy)">admin/feedback</a>（Manus側）で報告を集約 → 開発に還元。記録は<b>送信元＋件名の最小メタデータのみ</b>（本文は集めない）。詳細: <code>docs/livelog/20_monitor_briefing_and_feedback.md</code>
+        </div>
+      </div>
+
+      <!-- ⑤ チェックリスト -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checklist"></i> ⑤ 新しい人/外注に渡す「これだけ守って」チェックリスト</div>
+        <div class="card" style="font-size:13px;color:var(--text);line-height:2">
+          ☐ <b>クロコで仕様・設計・コードを固めてから</b>マナスに渡す（いきなり実装させない＝クレジット節約）<br>
+          ☐ <b>決定・指示書・プロンプトは必ず開発サイトに記録</b>（口頭・チャットで終わらせない）<br>
+          ☐ <b>データは自分所有の外部DB</b>・本番/開発分離・dev未設定なら起動停止<br>
+          ☐ <b>本番適用はPublish時＋事前バックアップ</b>（「消えない」を死守）<br>
+          ☐ <b>プライバシー原則</b>（Gmail本文非保存・トークン暗号化・OAuth readonly）<br>
+          ☐ <b>外部API/サービスは実参戦リストでカバー率検証</b>してから採用（前髪ぱっつん少年が試金石／Apple Music必須）<br>
+          ☐ <b>重い処理は2段＋増分</b>でコストを読める形に<br>
+          ☐ <b>本番移植前に評価ハーネスで回帰</b>（tools/gmail_eval）<br>
+          ☐ <b>大きな影響のある判断は門倉さんに事前報告</b>（それ以外はスピード優先でどんどん進める）<br>
+          ☐ <b>コードはGitHub非公開リポジトリで共有</b>しレビュー可能に<br>
+          ☐ <b>選択肢を出すときは推奨＋理由を先に</b>（薄い一般論で出さない／思いを起点に）
+        </div>
+        <div class="card" style="margin-top:10px;font-size:12px;color:var(--text2);line-height:1.8">
+          <b>林のスタンス（前提として共有）：</b>開発自体が楽しく、他サービスを凌駕する気でいる。弱気ではなく<b>限りなく前向きだからこそ</b>、一発アウトの事故だけは避けたい。素人の割り切りとスピードを是としつつ、重要局面はAI（クロコ）と門倉さんのレビューで守る。チーム（同じテンションで磨ける仲間）は欲しい＝使えるネットワークはどんどん投下する。
+        </div>
       </div>
     </div>
 
