@@ -3066,6 +3066,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-flask"></i> 公式サイトAI検索：Tavily実リスト試し打ち＋確定前の追試方針（2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>Manusが林の実アー8組で試し打ち：</b>自動判定ヒット率 <b>4〜5/8（50〜63%）</b>。✅ロクデナシ/Aooo(レーベル公式)/紫今/ポップしなないで ／ ❌前髪ぱっつん少年(公式HP無・Eggs/Spotify/ぴあのみ)・ずっと真夜中(zutomayo.netが4位に埋もれ未選択)・アザミ(同名の居酒屋を誤判定) ／ △meiyo(ショップ誤選択)。<br>
+          <b>分析（重要）：</b>失敗の大半は<b>「インデックス欠け」ではなく「結果に在るのに選べていない」</b>＝<b>LLM選別前の素のランキングで測れている</b>疑い。zutomayo.net/meiyoはLLM選別で拾える／アザミは「アーティスト/バンド」付与の曖昧さ回避で改善。真のインデックス欠けは<b>前髪ぱっつん少年のみ</b>（＝コアユーザーの試金石）。<br>
+          <b>確定前にやる追試【方針】：</b>①仕様どおり「検索→<b>LLMが全候補から選別</b>」で測り直す ②一般名は曖昧さ回避 ③<b>公式HP無しはX(旧Twitter)公式をフォールバックとして正解に含める</b>（前髪ぱっつん少年を救えるか）④<b>Google CSE</b>でも同リストを測り比較表 ⑤比較表を見て採用APIを確定（前髪ぱっつん少年最重視）。<br>
+          <b>API比較（机上）：</b>Tavily(無料1,000/月・クレカ不要・AI向け)／Brave($5/月)／Google CSE(100/日無料・日本語カバー最強・設定複雑)。Manus組込検索は無し＝外部API必須。<b>採用は実測の比較表で決める（机上で確定しない）。</b>詳細: <code>docs/livelog/27_official_site_ai_search.md</code>。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-world-search"></i> 公式サイトAI検索を作り直し（実Web検索グラウンディング・2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>問題：</b>AI検索が外れる。原因は<b>LLMが実検索せずURLを“推測”</b>＝存在しない/誤URLを創作。とくに<b>マイナーはモデルの記憶に無く全滅</b>（前髪ぱっつん少年系）。<br>
