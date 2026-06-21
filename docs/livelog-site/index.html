@@ -3517,6 +3517,7 @@ function show(id, el) {
     });
   }
   try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
+  if (id === 'feedback' && !FB_LOADED) { try { loadFeedback(); } catch(e){} }
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
