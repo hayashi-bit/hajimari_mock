@@ -1690,6 +1690,29 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-calendar-stats"></i> 最新：リリース計画（モニター→修正→有料）<span style="font-weight:400;color:var(--text3);font-size:12px;margin-left:6px">2026-06-21・doc25</span></div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          <b>ゴール：7月＝有料プレセールで「実際に課金が動くか」を検証。</b>機能を盛らず「課金実証に必要なもの＋公開できる最低限」だけ作り、まずモニターでバグ出し→修正→有料。<b>致命バグ0までは有料にしない。</b>
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>フェーズ</th><th>目安</th><th>内容</th><th>ゲート</th></tr></thead>
+          <tbody>
+            <tr><td><b>P0 安定化</b></td><td>6/21–6/27</td><td>リブランド完了／Gmail仕上げ(E2E→本番デプロイ→バックフィル→微調整)／JSON恒久対策／公開URLランダム／モバイルP1／FB導線／プラポリ・規約</td><td>致命バグなし・Gmailが本番で通る</td></tr>
+            <tr><td><b>P1 モニター5人</b></td><td>6/28–7/4</td><td>5人に配布→Gmail連携→プレビュー確認→フィードバック回収（開発サイトで集約）</td><td>1週間運用しバグ収集</td></tr>
+            <tr><td><b>P2 修正＋課金準備</b></td><td>7/5–7/8</td><td>致命バグ潰す＋Stripe(無料+②¥300)＋フリーミアム上限＋admin最小＋LP</td><td>致命バグ0・課金フロー通る</td></tr>
+            <tr><td><b>P3 有料プレセール</b></td><td>7/9〜</td><td>価格掲示→先行課金で「金が動くか」検証→20–30人へ</td><td>実購入が出る</td></tr>
+            <tr><td>P4 ビジュアル/予習<br><small>Apple API来たら</small></td><td>有料化後</td><td>アー写→参加アーティスト/出演者→ブローシャー/チラシ/写真→予習プレイリスト</td><td>—</td></tr>
+            <tr><td>P5 発見/拡散/継続</td><td>その先</td><td>未来ニュース(③AI)／SNS映え／共通バッジ／AIチャットB／コミュニティ</td><td>—</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          <b>🟥 絶対要る（P0–P3＝有料検証まで）：</b>ログイン／記録管理(13ステータス・期限)／Gmail取込／画像AI取込／友達・公開プロフィール・セトリ・メモ／課金(無料+②)・上限・admin／LP・オンボ・モバイルP1・リブランド・プラポリ規約・公開URLランダム・JSON恒久。<br>
+          <b>🟦 必ずやる・でも後（ビジョンの核）：</b>アー写・参加アーティスト/出演者・チラシ/写真・予習プレイリスト（=P4・Apple API依存）／未来ニュース・SNS映え・共通バッジ・AIチャットB・コミュニティ（=P5）。<br>
+          <b>原則：</b>有料検証まではビジュアル/発見層を入れない。だが“忘れる”のではなくP4/P5に必ず置く。Apple Music APIが来たらP4クラスタが一気に解放。詳細: <code>docs/livelog/25_release_plan.md</code>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-player-play"></i> 名前を待たず「今すぐ進められる」こと（並行）</div>
         <div class="card">
           <p style="font-size:13px;color:var(--text2)">名前は検討中だが、<b style="color:var(--navy)">大半の作業は名前に依存しない</b>。待つのはドメインと最終リネームだけ。以下を並行で進める。</p>
