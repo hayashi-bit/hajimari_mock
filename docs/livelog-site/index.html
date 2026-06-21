@@ -3108,6 +3108,76 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
       </div>
 
+      <!-- 用語ミニ辞書（専門用語を噛み砕く） -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-vocabulary"></i> はじめに：登場人物と用語（なるべく噛み砕いて）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          このガイドの方針：<b>専門用語はできるだけ噛み砕いて書く</b>。難しい言葉が出たら、その場でやさしく言い換える。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>呼び名</th><th>正体</th><th>かみ砕くと</th></tr></thead>
+          <tbody>
+            <tr><td><b>クロコ</b></td><td>ClaudeCode（クロード）</td><td>仕様・設計を一緒に考え、コードや指示書まで書いてくれる相棒AI</td></tr>
+            <tr><td><b>マナス</b></td><td>Manus</td><td>クロコが書いた指示どおりに、実際にアプリを作って動かすAI</td></tr>
+            <tr><td><b>ジピ</b></td><td>ChatGPT（GPT）</td><td>事業の戦略や売り方を壁打ちする相談相手AI</td></tr>
+            <tr><td><b>林（自分）</b></td><td>—</td><td>方針を決め、実機で確かめ、現場感とPRを担う人（最終決定者）</td></tr>
+            <tr><td>リポジトリ</td><td>GitHub</td><td>コードと記録をぜんぶ置いておく「保管庫」</td></tr>
+            <tr><td>デプロイ／ホスティング</td><td>—</td><td>作ったアプリをネットに公開して動かすこと</td></tr>
+            <tr><td>DB</td><td>データベース</td><td>ユーザーの記録（参戦履歴など）をためる入れ物</td></tr>
+            <tr><td>指示書＋プロンプト</td><td>—</td><td>マナスに「こう作って」と渡す作業指示と、AIへの命令文</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- 進め方の最初：役割分担＋ヒアリング -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users-plus"></i> 最初にやったこと（役割分担とリテラシーの把握）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          いきなり作り始めず、<b>まず「誰が何をやるか（役割分担）」をクロコに整理させた</b>。クロコ・マナス・ジピ・林の4者で、得意なことを割り当てて全体像を先に固めた。
+        </div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.9">
+          さらに重要なのが、<b>クロコとマナスから林に“ヒアリング”してもらった</b>こと。質問に答える形で、<b>林の知識・技術レベル（リテラシー）を先に測ってもらった</b>。<br>
+          → これにより、AI側が「どこまで噛み砕くべきか」「どこは任せて良いか」を理解した状態でスタートできた。<b>素人が一人で抱え込まず、AIに自分の状態を把握させてから進める</b>のがこのやり方の起点。
+        </div>
+      </div>
+
+      <!-- メリット：リテラシーが低くても成立する理由 -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-thumb-up"></i> この進め方のメリット（リテラシーが低くても成立する）</div>
+        <div class="card" style="background:linear-gradient(90deg,#fff7e6,#fffdf7);border:1px solid #e8d4a0;font-size:13px;color:#7a5b16;line-height:1.9">
+          <b>前提：</b>クロコは林の技術リテラシーが高くないことを把握している。だが、<b>それを補って余りあるメリットがこのやり方にはある</b>。だからこそ素人でも有料サービスを形にできている。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>メリット</th><th>中身</th></tr></thead>
+          <tbody>
+            <tr><td>知識ギャップをAIが埋める</td><td>分からない用語や概念はクロコがその場で噛み砕く。<b>知らない＝止まる、にならない</b></td></tr>
+            <tr><td>設定・雑務はクロコに任せる</td><td>ページ作成・ドキュメント整形・GitHub操作・クエリ作成など<b>自動でできることはできるだけクロコにやらせる</b>。林は判断と現場感に集中</td></tr>
+            <tr><td>判断を“推奨＋理由”で受け取れる</td><td>選択肢は必ず<b>推奨と理由とセット</b>で出るので、素人でも根拠を持って決められる（迷子にならない）</td></tr>
+            <tr><td>手戻りがクレジットだけ</td><td>人間開発と違い後戻りの工数が無い。<b>どんどん試して直せる</b>＝スピードが武器</td></tr>
+            <tr><td>コードを先に書くから安い・速い</td><td>クロコがコードまで書いてからマナスへ＝無駄なラリーが消え<b>クレジット大幅節約</b>、マナスもやりやすい</td></tr>
+            <tr><td>全部記録されるからレビューできる</td><td>決定・指示が開発サイト/GitHubに残るので、<b>門倉さん（技術顧問）が要所だけ見て守れる</b></td></tr>
+            <tr><td>現場知とAIの分業</td><td>技術はAI、コアユーザー感覚（前髪ぱっつん少年が取れるか等）は林。<b>互いの弱みを補完</b></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- クロコ運用ルール（絶対遵守） -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-gavel"></i> クロコの運用ルール（絶対遵守）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>ルール</th><th>なぜ</th></tr></thead>
+          <tbody>
+            <tr><td><b>選択肢を出すときは「推奨」と「理由」を必ずセットで、先に書く</b></td><td>素人でも根拠で決められる。推奨なしで並べonly禁止（ラベル末尾に「（推奨）」）</td></tr>
+            <tr><td><b>専門用語はできるだけ噛み砕く</b></td><td>知識差で止まらないため。難語は即やさしく言い換える</td></tr>
+            <tr><td><b>自動でできる設定・雑務はできるだけクロコがやる</b></td><td>林は判断と現場感に集中。手数を減らす</td></tr>
+            <tr><td><b>クロコ・マナスは「開発パートナー」。林の“思い”を起点に動く</b></td><td>薄い一般論を出さない。コンセプト資料を読み直してから書く</td></tr>
+            <tr><td><b>外部サービスは林の実参戦リストでカバー率検証してから採用</b></td><td>コアユーザーはマイナー現場好き。前髪ぱっつん少年が試金石／Apple Music必須候補</td></tr>
+            <tr><td><b>「記録しておいて」は必ず開発サイトに反映</b></td><td>口頭・チャットで消えない。誰でも後から追える</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:12px;color:var(--text2)">※ これらは林の明示指示による絶対ルール（<code>CLAUDE.md</code>）。セッションをまたいでも適用。</div>
+      </div>
+
       <!-- ① やり方 -->
       <div class="section">
         <div class="section-title"><i class="ti ti-arrow-guide"></i> ① やり方（標準フロー）</div>
@@ -3181,10 +3251,11 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </table></div>
 
         <div class="card-grid" style="margin-top:14px">
-          <div class="mini-card"><div class="mini-label"><i class="ti ti-stack-2"></i> 塊（かたまり）開発 ※林命名</div><div class="mini-items">
+          <div class="mini-card"><div class="mini-label"><i class="ti ti-stack-2"></i> <a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy);text-decoration:underline">塊（かたまり）開発</a> ※林命名</div><div class="mini-items">
             <div class="mini-item">関連タスクをまとめて1単位で開発</div>
             <div class="mini-item">手戻りを減らす／無駄なクレジット消費を抑える</div>
             <div class="mini-item">クロコで設計を固めてからマナスに一括投入</div>
+            <div class="mini-item"><a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy)">→ 塊1〜6の実物（実装チェックリスト）</a></div>
           </div></div>
           <div class="mini-card"><div class="mini-label"><i class="ti ti-coin"></i> クレジット節約の要</div><div class="mini-items">
             <div class="mini-item">コードを先にクロコが書く＝マナスのラリー激減</div>
