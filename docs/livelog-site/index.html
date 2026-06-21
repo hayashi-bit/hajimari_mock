@@ -3046,6 +3046,10 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           → 「新サブドメインが出るたび手作業」を恒久化しない。AIで吸収する設計に寄せる。詳細: <code>docs/livelog/19</code>
         </div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          <b>実機実証（2026-06-21）：</b>ベンダー非依存の網で漏れていた2通（MAISONdes未発券・ずとまよ抽選結果）が<b>両方ヒット＝recall確保</b>。一方、宣伝（おまかせエントリー/一般発売/プレリザーブ等）が大量混入し、Gmailの「プロモーションを含めない」でも残る → <b>宣伝除去はLLM判定が必須</b>と確定。<br>
+          <b>実装方針【確定】＝3ステップ：</b>[1]広い網（ベンダー非依存・安い）→[2]安いモデルで一次判定（購入実績かtrue/false・宣伝を弾く）→[3]高いモデルで構造化抽出。＋<b>初回のみ過去5年・以降は新着増分のみ</b>でコスト最小化。本文非保存は維持。Manus実装指示: <code>docs/livelog/21_gmail_two_stage_implementation.md</code>
+        </div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
           <b>他ユーザーから同様の連絡が来たら：</b>コアユーザーは林が使わないベンダーを使う＝<b>新しい漏れの発見源（財産）</b>。本文非保存のため調査は<b>送信元ドメイン＋件名（メタデータ）のみ</b>収集。網漏れ/解析漏れを切り分け→クエリ or fixture 追加→回帰テスト。ユーザーが詰まらないよう<b>手動追加のフォールバック</b>を常備し、チューニングは裏で回す。詳細: <code>docs/livelog/19_gmail_account_scope_spec.md</code>
         </div>
       </div>
