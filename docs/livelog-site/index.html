@@ -3008,6 +3008,25 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-bug"></i> Gmail：取り込み漏れ2通の原因＝ドメイン漏れ＋チューニング方針（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
+          実機で MAISONdes（e+）と ずとまよ（ぴあ）の2通が<b>取り込まれない</b>と判明。<b>原因はLLM抽出ではなく検索クエリ（網）側</b>：送信元が <code>eplus.co.jp</code> / <code>pia.co.jp</code> で、クエリは <code>eplus.jp</code> / <code>pia.jp</code> しか持たず別ドメイン扱いで漏れていた（①は件名「未発券」も未対応）。<br>
+          <b>対応：</b>from に <code>eplus.co.jp</code>/<code>pia.co.jp</code>、subject に「未発券」を追加。2通は <code>tools/gmail_eval</code> に golden 追加済み。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>恒久ルール：漏れは2段階を切り分けてから直す</th></tr></thead>
+          <tbody>
+            <tr><td><b>① 網（Gmail検索クエリ）漏れ</b>＝検索にヒットしていない → from/subject を追加。<b>Gmail検索窓で実証＋既存が減らない回帰確認</b>。eval harnessでは検出不可。</td></tr>
+            <tr><td><b>② 解析（LLM抽出）漏れ/誤り</b>＝拾えたが構造化ミス or 誤除外 → SYSTEMプロンプト調整。<b>実例を fixtures.py に golden 追加 → run_eval で回帰防止</b>。</td></tr>
+            <tr><td>方針：個別ドメイン追加の「許可リスト方式」は小規模ベンダーで穴が残る。将来は<b>「網を広く張りLLMでprecision担保（汎用設計）」</b>へ寄せる（コストと両睨み）。</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          <b>他ユーザーから同様の連絡が来たら：</b>コアユーザーは林が使わないベンダーを使う＝<b>新しい漏れの発見源（財産）</b>。本文非保存のため調査は<b>送信元ドメイン＋件名（メタデータ）のみ</b>収集。網漏れ/解析漏れを切り分け→クエリ or fixture 追加→回帰テスト。ユーザーが詰まらないよう<b>手動追加のフォールバック</b>を常備し、チューニングは裏で回す。詳細: <code>docs/livelog/19_gmail_account_scope_spec.md</code>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-user-plus"></i> Gmail連携：403 access_denied の解消＝テストユーザー追加（2026-06-21）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
           林さん以外（例：yukato.1073@gmail.com）が連携で <code>403: access_denied／審査未完了</code> になった。<b>原因＝OAuth同意画面が「テスト中」</b>＝テストユーザー登録済みのGmailしか通らない（意図したテストモード運用の仕様。Google審査なしで最大100人）。<br>

@@ -98,6 +98,60 @@ GOLDEN = [
         },
     },
     {
+        # 2026-06-21 実機で「取り込まれない」と判明した実例①（MAISONdes・未発券リマインド）。
+        # 漏れ原因は抽出ではなく検索クエリ側：①from が eplus.co.jp（クエリは eplus.jp のみ）
+        # ②件名「未発券」が subject 条件に無い。抽出自体は下記のとおり正しく構造化できる。
+        "id": "eplus_unissued_reminder",
+        "subject": "【e+より】《必ずご確認ください》チケット未発券のご案内",
+        "from": "info@eplus.co.jp",
+        "received_at": "2026-06-03T15:18:00+09:00",
+        "body": """＜ チケット発券のご案内 ＞
+お申込みいただいたチケットの公演日が近づいておりますが、チケットが未発券のままとなっております。
+公演名　　　：　MAISONdes LIVE ＃3
+会場名　　　：　ＫＴ Ｚｅｐｐ Ｙｏｋｏｈａｍａ
+公演日時　　：　2026/06/06(土)  17：00開場 18：00開演
+席種・料金　：　１Ｆスタンディング \\6,800×2枚[チケット料金]＋\\550×2枚[サービス料]
+発券枚数　　：　2
+店頭発券手数料　：　\\330
+発券期間　：　2026/05/30(土) 14:00　〜　2026/06/07(日) 21:00
+払込票番号：　XXXXXXXXXXXX
+ファミリーマート店舗にて、次の手順でお手続きください。""",
+        "expect": {
+            "isTicketRelated": True, "statusHint": "print_pending",
+            "ticketFormat": "paper", "title": "MAISONdes LIVE ＃3",
+            "venue": "KT Zepp Yokohama", "prefecture": "神奈川県",
+            "liveDate": "2026-06-06", "startTime": "18:00", "ticketCount": 2,
+            "ticketingDeadline_has": "2026-06-07",
+        },
+    },
+    {
+        # 2026-06-21 実機で「取り込まれない」と判明した実例②（ずとまよ・抽選結果/第5希望当選）。
+        # 漏れ原因は検索クエリ側：from が pia.co.jp（クエリは pia.jp / mp.pia.jp のみ）。
+        # 件名「抽選結果」は条件にあるため、ドメイン追加だけで拾える。
+        "id": "pia_zutomayo_win",
+        "subject": "抽選結果のお知らせ / Lottery Results［ずっと真夜中でいいのに。〔東京・神奈川・大阪・兵庫〕※セブン-イレブン先行］",
+        "from": "members_info@pia.co.jp",
+        "received_at": "2026-02-07T18:09:00+09:00",
+        "body": """お申し込みいただいた以下のチケットのご用意ができましたのでお知らせいたします。
+■抽選結果 ずっと真夜中でいいのに。〔東京・神奈川・大阪・兵庫〕※セブン-イレブン先行
+＜第1希望＞ ご用意できませんでした
+＜第5希望＞ 当選
+払込票番号：XXXX-XXXX-XXXXX
+公演名： ずっと真夜中でいいのに。
+公演日時： 2026年6月2日(火) 19:00開演
+会場名： Ｋアリーナ横浜(神奈川県)
+席種・枚数： 指定席 9,900円 1枚
+■料金明細 合計金額： 計 11,385円
+■決済方法 セブン-イレブンでお支払い
+支払期限：2026年2月10日(火) 23:59""",
+        "expect": {
+            "isTicketRelated": True, "statusHint": "payment_pending",
+            "title": "ずっと真夜中でいいのに。", "venue": "Kアリーナ横浜",
+            "prefecture": "神奈川県", "liveDate": "2026-06-02", "startTime": "19:00",
+            "ticketCount": 1, "price": 11385, "paymentDeadline_has": "2026-02-10",
+        },
+    },
+    {
         "id": "eplus_baseball_promo",
         "subject": "【WEB限定】2025東京ドーム巨人戦・セゾンカード会員さま限定先行受付",
         "from": "info@eplus.co.jp",
