@@ -1,0 +1,37 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff6f0"/>
+      <stop offset="1" stop-color="#ffeef4"/>
+    </linearGradient>
+    <linearGradient id="word" x1="380" y1="250" x2="820" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff3d8b"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="980" y1="60" x2="1140" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb24d"/>
+      <stop offset="1" stop-color="#ff3d8b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- small brand icon top-right -->
+  <rect x="980" y="60" width="160" height="160" rx="40" fill="url(#tile)"/>
+  <g fill="#ffffff">
+    <rect x="1028" y="92" width="30" height="100" rx="12"/>
+    <rect x="1028" y="162" width="74" height="30" rx="12"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="600" y="300" text-anchor="middle" font-family="'Arial Rounded MT Bold','Hiragino Sans',sans-serif" font-size="150" font-weight="800" fill="url(#word)" letter-spacing="2">LiveRico</text>
+  <text x="600" y="360" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="40" font-weight="700" fill="#ff5b8a" letter-spacing="10">ライブリコ</text>
+
+  <!-- catchphrase -->
+  <text x="600" y="450" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="44" font-weight="700" fill="#3a3a44">そのライブの全部を、ともだちと楽しみつくす。</text>
+
+  <!-- subtle sparkles -->
+  <path d="M180 160 l11 26 26 11 -26 11 -11 26 -11 -26 -26 -11 26 -11 z" fill="#ff5b8a" opacity="0.8"/>
+  <path d="M150 470 l8 18 18 8 -18 8 -8 18 -8 -18 -18 -8 18 -8 z" fill="#ffb24d" opacity="0.85"/>
+  <path d="M1040 470 l8 18 18 8 -18 8 -8 18 -8 -18 -18 -8 18 -8 z" fill="#ffd24d" opacity="0.9"/>
+</svg>
