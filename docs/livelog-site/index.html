@@ -3008,6 +3008,22 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-clipboard-check"></i> Gmail：ユーザー別テスト方法＋モニター連絡＋feedback記録仕様（2026-06-21）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th colspan="2">テスト方法（本文非保存の制約でユーザーを2分）</th></tr></thead>
+          <tbody>
+            <tr><td><b>① 林本人</b>（自分のGmail・本文可視・304コーパス）＝<b>チューニング母艦</b></td><td>網漏れ=検索窓で現行/新クエリの件数差・実物比較／解析漏れ=fixtures.pyにgolden追加→run_eval回帰／回帰=既存件数が減らない確認／コスト=候補件数でLLM呼び出し試算</td></tr>
+            <tr><td><b>② 他テストユーザー</b>（本文非保存・覗けない）＝<b>連携可否＋報告受け口に徹する</b></td><td>連携可否=403が出ないか／漏れ発見=本人報告（送信元＋件名のみ・本文集めない）／切り分け=①の環境で再現→網漏れか解析漏れか／救済=手動追加フォールバック／検証の限界=抽出の正しさは本人がプレビュー確認</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.8">
+          要点：<b>①で“仕組みの正しさ”を作り込み、②は“連携可否＋新ベンダー報告”に徹する</b>（②で精密な抽出検証は本文非保存と衝突＝やらない）。<br>
+          <b>モニター連絡文（コピー用）</b>と <b>feedback画面の記録仕様</b>（差出人＋件名の最小メタデータのみ保存・本文は保存しない）は <code>docs/livelog/20_monitor_briefing_and_feedback.md</code> に格納。<br>
+          ※ admin/feedback（<code>livelogapp-…manus.space/admin/feedback</code>）はManus側実装。記録フィールド：報告種別/差出人/件名/公演名(任意)/メモ/報告者/日時/ステージ判定/対応ステータス。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bug"></i> Gmail：取り込み漏れ2通の原因＝ドメイン漏れ＋チューニング方針（2026-06-21）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.8">
           実機で MAISONdes（e+）と ずとまよ（ぴあ）の2通が<b>取り込まれない</b>と判明。<b>原因はLLM抽出ではなく検索クエリ（網）側</b>：送信元が <code>eplus.co.jp</code> / <code>pia.co.jp</code> で、クエリは <code>eplus.jp</code> / <code>pia.jp</code> しか持たず別ドメイン扱いで漏れていた（①は件名「未発券」も未対応）。<br>
