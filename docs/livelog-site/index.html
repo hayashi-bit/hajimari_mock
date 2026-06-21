@@ -3001,6 +3001,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-refresh"></i> セッション継続性の仕組み＋林の人物像メモ（2026-06-21）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>結論：クロコは毎回まっさらで起動し、引き継がれるのは「リポジトリに記録した文書」だけ。</b>過去セッションのチャット生ログは自動では入らない。だから「記録しておいて＝開発サイト/livelogに反映」ルールが継続性の生命線。<br>
+          <b>① 生ログの引き継ぎ方針＝A主・B従：</b>A=会話の要点（決定/理由/経緯）をlivelogに文書化（要約のほうが次のクロコは前提に立ちやすい）。B=重要な往復だけ抜粋引用。<b>生ログ全文のべた保存はしない</b>（ノイズ過多＋本文非保存ポリシーと衝突）。<br>
+          <b>② 林の人物像も文書化すれば引き継げる：</b>現場主義（実参戦リストで検証・前髪ぱっつん少年が試金石）／薄い一般論を嫌う／選択肢は推奨＋理由を先に／過去の失敗を仕組みで潰す（Apple Music是正→ルール化）／プライバシー厳格／専門用語は噛み砕く。詳細: <code>docs/livelog/22_session_continuity_and_hayashi_persona.md</code>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-rocket"></i> Gmail：2段＋増分の実装完了＋環境/E2E方針（2026-06-21 夜）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>① 実装完了（ユニット96通過・E2E検証待ち）：</b>Manusが「広い網→Haiku一次判定→Sonnet抽出」＋増分同期(lastSyncAt)＋本文非保存(gmail_analysis_cache)を実装。ゴールデン9通＋増分＋プライバシーのテスト通過。詳細: <code>docs/livelog/21</code><br>
