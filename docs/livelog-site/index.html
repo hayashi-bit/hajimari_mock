@@ -3199,11 +3199,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         </div>
 
         <div class="card" style="margin-top:14px">
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px"><i class="ti ti-photo"></i> 図・スクショの差し込み枠（任意）</div>
-          <div style="border:1px dashed #c9cdd6;border-radius:8px;padding:18px;text-align:center;color:#9aa1ad;font-size:12px;line-height:1.8">
-            ［ここに画像］　例：マナスのCloud Computer画面／クロコ→マナスの実際のやり取り<br>
-            入れ方 → <code>docs/livelog-site/assets/</code> に画像をコミットし、絶対rawURLで &lt;img&gt; 参照<br>
-            <span style="color:#c0392b">相対パス（assets/x.png）はhtmlpreviewで崩れるので使わない</span>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px"><i class="ti ti-photo"></i> 実例：決定・仕様をすべて記録する（GitHub上のドキュメント）</div>
+          <img src="https://raw.githubusercontent.com/hayashi-bit/hajimari_mock/claude/vibrant-meitner-tbc76w/docs/livelog-site/assets/screencapture-github-hayashi-bit-hajimari-mock-blob-claude-vibrant-meitner-tbc76w-docs-livelog-19-gmail-account-scope-spec-md-2026-06-21-16_11_20.png"
+               alt="クロコが書いた仕様・Manus指示をGitHubに記録している実例（doc19）"
+               style="max-width:100%;border:1px solid #e6eef7;border-radius:8px;display:block">
+          <div style="font-size:11px;color:#7d8aa0;margin-top:8px;line-height:1.7">
+            クロコが詰めた「仕様・Manusへの指示・決定理由」を、GitHub＋開発サイトに残す。誰でも後から追え、門倉さんも時間あるとき覗ける。<br>
+            <span style="color:#9aa1ad">画像の追加方法：<code>docs/livelog-site/assets/</code> にコミット → 絶対rawURLで &lt;img&gt; 参照（相対パスはhtmlpreviewで崩れる）</span>
           </div>
         </div>
       </div>
