@@ -3301,15 +3301,41 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>ルール</th><th>なぜ</th></tr></thead>
           <tbody>
-            <tr><td><b>選択肢を出すときは「推奨」と「理由」を必ずセットで、先に書く</b></td><td>素人でも根拠で決められる。推奨なしで並べonly禁止（ラベル末尾に「（推奨）」）</td></tr>
-            <tr><td><b>専門用語はできるだけ噛み砕く</b></td><td>知識差で止まらないため。難語は即やさしく言い換える</td></tr>
+            <tr><td><b>①選択肢を出すときは「推奨」と「理由」を必ずセットで、先に書く</b></td><td>素人でも根拠で決められる。推奨なしで並べonly禁止（ラベル末尾に「（推奨）」）</td></tr>
+            <tr><td><b>②クロコ・マナスは「開発パートナー」。林の“思い”を起点に動く</b></td><td>薄い一般論を出さない。コンセプト資料を読み直してから書く</td></tr>
+            <tr><td><b>③外部サービスは林の実参戦リストでカバー率検証してから採用</b></td><td>コアユーザーはマイナー現場好き。前髪ぱっつん少年が試金石／Apple Music必須候補</td></tr>
+            <tr><td><b>④二人称「あなた」は使わない。呼ぶ必要がある時だけ「林さん」（呼び捨て禁止）</b></td><td>接し方の統一。普段は主語を省く自然な日本語で</td></tr>
+            <tr><td><b>⑤意味のない繋ぎ文字・埋め草（court等）を出さない</b></td><td>見せる文章は意味のある日本語だけ。独り言・プレースホルダ禁止</td></tr>
+            <tr><td><b>⑥専門用語は「消す」のでなく『用語（かみ砕いた説明）』で両方出す</b></td><td>例「egress（外への通信）」。意味の理解と用語の学習を同時に。ただ言い換えるだけは禁止</td></tr>
+            <tr><td><b>⑦操作の案内は丁寧に・少しずつ。一度に大量に投げない</b></td><td>1ステップずつ／今いる画面を確認してから次へ／実物に合わせ一点を指す。分からないのは伝え方の問題</td></tr>
             <tr><td><b>自動でできる設定・雑務はできるだけクロコがやる</b></td><td>林は判断と現場感に集中。手数を減らす</td></tr>
-            <tr><td><b>クロコ・マナスは「開発パートナー」。林の“思い”を起点に動く</b></td><td>薄い一般論を出さない。コンセプト資料を読み直してから書く</td></tr>
-            <tr><td><b>外部サービスは林の実参戦リストでカバー率検証してから採用</b></td><td>コアユーザーはマイナー現場好き。前髪ぱっつん少年が試金石／Apple Music必須候補</td></tr>
             <tr><td><b>「記録しておいて」は必ず開発サイトに反映</b></td><td>口頭・チャットで消えない。誰でも後から追える</td></tr>
           </tbody>
         </table></div>
-        <div class="card" style="margin-top:10px;font-size:12px;color:var(--text2)">※ これらは林の明示指示による絶対ルール（<code>CLAUDE.md</code>）。セッションをまたいでも適用。</div>
+        <div class="card" style="margin-top:10px;font-size:12px;color:var(--text2)">※ ①〜⑦は林の明示指示による絶対ルール（<code>CLAUDE.md</code>）。セッションをまたいでも適用。⑤繋ぎ文字禁止・⑥用語かみ砕き併記・⑦丁寧な操作案内は2026-06実運用の教訓から追加。</div>
+      </div>
+
+      <!-- 開発手法：外から本番を機械で検証する（スモーク） -->
+      <div class="section">
+        <div class="section-title"><i class="ti ti-radar"></i> 開発手法：本番の健全性を「外から・機械で」確認する（デプロイ後スモーク）</div>
+        <div class="card" style="background:linear-gradient(90deg,#eef7ff,#f7fbff);border:1px solid #bcdcff;font-size:13px;color:#1a4e7a;line-height:1.9">
+          <b>狙い：</b>マナスが「本番反映済み」と言っても、<b>本当に新ビルドが出ているかは人目では当てにならない</b>（過去に「本番が古いまま＝/u/1が200」で詰まった）。そこで<b>クロコが本番URLに外からアクセスし、機械的に合否を判定する小さなチェック（スモークテスト＝最低限の動作確認）</b>を標準化した。
+        </div>
+        <div class="card tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>要素</th><th>中身（なるべく噛み砕いて）</th></tr></thead>
+          <tbody>
+            <tr><td><b>道具</b></td><td><code>tools/smoke/post_deploy_smoke.sh</code>＝本番に声をかけて返事を採点する小さなプログラム。<code>tools/smoke/README.md</code>＝段取り書（ランブック）</td></tr>
+            <tr><td><b>何を見る</b></td><td>①未登録の<code>/api/*</code>が<b>JSON（機械が読む形式）で404</b>を返すか＝「Unexpected token '&lt;'」エラーの再発防止が効いているか／②連番URL<code>/u/1</code>が人数を露出していないか</td></tr>
+            <tr><td><b>クロコが外から見る前提</b></td><td>egress（外への通信）のallowlist（通っていいサイトの一覧）に<code>liverico.app</code>を追加。これで<b>クロコ自身が本番を検証→報告</b>でき、林の手数が減る。設定は「新しいセッション（新しい会話）から有効」</td></tr>
+            <tr><td><b>SPAの落とし穴</b></td><td>ライブリコはSPA（1枚の入れ物で全ページを切替）。<b>どのURLも一律200を返す</b>ことが多く、<code>/u/1</code>の200だけでは露出と断定できない。→ 存在しないIDと応答を比べ、同じ素通しなら<b>FAILでなくWARN（要手動確認）</b>に。実在データを直接返す時だけFAIL</td></tr>
+            <tr><td><b>判定の出口</b></td><td>FAILが1つでもあれば<b>「古いまま/未反映」として停止</b>（終了コード1）。CI（自動実行の仕組み）にも手動にも使える</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>標準フロー：</b>①マナスが本番公開 → ②クロコがスモークを実走（合格まで①↔②）→ ③Gmail E2E(A)（環境変数を一時的に開発DB＋dev用ログインへ切替→テスト→<b>即戻す・戻し忘れ厳禁</b>）。<br>
+          <b>実績（2026-06-22）：</b>本番公開（CP <code>94714e90</code>）後にクロコが実走し、<b>JSON対策＝PASS（本番で実証）／publicId＝要確認（/u/1が200）</b>を切り分け。＝<b>この手法が機能している証拠</b>。<br>
+          <b>外注時の再現性：</b>本ガイドどおりなら、木下家への発注でも<b>「公開→外部スモークで健全性を機械確認→記録」</b>を同じ流儀で回せる。デプロイの当たり外れを人の勘に頼らない。
+        </div>
       </div>
 
       <!-- ① やり方 -->
