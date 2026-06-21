@@ -221,6 +221,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('dashboard',this)"><i class="ti ti-chart-pie"></i>ダッシュボード構想</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-rocket"></i>リリースまでのTODO</div>
       <div class="nav-item" onclick="show('memolog',this)"><i class="ti ti-clipboard-text"></i>決定・メモログ</div>
+      <div class="nav-item" onclick="show('changelog',this);loadChangelog()"><i class="ti ti-history"></i>開発履歴（自動）</div>
       <div class="nav-item" onclick="show('feedback',this);loadFeedback()"><i class="ti ti-message-2-heart"></i>フィードバック</div>
       <div class="nav-item" onclick="show('growth',this)"><i class="ti ti-speakerphone"></i>認知・集客・モニター施策</div>
       <div class="nav-item" onclick="show('todo',this)"><i class="ti ti-checklist"></i>やること（全体）</div>
@@ -3051,6 +3052,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-history"></i> 開発履歴を自動記録する仕組みを新設（changelog.json・2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>決定：</b>Manusの実装履歴（大小すべて）を開発サイトに<b>自動集約</b>する。方式は<b>feedback.jsonと同じ</b>＝Manusが <code>liverico.app/changelog.json</code> を持ち、<b>実装ごとに1件追記</b>→開発サイト「<b>開発履歴（自動）</b>」ページが自動で読み込み表示。<br>
+          <b>粒度：</b>大小すべて。各件に<b>重要度タグ（大/中/小）</b>を付け、サイトで絞り込み。過去分は<b>一括バックフィル</b>（Manusが全部書き出し）。PIIは含めない。<br>
+          <b>状態：</b>開発サイト側のページ・読み込み処理は<b>実装済み</b>（Manusが changelog.json を公開し次第、自動で表示）。Manus指示とJSONスキーマ: <code>docs/livelog/26_changelog_pipeline.md</code>。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-circle-check"></i> 本番公開→外部スモーク実走の結果（2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>本番公開：</b>Manusがチェックポイント<code>94714e90</code>を本番公開（JSON対策・publicId・feedback.json・Gmailバックグラウンド化・名称ライブリコ＝すべて本番反映済み）。<br>
@@ -3201,6 +3211,31 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </tbody>
         </table></div>
         <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2)">⚠️ <b>D-U-N-S番号取得は数週間</b>かかるため、兆候が見えたら申請だけ前倒し。個人で公開済みアプリがある場合は法人へ<b>移管</b>手続きが要る。<br>📌 参考（Apple個人登録の大変さ・内容未取得）：<a href="https://x.com/umino_chibi/status/2035998090600263840" style="color:var(--navy)">x.com/umino_chibi/status/2035998090600263840</a></div>
+      </div>
+    </div>
+
+    <!-- 開発履歴（liverico.app/changelog.json を読み込み表示・Manusが自動追記） -->
+    <div id="page-changelog" class="page">
+      <div class="topbar"><div class="topbar-title">開発履歴</div><span class="topbar-badge">liverico.app/changelog.json（自動）</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-history hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>マナスの実装履歴を、大小すべて自動で記録</h2>
+          <p>Manusが実装するたびに <code>changelog.json</code> に1件追記 → このページが自動で読み込み表示。過去分は一括バックフィル。重要度（大/中/小）で絞り込み可。本文以外のPIIは含めない方針。</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-details"></i> 履歴一覧 <span id="cl-count" style="font-weight:400;color:var(--text3)"></span>
+          <span style="margin-left:auto;font-size:12px;color:var(--text3)" id="cl-updated"></span>
+          <span class="nav-item" style="border:1px solid var(--border);border-radius:8px;padding:2px 10px;font-size:12px;margin-left:8px" onclick="loadChangelog()"><i class="ti ti-refresh"></i>更新</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+          <span class="cl-fbtn active" style="cursor:pointer;border:1px solid var(--border);border-radius:8px;padding:3px 12px;font-size:12px" onclick="clFilter('all',this)">すべて</span>
+          <span class="cl-fbtn" style="cursor:pointer;border:1px solid var(--border);border-radius:8px;padding:3px 12px;font-size:12px" onclick="clFilter('major',this)">大</span>
+          <span class="cl-fbtn" style="cursor:pointer;border:1px solid var(--border);border-radius:8px;padding:3px 12px;font-size:12px" onclick="clFilter('minor',this)">中</span>
+          <span class="cl-fbtn" style="cursor:pointer;border:1px solid var(--border);border-radius:8px;padding:3px 12px;font-size:12px" onclick="clFilter('patch',this)">小</span>
+        </div>
+        <div id="cl-list" class="card" style="font-size:13px;color:var(--text2)">読み込み中…（左メニューの「開発履歴」を再クリックで再取得）</div>
       </div>
     </div>
 
@@ -3614,6 +3649,7 @@ function show(id, el) {
   }
   try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
   if (id === 'feedback' && !FB_LOADED) { try { loadFeedback(); } catch(e){} }
+  if (id === 'changelog' && !CL_LOADED) { try { loadChangelog(); } catch(e){} }
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open');
   }
@@ -3650,6 +3686,61 @@ function loadFeedback(){
     .catch(function(e){
       box.innerHTML = '<span style="color:#c0392b">読み込みに失敗しました（' + fbEsc(e.message) + '）。<br>' +
         'liverico.app/feedback.json に到達できないか、CORS/公開設定を確認してください。</span>';
+    });
+}
+// ===== 開発履歴（changelog.json・Manusが自動追記） =====
+var CL_LOADED = false, CL_ITEMS = [], CL_FILTER = 'all';
+function clImpBadge(imp){
+  var map = { major:['badge-amber','大'], minor:['badge-blue','中'], patch:['badge-gray','小'] };
+  var m = map[imp] || ['badge-gray', imp || '—'];
+  return '<span class="b-ok ' + m[0] + '" style="border-radius:6px">' + fbEsc(m[1]) + '</span>';
+}
+function clCatBadge(cat){
+  var label = { feature:'新機能', fix:'修正', infra:'基盤', refactor:'整理', docs:'文書', chore:'雑務' };
+  return '<span class="b-ok badge-green" style="border-radius:6px">' + fbEsc(label[cat] || cat || '—') + '</span>';
+}
+function clFilter(f, el){
+  CL_FILTER = f;
+  document.querySelectorAll('.cl-fbtn').forEach(function(b){ b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderChangelog();
+}
+function renderChangelog(){
+  var box = document.getElementById('cl-list');
+  if (!box) return;
+  var items = CL_ITEMS.filter(function(it){ return CL_FILTER === 'all' || it.importance === CL_FILTER; });
+  if (!items.length){ box.innerHTML = '該当する履歴はありません。'; return; }
+  box.innerHTML = items.map(function(it){
+    var meta = '<span style="font-size:11px;color:var(--text3)">' + fbEsc(it.date || '') + '</span>';
+    if (it.area) meta += '<span style="font-size:11px;color:var(--text3)">・' + fbEsc(it.area) + '</span>';
+    if (it.checkpoint) meta += '<span style="font-size:11px;color:var(--text3)">・CP ' + fbEsc(it.checkpoint) + '</span>';
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap">' +
+        clImpBadge(it.importance) + clCatBadge(it.category) + meta + '</div>' +
+      '<div style="font-weight:600;margin-bottom:2px">' + fbEsc(it.title || '') + '</div>' +
+      (it.detail ? '<div style="white-space:pre-wrap;line-height:1.7;color:var(--text2)">' + fbEsc(it.detail) + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+function loadChangelog(){
+  var box = document.getElementById('cl-list');
+  if (!box) return;
+  box.innerHTML = '読み込み中…';
+  fetch('https://liverico.app/changelog.json', { cache: 'no-store' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d){
+      CL_LOADED = true;
+      CL_ITEMS = (d && d.items) || [];
+      CL_ITEMS.sort(function(a,b){ return String(b.date||'').localeCompare(String(a.date||'')); });
+      document.getElementById('cl-count').textContent = '（' + (d.totalCount != null ? d.totalCount : CL_ITEMS.length) + '件）';
+      if (d && d.generatedAt) {
+        document.getElementById('cl-updated').textContent = '更新: ' + new Date(d.generatedAt).toLocaleString('ja-JP');
+      }
+      renderChangelog();
+    })
+    .catch(function(e){
+      box.innerHTML = '<span style="color:#c0392b">読み込みに失敗しました（' + fbEsc(e.message) + '）。<br>' +
+        'liverico.app/changelog.json がまだ未公開か、CORS/公開設定を確認してください（Manusが用意したら表示されます）。</span>';
     });
 }
 function toggleAcc(h){ h.parentElement.classList.toggle('open'); }
