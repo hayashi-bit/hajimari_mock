@@ -1717,9 +1717,9 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b style="color:#1b8a4b">✅ 済（コード完了）</b><br>
           ・Googleログイン安定化（unauthorized_client解消＝本番Webクライアント1lcb…に統一）<span style="color:#1b8a4b">※本番反映済み</span><br>
-          ・JSON恒久対策（/api/* JSON 404・SPAフォールバック除外・生fetch 0件・tRPC fetchラッパー）<span style="color:#c0392b">※チェックポイント7af3a918・公開待ち</span><br>
-          ・公開URLのランダム化（publicId・/u/{ランダム}）<span style="color:#c0392b">※本番DB適用済・公開待ち</span><br>
-          ・フィードバック導線（liverico.app/feedback.json＋CORS）＋開発サイト「フィードバック」ページ<span style="color:#c0392b">※公開待ち</span><br>
+          ・JSON恒久対策（/api/* JSON 404・SPAフォールバック除外・生fetch 0件・tRPC fetchラッパー）<span style="color:#1b8a4b">※本番反映済み・外部スモークで JSON 404 をPASS確認(2026-06-22)</span><br>
+          ・公開URLのランダム化（publicId・/u/{ランダム}）<span style="color:#c0392b">※公開済だが外部スモークで /u/1 が HTTP 200 のまま＝要確認。SPAの200素通し(状態だけでは判定不可)か未反映かをManusに確認中</span><br>
+          ・フィードバック導線（liverico.app/feedback.json＋CORS）＋開発サイト「フィードバック」ページ<span style="color:#1b8a4b">※本番反映済み</span><br>
           ・ブランド確定＋アセット作成（ロゴ案2・アイコンPNG/SVG・favicon・サブ表記・カラー=ピンク→オレンジ）<br>
           <br>
           <b style="color:#633806">🟡 未着手（進行予定）</b><br>
@@ -1728,7 +1728,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           ・共有URLの manus.computer → liverico.app 固定化（PUBLIC_BASE_URL化）<br>
           <br>
           <b style="color:#c0392b">🔴 残（P0完了に必要）</b><br>
-          ・<b>⚠️ 本番公開：チェックポイント7af3a918を管理UIから公開</b>（これで上の「公開待ち」3点＝JSON対策/publicId/feedbackが一気に本番反映）＋デプロイ後スモークチェック（curl /api/__notfound がJSONか確認）<span style="color:#1b8a4b">→ スモークスクリプト用意済み <code>tools/smoke/post_deploy_smoke.sh</code>（/api/__notfound のJSON 404 と /u/1 の404/410 を自動判定・FAILで停止）</span><br>
+          ・<s>本番公開：チェックポイント94714e90を管理UIから公開</s><span style="color:#1b8a4b">✅ 公開完了(2026-06-22)＝JSON対策/publicId/feedback/Gmail/名称が本番反映。クロコが外部スモーク <code>tools/smoke/post_deploy_smoke.sh</code> を実走し JSON 404=PASS／publicId=要確認(/u/1が200)を検出</span><br>
+          ・<b>publicId 要確認</b>：/u/1 がまだ200。SPAの素通しか未反映かをManusに確認→露出するなら塞ぐ<br>
           ・<b>Gmail E2Eスモークテスト(A)</b><span style="color:#1b8a4b">→ ランブック <code>tools/smoke/README.md</code>（環境変数の一時切替→テスト→即戻す・戻し忘れ厳禁）</span><br>
           ・Gmail本番デプロイ＋初回バックフィル＋ステータス誤判定の微調整<br>
           ・モバイルUX P1（トースト被り/削除モーダル/null表示）<br>
@@ -3046,6 +3047,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-circle-check"></i> 本番公開→外部スモーク実走の結果（2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>本番公開：</b>Manusがチェックポイント<code>94714e90</code>を本番公開（JSON対策・publicId・feedback.json・Gmailバックグラウンド化・名称ライブリコ＝すべて本番反映済み）。<br>
+          <b>外部スモーク実走：</b>egress許可リストに<code>liverico.app</code>を追加し、<b>クロコが本番を外から自動チェック</b>（<code>tools/smoke/post_deploy_smoke.sh</code>）。<br>
+          ・<b style="color:#1b8a4b">[1] JSON恒久対策＝PASS</b>：未登録<code>/api/*</code>が<b>JSONで404</b>（HTMLでない）を確認。<code>Unexpected token '&lt;'</code>の元凶が本番で解消＝<b>外部から実証</b>。<br>
+          ・<b style="color:#c0392b">[2] publicId＝要確認</b>：連番<code>/u/1</code>が<b>HTTP 200</b>のまま。ただしライブリコはSPA＝どのパスも200素通しの実装が多く<b>状態コードだけでは露出と断定不可</b>。→ スクリプトを改修（存在しないIDと比較し、同じ200素通しなら<b>FAILでなくWARN(要手動確認)</b>に。実在データJSONを直接返す時のみFAIL）。Manusへ「仕様(後方互換)か未反映か／実在プロフィール露出の有無」を確認依頼。<br>
+          <b>得た価値：</b>「本番が古いまま」を人目でなく<b>機械的に検知できる仕組み</b>が稼働。今回もスモークが<b>JSONの成功</b>と<b>publicIdの要確認</b>を切り分けた＝デプロイのたび一発で健全性を判定できる土台。
         </div>
       </div>
 

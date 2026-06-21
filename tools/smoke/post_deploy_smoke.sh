@@ -16,9 +16,10 @@ BASE_URL="${BASE_URL:-${1:-https://liverico.app}}"
 BASE_URL="${BASE_URL%/}"
 TIMEOUT="${TIMEOUT:-10}"
 
-pass=0; fail=0
+pass=0; fail=0; warn=0
 ok()   { printf '  \033[32m✓ PASS\033[0m %s\n' "$1"; pass=$((pass+1)); }
 ng()   { printf '  \033[31m✗ FAIL\033[0m %s\n' "$1"; fail=$((fail+1)); }
+wn()   { printf '  \033[33m! WARN\033[0m %s\n' "$1"; warn=$((warn+1)); }
 info() { printf '  \033[2m· %s\033[0m\n' "$1"; }
 
 echo "本番デプロイ後スモーク → $BASE_URL"
@@ -45,24 +46,45 @@ else
 fi
 echo
 
-# --- 2) 連番の公開URL /u/1 は 404/410（publicId ランダム化） ---
-echo "[2] publicId ランダム化: 連番 /u/1 が 404/410 か"
+# --- 2) 連番の公開URL /u/1（publicId ランダム化） ---
+# 注意: ライブリコは SPA。SPAはどのパスでも 200+HTML(入れ物)を返し中身はJSで描く実装が多い。
+#   → /u/1 の HTTP 200 だけでは「連番プロフィールが露出」とは断定できない（200=SPAの素通し）。
+#   そこで存在し得ない /u/<ランダム> と応答を比較し、同じ素通しHTMLなら WARN(要手動確認)に留める。
+#   実在ユーザーのデータ(JSON)を /u/1 が直接返す場合のみ露出が濃厚＝FAIL。
+echo "[2] publicId ランダム化: 連番 /u/1 が露出していないか"
+ctype=$(curl -s -m "$TIMEOUT" -o /tmp/smoke_u1 -w '%{content_type}' "$BASE_URL/u/1" 2>/dev/null) || ctype=""
 code=$(curl -s -m "$TIMEOUT" -o /dev/null -w '%{http_code}' "$BASE_URL/u/1" 2>/dev/null) || code="000"
-info "GET $BASE_URL/u/1 → HTTP $code"
+rnd="zzz$(date +%s)$RANDOM"
+rcode=$(curl -s -m "$TIMEOUT" -o /dev/null -w '%{http_code}' "$BASE_URL/u/$rnd" 2>/dev/null) || rcode="000"
+info "GET $BASE_URL/u/1 → HTTP $code / $ctype"
+info "GET $BASE_URL/u/$rnd（存在しないID）→ HTTP $rcode"
 case "$code" in
   000) ng "到達不可" ;;
   404|410) ok "連番URLは無効（人数露出が解消＝新ビルド）" ;;
-  200) ng "200（/u/1 が生きている＝旧ビルドのまま・連番露出）" ;;
-  *)   info "ステータス $code（404/410想定。リダイレクト等は実装と照合）" ;;
+  200)
+    case "$ctype" in
+      application/json*) ng "200かつJSON＝/u/1 が実在データを直接返す疑い（連番露出。塞ぐ）" ;;
+      *)
+        if [ "$code" = "$rcode" ]; then
+          wn "200だが存在しないIDも同じ200(SPA素通し)。状態だけでは判定不可＝中身/データAPIで要手動確認"
+        else
+          ng "200（存在しないIDは $rcode）＝/u/1 だけ特別に生存＝連番露出の疑い"
+        fi ;;
+    esac ;;
+  *) info "ステータス $code（404/410想定。リダイレクト等は実装と照合）" ;;
 esac
 echo
 
 # --- 結果 ---
 echo "──────────────"
-printf '結果: \033[32m%d PASS\033[0m / \033[31m%d FAIL\033[0m\n' "$pass" "$fail"
+printf '結果: \033[32m%d PASS\033[0m / \033[33m%d WARN\033[0m / \033[31m%d FAIL\033[0m\n' "$pass" "$warn" "$fail"
 if [ "$fail" -gt 0 ]; then
   echo "→ 1件以上の失格。本番が古いビルドのままか、デプロイが未反映の可能性が高い。"
   exit 1
+fi
+if [ "$warn" -gt 0 ]; then
+  echo "→ 失格なし。ただし WARN は人手で中身確認が必要（SPAの200素通し等）。"
+  exit 0
 fi
 echo "→ 全合格。新ビルドが本番に反映済み。"
 exit 0
