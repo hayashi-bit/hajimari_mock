@@ -1,19 +1,22 @@
 # Gmail解析 認識度テスト（G1-1）
 
-Claude **Haiku 4.5** でチケットメールを構造化抽出し、ゴールデン5通で精度を自動採点する評価ハーネス。
-本番コードは Manus 側 `gmailParser` に移植するが、移植前にここで精度を実測する。
+チケットメールを構造化抽出し、ゴールデンで精度を自動採点する評価ハーネス。
+本番コードは Manus 側に移植するが、移植前にここで精度を実測する。
+全体設計（広い網→2段→増分）は `docs/livelog/21_gmail_two_stage_implementation.md`。
 
-## 構成
-- `extract.py` … Haiku 4.5 で1通を構造化抽出（JSON Schema 強制）。`05_..md §7` の確定項目に対応。
-- `fixtures.py` … 実メール5通（マスク済み）＋期待値。巨人戦＝除外の判定も含む。
-- `run_eval.py` … 5通を解析→項目別に自動採点→正答率を表示。複数モデル比較可。
+## 構成（2段アーキに対応）
+- `classify.py` … **Step2 一次判定**（安いモデル＝Haiku想定）。候補メールが「購入実績か(true/false)」だけ高速判定し、宣伝・通知・スポーツを弾く。`python classify.py` でゴールデンの真偽を採点。
+- `extract.py` … **Step3 構造化抽出**（高いモデル＝Sonnet）。1通を JSON Schema 強制で構造化。
+- `fixtures.py` … 実メール（マスク済み）＋期待値。購入実績6通＋宣伝/スポーツ=除外3通（おまかせエントリー/一般発売/巨人戦）。
+- `run_eval.py` … 抽出を項目別に自動採点→正答率。複数モデル比較可。
 
 ## 実行
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-python run_eval.py                                   # Haiku で5通採点（本番）
-python run_eval.py claude-haiku-4-5 claude-sonnet-4-6 # Haiku vs Sonnet 比較
-python run_eval.py --dry-run                          # API無しでハーネス検証（40/40になる）
+python classify.py                                   # Step2 一次判定の採点（Haiku）
+python run_eval.py                                   # Step3 抽出の採点（Sonnet/Haiku）
+python run_eval.py claude-haiku-4-5 claude-sonnet-4-6 # モデル比較
+python run_eval.py --dry-run                          # API無しでハーネス検証
 ```
 
 キー未設定時は自動で dry-run（ハーネス自体の検証）になる。
