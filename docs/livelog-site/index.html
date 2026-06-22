@@ -3220,7 +3220,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <b>恒久ルール（厳守）：</b>
           ①<b>マイグレーション（表の作り替え）は、本番に当てたら開発にも必ず当てる</b>（逆も同様）。DEV/PRODのスキーマを常に一致させる。<br>
           ②不具合時は<b>まず「今どのDBに繋いでいるか」と「コードが要求する列がそのDBに在るか」を確認</b>（Gmail E2E(A)の環境変数・戻し忘れも疑う）。<b>SQLツールの接続先とアプリの接続先が一致しているかも必ず確認</b>（4回目の原因）。<br>
-          ③恒久的には<b>独立ステージング（方法B）</b>で本番を汚さず、マイグレーションを通す経路を一本化する。
+          ③恒久的には<b>独立ステージング（方法B）</b>で本番を汚さず、マイグレーションを通す経路を一本化する。<br>
+          <b>4回目の具体（2026-06-22・要警戒の実例）：</b>アプリ(dev)＝<code>DATABASE_URL_DEV</code>（TiDB ap-northeast-1 <code>/test</code>）を使うのに、SQLツール <code>webdev_execute_sql</code> は <code>DRIZZLE_DATABASE_URL</code>（TiDB us-east-1 <code>/nHdBwH2e…</code>＝<b>本番DB</b>）を向いていた。＝<b>ALTER TABLE が知らぬ間に本番に当たり、開発には反映されない</b>事故構造。<b>SQLツールのデフォルト接続先が本番＝地雷</b>。対応：本番DBに意図しない変更が入っていないか確認＋以後はマイグレーションを dev/prod 両方に明示適用。
         </div>
       </div>
 
