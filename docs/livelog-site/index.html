@@ -207,6 +207,7 @@ tr:hover td{background:var(--bg2)}
     </div>
     <div class="nav-section">
       <div class="nav-label">計画・塊・履歴（3本柱）</div>
+      <div class="nav-item" onclick="show('now',this)"><i class="ti ti-current-location"></i>★ 現在地サマリー</div>
       <div class="nav-item" onclick="show('release',this)"><i class="ti ti-route-2"></i>① 実装計画</div>
       <div class="nav-item" onclick="show('checklist',this)"><i class="ti ti-stack-2"></i>② 塊開発</div>
       <div class="nav-item" onclick="show('changelog',this);loadChangelog()"><i class="ti ti-history"></i>③ 開発履歴（自動）</div>
@@ -1681,6 +1682,60 @@ await createLive.mutateAsync({ title: '...' });</div></div>
     </div>
 
     <!-- RELEASE TODO -->
+    <div id="page-now" class="page">
+      <div class="topbar"><div class="topbar-title">★ 現在地サマリー</div><span class="topbar-badge">最終更新 2026-06-22</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-current-location hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>いまどこ？ 次の決定的ポイントは？</h2>
+          <p>長いやり取りの状況を1枚に。次のセッション/メンバーはまずここを見れば掴める。詳細は各ページ・docへ。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="border-left:4px solid #2e7bd6;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>ひとことで：</b>見える化・計画・各種指示・ビジュアル準備・法務叩き台は<b>ほぼ整った</b>。最大の関門は <b>Gmailが本番で通るか</b>（Manusが接続先DBドリフトを修正中→真の取得件数待ち）。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checkbox"></i> 領域別ステータス</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>領域</th><th>状態</th><th>要点</th><th>ボール</th></tr></thead>
+          <tbody>
+            <tr><td>開発サイト整理（3本柱）</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">済</span></td><td>実装計画(フェーズ0/課金で2分割)・塊開発・開発履歴・現在地サマリー</td><td>—</td></tr>
+            <tr><td>Gmail取込</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">山場・進行中</span></td><td>0件主因特定→Step3 JSONパース修正＋接続先DBドリフト(SQLツールが本番DBを向く)修正中。resultJson廃止→gmail_sync_results＋プレビュー維持</td><td>Manus</td></tr>
+            <tr><td>本番公開(JSON/feedback/名称)</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#e7f6ec;color:#1b8a4b">済</span></td><td>外部スモークでJSON 404=PASS</td><td>—</td></tr>
+            <tr><td>publicId</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">要確認</span></td><td>/u/1 が200のまま＝仕様か未反映か</td><td>Manus</td></tr>
+            <tr><td>リブランド・ロゴ・LP</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">進行中</span></td><td>LP第1版プロト済／ロゴ表示=案3(静的配信)指示済／上部タブ・正規ロゴPNG差替 残</td><td>Manus/林</td></tr>
+            <tr><td>ビジュアル(フライヤー/チケット/アー写)</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">準備済</span></td><td>フェーズ0前倒し決定。①②指示(doc29)／③Apple Music認証取得済＋カバー率ハーネス(tools/apple_music_eval)</td><td>Manus</td></tr>
+            <tr><td>Apple Music カバー率検証</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef1f6;color:#46566b">保留(Manusで実行)</span></td><td>3認証(Team/Key/.p8)取得済。Manusにenvで渡し実行→前髪ぱっつん少年が取れるか</td><td>Manus/林</td></tr>
+            <tr><td>法務・サポート文書</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#fff3e0;color:#c77700">叩き台ほぼ済</span></td><td>プラポリ/規約/特商法に事業者情報(株式会社スリーウェイ)記載。残=設立/資本金/電話/事業内容+専門家確認</td><td>林+専門家</td></tr>
+            <tr><td>積み残しバグ(加藤さん/UI)</td><td><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#feeaf0;color:#c0398a">キュー</span></td><td>要望欄入力不可/同期UX/幽霊カウント1/ロゴ壊れ画像/上部タブ。doc30に集約</td><td>Manus</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrow-big-right-lines"></i> 次の決定的ポイント＆ボール</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>① Manus（最優先）：</b>正しいDB(<code>DATABASE_URL_DEV</code>)で gmail_sync_results 作成→Gmailの<b>真の取得件数</b>＋E2E確認（公演名/日付/会場・網漏れ2通[eplus.co.jp/pia.co.jp]・宣伝非混入）。本番DBへの意図しない変更も確認。<br>
+          <b>② Manus（キュー doc30）：</b>publicId確認／ロゴ静的配信／上部タブ／加藤さんバグ／ビジュアル①②／Apple Music検証。<br>
+          <b>③ 林さん：</b>Apple Music検証をManusに渡す判断（今保留）／正規ロゴPNGのManus受け渡し／法務の残情報。<br>
+          <b>④ クロコ（並行可）：</b>法務の残埋め（情報待ち）／LP磨き込み／changelog公開後の確認。<br>
+          <b>判断軸：</b>「Gmailが本番で通る」が確認できたら、フェーズ0公開（モニター配布）に大きく近づく。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-folder"></i> 主要ドキュメント早見</div>
+        <div class="card" style="font-size:12.5px;color:var(--text2);line-height:1.9">
+          計画＝<a href="#release" onclick="show('release');return false;" style="color:var(--navy)">① 実装計画</a>／塊＝<a href="#checklist" onclick="show('checklist');return false;" style="color:var(--navy)">② 塊開発</a>／履歴＝<a href="#changelog" onclick="show('changelog');loadChangelog();return false;" style="color:var(--navy)">③ 開発履歴</a>／決定＝<a href="#memolog" onclick="show('memolog');return false;" style="color:var(--navy)">決定・メモログ</a><br>
+          doc28=Gmail仕上げ／doc29=ビジュアル&検証指示／doc30=Manus作業キュー／legal/=法務叩き台／tools/apple_music_eval=アー写カバー率／tools/smoke=デプロイ後スモーク
+        </div>
+      </div>
+    </div>
+
     <div id="page-release" class="page">
       <div class="topbar"><div class="topbar-title">① 実装計画</div><span class="topbar-badge">公開必須＋段取り</span></div>
       <div class="hero-strip">
