@@ -72,4 +72,3 @@ Claude構造化出力を流用。System例：
 
 ## 並行で出ている他のManus積み残し（参考）
 - Gmail取込の仕上げ（doc28）／加藤さんバグ3点／liverico.app UI2点（ロゴ静的配信＝案3・上部タブ）。
-</content>
