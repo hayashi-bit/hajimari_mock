@@ -3152,6 +3152,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-brand-apple"></i> 【決定】アー写＋予習プレイリストは Apple Music に確定（Spotify不採用・2026-06-22）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>確定：</b>アー写（アーティスト画像）と予習プレイリスト自動生成を <b>Apple Music API</b> で実装。<b>Spotifyは使わない</b>（doc14のSpotify連携指示は置換）。<br>
+          <b>理由：</b>doc14でSpotifyは実リストのインディーほぼ100%ヒットだが、<b>発見系（関連アーティスト/レコメンド）APIをSpotifyは2024廃止・Apple Musicは健在</b>。アー写だけでなく予習・発見・未来ニュース（ビジョンの核）まで<b>1プロバイダでまかなえる</b>＝Apple Musicに寄せる。コストはApple Developer会員（¥12,980/年・既払い）に含み従量¥0。<br>
+          <b>進め方：</b>① Apple Music API キー（MusicKitの.p8＋Key ID＋Team ID）取得 → ② <b>林の実参戦リスト（マイナー）でカバー率検証（ルール3・前髪ぱっつん少年が試金石。Apple Music側は未検証）</b> → ③ アー写表示＋予習プレイリストを実装。取れない稀なケースはユーザー投稿で補う。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bug"></i> 【積み残し・要修正】liverico.app 実機UI 2点（2026-06-22）</div>
         <div class="card" style="background:linear-gradient(90deg,#fff5f5,#fffafa);border:1px solid #f0c0c0;font-size:13px;color:#7a2b2b;line-height:1.9">
           本番が <b>liverico.app</b> に（リブランドのドメイン稼働）。実機UIの積み残し2点。
