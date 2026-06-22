@@ -3140,6 +3140,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-bug"></i> 【積み残し・要修正】モニター加藤さん実機フィードバック3点（2026-06-22）</div>
+        <div class="card" style="background:linear-gradient(90deg,#fff5f5,#fffafa);border:1px solid #f0c0c0;font-size:13px;color:#7a2b2b;line-height:1.9">
+          本番（livelogapp-…manus.space）でモニター加藤さんが実機テスト。<b>フェーズ0の積み残しバグ</b>として記録（Manus修正指示済み）。
+          <br>① <b>「ご要望・質問」の入力欄に文字が打てない</b>＝フィードバックフォームのtextareaが入力不可（disabled/readonly/重なりの疑い）。
+          <br>② <b>Gmail同期のUX・挙動バグ</b>＝同期中でもボタンが「同期してください」のまま／押すと「同期中40/60」＝状態未連動・二重起動の疑い／ページを離れていいか不明（バックグラウンド化したなら離脱OKの明示が要る）／<b>同期完了っぽいが0件取り込み・「前回同期6/22」表示</b>＝初回バックフィル（過去5年）が走らずlastSyncAtが当日にセット→増分0件の疑い。
+          <br>③ <b>何も登録してないのに「合計1」</b>＝幽霊カウント。加藤アカウント(kato@threeway.co.jp)に<b>他人の yukato.1073@gmail.com が連携</b>されている＝doc19の「他人Gmail連携のテスト残骸」と同型。残骸データが合計に出ている疑い。
+          <br>→ Manus指示：①入力欄を修正 ②同期ボタンの状態連動＋二重起動防止＋離脱OK明示＋初回バックフィルとlastSyncAt初期化を確認（0件はメタデータのみで切り分け）③残骸の連携/データ掃除＋合計集計の確認。<b>本文非保存ポリシーは維持</b>。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-target-arrow"></i> 公式サイトAI検索：v2で8/8達成→Tavily採用（CSE不要）＋自動保存解禁の条件（2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>v2結果（Tavily＋LLM選別＋X二次検索）：8/8（100%）。</b>v1で外したずっと真夜中(zutomayo.net・4位→LLMが選択)・アザミ(azami-jp.com・曖昧さ回避で居酒屋誤判定解消)・meiyo(レーベル公式)・<b>前髪ぱっつん少年(x.com/maegami_tokyo・X公式を一次取得)</b>が全部改善＝設計が効いた。<b>Google CSEは不要</b>。<br>
