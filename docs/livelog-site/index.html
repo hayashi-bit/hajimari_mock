@@ -213,6 +213,10 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('changelog',this);loadChangelog()"><i class="ti ti-history"></i>③ 開発履歴（自動）</div>
     </div>
     <div class="nav-section">
+      <div class="nav-label">🚀 基盤移行（最優先）</div>
+      <div class="nav-item" onclick="show('migration',this)"><i class="ti ti-arrows-transfer-up"></i>Manus→Claude 移行計画</div>
+    </div>
+    <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
@@ -1682,8 +1686,93 @@ await createLive.mutateAsync({ title: '...' });</div></div>
     </div>
 
     <!-- RELEASE TODO -->
+    <div id="page-migration" class="page">
+      <div class="topbar"><div class="topbar-title">🚀 Manus→Claude Code 基盤移行</div><span class="topbar-badge">決定 2026-06-26 / 着手中</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-arrows-transfer-up hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>なぜ移す・どう移す・何日で</h2>
+          <p>門倉さん・林ともにGO。無料モニターの今＝一番安い移行窓。Manus実コード調査で不確実性が解消＝<b>実質1週間前後</b>。詳細はdoc42〜46。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> 方針（なぜ移すか）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          フロント作りはManusが速くて綺麗。だが今のライブリコは<b>バックエンドの正しさ</b>が主戦場（Gmail取込・重複統合・複数DB整合・公開/共有・出演者抽出）。そこがManusの一番弱い所＋<b>本番ログが見えない／SQLツールが本番DB固定／本物のステージングが作れない</b>ため、小さなバグで2〜3時間溶ける（＝クレジット燃焼）。Claude Codeは<b>本番ログ・コード・DBを“見て”直せる</b>＝同じバグが数十分。これは「Claudeが賢い」ではなく<b>「見える／見えない」の差</b>。<br>
+          <b>使い分け方針：</b>初期のデザイン・モック・フロントの叩き＝Manus／本格開発（バック・データ・運用・本番デバッグ）＝Claude Code。さらにUIの微調整はCursorを足す（標準リポジトリ化が前提＝移行で初めて可能）。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-checks"></i> 移行を軽くした決定打（Manus実コード調査）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          ① <b>認証はManus非依存</b>＝Google OAuth直実装＋joseのJWT。<code>ctx.user.id</code>は<code>protectedProcedure</code>1箇所に集約。Manus OAuthコールバックを消すだけ（難易度 浅〜中）。<br>
+          ② <b>DBはTiDB保持で可</b>＝TiDB固有機能ゼロ・標準MySQL。Drizzleは<code>DATABASE_URL</code>差し替えのみ＝<b>データ移動ゼロ</b>。<br>
+          ③ <b>同一オリジン構成</b>＝tRPCは相対パス。<b>Railway1サービスで丸ごと配信が最速</b>（CORS無し・URL変更無し）。<br>
+          ④ 外部API（Tavily/Spotify/Apple Music/Resend/Setlist.fm/Google）は直接呼び＝envを引き継ぐだけ。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-server-cog"></i> 目標スタック（5点・確定）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>層</th><th>移行先</th><th>理由</th></tr></thead>
+          <tbody>
+            <tr><td>ホスティング</td><td><b>Railway 1サービス</b></td><td>同一オリジン維持＝最速・常時起動でGmailバックフィルに強い</td></tr>
+            <tr><td>DB</td><td><b>TiDB Cloud 保持</b></td><td>データ移動ゼロ。外部接続(IP許可)だけ確認</td></tr>
+            <tr><td>認証</td><td>Google OAuth + jose JWT 維持</td><td>Manus OAuthコールバック削除のみ。<b>JWT_SECRET引き継ぎ必須</b></td></tr>
+            <tr><td>画像</td><td><b>Cloudflare R2</b>(S3互換)</td><td>aws-sdk既存＝変更最小・egress課金ゼロ</td></tr>
+            <tr><td>LLM</td><td><b>Anthropic</b>(OpenAI互換窓口)</td><td>ドロップインでClaude品質。分類=Haiku/抽出=Sonnet目安</td></tr>
+            <tr><td>Cron</td><td>Railway Cron + CRON_SECRET</td><td>Heartbeat認証をForge JWT→Bearerに差し替え</td></tr>
+            <tr><td>ログ</td><td>Sentry + Railwayログ</td><td>目隠しデバッグの根治（最初に入れる）</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-calendar-stats"></i> 工程表（並行・5〜7営業日）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>Day</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>Day0</td><td>下ごしらえ：liverico新リポジトリ／Railway・R2・Sentryアカウント／TiDB接続情報取得／コード受領</td></tr>
+            <tr><td>Day1</td><td><b>配線疎通</b>：Railway1サービスで本番URLが開く＋Sentry＋TiDB接続＋mainブランチ保護（Authなし画像なしの最小で）</td></tr>
+            <tr><td>Day2</td><td>認証：JWT_SECRET引き継ぎ＋redirect URI追加＋Manus OAuth削除→Googleで本番ログイン</td></tr>
+            <tr><td>Day3-4</td><td>画像：R2へ移行＋既存<code>/manus-storage/</code>画像URLの非破壊移行スクリプト</td></tr>
+            <tr><td>Day4-6</td><td>Heartbeat（唯一の難所）：Railway Cron＋認証差し替え。増分同期がプレビュー→確認を維持して動くか検証</td></tr>
+            <tr><td>Day5-7</td><td>LLM差し替え＋全機能スモーク＋<b>切替(DNS)</b>（ロールバック可）</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> 絶対に踏まない落とし穴</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9;border-left:4px solid #c0398a">
+          ① <b>JWT_SECRETを変えない</b>（変えると全ユーザー強制ログアウト）<br>
+          ② <b>画像URL移行を忘れない</b>（storageProxy撤去と同時に更新しないと既存フライヤー/チケットが全崩れ）<br>
+          ③ <b>Google redirect URI</b>を移行先ドメインで追加（忘れるとログイン不可）<br>
+          ④ <b>Heartbeat認証の差し替え</b>（Forge JWT前提のままだと増分同期が死ぬ）<br>
+          ⑤ 旧Manus OAuthのみのユーザーは再ログイン必要＝対象がいないか確認（主要ユーザーはGoogle OAuth）
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-check"></i> データ安全（非交渉）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          切替前にTiDB全テーブルの<b>検証付きフルバックアップ</b>（dump＋件数記録）。画像URL移行は非破壊（旧保持・件数照合）。切替はロールバック可能に。<b>モニター（ヘビーユーザー2人＋林）は無停止</b>。本番データ・liverico.appドメイン・本文非保存原則を維持。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-folder"></i> 関連doc</div>
+        <div class="card" style="font-size:12.5px;color:var(--text2);line-height:1.9">
+          doc42=移行アセスメント（miiiro回答）／doc43=門倉さん向けブリーフ／doc44=移行計画／doc45=Manus質問集／doc46=確定工程表／migration_analysis=Manus実コード調査
+        </div>
+      </div>
+    </div>
+
     <div id="page-now" class="page">
-      <div class="topbar"><div class="topbar-title">★ 現在地サマリー</div><span class="topbar-badge">最終更新 2026-06-22</span></div>
+      <div class="topbar"><div class="topbar-title">★ 現在地サマリー</div><span class="topbar-badge">最終更新 2026-06-26</span></div>
       <div class="hero-strip">
         <i class="ti ti-current-location hero-strip-icon"></i>
         <div class="hero-strip-text">
@@ -1694,7 +1783,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
       <div class="section">
         <div class="card" style="border-left:4px solid #2e7bd6;font-size:13px;color:var(--text2);line-height:1.9">
-          <b>ひとことで：</b>見える化・計画・各種指示・ビジュアル準備・法務叩き台は<b>ほぼ整った</b>。最大の関門は <b>Gmailが本番で通るか</b>（Manusが接続先DBドリフトを修正中→真の取得件数待ち）。
+          <b>ひとことで：</b>Gmail取込は本番で稼働。だが開発の主戦場がバックエンドに移り、Manusの構造的制約（本番ログ不可視／SQLツール本番固定／ステージング不在）で小バグに2〜3時間溶ける。<b>門倉さん・林ともに「Manus→Claude Codeへ基盤移行」をGO（2026-06-26）</b>。無料モニターの今が一番安い窓。実コード調査で<b>実質1週間前後</b>と確定＝<a href="#migration" onclick="show('migration');return false;" style="color:var(--navy);font-weight:700">🚀 移行計画</a>へ。doc41の重い新機能は移行先で作る前提でホールド。
         </div>
       </div>
 
@@ -1720,11 +1809,11 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-arrow-big-right-lines"></i> 次の決定的ポイント＆ボール</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
-          <b>① Manus（最優先）：</b>正しいDB(<code>DATABASE_URL_DEV</code>)で gmail_sync_results 作成→Gmailの<b>真の取得件数</b>＋E2E確認（公演名/日付/会場・網漏れ2通[eplus.co.jp/pia.co.jp]・宣伝非混入）。本番DBへの意図しない変更も確認。<br>
-          <b>② Manus（キュー doc30）：</b>publicId確認／ロゴ静的配信／上部タブ／加藤さんバグ／ビジュアル①②／Apple Music検証。<br>
-          <b>③ 林さん：</b>Apple Music検証をManusに渡す判断（今保留）／正規ロゴPNGのManus受け渡し／法務の残情報。<br>
-          <b>④ クロコ（並行可）：</b>法務の残埋め（情報待ち）／LP磨き込み／changelog公開後の確認。<br>
-          <b>判断軸：</b>「Gmailが本番で通る」が確認できたら、フェーズ0公開（モニター配布）に大きく近づく。
+          <b>① 林さん（最優先・移行Day0）：</b>liverico新リポジトリ作成／Railway・Cloudflare R2・Sentryのアカウント／<b>TiDBの接続文字列＋IP許可リスト</b>（データ移動ゼロの生命線・唯一の要確認）。<br>
+          <b>② Manus：</b>全コードをliverico新リポジトリへpush（doc44初日指示）。以降の新機能実装は止め、移行に集中。当面はモニターを現Manus版で無停止継続。<br>
+          <b>③ クロコ（移行主導）：</b>Day1=配線疎通（Railway1サービスで本番URL＋Sentry＋TiDB接続＋ブランチ保護）→Day2認証→画像→Heartbeat→切替。<br>
+          <b>④ doc41の新機能（プロフィール刷新/公開設定/バッジ/座席共有）：</b>移行先で作る前提でホールド。Manusではモニターが今困るP0バグのみ。<br>
+          <b>判断軸：</b>移行が完了すれば、観測できる足場の上で残機能を“燃やさず”実装でき、有料化に進める。
         </div>
       </div>
 
