@@ -1687,12 +1687,21 @@ await createLive.mutateAsync({ title: '...' });</div></div>
 
     <!-- RELEASE TODO -->
     <div id="page-migration" class="page">
-      <div class="topbar"><div class="topbar-title">🚀 Manus→Claude Code 基盤移行</div><span class="topbar-badge">決定 2026-06-26 / 着手中</span></div>
+      <div class="topbar"><div class="topbar-title">🚀 Manus→Claude Code 基盤移行</div><span class="topbar-badge">Day1完了 2026-06-27 / 次はDay2認証</span></div>
       <div class="hero-strip">
         <i class="ti ti-arrows-transfer-up hero-strip-icon"></i>
         <div class="hero-strip-text">
           <h2>なぜ移す・どう移す・何日で</h2>
           <p>門倉さん・林ともにGO。無料モニターの今＝一番安い移行窓。Manus実コード調査で不確実性が解消＝<b>実質1週間前後</b>。詳細はdoc42〜46。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="border-left:4px solid #1b8a4b;background:#f1faf4;font-size:13px;color:var(--text2);line-height:1.9">
+          <b style="color:#1b8a4b">✅ Day1 完了（2026-06-27）：Manusの外でアプリが本番URLで動いた。</b><br>
+          liverico-appをRailwayに接続→ビルド成功→環境変数11個投入→起動(ACTIVE)→公開URL <code>https://liverico-production.up.railway.app</code> でログイン画面が表示。
+          ＝「移行は実際に可能」を動くもので実証。観測性(エラーが見える)はRailwayログで確保。<br>
+          <span style="color:#c77700">次はDay2＝認証（Googleログインを新URLで動かす）。Day1の残課題：①DATABASE_URLは暫定で開発DB値→切替前に本番へ ②JWT_SECRETは新規生成→本物に差替 ③ブランチ保護はGitHubプラン制約で見送り。</span>
         </div>
       </div>
 
@@ -1735,9 +1744,9 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card tbl-wrap"><table>
           <thead><tr><th>Day</th><th>内容</th></tr></thead>
           <tbody>
-            <tr><td>Day0</td><td>下ごしらえ：liverico新リポジトリ／Railway・R2・Sentryアカウント／TiDB接続情報取得／コード受領</td></tr>
-            <tr><td>Day1</td><td><b>配線疎通</b>：Railway1サービスで本番URLが開く＋Sentry＋TiDB接続＋mainブランチ保護（Authなし画像なしの最小で）</td></tr>
-            <tr><td>Day2</td><td>認証：JWT_SECRET引き継ぎ＋redirect URI追加＋Manus OAuth削除→Googleで本番ログイン</td></tr>
+            <tr><td>Day0</td><td>✅ 下ごしらえ：liverico-appリポジトリ／Railway・GitHub連携／コード受領・バックアップ</td></tr>
+            <tr><td>Day1</td><td>✅ <b>配線疎通 完了</b>：liverico-appをRailwayに接続→ビルド成功→環境変数11個→起動(ACTIVE)→<b>本番URLが開いた</b> <code>liverico-production.up.railway.app</code>。観測性=Railwayログで確保。※ブランチ保護はGitHubプラン制約で見送り／DATABASE_URLは暫定で開発DB値</td></tr>
+            <tr><td>Day2</td><td>🔵 次：認証＝GOOGLE_REDIRECT_URIを新URLに＋Google Cloud Consoleに承認URI追加＋Manus OAuth削除→Googleで本番ログイン</td></tr>
             <tr><td>Day3-4</td><td>画像：R2へ移行＋既存<code>/manus-storage/</code>画像URLの非破壊移行スクリプト</td></tr>
             <tr><td>Day4-6</td><td>Heartbeat（唯一の難所）：Railway Cron＋認証差し替え。増分同期がプレビュー→確認を維持して動くか検証</td></tr>
             <tr><td>Day5-7</td><td>LLM差し替え＋全機能スモーク＋<b>切替(DNS)</b>（ロールバック可）</td></tr>
@@ -1811,7 +1820,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>① 林さん（最優先・移行Day0）：</b>liverico新リポジトリ作成／Railway・Cloudflare R2・Sentryのアカウント／<b>TiDBの接続文字列＋IP許可リスト</b>（データ移動ゼロの生命線・唯一の要確認）。<br>
           <b>② Manus：</b>全コードをliverico新リポジトリへpush（doc44初日指示）。以降の新機能実装は止め、移行に集中。当面はモニターを現Manus版で無停止継続。<br>
-          <b>③ クロコ（移行主導）：</b>Day1=配線疎通（Railway1サービスで本番URL＋Sentry＋TiDB接続＋ブランチ保護）→Day2認証→画像→Heartbeat→切替。<br>
+          <b>③ クロコ（移行主導）：</b>✅Day1=配線疎通 完了（Railwayで本番URL <code>liverico-production.up.railway.app</code> が開いた）→🔵Day2認証（redirect URI・Manus OAuth削除）→画像→Heartbeat→切替。<br>
           <b>④ doc41の新機能（プロフィール刷新/公開設定/バッジ/座席共有）：</b>移行先で作る前提でホールド。Manusではモニターが今困るP0バグのみ。<br>
           <b>判断軸：</b>移行が完了すれば、観測できる足場の上で残機能を“燃やさず”実装でき、有料化に進める。
         </div>
