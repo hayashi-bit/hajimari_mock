@@ -3306,6 +3306,23 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-bug-off"></i> 【修正完了】友達追加＋友達バッジ 復活（2026-06-27・Manus本番）</div>
+        <div class="card" style="background:#f1faf4;border-left:4px solid #1b8a4b;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>症状：</b>プロフィールで「友達を追加する」導線が出ない／友達バッジが出ない。<br>
+          <b>原因（別々の2つ）：</b>①バッジ＝<code>getProfileLives</code> に publicId(文字列)を渡すのに userId(数値)を期待→<code>parseInt</code>でNaN→BAD_REQUEST（IDの種類取り違え）。②友達追加ボタンは <code>PublicProfile.tsx</code> に<b>そもそも未実装</b>（消えたのでなく無かった）。③ <code>isOwnProfile</code> 常にfalseのロジックバグ。<br>
+          <b>復活：</b>/u/:publicId に「友達を追加する」（ログイン中＆他人の時のみ・既に友達なら削除に切替）。バッジ3種＝①同じライブに行ってた ②一緒に参戦 ③同じフェスの違う日参戦。<br>
+          <b>注意（再確認）：</b><code>webdev_execute_sql</code> は本番DB固定＝ドリフトの元凶。dev migrationはNodeスクリプトで別途適用。<b>この構造的問題の解消が移行(Day2〜)の狙い。</b>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> 【マイルストーン】移行 Day1 完了：Railwayで本番URLが開いた（2026-06-27）</div>
+        <div class="card" style="background:#f1faf4;border-left:4px solid #1b8a4b;font-size:13px;color:var(--text2);line-height:1.9">
+          liverico-appをRailwayに接続→ビルド成功→環境変数11個→起動(ACTIVE)→公開URL <code>https://liverico-production.up.railway.app</code> でログイン画面が表示。＝Manusの外で動くと実証。詳細は <a href="#migration" onclick="show('migration');return false;" style="color:var(--navy);font-weight:700">🚀 基盤移行</a>／doc51。次はDay2＝認証。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-brand-apple"></i> 【決定】アー写＋予習プレイリストは Apple Music に確定（Spotify不採用・2026-06-22）</div>
         <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
           <b>確定：</b>アー写（アーティスト画像）と予習プレイリスト自動生成を <b>Apple Music API</b> で実装。<b>Spotifyは使わない</b>（doc14のSpotify連携指示は置換）。<br>
