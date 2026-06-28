@@ -218,7 +218,7 @@ tr:hover td{background:var(--bg2)}
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
-      <div class="nav-item" onclick="show('pitch',this)"><i class="ti ti-presentation"></i>コンセプト訴求 構成（v3）</div>
+      <div class="nav-item" onclick="show('pitch',this)"><i class="ti ti-north-star"></i>★ North Star／訴求構成</div>
       <div class="nav-item" onclick="show('strategy',this)"><i class="ti ti-target"></i>事業戦略・ロードマップ</div>
       <div class="nav-item" onclick="show('risks',this)"><i class="ti ti-alert-triangle"></i>懸念点・リスク台帳</div>
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
@@ -1782,37 +1782,50 @@ await createLive.mutateAsync({ title: '...' });</div></div>
     </div>
 
     <div id="page-pitch" class="page">
-      <div class="topbar"><div class="topbar-title">コンセプト訴求 構成（v3）</div><span class="topbar-badge">2026-06-27 / 人に伝える用</span></div>
-      <div class="hero-strip">
-        <i class="ti ti-presentation hero-strip-icon"></i>
-        <div class="hero-strip-text">
-          <h2>ライブリコを人に伝える構成（キャプチャ付き）</h2>
-          <p>背骨＝<b>「ライブは“点”じゃなく前後ぜんぶの体験」</b>。既存チケットサイトは点で分断・不便→ライブはもっと楽しくできる、という<b>理由(信念)</b>を芯に。きっかけ(好き/悔しさ)は症状として配置。原文フレーズはnaming-brief/12_copywriting/24_rebrandより。</p>
+      <div class="topbar"><div class="topbar-title">コンセプト訴求 構成（v4・North Star）</div><span class="topbar-badge">2026-06-27 / 人に伝える用</span></div>
+      <div class="hero-strip" style="background:linear-gradient(90deg,#ff4f7b,#ff8a3d)">
+        <i class="ti ti-north-star hero-strip-icon" style="color:#fff"></i>
+        <div class="hero-strip-text" style="color:#fff">
+          <h2 style="color:#fff">North Star（このサービスを一言で）</h2>
+          <p style="color:#fff;font-size:20px;font-weight:800;margin-top:6px">「ライブ好きは、参戦履歴で恋に落ちる。」</p>
+          <p style="color:#fff;opacity:.95">すべてがここからぶら下がる——機能もデザインも判断も。迷ったら<b>「それは“参戦履歴で恋に落ちる”を強くするか？」</b>で決める。</p>
         </div>
       </div>
 
       <div class="section">
         <div class="card" style="border-left:4px solid #ff4f7b;font-size:13px;color:var(--text2);line-height:1.9">
-          <b>芯（なぜ作るか＝理由）：</b>ライブは行きたいと思った瞬間→申込→当落→予習→当日→余韻→振り返り、<b>一連ぜんぶがライブ</b>。なのに今のチケットサイト/記録アプリはそれを<b>“点”でしか扱わず・分断・不便</b>。<b>ライブはもっと楽しい体験を提供できる</b>——だから作る。原文＝「記録は入口・手段であって本質ではない。本質は体験×つながり×発信」。
+          <b>含意：</b>参戦履歴は“管理する記録”ではなく<b>“恋に落ちる対象”</b>。だからサービスの仕事は1つ＝<b>履歴を「恋に落ちる対象」にすること</b>。<br>
+          <b>なぜ既存じゃダメか：</b>今のチケットサイト/記録アプリは履歴を<b>“点・管理項目”</b>として分断して扱う＝そこに恋は起きない。ライブは「行きたい瞬間→申込→当落→予習→当日→余韻→振り返り」の一連の体験。原文＝「記録は入口・手段であって本質ではない。本質は体験×つながり×発信」。
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title"><i class="ti ti-list-numbers"></i> 構成（順番＝点vs体験を背骨に）</div>
+        <div class="section-title"><i class="ti ti-binary-tree"></i> すべてがぶら下がる構造（3つの枝）</div>
         <div class="card tbl-wrap"><table>
-          <thead><tr><th>#</th><th>伝えること</th><th>林の言葉（原文）</th><th>キャプチャ</th></tr></thead>
+          <thead><tr><th>枝</th><th>役割（なぜ）</th><th>ぶら下がる機能</th><th>キャプチャ</th></tr></thead>
           <tbody>
-            <tr><td>0 つかみ</td><td>名前が語る＝ソワソワ＝行く前のワクワク</td><td>「特に表現したいのは“行く前のワクワク(そわそわ・高鳴り)”。余韻＝後ろだけは弱い」</td><td>ロゴ</td></tr>
-            <tr><td>1 <b>理由</b></td><td><b>ライブは“点”じゃない／既存は点で分断・不便／もっと良くできる</b></td><td>「情報入手→検討→予習→カウントダウン→参戦→余韻→振り返り、という一連の“軸”がライブ」</td><td>既存の素っ気ない管理 vs ライブリコの体験画面</td></tr>
-            <tr><td>2 一言</td><td>前後ぜんぶの体験として楽しみ尽くす</td><td>「ライブを軸に、人生を楽しみ尽くす」</td><td>ホーム一覧</td></tr>
-            <tr><td>3 誰のため</td><td>現場好き・マイナー/インディーまで</td><td>「前髪ぱっつん少年のような小規模アーティストまで取れるか」が試金石</td><td>インディーのフライヤーが並ぶ画面</td></tr>
-            <tr><td>4 分断を直す①</td><td>行く前を“高揚の時間”に（申込〜発券ぜんぶ見える）。悔しさ(当落見逃し/期限切れ)は“点だから起きる症状”として</td><td>「管理が“作業”じゃなく、当日へ向かう“高揚の時間”になる」</td><td>ステータスのチップ群</td></tr>
-            <tr><td>5 分断を直す②</td><td>手間はAIに（手入力ゼロ・本文非保存）</td><td>「チケットのメールも、フェスの出演者も、告知の画像も、AIが読み取って勝手に埋まる」</td><td>フライヤー自動表示＋公式サイトAI検索(%)</td></tr>
-            <tr><td>6 分断を直す③</td><td>予習で“もっと好き”になる（発見）</td><td>「新しいアーティスト/ジャンルに出会い、行く回数が増える・友達も増える」</td><td>出演者タブ(アー写＋曲)</td></tr>
-            <tr><td>7 <b>つながり(コア)</b></td><td>見せ合うだけで分かり合える／バッジ／発信</td><td><b>「ライブ好きは、参戦履歴で恋に落ちる。」</b>／「うわ、この人とは絶対合う、が一秒で分かる」「言葉はいらない」</td><td>友達プロフィール＋バッジ</td></tr>
-            <tr><td>8 守る</td><td>データが消えない＝信頼（既存の失敗から学んだ）</td><td>「Livelogは機能で負けたんじゃない、データ消失で死んだ」</td><td>機種変えても残る等</td></tr>
-            <tr><td>9 世界観</td><td>ピンク→オレンジのグラデ（Aooo『Rooom』由来）</td><td>—</td><td>色味が分かる画面</td></tr>
-            <tr><td>10 締め</td><td>ビジョン＋誘い</td><td>「申し込んだ日から、もう始まってる」「そのライブの、ぜんぶが愛おしい」</td><td>印象的なフライヤー or ロゴ</td></tr>
+            <tr><td><b>① 履歴を“惚れるに値する”豊かさに</b></td><td>恋に落ちるだけの中身。点じゃなく体験まるごと（行く前から）</td><td>申込〜発券のステータス／フライヤー・アー写・セトリ・メモ／（今後）天気・ニュース・グッズ</td><td>ステータスチップ群／ライブ詳細</td></tr>
+            <tr><td><b>② 履歴が“勝手に貯まる”</b></td><td>履歴が無ければ恋も起きない。手間で愛を削がない</td><td>Gmail自動取込（過去ぜんぶ復元）／フライヤー・公式サイトAI検索／本文非保存</td><td>フライヤー自動表示＋AI検索(%)</td></tr>
+            <tr><td><b>③ 履歴で“恋が起きる”</b></td><td>見せ合う・響き合う場。恋が実際に発火する所＝コア</td><td>公開プロフィール／友達／バッジ（同じライブ/一緒に参戦/同じフェス別日）／発信／予習で発見</td><td>友達プロフィール＋バッジ</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card" style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>土台（3枝を支える）：</b>守る＝<b>データが消えない</b>（惚れた履歴を失わせない・Livelogの死から学んだ信頼）／誰のため＝<b>現場好き・マイナーまで</b>（インディー履歴こそ人格が出る＝一番恋に落ちる・前髪ぱっつん少年が試金石）／世界観＝<b>ピンク→オレンジ</b>（“恋の高揚”の色・Aooo『Rooom』由来）。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-list-numbers"></i> 人に見せる順（North Starから降ろす）</div>
+        <div class="card tbl-wrap"><table>
+          <thead><tr><th>#</th><th>伝えること</th><th>林の言葉（原文）</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td><b>North Star提示</b>＝「ライブ好きは、参戦履歴で恋に落ちる。」＝履歴は記録じゃなく恋に落ちる対象</td><td>「言葉はいらない／うわ、この人とは絶対合う、が一秒で分かる」</td></tr>
+            <tr><td>1</td><td><b>なぜ(理由)</b>＝既存は履歴を“点・管理”にして分断・不便＝恋が起きない。ライブは点じゃない</td><td>「一連の“軸”がライブ」「記録は入口、本質は体験×つながり×発信」</td></tr>
+            <tr><td>2</td><td>枝①＝履歴を惚れるに値する豊かさに（行く前のソワソワから／悔しさ=点だから起きる症状）</td><td>「管理が“作業”じゃなく、当日へ向かう“高揚の時間”になる」</td></tr>
+            <tr><td>3</td><td>枝②＝手間はAIに（手入力ゼロ・本文非保存）</td><td>「AIが読み取って勝手に埋まる」</td></tr>
+            <tr><td>4</td><td>枝③＝<b>履歴で恋が起きる（コア）</b>＝見せ合う・バッジ・発信・発見</td><td><b>「ライブ好きは、参戦履歴で恋に落ちる。」</b>「友達とつながるほど、新しいアーティストに出会う」</td></tr>
+            <tr><td>5</td><td>土台＝守る/誰のため/世界観</td><td>「Livelogは機能で負けたんじゃない、データ消失で死んだ」「前髪ぱっつん少年まで取れるか」</td></tr>
+            <tr><td>6</td><td>締め＝ビジョン＋誘い</td><td>「申し込んだ日から、もう始まってる」「そのライブの、ぜんぶが愛おしい」</td></tr>
           </tbody>
         </table></div>
       </div>
@@ -1844,6 +1857,14 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>いまどこ？ 次の決定的ポイントは？</h2>
           <p>長いやり取りの状況を1枚に。次のセッション/メンバーはまずここを見れば掴める。詳細は各ページ・docへ。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="background:linear-gradient(90deg,#ff4f7b,#ff8a3d);color:#fff;font-size:15px;line-height:1.8;text-align:center;padding:16px">
+          <span style="opacity:.9;font-size:12px;letter-spacing:.08em">★ NORTH STAR（このサービスを一言で・すべてはここからぶら下がる）</span><br>
+          <b style="font-size:19px">「ライブ好きは、参戦履歴で恋に落ちる。」</b><br>
+          <span style="opacity:.95;font-size:12px">迷ったら「それは“参戦履歴で恋に落ちる”を強くするか？」で決める　→ <a href="#pitch" onclick="show('pitch');return false;" style="color:#fff;text-decoration:underline">訴求構成v4</a></span>
         </div>
       </div>
 
