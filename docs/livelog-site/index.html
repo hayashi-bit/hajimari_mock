@@ -3390,6 +3390,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-id-badge-2"></i> 【決定】事業資産のGoogleアカウントは会社(threeway.co.jp)に統一（2026-06-27）</div>
+        <div class="card" style="border-left:4px solid #2e7bd6;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>背景：</b>サービス資産が hayashi@threeway.co.jp と eiji10hama@gmail.com に散在（OAuthクライアント/GCPは eiji側、liverico.appドメインは threeway Workspace側）。<br>
+          <b>決定：</b>これは会社(株式会社スリーウェイ)の事業＝**Googleの事業資産は hayashi@threeway.co.jp(Workspace)に統一**。理由＝所有/復旧/譲渡の統制・ドメインが既にthreeway・課金やApple/Stripeも会社名義が筋。<br>
+          <b>やり方（非破壊）：</b>作り直さない。GCPプロジェクト(LiveLo・OAuthクライアント<code>237418704687-…</code>入り)に threeway をオーナー追加→必要なら組織移管。<b>クライアントID不変＝アプリ設定を変えずに会社が支配</b>。Railway/Apple/GitHub等も会社管理方針へ寄せる（GitHubはGoogleと別管理）。<br>
+          <b>進め方：</b>統一は別途“非破壊の所有権移管”としてチェックリスト化。<b>Day2(認証)はこれに縛られず既存クライアントで進めてよい</b>（どちらの所有でも動く）。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bug-off"></i> 【修正完了】友達追加＋友達バッジ 復活（2026-06-27・Manus本番）</div>
         <div class="card" style="background:#f1faf4;border-left:4px solid #1b8a4b;font-size:13px;color:var(--text2);line-height:1.9">
           <b>症状：</b>プロフィールで「友達を追加する」導線が出ない／友達バッジが出ない。<br>
