@@ -217,6 +217,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('migration',this)"><i class="ti ti-arrows-transfer-up"></i>Manus→Claude 移行計画</div>
       <div class="nav-item" onclick="show('twochats',this)"><i class="ti ti-arrows-split"></i>①②チャットの使い分け</div>
       <div class="nav-item" onclick="show('accountmap',this)"><i class="ti ti-at"></i>★ アカウント早見表</div>
+      <div class="nav-item" onclick="show('serviceledger',this)"><i class="ti ti-server-cog"></i>★ インフラ／サービス台帳</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
@@ -1779,6 +1780,99 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-folder"></i> 関連doc</div>
         <div class="card" style="font-size:12.5px;color:var(--text2);line-height:1.9">
           doc42=移行アセスメント（miiiro回答）／doc43=門倉さん向けブリーフ／doc44=移行計画／doc45=Manus質問集／doc46=確定工程表／migration_analysis=Manus実コード調査
+        </div>
+      </div>
+    </div>
+
+    <div id="page-serviceledger" class="page">
+      <div class="topbar"><div class="topbar-title">インフラ／サービス台帳（目的・選定理由・他候補・アカウント）</div><span class="topbar-badge">2026-06-29 / 随時更新</span></div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-info-circle"></i> この台帳について</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          このサービスが使っている外部サービスを、<b>用途／なぜ選んだか／他に何と比べたか（ベンチマーク）／URL／どのアカウント</b>で1か所に記録する。新しいサービスを採用したら必ずここに追記。「どのアカウントでログインするか」の早見は<b>アカウント早見表</b>ページも参照。出典：移行計画 doc44／引き継ぎ doc50。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-github"></i> GitHub — コード置き場</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：アプリのソースコード管理（liverico-app＝本番／hajimari_mock＝開発記録 ほか）。Claude Code との連携元。</div>
+          <div><b>アカウント</b>：<b>hayashi-bit</b>（github.com）。別アカウント eiji10hama-netizen は開発では使わない。</div>
+          <div><b>選定理由</b>：コード管理の事実上の標準。Claude Code（GitHub App）と直結＝PR→自動デプロイの流れが作れる。</div>
+          <div><b>他候補（ベンチマーク）</b>：GitLab／Bitbucket＝いずれも可だが、Claude Code 連携とエコシステムで GitHub が最も摩擦が少ない。</div>
+          <div><b>URL</b>：https://github.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-server"></i> Railway — 本番ホスティング（公開・実行環境）</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：アプリ本体（フロント＋バックを<b>1サービス・同一オリジン</b>）を常時起動し、liverico-production.up.railway.app で公開。main への push で<b>自動デプロイ</b>。</div>
+          <div><b>アカウント</b>：組織 <b>nurturing-imagination</b> ／ project production（ログインメールは要確認＝早見表に追って追記）。</div>
+          <div><b>選定理由</b>：①<b>常時起動</b>＝Gmail の長時間取込ジョブに強い（サーバーレスは長時間処理に不向き）②フロントとバックを<b>同一オリジンの1サービス</b>にまとめられCORS（別ドメイン間通信の面倒）が不要③PORT自動注入＝設定が楽④GitHub連携で push＝自動デプロイ。</div>
+          <div><b>他候補（ベンチマーク）</b>：Render＝ほぼ同等の対抗馬／Fly.io＝低レイテンシだが設定が重い／<b>Vercel</b>＝フロントは得意だが常時起動・長時間ジョブに不向き＝バックには選ばず。<span style="color:var(--text3)">※計画当初はフロント=Vercel/バック=Railwayの2枚構成案だったが、同一オリジン1サービスにまとめてRailwayへ集約した。</span></div>
+          <div><b>URL</b>：https://railway.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-photo"></i> Cloudflare R2 — 画像／ファイル保管庫</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：フライヤー・チケット画像・アー写などの<b>ファイル（写真）</b>を保管しURLで配信。Manus forge ストレージ依存を断つための移行先（Day3）。</div>
+          <div><b>アカウント</b>：<b>hayashi@threeway.co.jp</b>（dash.cloudflare.com・2026-06-29作成・会社）。有効化にカード登録が必要だが<b>無料枠10GB内＝請求0円見込み</b>。</div>
+          <div><b>選定理由</b>：①<b>egress（読み出し転送料）が無料</b>＝画像は何度も見られる＝見られるほど課金されるS3と違い人気が出てもコストが読める②<b>S3互換</b>＝既存コード（@aws-sdk/client-s3）がほぼ書き換えなしで動く③安価（10GBまで無料）。</div>
+          <div><b>他候補（ベンチマーク）</b>：AWS S3＝定番だが<b>egress有料</b>（見られるほど課金）／Backblaze B2＝安いが条件付き。発見・つながりで見られ続けるサービス性質に egress無料のR2が最適。</div>
+          <div><b>URL</b>：https://dash.cloudflare.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database"></i> TiDB Cloud — 本番データベース</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：ライブ記録・ユーザー・友達など<b>データ本体</b>（17テーブル）。移行でも<b>そのまま継続</b>。</div>
+          <div><b>アカウント</b>：要確認（Manus自動管理だった接続情報を引き継ぎ。切替時にTiDB Cloudコンソールから取得）。</div>
+          <div><b>選定理由</b>：<b>MySQL互換</b>でDrizzle（ORM）の方言が一致＝<b>データを移動させずに「接続先の差し替え」だけで済む</b>＝移行の最大の時短・最大リスク（大移動）の回避。</div>
+          <div><b>他候補（ベンチマーク）</b>：PlanetScale（MySQL互換）／RDS MySQL／PostgreSQL＝Postgresは方言の書き直しと危険な大移動が発生＝却下。継続が最善。</div>
+          <div><b>URL</b>：https://tidbcloud.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-google"></i> Google Cloud（OAuth） — ログインの土台</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：「Googleでログイン」の認可（OAuthクライアント）。承認済みリダイレクトURIをここで管理。</div>
+          <div><b>アカウント</b>：<b>eiji10hama@gmail.com</b> ／ project <b>LiveLo（livelo-499209）</b>、Webクライアント 237418704687-1lcb…。</div>
+          <div><b>選定理由</b>：既にGoogleログイン＝ユーザー体験の変化が最小。セッションは自前実装（jose JWT・HS256）でManus非依存。</div>
+          <div><b>他候補（ベンチマーク）</b>：Auth.js(NextAuth)＝計画当初案だが、コードは自前のGoogle OAuth+JWTで完結していたため流用＝書き直さず移植。</div>
+          <div><b>URL</b>：https://console.cloud.google.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-robot"></i> Anthropic（Claude API） — AI機能のLLM（Day5予定）</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：フライヤー/ニュース選別などのAI処理。現状の Manus forge LLM（gemini）からの差替先。</div>
+          <div><b>アカウント</b>：未（Day5で用意）。</div>
+          <div><b>選定理由</b>：OpenAI互換のAPI形式で<b>差替が容易</b>（URLとモデル名の変更が中心）。最新・高性能なClaudeを使える。</div>
+          <div><b>他候補（ベンチマーク）</b>：OpenAI／現行のgemini（Manus forge経由＝Manus依存なので脱出対象）。</div>
+          <div><b>URL</b>：https://console.anthropic.com</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> Sentry — エラー監視（予定）</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div><b>用途</b>：本番のエラーを可視化（Manus時代の「本番ログ不可視」を根治）。Day1残課題。</div>
+          <div><b>選定理由</b>：エラー監視の定番。Railway/Vercelの素のログと併用で目隠しデバッグを解消。</div>
+          <div><b>URL</b>：https://sentry.io</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-plug"></i> 外部API（差替不要・envを引き継ぐだけ）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          Resend（メール送信）／Tavily（Web検索）／Apple Music・Spotify（アー写・楽曲メタ）／Setlist.fm（セトリ）／Google APIs（Gmail取込）。いずれもManus非依存で直接HTTP＝<b>環境変数（APIキー）を引き継ぐだけ</b>で移行先でも動く。アカウント・キーは秘密のためチャット/サイトには出さずenv管理。
         </div>
       </div>
     </div>
