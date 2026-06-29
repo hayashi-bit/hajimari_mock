@@ -2018,6 +2018,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-eye-cog"></i> 対外開示の線引き（不特定多数に見せる時）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          <b>見せる＝「世界観・体験・今できる機能」</b>（このページの北極星・5カテゴリ要約はそのまま見せてOK＝出さないと何のサービスか伝わらない）。<br>
+          <b>見せない＝技術のhow</b>（Gmail/AI自動取込の中身・パイプライン・データソース・取得方法）＝ピッチに技術詳細は載せない。<br>
+          <b>今後アイデア＝ものによる</b>（未実装ロードマップ＝特に「好きなアー新公演通知」等の強い未来武器は、不特定多数には外すかぼかす。レーベル等の特定パートナーには見せてよい）。<br>
+          <b>戦略資料</b>（市場分析・堀・コスト・優先順位）は社内用＝外に出さない。<span style="color:var(--text3)">※相手がパートナー候補（レーベル等）なら範囲を広げてよいが、howは渡さない。</span>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bookmark"></i> コンセプト（一言で）</div>
         <div class="card" style="border-left:4px solid #ff4f7b;font-size:13px;color:var(--text2);line-height:1.9">
           参戦履歴は“管理する記録”じゃなく、<b>“恋に落ちる対象”</b>。同じ箱・同じ夏のリストを見せ合うだけで「この人とは合う」が一秒で伝わる。ライブリコは、その履歴を<b>惚れるに値する豊かさで・手間ゼロで貯めて・見せ合える</b>アプリ。<br>
@@ -2764,9 +2774,21 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card">
           <div class="phase-item"><div class="phase-num">◎A</div><div><div class="phase-title">自前セトリDBを「ユーザー投稿＋AI入力支援」で育てる ← 本命の堀</div><div class="phase-desc">LiveFansも投稿型。自前で持てば唯一の自分資産＆合法。入力負担はAIで激減：①セトリ掲示の写真→AI構造化 ②X投稿テキストを貼る→AI整形 ③友達のセトリをコピー（＝つながりがそのままセトリ自動補完）</div></div></div>
           <div class="phase-item"><div class="phase-num">◎B</div><div><div class="phase-title">ユーザーが貼る「公開投稿(X)」をAI整形 ← 合法寄り・即効</div><div class="phase-desc">スクレイピングでなく「ユーザーが持ってきた公開データの整形」。e+テキストペースト方式と同じ発想。今すぐ作れて精度も出しやすい</div></div></div>
-          <div class="phase-item"><div class="phase-num">○C</div><div><div class="phase-title">setlist.fm 公式API ← 海外公演/一部のみ補助</div><div class="phase-desc">日本は薄いが洋楽・来日は取れる。公式APIなので安全。補助的に併用</div></div></div>
+          <div class="phase-item"><div class="phase-num">○C</div><div><div class="phase-title">setlist.fm 公式API ← 海外公演/一部のみ補助（取得方法は正規）</div><div class="phase-desc">日本は薄いが洋楽・来日は取れる。<b>取得方法はAPI＝正規で安全（スクレイピングと違う）</b>。ただしToS上の確認事項あり＝①<b>非商用が原則</b>（収益主目的なら商用扱い→別途問い合わせ要）②<b>データ保持に制限</b>（自前DBへの恒久保存は制限・短期キャッシュ前提）。当面は<b>海外中心の補助＋出典明記</b>で運用、商用条件は実績後に確認/申請。</div></div></div>
           <div class="phase-item"><div class="phase-num">△D</div><div><div class="phase-title">LiveFans 正規提携（将来）</div><div class="phase-desc">スクレイピングでなくデータ提携/API/送客の話に。SKIYAKIはB2Bデータ事業＝交渉余地はゼロでない。ただし実績（100人）後</div></div></div>
           <div class="phase-item" style="border-bottom:none"><div class="phase-num">✕</div><div><div class="phase-title">アプリによる自動スクレイピング(LiveFans) ← 避ける</div><div class="phase-desc">有料・規模化でToS違反/DB権/不競法リスク</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-x"></i> 決定（2026-06-29）：公開前に LiveFans 取得を外す</div>
+        <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>不特定多数・音楽レーベル等に出す前に、LiveFans スクレイピング(fetchFromLiveFans)を必ず外す</b>（他社=SKIYAKI資産の無断自動取得＝法的・評判リスク／レーベルは権利に最も敏感＝提携の一発アウト）。<br>
+          代替＝<b>①ユーザーの手入力（自分が見たライブの“事実”＝完全クリーン・本命）／②AI入力支援（セトリ写真・X公開投稿の貼付をAI整形）／③setlist.fm 公式API＝主に海外の補助</b>。<br>
+          <b>外した後の表示注釈</b>：セトリ自動取得は「<b>主に海外公演＝setlist.fm 出典</b>」である旨を明記する（出典表示）。<br>
+          <b>“グレー手法”の線引き（すべて LiveFans を念頭）</b>：✅ユーザーが自分の記憶/メモから手入力＝クリーン（本命）／🟡ユーザーが手で写して登録は個人レベルなら低リスクだが、<b>サービスが組織的に集めて自前DB化すると“ユーザー経由のスクレイピング迂回”＝実質で判断され✕寄り</b>／✕サービスが自動取得・保持＝規約違反＝避ける。<br>
+          <b>そもそも論</b>：セトリ網羅は主戦場ではない（規模ではLiveFansに勝てない／堀はAI自動取込・つながり）。網羅性は捨て、手入力＋AIで“体感的に楽”を作れば十分。グレーは踏まない。<br>
+          <b>提携</b>：setlist.fm／LiveFans とも、レバレッジ無き現状では期待値低＝戦略の前提にしない。実績（100人規模）後の選択肢に留める。<span style="color:var(--text3)">※最終は法律専門家（門倉さん経由で弁護士）確認。</span>
         </div>
       </div>
 
@@ -3611,6 +3633,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-x"></i> 【決定】対外開示の線引き＋LiveFans取得を公開前に外す＋セトリ方針（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>対外開示</b>＝世界観・体験・今できる機能は見せる／<b>技術のhowは見せない</b>／今後アイデアはものによる（不特定多数には未実装ロードマップを外す/ぼかす）／戦略資料は社内用。詳細は North Star ページ「対外開示の線引き」。<br>
+          <b>セトリ取得</b>＝スクレイピングは<b>LiveFans</b>の話。<b>不特定多数・音楽レーベル等に出す前に LiveFans 取得(fetchFromLiveFans)を外す</b>（他社資産の無断取得＝法務・評判・提携リスク）。外した後はセトリ自動取得を<b>「主に海外＝setlist.fm 出典」</b>と注釈。setlist.fm は<b>取得方法は正規API</b>だが ToS確認事項（非商用原則・データ保持制限）あり＝当面は海外補助＋出典明記、商用条件は実績後に確認。グレー手法（ユーザー経由でサービスが組織的に自前DB化）は“スクレイピング迂回”＝✕寄り＝踏まない。セトリ網羅は主戦場でない（堀はAI自動取込・つながり）＝網羅は捨て手入力＋AI支援で十分。提携は期待値低＝前提にしない。<br>
+          <b>知財</b>＝特許は取らない（ソフト機能は取りにくい・低ROI）／<b>商標は名前(ライブリコ/LiveRico)だけ登録を検討（保険）</b>＝未登録だと名前を取られて逆に使えなくなるリスク。最終法務は門倉さん経由で弁護士確認。
         </div>
       </div>
 
