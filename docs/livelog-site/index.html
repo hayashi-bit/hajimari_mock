@@ -3691,6 +3691,24 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-bug"></i> 【本番バグ】Gmail取込 invalid_grant ／ 予習プレイリスト不動（キャプチャ作業中に発覚・2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
+          紹介資料用キャプチャを撮ろうとして本番で2件発覚＝先に修正（壊れた機能は撮れない＋どちらも差別化の核）。<br>
+          ①<b>Gmail取込エラー</b>＝「getAuthorizedClient失敗: refreshAccessToken失敗: code=400 invalid_grant」（eiji10hama・前回同期6/30）。原因候補＝(a)移行でGOOGLE_CLIENT_SECRET不一致 (b)<b>OAuth同意画面がテスト中→refresh token約7日失効</b>（有料化前チェックのOAuth審査と地続き） (c)保存トークン失効。短期＝再連携導線を確実に／恒久＝同意画面の審査は別管理。<br>
+          ②<b>予習プレイリスト不動</b>＝Apple Music/Spotify生成まわり（env読込・トークン生成・API）を新②で調査。<br>
+          対応＝新②(liverico-app)に調査・修正指示を投入。直ったらキャプチャ再開→LP/パワポへ。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users-group"></i> 【改善要望】出演者まわり2件（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #2e7bd6;font-size:13px;color:var(--text2);line-height:1.9">
+          ①<b>出演者取得＝公演名に登録済みのアーティストから取れるように</b>＝フライヤーAIだけでなく、ライブ名に紐づくアーティストを素直に出演者へ反映（確実・速い・誤りにくい導線を用意）。<br>
+          ②<b>AI出演者登録の一括削除</b>＝AIが無関係なアーティストまで大量に取得してしまい、1件ずつ消すのが大変＝<b>まとめて削除（全選択/一括クリア）</b>を付ける。AI取得は候補提示型＝誤りを一括で消せる前提を守る。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-music-plus"></i> 【今後アイディア】セトリの各曲から「自分の音楽サービス」＋「YouTube」へリンク（2026-06-29）</div>
         <div class="card" style="border-left:4px solid #ff4f7b;font-size:13px;color:var(--text2);line-height:1.9">
           セットリストの曲ごとに2つのリンクを置く＝①<b>ユーザーが選んでいる音楽サービス</b>（Apple Music / Spotify＝プロフィール設定で選択＝人により異なるので“自分の”サービスへ）②<b>YouTube</b>（常時）。「あの日の曲順」を自分のサービス/YouTubeでそのままたどれる。予習プレイリスト（アー写＋代表曲）とは別＝こちらは<b>セトリ実曲ベース</b>。区分＝<b>今後アイディア（未実装ロードマップ＝不特定多数には非開示側）</b>。
