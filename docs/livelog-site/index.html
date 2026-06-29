@@ -1822,6 +1822,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <table style="width:100%;border-collapse:collapse;font-size:13px">
             <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">サービス</th><th style="text-align:left;padding:6px">場所／アカウント</th><th style="text-align:left;padding:6px">用途</th></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway</b></td><td style="padding:6px">組織 nurturing-imagination ／ project production</td><td style="padding:6px">本番ホスティング（liverico-app の main を自動デプロイ）</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Cloudflare（R2）</b></td><td style="padding:6px"><b>hayashi@threeway.co.jp</b>（2026-06-29作成・会社アカウント）</td><td style="padding:6px">画像/ファイル保管庫 R2（Day3で Manus forge から移行）</td></tr>
             <tr><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px">（本番DB）</td><td style="padding:6px">データ本体（移行でも継続）</td></tr>
           </table>
         </div>
@@ -3490,6 +3491,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-photo-up"></i> 【Day3着手】画像ストレージを Manus(forge) → Cloudflare R2 へ移行開始（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          方針＝Manus依存の最後の太い1本＝画像保管庫(/manus-storage/{key})をR2(S3互換・安価)へ。3パート＝①新②でコード(server/storage.ts・storageProxy)をR2向けに書換＋R2接続情報をenv／②既存画像をR2へ再アップ＋DBの画像URL更新（非破壊・件数照合・方式①採用）／③新旧画像とも表示確認。安全＝DBのURL更新前に最新バックアップを取る・旧画像は消さない。<b>Cloudflareアカウント作成済み＝hayashi@threeway.co.jp（会社）</b>。次＝R2バケット作成→APIトークン発行→env投入。
         </div>
       </div>
 
