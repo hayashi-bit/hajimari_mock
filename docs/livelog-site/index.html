@@ -3691,6 +3691,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-route"></i> 【運用確定】マナスは触らない／liverico.appの軽いバグは切替まで我慢／致命時だけ前倒し（A順当を選択・2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          開発・バグ修正は全て<b>新②/Railway（liverico-app）</b>。<b>マナスのコードは一切触らない</b>（二重保守・クレジット燃焼を避ける）。liverico.app（今モニターが使う本番）に届くのは<b>切替(Day6-7)後</b>＝「バグはRailwayで直す＋切替で liverico.app をRailwayに付け替える」で結果的に直る（マナスは引退）。<br>
+          <b>切替までのバグ方針</b>＝①耐えられるバグ（データ消えない・代替あり・軽微）は切替まで我慢／②致命的バグ（データ消失・コア不能）は放置せず<b>切替を前倒し</b>して対処（非常口）／③我慢は数日（期限つき）。<br>
+          今回＝<b>A（順当）を選択</b>＝Railwayで直しつつ Day3〜の順で切替。Gmail invalid_grant は自己復帰（再発時は再連携＋OAuth同意画面審査=有料化前課題）。予習プレイリスト不動・出演者改善2件は新②に投入。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bug"></i> 【本番バグ】Gmail取込 invalid_grant ／ 予習プレイリスト不動（キャプチャ作業中に発覚・2026-06-29）</div>
         <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
           紹介資料用キャプチャを撮ろうとして本番で2件発覚＝先に修正（壊れた機能は撮れない＋どちらも差別化の核）。<br>
