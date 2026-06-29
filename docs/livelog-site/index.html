@@ -3448,6 +3448,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-circle-check"></i> 【Day2 完了】本番Googleログイン成功（VITE_APP_ID追加で即効解消）＋恒久修正を②に投入（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          RailwayにVITE_APP_IDを追加→再デプロイ→<b>eiji10hama@gmail.com で本番ログイン成功（ループ解消）</b>。原因の読み（appId空で弾かれ）が的中。設定値頼みの再発リスクを断つため、恒久修正（verifySessionの必須をopenIdだけに緩める／JWT_SECRET不変・DB読取のみ）を②(liverico-app)に投入済み。<b>移行はDay1配線✅・Day2認証✅</b>。次＝Day3画像→R2／Day4 Heartbeat→Railway Cron／Day5 LLM→Anthropic／Day6-7 切替。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-key"></i> 【Day2】本番ログインのループ原因を特定（VITE_APP_ID欠落／verify必須フィールド）（2026-06-29）</div>
         <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
           Railway本番でGoogleログインが無限ループ。Deployログの決定行＝<code>[Auth] Session payload missing required fields</code>（sdk.ts:220）。署名(JWT_SECRET)は一致＝鍵の問題ではなく、JWTのpayloadに必須フィールド（openId/appId/name）が欠けて弾かれていた。最有力＝<code>appId</code>が空（<code>VITE_APP_ID</code>がRailway未設定→空文字）。即効＝RailwayにVITE_APP_ID追加（コード変更なし・無害）。恒久＝verifyの必須を<code>openId</code>だけに緩める（Google単独ログインはopenId="google_{googleId}"で本人特定十分）。trust-proxy仮説は外れ（クッキーは作られ読めていた）。
