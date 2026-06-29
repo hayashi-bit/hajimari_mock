@@ -215,6 +215,7 @@ tr:hover td{background:var(--bg2)}
     <div class="nav-section">
       <div class="nav-label">🚀 基盤移行（最優先）</div>
       <div class="nav-item" onclick="show('migration',this)"><i class="ti ti-arrows-transfer-up"></i>Manus→Claude 移行計画</div>
+      <div class="nav-item" onclick="show('twochats',this)"><i class="ti ti-arrows-split"></i>①②チャットの使い分け</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
@@ -1778,6 +1779,56 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:12.5px;color:var(--text2);line-height:1.9">
           doc42=移行アセスメント（miiiro回答）／doc43=門倉さん向けブリーフ／doc44=移行計画／doc45=Manus質問集／doc46=確定工程表／migration_analysis=Manus実コード調査
         </div>
+      </div>
+    </div>
+
+    <div id="page-twochats" class="page">
+      <div class="topbar"><div class="topbar-title">①②チャットの使い分け（司令塔と実working）</div><span class="topbar-badge">2026-06-29 / 運用ルール</span></div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-info-circle"></i> なぜ2つに分かれるのか</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          Claude Code のチャットは <b>1チャット＝1リポジトリ（コード置き場）</b> にしかつながれない。だから「開発の頭脳（計画・記録）」と「アプリのコード」を1つにまとめることは技術的にできない。<b>役割で2つに分ける</b>のが正解。統一しない（＝統一できない）。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrows-split"></i> ①と②の役割</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <div style="margin-bottom:12px">
+            <b style="color:var(--navy)">① 司令塔・記録チャット（hajimari_mock）</b><br>
+            <span style="color:var(--text2)">移行計画・指示書づくり・この開発サイト/メモログの更新・原因の切り分け・方針決定。<b>考える／決める／記録する</b>場所。アプリのコードは直接さわれない。</span>
+          </div>
+          <div>
+            <b style="color:var(--navy)">② 実workingチャット（liverico-app ＝「LiveRico Manus to Railway migration」）</b><br>
+            <span style="color:var(--text2)">アプリ本体のコード置き場につながっている。<b>コードを実際に直す／ビルド／デプロイ</b>する場所。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-route"></i> 回し方（①＝頭／②＝手）</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <b>1.</b> ①で指示文・調査文を作る → <b>2.</b> それを②に貼る → ②がコードを直す → <b>3.</b> ②の結果（返事・ログ・スクショ）を①に戻す → ①が次を決める／メモログに記録。<br>
+          この往復を林さんが橋渡しする。迷ったときの一言判定＝<b>「コードを書き換える話なら② それ以外は①」</b>。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-message-2"></i> ②に渡す“使い分けルール”指示文</div>
+        <div class="card" style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text2);line-height:1.8;white-space:pre-wrap">【役割ルール：②はコードの実working、①は司令塔】
+このチャット（②/liverico-app）は「アプリのコードを実際に直す」担当。
+方針決定・原因の切り分け・開発サイト/メモログの記録は ①（hajimari_mock）が担当。
+
+守ること：
+1. このチャットではコード修正・ビルド・デプロイに集中する。
+   方針が割れる判断や「どう直すべきか相談」は①に委ねる（ここで勝手に方針転換しない）。
+2. 作業が一区切りしたら、必ず「①に戻すための報告」を最後にまとめる：
+   - やったこと（変更したファイル/内容）
+   - 結果（成功/失敗・エラーやログ・本番URLでの確認結果）
+   - ①に判断してほしい残課題があれば明記
+   この報告は林さんが①へコピペで貼れる形（簡潔・全文）で出す。
+3. 報告の最後に一行：「→ この結果を①に貼って、次の方針を決めてください」と添える。</div>
       </div>
     </div>
 
@@ -3386,6 +3437,20 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-arrows-split"></i> 【運用】開発は①司令塔(hajimari_mock)＋②実working(liverico-app)の2チャットで回す（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          1チャット＝1リポジトリの制約上、頭脳(計画/記録)とコードは1つにまとめられない＝統一しない。①＝考える/決める/記録（コード不可触）、②＝コードを直す/ビルド/デプロイ。回し方＝①で指示文作成→②に貼る→②の結果を①に戻す→①が次を決める。判定基準「コードを書き換える話なら② それ以外は①」。詳細は「①②チャットの使い分け」ページ。②には“作業後に①へ戻す報告を必ず出す”ルールを指示済み。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-key"></i> 【Day2】本番ログインのループ原因を特定（VITE_APP_ID欠落／verify必須フィールド）（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
+          Railway本番でGoogleログインが無限ループ。Deployログの決定行＝<code>[Auth] Session payload missing required fields</code>（sdk.ts:220）。署名(JWT_SECRET)は一致＝鍵の問題ではなく、JWTのpayloadに必須フィールド（openId/appId/name）が欠けて弾かれていた。最有力＝<code>appId</code>が空（<code>VITE_APP_ID</code>がRailway未設定→空文字）。即効＝RailwayにVITE_APP_ID追加（コード変更なし・無害）。恒久＝verifyの必須を<code>openId</code>だけに緩める（Google単独ログインはopenId="google_{googleId}"で本人特定十分）。trust-proxy仮説は外れ（クッキーは作られ読めていた）。
         </div>
       </div>
 
