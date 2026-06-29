@@ -3494,6 +3494,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> 【節目】Claude(新②)が liverico-app に直接コミット→PR→マージ→本番デプロイの一周に成功＝“手”の付け替え実証（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          GitHub App に liverico-app 書込権限を付与（hayashi-bit で承認）→ claude.ai/code で <b>liverico-app/main 接続の新セッション（新②）</b>を作成 → verifySession 恒久修正を実コードに実装（必須を openId のみに緩和）→ <b>PR #1</b> 作成（テスト5件パス／ビルドOK／新規型エラー0／JWT_SECRET不変・DB破壊なし）→ マージ → Railway 自動デプロイ → <b>eiji10hama@gmail.com で本番再ログイン成功・ループ完全解消</b>を実機確認。<b>＝マナス→クロコの“実装の手”の付け替えが初めてエンドツーエンドで機能した移行の節目。Day2(認証)完全クローズ。</b> 旧②(livelog)は誤接続だったので放置。運用形＝①(hajimari_mock=司令塔)＋新②(liverico-app=実working)。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-git-branch"></i> 【発見・方針】本番デプロイ元は liverico-app／②は古い livelog につながっていた＝Claudeに liverico-app 書込権限を付与する（2026-06-29）</div>
         <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
           Railway Settings で確定＝<b>本番のデプロイ元は hayashi-bit/liverico-app の main（push＝自動デプロイ）</b>。一方②がつながっていたのは <b>hayashi-bit/livelog</b>＝旧Manus版の古い置き場（Googleログイン未実装・4778a68）で、本番とは別物だった＝②でいくら直しても本番に届かない。さらに現状どのClaudeチャットも liverico-app に書き込めない（例の403＝Claude GitHub Appに書込権限なし）。<b>方針＝Claudeのアプリに liverico-app への書込権限を付与し、Claudeセッションをそこに接続する</b>（Day3〜7も全て liverico-app を触るため、ここで権限を整えるのが本筋）。恒久修正(verifySession・00155e6)はパッチで保管済み、権限が通り次第 liverico-app/main に当てて自動デプロイ→本番再ログイン確認。本番は即効手当て(VITE_APP_ID)で稼働中ゆえ急がない。
