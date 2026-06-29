@@ -227,6 +227,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('market',this)"><i class="ti ti-chart-dots"></i>市場・VOC調査</div>
       <div class="nav-item" onclick="show('setlistpolicy',this)"><i class="ti ti-license"></i>セトリ取得方針(要検討)</div>
       <div class="nav-item" onclick="show('monetize',this)"><i class="ti ti-coin"></i>マネタイズ戦略</div>
+      <div class="nav-item" onclick="show('prepaid',this)"><i class="ti ti-checkup-list"></i>★ 有料化前チェックリスト</div>
       <div class="nav-item" onclick="show('costqa',this)"><i class="ti ti-calculator"></i>コスト試算・回答</div>
       <div class="nav-item" onclick="show('login',this)"><i class="ti ti-brand-google"></i>Googleログイン化</div>
       <div class="nav-item" onclick="show('gmailspec',this)"><i class="ti ti-mail"></i>Gmail連携仕様</div>
@@ -2003,6 +2004,59 @@ await createLive.mutateAsync({ title: '...' });</div></div>
    - ①に判断してほしい残課題があれば明記
    この報告は林さんが①へコピペで貼れる形（簡潔・全文）で出す。
 3. 報告の最後に一行：「→ この結果を①に貼って、次の方針を決めてください」と添える。</div>
+      </div>
+    </div>
+
+    <div id="page-prepaid" class="page">
+      <div class="topbar"><div class="topbar-title">有料化前チェックリスト（無料モニター→有料の前にやること）</div><span class="topbar-badge">2026-06-29 / 随時更新</span></div>
+      <div class="hero-strip" style="background:linear-gradient(90deg,#1a3a52,#2e7bd6)">
+        <i class="ti ti-checkup-list hero-strip-icon" style="color:#fff"></i>
+        <div class="hero-strip-text" style="color:#fff">
+          <h2 style="color:#fff">「お金を取る」に変わると、法務・規約・税・審査の義務が一気に増える</h2>
+          <p style="color:#fff;opacity:.95">無料モニターのうちは目立たないものが、有料・公開で一斉に顕在化する。出す前に潰す。※最終法務は弁護士確認（門倉さん経由）。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-octagon"></i> A. 最優先（公開/有料の“前提”になる重いもの）</div>
+        <div class="card" style="border-left:4px solid #d65a2e;font-size:13px;color:var(--text2);line-height:1.9">
+          <div>☐ <b>Google OAuth 本番審査＋Gmail制限スコープ対応</b>＝Gmailを読む＝Googleの<b>restricted scope（制限付き権限）</b>＝アプリ審査＋<b>年次の第三者セキュリティ評価(CASA)</b>が要る可能性＝<b>時間も費用もかかる最重要ゲート</b>。早めに着手しないと公開が止まる。</div>
+          <div>☐ <b>特商法表記（特定商取引法に基づく表記）</b>＝有料事業者の義務。事業者名/住所/連絡先/料金/支払方法/返金・解約条件を掲示（株式会社スリーウェイの情報で用意）。</div>
+          <div>☐ <b>利用規約＋プライバシーポリシー</b>＝課金/解約/返金条項＋<b>Gmail本文非保存・データ取扱い</b>を明記（OAuthでも必須）。</div>
+          <div>☐ <b>決済導入（Stripe等）</b>＝事業者確認＋手数料。サブスク/買い切りの選択。</div>
+          <div>☐ <b>消費税・インボイス</b>＝課税事業者・適格請求書の対応。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-license"></i> B. 外部サービスの権利・規約（有料で顕在化）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          <div>☐ <b>LiveFansスクレイピング除去</b>＝公開・有料の前に必ず外す（他社=SKIYAKI資産の無断自動取得＝法務・評判・提携リスク）。→ セトリ取得方針ページ参照。</div>
+          <div>☐ <b>setlist.fm 商用条件の確認/申請</b>＝API規約は非商用原則＋データ保持制限。海外補助＋出典明記で運用、商用は実績後に問い合わせ。</div>
+          <div>☐ <b>Apple Music / Spotify のアー写</b>＝API規約の表示条件・改変禁止・アプリ内限定等を順守（商用利用）。</div>
+          <div>☐ <b>フライヤー画像（AI収集）</b>＝著作権は主催/アーティスト＝公開・規模化で権利リスク＝出典/許諾の整理。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-calculator"></i> C. コスト・価格設計</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <div>☐ <b>LLM変動費の回収</b>＝Gmail自動取込はヘビーユーザーほどコストが嵩む＝<b>買い切りは赤字化</b>＝サブスク/従量で回収する価格設計（コスト試算ページと整合）。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-users"></i> D. 既存ユーザー</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          <div>☐ <b>モニター（ヘビー2人＋林）への課金導入の説明・同意・移行</b>（既存無料を残すか＝グランドファザリング検討）。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flag"></i> 順序の目安</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          重くて時間のかかる <b>A（特にGoogle OAuth審査）</b>を最初に着手 → B の権利整理（LiveFans除去は実装で対応）→ C 価格設計 → D 既存ユーザー移行。法務文書（規約/特商法/プライバシー）は弁護士確認を挟む。
+        </div>
       </div>
     </div>
 
