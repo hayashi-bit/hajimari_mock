@@ -1812,6 +1812,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div><b>アカウント</b>：組織 <b>nurturing-imagination</b> ／ project production（ログインメールは要確認＝早見表に追って追記）。</div>
           <div><b>選定理由</b>：①<b>常時起動</b>＝Gmail の長時間取込ジョブに強い（サーバーレスは長時間処理に不向き）②フロントとバックを<b>同一オリジンの1サービス</b>にまとめられCORS（別ドメイン間通信の面倒）が不要③PORT自動注入＝設定が楽④GitHub連携で push＝自動デプロイ。</div>
           <div><b>他候補（ベンチマーク）</b>：Render＝ほぼ同等の対抗馬／Fly.io＝低レイテンシだが設定が重い／<b>Vercel</b>＝フロントは得意だが常時起動・長時間ジョブに不向き＝バックには選ばず。<span style="color:var(--text3)">※計画当初はフロント=Vercel/バック=Railwayの2枚構成案だったが、同一オリジン1サービスにまとめてRailwayへ集約した。</span></div>
+          <div style="margin:10px 0">
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+              <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">ホスティング</th><th style="text-align:left;padding:6px">常時起動（長時間ジョブ）</th><th style="text-align:left;padding:6px">同一オリジン1サービス</th><th style="text-align:left;padding:6px">判定</th></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway（採用）</b></td><td style="padding:6px;color:#1f9d55">○ 得意</td><td style="padding:6px">○ まとめられる</td><td style="padding:6px;color:#1f9d55"><b>採用</b></td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">Render</td><td style="padding:6px">○</td><td style="padding:6px">○</td><td style="padding:6px">対抗馬</td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">Fly.io</td><td style="padding:6px">○</td><td style="padding:6px">△ 設定重い</td><td style="padding:6px">見送り</td></tr>
+              <tr><td style="padding:6px">Vercel</td><td style="padding:6px;color:#d65a2e">△ サーバーレス＝不向き</td><td style="padding:6px">×</td><td style="padding:6px">バックには不採用</td></tr>
+            </table>
+          </div>
           <div><b>URL</b>：https://railway.com</div>
         </div>
       </div>
@@ -1823,6 +1832,14 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div><b>アカウント</b>：<b>hayashi@threeway.co.jp</b>（dash.cloudflare.com・2026-06-29作成・会社）。有効化にカード登録が必要だが<b>無料枠10GB内＝請求0円見込み</b>。</div>
           <div><b>選定理由</b>：①<b>egress（読み出し転送料）が無料</b>＝画像は何度も見られる＝見られるほど課金されるS3と違い人気が出てもコストが読める②<b>S3互換</b>＝既存コード（@aws-sdk/client-s3）がほぼ書き換えなしで動く③安価（10GBまで無料）。</div>
           <div><b>他候補（ベンチマーク）</b>：AWS S3＝定番だが<b>egress有料</b>（見られるほど課金）／Backblaze B2＝安いが条件付き。発見・つながりで見られ続けるサービス性質に egress無料のR2が最適。</div>
+          <div style="margin:10px 0">
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+              <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">保管庫</th><th style="text-align:left;padding:6px">月額の感覚</th><th style="text-align:left;padding:6px">egress（読み出し転送料）</th><th style="text-align:left;padding:6px">コード移行</th></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Cloudflare R2（採用）</b></td><td style="padding:6px">10GBまで無料</td><td style="padding:6px;color:#1f9d55"><b>無料（0円）</b></td><td style="padding:6px">S3互換＝既存コードほぼそのまま</td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">AWS S3</td><td style="padding:6px">似た無料枠だが</td><td style="padding:6px;color:#d65a2e"><b>有料（見られるほど課金）</b></td><td style="padding:6px">S3そのもの</td></tr>
+              <tr><td style="padding:6px">Backblaze B2</td><td style="padding:6px">安い</td><td style="padding:6px">一部無料だが条件あり</td><td style="padding:6px">S3互換</td></tr>
+            </table>
+          </div>
           <div><b>URL</b>：https://dash.cloudflare.com</div>
         </div>
       </div>
@@ -1834,6 +1851,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           <div><b>アカウント</b>：要確認（Manus自動管理だった接続情報を引き継ぎ。切替時にTiDB Cloudコンソールから取得）。</div>
           <div><b>選定理由</b>：<b>MySQL互換</b>でDrizzle（ORM）の方言が一致＝<b>データを移動させずに「接続先の差し替え」だけで済む</b>＝移行の最大の時短・最大リスク（大移動）の回避。</div>
           <div><b>他候補（ベンチマーク）</b>：PlanetScale（MySQL互換）／RDS MySQL／PostgreSQL＝Postgresは方言の書き直しと危険な大移動が発生＝却下。継続が最善。</div>
+          <div style="margin:10px 0">
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+              <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">DB</th><th style="text-align:left;padding:6px">MySQL互換（方言一致）</th><th style="text-align:left;padding:6px">データ移動</th><th style="text-align:left;padding:6px">判定</th></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>TiDB Cloud（継続）</b></td><td style="padding:6px;color:#1f9d55">○</td><td style="padding:6px;color:#1f9d55"><b>ゼロ（接続先差替のみ）</b></td><td style="padding:6px;color:#1f9d55"><b>継続＝最善</b></td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">PlanetScale</td><td style="padding:6px">○</td><td style="padding:6px;color:#d65a2e">移行必要</td><td style="padding:6px">不要</td></tr>
+              <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">RDS MySQL</td><td style="padding:6px">○</td><td style="padding:6px;color:#d65a2e">移行必要</td><td style="padding:6px">不要</td></tr>
+              <tr><td style="padding:6px">PostgreSQL</td><td style="padding:6px;color:#d65a2e">× 方言書き直し</td><td style="padding:6px;color:#d65a2e">危険な大移動</td><td style="padding:6px">却下</td></tr>
+            </table>
+          </div>
           <div><b>URL</b>：https://tidbcloud.com</div>
         </div>
       </div>
