@@ -216,6 +216,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-label">🚀 基盤移行（最優先）</div>
       <div class="nav-item" onclick="show('migration',this)"><i class="ti ti-arrows-transfer-up"></i>Manus→Claude 移行計画</div>
       <div class="nav-item" onclick="show('twochats',this)"><i class="ti ti-arrows-split"></i>①②チャットの使い分け</div>
+      <div class="nav-item" onclick="show('accountmap',this)"><i class="ti ti-at"></i>★ アカウント早見表</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
@@ -1778,6 +1779,58 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-folder"></i> 関連doc</div>
         <div class="card" style="font-size:12.5px;color:var(--text2);line-height:1.9">
           doc42=移行アセスメント（miiiro回答）／doc43=門倉さん向けブリーフ／doc44=移行計画／doc45=Manus質問集／doc46=確定工程表／migration_analysis=Manus実コード調査
+        </div>
+      </div>
+    </div>
+
+    <div id="page-accountmap" class="page">
+      <div class="topbar"><div class="topbar-title">アカウント早見表（どの操作で どのアカウント）</div><span class="topbar-badge">2026-06-29 / 混乱防止</span></div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> なぜ作るか</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          GitHub・Googleともに<b>アカウントが2つずつ</b>あり、操作のたびに「どっちで入る？」で混乱する。操作を指す時は必ず「このアカウントで」と添える。迷ったらこの表を見る。
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-github"></i> GitHub（コード置き場）</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">アカウント</th><th style="text-align:left;padding:6px">用途</th><th style="text-align:left;padding:6px">判定</th></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>hayashi-bit</b></td><td style="padding:6px">開発の置き場が全部ここ（liverico-app＝本番／livelog＝旧・hajimari_mock＝記録 ほか）</td><td style="padding:6px;color:#1f9d55"><b>✅ 開発はこれ</b></td></tr>
+            <tr><td style="padding:6px">eiji10hama-netizen</td><td style="padding:6px">別のGitHubアカウント（開発の置き場は無い）</td><td style="padding:6px;color:#d65a2e">開発では使わない</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brand-google"></i> Google（ログイン・ドメイン）</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">アカウント</th><th style="text-align:left;padding:6px">用途</th><th style="text-align:left;padding:6px">判定</th></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>eiji10hama@gmail.com</b></td><td style="padding:6px">LiveRico本番アプリを実際に使うアカウント／Googleログイン(OAuth)のクライアントもこのGoogleプロジェクト(LiveLo・livelo-499209)</td><td style="padding:6px;color:#1f9d55"><b>✅ アプリのログイン</b></td></tr>
+            <tr><td style="padding:6px"><b>hayashi@threeway.co.jp</b></td><td style="padding:6px">会社のWorkspace／liverico.app ドメインの運用元／事業の正式アカウント</td><td style="padding:6px;color:#2e7bd6">会社・ドメイン</td></tr>
+          </table>
+          <div style="margin-top:8px;font-size:12.5px;color:var(--text3)">※事業資産は将来 threeway.co.jp へ統一する方針（非破壊）。現状アプリのログインは eiji10hama のまま稼働中。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-cloud"></i> その他のサービス</div>
+        <div class="card" style="font-size:13px;line-height:1.9">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">サービス</th><th style="text-align:left;padding:6px">場所／アカウント</th><th style="text-align:left;padding:6px">用途</th></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway</b></td><td style="padding:6px">組織 nurturing-imagination ／ project production</td><td style="padding:6px">本番ホスティング（liverico-app の main を自動デプロイ）</td></tr>
+            <tr><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px">（本番DB）</td><td style="padding:6px">データ本体（移行でも継続）</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> 操作時のルール</div>
+        <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
+          ①が操作を案内するときは<b>必ず「このアカウントで」を添える</b>。例：「GitHubの設定＝<b>hayashi-bit</b> で」「アプリのログイン確認＝<b>eiji10hama@gmail.com</b> で」。林さんは画面右上のアイコンで今のログイン名を確認してから操作する。
         </div>
       </div>
     </div>
