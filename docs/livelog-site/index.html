@@ -3691,6 +3691,18 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-git-pull-request"></i> 【新②・PR #2】予習プレイリスト主因=getDb()await抜けを修正＋出演者追加/一括削除/Gmail軟着陸（2026-06-29）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          新②(liverico-app)が3件＋参考1件を実装しPR #2作成（テスト15件追加・全パス／型新規エラー0・既存5件解消／ビルドOK／JWT_SECRET・DB破壊なし）。<br>
+          <b>①予習プレイリスト</b>＝<b>主因は rehearsalRouter の getDb() await 抜け</b>（Promiseのままdb.selectが落ちて代表曲が0件＝env問題ではなくコードバグ）。await修正＋Apple Music失敗のログ可視化＋<b>Spotify top-tracksフォールバック</b>（Apple無くてもSpotifyで代表曲）。<br>
+          <b>②公演アーティストから出演者追加</b>＝lives.artistNameを分割し未登録分を追加するボタン（AI読取は補助で残置）。<br>
+          <b>③AI出演者の一括削除</b>＝選択モード＋全選択＋一括削除＋所有者検証で誤削除防止。<br>
+          <b>④Gmail invalid_grant</b>＝失効時ハードエラーで止めず「再連携してください」＋再連携ボタンに軟着陸（OAuth審査は有料化前課題のまま）。<br>
+          次＝PR #2をマージ→自動デプロイ→Railway版で3点を実機確認→キャプチャへ。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-route"></i> 【運用確定】マナスは触らない／liverico.appの軽いバグは切替まで我慢／致命時だけ前倒し（A順当を選択・2026-06-29）</div>
         <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
           開発・バグ修正は全て<b>新②/Railway（liverico-app）</b>。<b>マナスのコードは一切触らない</b>（二重保守・クレジット燃焼を避ける）。liverico.app（今モニターが使う本番）に届くのは<b>切替(Day6-7)後</b>＝「バグはRailwayで直す＋切替で liverico.app をRailwayに付け替える」で結果的に直る（マナスは引退）。<br>
