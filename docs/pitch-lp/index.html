@@ -17,6 +17,15 @@
   img.shot{width:100%;max-width:300px;border-radius:22px;display:block;margin:0 auto;box-shadow:0 10px 34px rgba(255,79,123,.18);border:1px solid #f1e6ec}
   .ph{max-width:300px;margin:0 auto;min-height:430px;border:2px dashed #d7cfe0;border-radius:22px;background:#f6f3f9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#a99fbb;font-weight:700;text-align:center;padding:24px}
   .ph small{color:#bcb3cb;font-weight:500;font-size:12px}
+  /* carousel（1項目に複数画像） */
+  .carousel{max-width:300px;margin:0 auto}
+  .carousel .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:22px}
+  .carousel .track::-webkit-scrollbar{display:none}
+  .carousel .track img{min-width:100%;width:100%;scroll-snap-align:center;border-radius:22px;display:block;box-shadow:0 10px 34px rgba(255,79,123,.18);border:1px solid #f1e6ec}
+  .carousel .dots{display:flex;gap:7px;justify-content:center;margin-top:12px}
+  .carousel .dot{width:8px;height:8px;border-radius:50%;background:#dcd3e2;transition:.2s}
+  .carousel .dot.active{background:var(--pink);width:22px;border-radius:5px}
+  .carousel .hint{text-align:center;font-size:11px;color:#b3acbf;margin-top:6px}
 
   /* hero */
   .hero{background:var(--grad);color:#fff;text-align:center;padding:62px 22px 70px;border-radius:0 0 40px 40px}
@@ -130,7 +139,7 @@
     <div class="txt"><span class="cat">未来のライブ／当日演出</span>
       <h3>カウントダウンが、当日を最高潮にする</h3>
       <p>未来のライブを一覧に。「あと4日」「今日！」——日が近づくほど、そわそわと高鳴りが増していく。そして迎えた当日、画面はクラッカーで祝福する。「準備は整った」。行く前のワクワクが、ここで最高潮に達する。</p></div>
-    <img class="shot" src="img/t8.png" alt="当日演出">
+    <div class="carousel"><div class="track"><img src="img/t8.png" alt="当日"><img src="img/c8b.png" alt="カウントダウン一覧"></div><div class="dots"></div><div class="hint">← スワイプで2枚 →</div></div>
   </div>
 
   <!-- ━━ 当日 ━━ -->
@@ -140,14 +149,14 @@
     <div class="txt"><span class="cat">カレンダー登録</span>
       <h3>「行きたい」を、そのまま予定に</h3>
       <p>開場・開演まで自動で取得し、Googleカレンダーにワンタップ。「行きたい」と思ったその瞬間を、確かな予定に変える。当日を待つ時間さえ、愛おしくなる。</p></div>
-    <img class="shot" src="img/t9.png" alt="カレンダー登録">
+    <div class="carousel"><div class="track"><img src="img/c9a.png" alt="LiveRicoカレンダー登録"><img src="img/t9.png" alt="Googleカレンダー"></div><div class="dots"></div><div class="hint">← スワイプで2枚 →</div></div>
   </div>
 
   <div class="feat rev">
     <div class="txt"><span class="cat">会場の地図</span>
       <h3>はじめての街、はじめての箱でも</h3>
       <p>会場の地図を登録しておけば、迷う時間に心を削られない。足取りは軽く、気持ちはまっすぐ開演へ。</p></div>
-    <img class="shot" src="img/t10.png" alt="会場の地図">
+    <div class="carousel"><div class="track"><img src="img/c10a.png" alt="LiveRico会場リンク"><img src="img/t10.png" alt="会場の地図"></div><div class="dots"></div><div class="hint">← スワイプで2枚 →</div></div>
   </div>
 
   <!-- ━━ 終わっても ━━ -->
@@ -215,6 +224,23 @@
   <a class="cta" href="https://liverico.app/">LiveRicoを見る</a>
   <p>LiveRico／ライブリコ</p>
 </footer>
+
+<script>
+  document.querySelectorAll('.carousel').forEach(function(c){
+    var track=c.querySelector('.track'), dotsBox=c.querySelector('.dots');
+    var imgs=track.querySelectorAll('img');
+    imgs.forEach(function(_,i){
+      var d=document.createElement('span'); d.className='dot'+(i===0?' active':'');
+      d.onclick=function(){track.scrollTo({left:track.clientWidth*i,behavior:'smooth'});};
+      dotsBox.appendChild(d);
+    });
+    var dots=dotsBox.querySelectorAll('.dot');
+    track.addEventListener('scroll',function(){
+      var i=Math.round(track.scrollLeft/track.clientWidth);
+      dots.forEach(function(d,j){d.classList.toggle('active',j===i);});
+    });
+  });
+</script>
 
 </body>
 </html>
