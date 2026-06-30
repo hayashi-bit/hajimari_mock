@@ -5,157 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LiveRico／ライブリコ — ライブ好きは、参戦履歴で恋に落ちる。</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --pink:#ff4f7b; --orange:#ff8a3d; --ink:#1a1424; --text:#3a3340; --text2:#6b6473;
-    --bg:#ffffff; --bg2:#fff5f8; --line:#ffe0ea; --grad:linear-gradient(100deg,#ff4f7b,#ff8a3d);
+    --bg:#ffffff; --bg2:#fff5f8; --line:#ffe0ea; --grad:linear-gradient(105deg,#ff4f7b,#ff8a3d);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Noto Sans JP','Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:840px;margin:0 auto;padding:0 20px}
-  /* slot = キャプチャを入れる枠 */
-  .slot{border:2px dashed var(--pink);border-radius:18px;background:var(--bg2);min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--pink);font-weight:700;text-align:center;padding:24px}
-  .slot small{color:var(--text2);font-weight:500;font-size:12px}
-  .slot.phone{max-width:300px;margin:0 auto;min-height:520px}
-  img.shot{width:100%;border-radius:18px;display:block;box-shadow:0 8px 30px rgba(255,79,123,.16)}
-  img.shot.phone{max-width:300px;margin:0 auto}
-  /* Now Printing = まだ撮ってない枠 */
-  .nowprint{border:2px dashed #c9c2d4;border-radius:16px;background:#f6f4f9;color:#9a92a8;font-weight:800;text-align:center;padding:22px;font-size:14px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-  .nowprint .np{display:inline-block;background:#e9e4f0;color:#8a82a0;font-size:11px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:999px;margin-bottom:4px}
-  .nowprint small{color:#b3acbf;font-weight:500;font-size:11px}
+  body{font-family:'Noto Sans JP',sans-serif;color:var(--text);background:#faf8fb;line-height:1.85;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  img.shot{width:100%;max-width:300px;border-radius:22px;display:block;margin:0 auto;box-shadow:0 10px 34px rgba(255,79,123,.18);border:1px solid #f1e6ec}
+  .ph{max-width:300px;margin:0 auto;min-height:430px;border:2px dashed #d7cfe0;border-radius:22px;background:#f6f3f9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#a99fbb;font-weight:700;text-align:center;padding:24px}
+  .ph small{color:#bcb3cb;font-weight:500;font-size:12px}
 
   /* hero */
-  .hero{background:var(--grad);color:#fff;text-align:center;padding:64px 20px 72px;border-radius:0 0 36px 36px}
-  .hero .logo{font-family:'Inter';font-weight:900;font-size:30px;letter-spacing:-.5px}
-  .hero .logo span{opacity:.9;font-weight:700;font-size:15px;display:block;letter-spacing:4px;margin-top:2px}
-  .hero h1{font-size:clamp(26px,5.4vw,42px);font-weight:900;line-height:1.35;margin:26px 0 10px}
-  .hero p{font-size:clamp(14px,2.6vw,17px);opacity:.96;max-width:560px;margin:0 auto}
-  .cta{display:inline-block;margin-top:26px;background:#fff;color:var(--pink);font-weight:800;font-size:16px;padding:14px 34px;border-radius:999px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+  .hero{background:var(--grad);color:#fff;text-align:center;padding:62px 22px 70px;border-radius:0 0 40px 40px}
+  .hero .logo{font-family:'Inter';font-weight:900;font-size:32px;letter-spacing:-.5px;line-height:1}
+  .hero .logo b{font-weight:700;font-size:15px;letter-spacing:5px;display:block;opacity:.92;margin-top:4px}
+  .hero .eyebrow{margin-top:30px;font-size:12px;letter-spacing:3px;font-weight:700;opacity:.9}
+  .hero h1{font-size:clamp(26px,5.6vw,44px);font-weight:900;line-height:1.35;margin:8px 0 0}
+  .manifesto{max-width:700px;margin:42px auto 0;padding:0 22px;color:var(--text);font-size:15.5px}
+  .manifesto p{margin:0 0 14px}
+  .manifesto .lead{color:var(--ink);font-weight:700}
+  .essence{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:8px;font-size:14px;color:var(--text2)}
+  .essence b{color:var(--pink)}
 
-  section{padding:56px 0}
-  .eyebrow{color:var(--pink);font-weight:800;font-size:13px;letter-spacing:2px;text-align:center}
-  h2{font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--ink);text-align:center;margin:8px 0 8px;line-height:1.4}
-  .lead{text-align:center;color:var(--text2);max-width:620px;margin:0 auto 32px;font-size:15px}
+  .sec-band{margin:64px 0 8px;text-align:center}
+  .sec-band .bar{display:inline-block;height:4px;width:42px;background:var(--grad);border-radius:4px;margin-bottom:14px}
+  .sec-band h2{font-size:clamp(20px,4.2vw,28px);font-weight:900;color:var(--ink)}
 
-  .feat{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;margin:40px 0}
+  .feat{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;margin:40px 0;background:#fff;border:1px solid #f0eaf2;border-radius:24px;padding:28px}
   .feat.rev .txt{order:2}
-  .feat .cat{display:inline-block;background:var(--bg2);color:var(--pink);font-weight:800;font-size:12px;padding:5px 12px;border-radius:999px;margin-bottom:10px}
-  .feat h3{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:8px;line-height:1.4}
-  .feat ul{list-style:none;color:var(--text);font-size:14px}
-  .feat li{padding-left:20px;position:relative;margin:4px 0}
-  .feat li:before{content:"♪";position:absolute;left:0;color:var(--pink)}
+  .feat .cat{display:inline-block;background:var(--bg2);color:var(--pink);font-weight:800;font-size:12px;padding:5px 13px;border-radius:999px;margin-bottom:12px}
+  .feat h3{font-size:clamp(18px,2.6vw,23px);font-weight:900;color:var(--ink);margin-bottom:12px;line-height:1.45}
+  .feat p{font-size:14.5px;color:var(--text);margin:0}
+  .feat .sub{margin-top:10px;font-size:13px;color:var(--text2);border-left:3px solid var(--orange);padding-left:10px}
+  .core h3{color:var(--pink)}
+  .core{background:linear-gradient(180deg,#fff,#fff5f8)}
 
-  .core{background:var(--bg2);border-radius:32px;margin:20px;padding:54px 24px;text-align:center}
-  .core h2{margin-bottom:14px}
-  .core .big{font-size:clamp(20px,4.4vw,30px);font-weight:900;color:var(--pink);line-height:1.5;margin:10px 0 18px}
-  .who{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
-  .who span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--text)}
-
-  .foot{background:var(--ink);color:#fff;text-align:center;padding:56px 20px}
-  .foot h2{color:#fff}
-  .foot p{opacity:.8;font-size:14px;margin-top:8px}
-  .note{max-width:840px;margin:30px auto;padding:14px 18px;background:#fffbe6;border:1px solid #ffe28a;border-radius:12px;font-size:12px;color:#7a6a1f}
-  @media(max-width:680px){
-    .feat{grid-template-columns:1fr;gap:14px}
+  .foot{background:var(--ink);color:#fff;text-align:center;padding:60px 22px;margin-top:70px}
+  .foot h2{color:#fff;font-size:clamp(20px,4vw,30px);font-weight:900;line-height:1.4}
+  .foot .cta{display:inline-block;margin-top:24px;background:#fff;color:var(--pink);font-weight:800;font-size:16px;padding:14px 38px;border-radius:999px;text-decoration:none}
+  .foot p{opacity:.75;font-size:13px;margin-top:14px}
+  @media(max-width:700px){
+    .feat{grid-template-columns:1fr;gap:18px;padding:22px}
     .feat.rev .txt{order:0}
   }
 </style>
 </head>
 <body>
 
-<!-- ============ HERO ============ -->
 <header class="hero">
-  <div class="logo">LiveRico<span>ライブリコ</span></div>
+  <div class="logo">LiveRico<b>ライブリコ</b></div>
+  <div class="eyebrow">世界観 → キャッチコピー</div>
   <h1>ライブ好きは、<br>参戦履歴で恋に落ちる。</h1>
-  <p>行きたい瞬間から、当日の高揚、終わったあとの余韻まで。ライブの一連の体験を、惚れるに値する豊かさで・手間ゼロで貯めて、見せ合える。</p>
-  <a class="cta" href="https://liverico.app/">触ってみる</a>
 </header>
 
-<div class="note">※このファイルは紹介LPの“器”です。各 <b>[ショット○-○]</b> の枠に、撮影したキャプチャを差し込みます（画像が届き次第①が埋め込み）。技術の作り込み(how)・未実装ロードマップ・戦略数値は載せていません。</div>
+<div class="manifesto">
+  <p class="lead">ライブは、その日だけのものじゃない。</p>
+  <p>「行きたい」と思った瞬間から、申し込み、当落にドキドキし、当日を指折り数え、会場で爆発し、余韻にひたって——また次へ。そして、その熱を分かち合う仲間がいる。その“ぜんぶ”が、ライブの楽しみ。</p>
+  <p>既存サービスは、その体験を「申込/当落/支払」の“点”に分断する。</p>
+  <div class="essence">LiveRicoは、ライブを軸に人生を楽しみ尽くすためのアプリ。本質は <b>体験 × つながり × 発信</b>。記録は、その入口にすぎない。</div>
+</div>
 
-<!-- ============ 共感 ============ -->
-<section class="wrap">
-  <div class="eyebrow">なぜ、わざわざ専用アプリか</div>
-  <h2>ライブは“点”じゃない。</h2>
-  <p class="lead">今のチケットサイトは、ライブを「申込／当落／支払…」の<b>点</b>でバラバラに扱う。でも本当は「行きたい→当日→余韻→振り返り」の<b>一連の体験</b>。その全部を、まるごと残せる場所がなかった。</p>
-  <div class="slot phone">[ショット1-1] ライブ記録の一覧<small>行った／これから が並ぶ画面</small></div>
-</section>
+<div class="wrap">
 
-<!-- ============ 体験：5カテゴリ ============ -->
-<section class="wrap" style="padding-top:10px">
-  <div class="eyebrow">できること</div>
-  <h2>履歴が、惚れるほど豊かに貯まる。</h2>
+  <!-- ━━ 残す ━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>その日だけじゃない。“ぜんぶ”を残す。</h2></div>
 
   <div class="feat">
-    <div class="txt">
-      <span class="cat">① 記録・管理</span>
-      <h3>“待ち時間”さえ高揚に変える</h3>
-      <ul>
-        <li>13種ステータスで「受付前→抽選→当落→参加」を可視化</li>
-        <li>入金・発券・当落の期限管理で“紙くず”を無くす</li>
-        <li>セトリ・メモ・フライヤーで、その夜の中身を残す</li>
-      </ul>
-    </div>
-    <div class="slot">[ショット1-2/1-3] ステータス＆チケット期限<small>13ステータスの色分け／期限管理</small></div>
+    <div class="txt"><span class="cat">履歴の一覧</span>
+      <h3>ライブの“ぜんぶ”を、一連の体験として</h3>
+      <p>行きたいと思った瞬間から、当日、余韻、振り返りまで。ライブを“点”で区切らず、前後を含めた一続きの体験として残す。申し込んだ日から、もう始まっている。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-071404.png" alt="履歴の一覧">
   </div>
 
   <div class="feat rev">
-    <div class="txt">
-      <span class="cat">② 自動入力＝AI</span>
-      <h3>手間はAIに。履歴は“勝手に”貯まる</h3>
-      <ul>
-        <li>チケットメールから過去のライブを自動復元（手入力ゼロ）</li>
-        <li>フライヤー・出演者をAIが補完</li>
-        <li>メール本文は保存しない（送信元＋件名だけ）</li>
-      </ul>
-    </div>
-    <div class="slot">[ショット1-4] ライブ詳細<small>フライヤー・出演者・セトリが入った画面</small></div>
+    <div class="txt"><span class="cat">記録・管理</span>
+      <h3>ステータス管理すら、当日への高揚に</h3>
+      <p>抽選に申し込み、当落にドキドキし、入金して、発券して、いよいよ当日。13種ステータスと期限管理で、その高鳴りを可視化する。当落の見逃しや支払期限切れで「楽しみ」が「悲しい思い出」に変わることは、もう起きない。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-071435.png" alt="記録・管理">
   </div>
 
   <div class="feat">
-    <div class="txt">
-      <span class="cat">④ 発見・予習</span>
-      <h3>当日までに、もっと好きになる</h3>
-      <ul>
-        <li>出演者のアー写と代表曲で予習</li>
-        <li>初めての対バンも、行く前に耳を慣らせる</li>
-      </ul>
-    </div>
-    <div class="slot">[ショット4-1] アー写＋予習プレイリスト<small>※②版の修正後に撮影</small></div>
+    <div class="txt"><span class="cat">Gmail自動取込</span>
+      <h3>必要な情報は、何もしないで勝手に貯まる</h3>
+      <p>チケットメールから過去の参戦をAIが自動復元（1691件走査→候補66件）。「申し込んだの、忘れてた」をなくす。取得するのはライブチケットのメールだけ（スポーツ・イベント等は対象外）。</p>
+      <div class="sub">ステータス（当落・締め切りも）／チケットサイト／会場／日時まで自動取得（手入力ゼロへ）</div></div>
+    <img class="shot" src="img/Screenshot_20260630-074355.png" alt="Gmail自動取込">
   </div>
 
   <div class="feat rev">
-    <div class="txt">
-      <span class="cat">⑤ 安心</span>
-      <h3>惚れた履歴は、消えない</h3>
-      <ul>
-        <li>クラウド保存・機種を変えても残る</li>
-        <li>「データが消えた」を二度と起こさない最優先の価値</li>
-      </ul>
-    </div>
-    <div class="slot">[ショット5-1] クラウド同期／復元<small>機種変えても残る安心</small></div>
+    <div class="txt"><span class="cat">ライブ詳細</span>
+      <h3>ライブの情報すべてを、一画面に</h3>
+      <p>紙・電子チケットの別、発券情報、チケットサイトリンク、公式サイトのAI検索まで。当日に必要なものが、ひとつの画面に集まる。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-071502.png" alt="ライブ詳細">
   </div>
-</section>
 
-<!-- ============ コア：つながり ============ -->
-<section class="core">
-  <div class="eyebrow">このアプリの、核</div>
-  <h2>“恋に落ちる”は、つながりから。</h2>
-  <div class="big">同じ箱・同じ夏のリストを見せ合うだけで、<br>「この人とは合う」が一秒で伝わる。</div>
-  <div class="slot phone">[ショット3-1/3-2/3-3] 公開プロフィール・友達・共通バッジ<small>参戦リストを見せ合う／並べて見る／同じライブ・一緒に・同フェス別日のバッジ</small></div>
-  <div class="who">
-    <span>インディー／マイナーに通う現場好き</span>
-    <span>対バンを掘る人</span>
-    <span>“あの日”を大事にする人</span>
+  <!-- ━━ 行く前 ━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>行く前から、もう楽しい。</h2></div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">フライヤー自動取得</span>
+      <h3>行く前の“ワクワク”を、最大化する</h3>
+      <p>AIが公式フライヤーを自動で探して添付。ライブへの期待も記録の密度も濃くなり、当日までのカウントダウンがもっと楽しくなる。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-071822.png" alt="フライヤー自動取得">
   </div>
-</section>
 
-<!-- ============ CTA ============ -->
+  <div class="feat rev">
+    <div class="txt"><span class="cat">出演者</span>
+      <h3>ライブ当日までの時間も、味わい尽くす</h3>
+      <p>出演者のアーティスト写真を一覧表示。初めての対バンでも、誰が出るのかをAIが自動取得し、当日への期待を育てる。発見と再燃の入口。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-072159.png" alt="出演者">
+  </div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">予習プレイリスト</span>
+      <h3>予習プレイリストで、当日までに耳を慣らす</h3>
+      <p>出演者の代表曲をまとめて再生し、当日までにじっくり予習できる。各曲は自分の音楽サービス/YouTubeへ。さらにその予習プレイリストは、友達と見せ合える。知らなかったアーティストを教え合い——新しい“好き”が増えていく。</p></div>
+    <div class="ph">準備中<small>画面は実装後に掲載</small></div>
+  </div>
+
+  <div class="feat rev">
+    <div class="txt"><span class="cat">未来のライブ／当日演出</span>
+      <h3>カウントダウンが、当日を最高潮にする</h3>
+      <p>未来のライブを一覧に。「あと4日」「今日！」——日が近づくほど、そわそわと高鳴りが増していく。そして迎えた当日、画面はクラッカーで祝福する。「準備は整った」。行く前のワクワクが、ここで最高潮に達する。</p></div>
+    <img class="shot" src="img/t8.png" alt="当日演出">
+  </div>
+
+  <!-- ━━ 当日 ━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>当日、迷わせない。</h2></div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">カレンダー登録</span>
+      <h3>「行きたい」を、そのまま予定に</h3>
+      <p>開場・開演まで自動で取得し、Googleカレンダーにワンタップ。「行きたい」と思ったその瞬間を、確かな予定に変える。当日を待つ時間さえ、愛おしくなる。</p></div>
+    <img class="shot" src="img/t9.png" alt="カレンダー登録">
+  </div>
+
+  <div class="feat rev">
+    <div class="txt"><span class="cat">会場の地図</span>
+      <h3>はじめての街、はじめての箱でも</h3>
+      <p>会場の地図を登録しておけば、迷う時間に心を削られない。足取りは軽く、気持ちはまっすぐ開演へ。</p></div>
+    <img class="shot" src="img/t10.png" alt="会場の地図">
+  </div>
+
+  <!-- ━━ 終わっても ━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>終わっても、終わらない。</h2></div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">画像保存</span>
+      <h3>その日の体験を、画像で残す</h3>
+      <p>半券、物販、会場の風景。チケットも思い出もグッズも、複数の画像で残し、“その夜”ごと手元に置く。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-071649.png" alt="画像保存">
+  </div>
+
+  <div class="feat rev">
+    <div class="txt"><span class="cat">メモ</span>
+      <h3>メモは、自分用と、見せる用</h3>
+      <p>自分だけの記録と、友達に見せる感想を使い分けて残せる。余韻を、ひとりでも、仲間とでも。</p></div>
+    <div class="ph">準備中<small>画面は実装後に掲載</small></div>
+  </div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">統計</span>
+      <h3>記録が、ライブの思い出になる</h3>
+      <p>参加ライブ数・アーティスト数・参加した都道府県数を自動集計。自分がどれだけの夜を、どれだけの土地で過ごしてきたか——積み重ねが一目で見える。</p></div>
+    <div class="ph">準備中<small>画面は実装後に掲載</small></div>
+  </div>
+
+  <div class="feat rev">
+    <div class="txt"><span class="cat">セトリ → 音楽サービス/YouTube</span>
+      <h3>セットリストを残し、もう一度浴びる</h3>
+      <p>その夜のセットリストを記録し、各曲を音楽サービスやYouTubeへリンク。あの日の高揚を、曲順そのままに聴き返す。余韻が、次のライブへの渇望に変わる。</p></div>
+    <img class="shot" src="img/t14.png" alt="セットリスト">
+  </div>
+
+  <!-- ━━ 恋に落ちる（核）━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>参戦履歴で、恋に落ちる。<br><span style="font-size:14px;color:var(--pink)">― このアプリの核 ―</span></h2></div>
+
+  <div class="feat core">
+    <div class="txt"><span class="cat">公開プロフィール</span>
+      <h3>見せ合うだけで、分かり合える</h3>
+      <p>参戦履歴を見せ合えるプロフィール。好きなアーティスト、通った現場、浴びてきた熱量——リストを見せるだけで「あ、この人とは合う」が一瞬で伝わる。音楽好きは、言葉より先に、リストで分かり合える。</p></div>
+    <img class="shot" src="img/m15.png" alt="公開プロフィール">
+  </div>
+
+  <div class="feat core rev">
+    <div class="txt"><span class="cat">共通バッジ</span>
+      <h3>参戦履歴で、恋に落ちる</h3>
+      <p>友達との参戦の重なりを可視化（同じライブ／一緒に参戦／同フェス別日）。「同じ夜、同じ箱にいた」「あのフェス、別の日に来てた」——重なりが見えた瞬間、ただの知り合いが、特別な誰かに変わる。同じ音楽を、同じ熱量で浴びてきた者同士。参戦履歴は、人と人が深くつながり、惹かれ合うための入口になる。これがLiveRicoの核。</p></div>
+    <img class="shot" src="img/Screenshot_20260630-072305.png" alt="共通バッジ">
+  </div>
+
+  <!-- ━━ また次へ ━━ -->
+  <div class="sec-band"><div class="bar"></div><h2>そして、また次のライブへ。</h2></div>
+
+  <div class="feat">
+    <div class="txt"><span class="cat">新公演キャッチ</span>
+      <h3>好きなアーティストのライブを、誰より早く</h3>
+      <p>好きなアーティストを登録すれば、新しいライブ情報が向こうからやってくる。未来に網を張り続け、SNSより先に教えてくれる。「気づいた時には売り切れ」——その悔しさを、もう繰り返さない。チケットサイトへ直接リンクし、その場で申込・購入へ。</p></div>
+    <div class="ph">準備中<small>画面は実装後に掲載</small></div>
+  </div>
+
+</div>
+
 <footer class="foot">
-  <h2>あなたの参戦履歴を、惚れる一冊に。</h2>
+  <h2>ライブ好きは、参戦履歴で恋に落ちる。</h2>
+  <a class="cta" href="https://liverico.app/">LiveRicoを見る</a>
   <p>LiveRico／ライブリコ</p>
-  <a class="cta" href="https://liverico.app/" style="margin-top:22px">触ってみる</a>
 </footer>
 
 </body>
