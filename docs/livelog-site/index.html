@@ -1948,7 +1948,9 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway</b></td><td style="padding:6px">組織 nurturing-imagination ／ project production</td><td style="padding:6px">本番ホスティング（liverico-app の main を自動デプロイ）</td></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Cloudflare（R2）</b></td><td style="padding:6px"><b>hayashi@threeway.co.jp</b>（2026-06-29作成・会社アカウント）</td><td style="padding:6px">画像/ファイル保管庫 R2（Day3で Manus forge から移行）</td></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px"><b>Manus自動管理（林の直接ログイン無し・確定2026-07-01）</b>。eiji10hama/hayashi@threeway/hayashi-bit いずれも新規org＝実体なし。本番DATABASE_URLはManus経由でのみ取得可</td><td style="padding:6px">データ本体（移行でも継続・切替の要）</td></tr>
-            <tr><td style="padding:6px"><b>Sentry</b></td><td style="padding:6px">組織 <b>threeway</b> ／ <b>GitHub hayashi-bit でサインアップ</b>・請求 hayashi@threeway.co.jp</td><td style="padding:6px">本番エラー監視（2026-07-01導入・SENTRY_DSNはRailway登録済）</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Sentry</b></td><td style="padding:6px">組織 <b>threeway</b> ／ <b>GitHub hayashi-bit でサインアップ</b>・請求 hayashi@threeway.co.jp</td><td style="padding:6px">本番エラー監視（2026-07-01導入・SENTRY_DSNはRailway登録済）</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Anthropic (Claude API)</b></td><td style="padding:6px"><b>eiji10hama@gmail.com 系（要請求先確認）</b>・組織Default・$5クレジット</td><td style="padding:6px">LLM（分類Haiku/抽出Sonnet）・ANTHROPIC_API_KEYはRailway登録済</td></tr>
+            <tr><td style="padding:6px"><b>Manus（旧基盤）</b></td><td style="padding:6px"><b>eiji10hama@gmail.com</b>（liverico/livelogプロジェクト）</td><td style="padding:6px">本番稼働中(liverico.app)。Secrets画面には<b>DATABASE_URL_DEVのみ</b>。<b>本番DATABASE_URL/JWT_SECRET/BUILT_IN_FORGE_*はUIに無し＝実行時自動注入</b>＝端末echoで取得要</td></tr>
           </table>
         </div>
       </div>
