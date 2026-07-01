@@ -1969,7 +1969,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-database"></i> A. データ（非交渉・最優先）</div>
         <div class="card" style="font-size:13px;line-height:2">
-          <div>⬜ <b>本番DBの検証付きフルバックアップを“切替直前”に再取得＋復元検証</b>（6/26に取得済＝復元PASS。切替直前にもう一度）。※Manusの日次自動バックアップは <code>mysqldump ENOENT</code> で停止中→②が<b>純JS版に置換(PR#11)</b>＝mysqldump不要の手動 <code>backup_db.mjs</code> で切替前の最終バックアップを取る。ただし対象は接続文字列依存＝<b>本番DBのバックアップにはManus本番の接続文字列が必要</b>。</div>
+          <div>✅ <b>本番DBの検証付きフルバックアップを取得（2026-07-01 13:49 UTC）</b>：③（Manus本体AI）が本番サンドボックス（本番DATABASE_URL自動注入）で <code>backup_db.mjs</code>（純JS・SELECTのみ・非破壊）を実行。<b>host=gateway06.us-east-1（本番確定）</b>／合計4,866行／1.94MB（2,035,281 bytes）／SHA-256 <code>47382ff9…56fc34</code>。事前に <code>verify_cutover.mjs</code> でオーナー行 id=1（openId=NKAPWNnboXu6DpzfByVLLD）存在＝本物確認。成果物 <code>.sql</code>／<code>manifest.json</code>／<code>.sha256</code> は林ローカルに保管（※公開リポジトリには実データ厳禁）。⬜ <b>切替直前に再取得＋復元検証</b>（この1本を保険に切替へ進める）。</div>
+          <div>ℹ️ <b>実行環境の整理</b>：①（記録・LP）と②（Claude Code・コード）の箱には本番secretが無く実行不可＝実測確認。本番DATABASE_URLが自動注入されるのは<b>③（manus.im本体AI）の本番サンドボックスのみ</b>。バックアップ／切替系の“本番実行”は③に依頼する。</div>
           <div>⚠️ <b>RailwayのDATABASE_URLを「本番DBの値」に切替</b> ← <b>現状=開発DB値のまま</b>（Day1の暫定）。これが最大の未確定。※R2画像移行で「開発DBに実画像URLがほぼ0件」と判明＝実データは本番DB側。本番DB接続がR2移行の前提。</div>
           <div>⚠️ <b>JWT_SECRETを「本物（Manus本番の値）」に差し替え</b> ← 現状=新規生成値。<b>変えると全ユーザー強制ログアウト</b>なので本番の値を引き継ぐ。Manus自動管理でSecretsに見えない可能性＝取得経路の確認要。</div>
         </div>
@@ -1980,6 +1981,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;line-height:2">
           <div>✅ <b>Google Cloud Console に Railway のリダイレクトURIを追加済み</b>（2026-07-01）：LiveLog Web / LiveLog Dev 両クライアントに <code>https://liverico-production.up.railway.app/api/gmail/callback</code>（＋<code>/api/oauth/google/callback</code>）を登録。※Gmail連携時の <code>redirect_uri_mismatch</code> の直接対処。反映に5分〜数時間。Google Cloud＝eiji10hama@gmail.com/project LiveLo。</div>
           <div>✅ Google単独ログイン疎通（Manus OAuthループはPR#1/#2で解消・Day2）。⬜ Manus OAuthコールバック(/api/oauth/callback)の削除は最終確認。</div>
+          <div>⚠️ <b>オーナー行(id=1)のemailが空／別値</b>（Manus OAuthはopenId識別のため）。切替後の新ログインは<b>Google OAuth＝emailで人を照合</b>するため、<b>切替直前に id=1 の email を <code>hayashi@threeway.co.jp</code> に埋める</b>工程が必須（埋めないと林が別人扱い＝新規行になる恐れ）。モニター2名分も同様にopenId↔email対応を確認。</div>
         </div>
       </div>
 
@@ -3781,6 +3783,18 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database-export"></i> 【本番DBバックアップ取得】切替前の保険1本を確保（2026-07-01 13:49 UTC）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>成果</b>：本番DB（host=gateway06.us-east-1・確定）の検証付きフルバックアップを取得＝<b>DB切替で失敗しても戻せる状態</b>になった。<br>
+          <b>方式</b>：③（manus.im本体AI）が本番サンドボックスで <code>backup_db.mjs</code>（純JS・SELECTのみ・非破壊）を実行。事前に <code>verify_cutover.mjs</code> でオーナー行 id=1（openId=NKAPWNnboXu6DpzfByVLLD）存在＝本物確認。<br>
+          <b>数値</b>：合計 <b>4,866行</b>／<b>1.94MB</b>（2,035,281 bytes）／SHA-256 <code>47382ff98cd1fbf6460b1311f67dd9ad3ad2102c69b99ac89bcac0ae9356fc34</code>。主要：lives=228／artists=243／users=5／gmail_analysis_cache=3,384。<br>
+          <b>保管</b>：<code>.sql</code>／<code>manifest.json</code>／<code>.sha256</code> を<b>林ローカルに保管</b>。※このリポジトリは公開＝実データ（メール・Gmailトークン等）は<b>絶対にコミットしない</b>。<br>
+          <b>実行環境の確定</b>：①（記録）②（Claude Code・コード）の箱には本番secretが無く実行不可（実測）。本番DATABASE_URLが自動注入されるのは<b>③の本番サンドボックスのみ</b>＝本番実行は③に依頼。<br>
+          <b>次</b>：切替直前に再取得＋復元検証 → id=1のemailに <code>hayashi@threeway.co.jp</code> を埋める → Railway Variables差替（DATABASE_URL本番値／JWT_SECRET／NODE_ENV=production）→ 検証 → 画像 --audit/--commit/--verify → Forge撤去。
         </div>
       </div>
 
