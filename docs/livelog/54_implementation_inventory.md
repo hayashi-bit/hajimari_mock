@@ -112,7 +112,7 @@
 |---|---|---|---|
 | 1 | Sentry | 🟢配線デプロイ済 | ②が`@sentry/node`配線→PR#3→ビルド失敗(lockfile)→**PR#4で修正しマージ・Railway ACTIVE(2026-07-01)**。`SENTRY_DSN`投入済。残＝boom受信検証(②に委任)のみ |
 | 2 | mainブランチ保護 | ⏸先送り | **無料privateリポジトリでは保護ルールが非強制**（GitHub警告）＝設定しても直push禁止にならない。有料(Team)課金の価値は現状薄い。実運用は②が毎回PR経由＋毎日バックアップ＋本番DB非改変で担保。**有料化 or 公開の前に再検討**（2026-07-01 Aで先送り決定） |
-| 3 | 画像R2 | 🟡基盤準備完了・実装待ち | **Cloudflare R2バケット`liverico-images`作成済(2026-07-01)**＋APIトークン発行(Object R&W・特定バケット限定)＋**Railwayにenv登録済**(`R2_ACCESS_KEY_ID`/`R2_SECRET_ACCESS_KEY`/`R2_ENDPOINT`/`R2_BUCKET`)。残＝②が`storage.ts`をR2対応に＋`/manus-storage/{key}`の非破壊URL移行＋画像公開方式の決定 |
+| 3 | 画像R2 | 🟢実装マージ済・移行待ち | 基盤(バケット`liverico-images`/APIトークン/Railway env)完了。**方式=案B（`/manus-storage/{key}`のURL契約維持・DB無変更・非破壊／チケット画像を公開しない）**。②が storage.ts→R2＋proxyをR2優先/Forgeフォールバックで実装→**PR#5マージ済(711d9d0)**＝新規=R2/旧=Forgeで表示継続(コード保証・要実機確認)。STEP3非破壊移行スクリプト＋手順書=**PR#6(inert)**。残＝実機確認→移行スクリプト実行(林がcreds環境で)→照合OK後にForge撤去(最終PR) |
 | 4 | Heartbeat(Gmail増分同期) | ❌未（Forge JWTのまま） | `heartbeat.ts`はForgeにcron登録・cron認証は`openId`=`cron_`のForge JWT。**`CRON_SECRET`はコードに0件**・Railway Cron未導入 |
 | 5 | LLM | ❌未（Forge/Geminiのまま） | `llm.ts`: `forge.manus.im/v1/chat/completions`・`model:"gemini-2.5-flash"`。Anthropic差し替え無し |
 | 6 | env(DATABASE_URL/JWT_SECRET) | ⚠️要Railway確認 | コード/サンドボックスからは実値不明。Day1経緯では「Railwayは開発DB接続のまま」。**林がRailwayダッシュボードで確認**が必要 |
