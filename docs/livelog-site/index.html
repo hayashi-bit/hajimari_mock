@@ -2015,6 +2015,18 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-list-numbers"></i> 実行手順（②作成 PR#10・inert／読み取り専用）</div>
+        <div class="card" style="font-size:13px;line-height:1.95">
+          <div>mainに <code>scripts/verify_cutover.mjs</code>（読み取り専用検証）＋ <code>scripts/RUNBOOK_db_cutover.md</code>（手順書）。実行は林がcreds環境で慎重に。</div>
+          <div style="margin-top:8px"><b>順序</b>：①最終バックアップ(Manus本番mysqldump・非破壊) → ②切替先DB用意(A案=バックアップをRailway所有DBへ復元／B案=本番DB直結) → ③現行Railwayの DATABASE_URL/JWT_SECRET を控える(ロールバック用) → ④Railway Variables差替＋再デプロイ：<code>DATABASE_URL=本番値</code>／<code>JWT_SECRET=本物 or 新値</code>／<b><code>NODE_ENV=production</code></b>(←db.tsが本番DATABASE_URLを読む条件。developmentだとDATABASE_URL_DEVを見る) → ⑤切替後検証(verify_cutover)＋実ログインで実データ表示＋ログ異常なし → ⑥画像 --audit→--commit→--verify(Forge credsがあるうちに) → ⑦2-3名をRailwayへ・Manusはロールバック用に残す。</div>
+          <div style="margin-top:8px"><b>検証(read-only)</b>：<code>DATABASE_URL=… OWNER_EMAIL=hayashi@threeway.co.jp node scripts/verify_cutover.mjs --manifest ./manifest.json</code>＝接続先ホスト/DB名(取り違え防止)・16テーブルのCOUNT/MAX(id)・manifest件数一致・オーナー行の存在。切替前後の両方で回す。</div>
+          <div style="margin-top:8px"><b>取れない場合の代替</b>：JWT_SECRET不可→新値(<code>openssl rand -hex 32</code>)で全員1回だけ再ログイン(林＋モニター2-3名＝許容)／本番DATABASE_URL不可→A案(復元)が正道／<b>Forge creds不可→旧画像復元不能＝切替前に必ず確保し画像を--commitしてからManusを離れる(順序厳守)</b>。</div>
+          <div style="margin-top:8px"><b>ロールバック</b>：Railway Variablesを控えた旧値に戻して再デプロイするだけ。Manus(liverico.app)は非破壊で無変更＝実データ配信継続。⚠️新本番DBへ <code>drizzle-kit migrate/db:push</code> を安易に流さない(ALTER回避)。</div>
+          <div style="margin-top:8px;color:var(--gold)"><b>要の順序</b>：Forge credsは画像--commitまで必須 ＝ <b>DB切替 →（credsがあるうちに）画像--commit → Forge完全撤去</b>。Forge撤去は最後。</div>
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-flag"></i> 切替(cutover)当日</div>
         <div class="card" style="font-size:13px;line-height:2">
           <div>⬜ 全機能スモーク（記録／友達／公開プロフィール／フライヤー／アー写／Gmail）。</div>
