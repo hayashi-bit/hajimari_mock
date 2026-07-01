@@ -1976,7 +1976,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-lock"></i> B. 認証</div>
         <div class="card" style="font-size:13px;line-height:2">
-          <div>⬜ <b>Google Cloud Console に移行先ドメインの承認済みリダイレクトURIを追加</b>（GOOGLE_CLIENT_IDは再利用可）。忘れるとログイン不可。</div>
+          <div>✅ <b>Google Cloud Console に Railway のリダイレクトURIを追加済み</b>（2026-07-01）：LiveLog Web / LiveLog Dev 両クライアントに <code>https://liverico-production.up.railway.app/api/gmail/callback</code>（＋<code>/api/oauth/google/callback</code>）を登録。※Gmail連携時の <code>redirect_uri_mismatch</code> の直接対処。反映に5分〜数時間。Google Cloud＝eiji10hama@gmail.com/project LiveLo。</div>
           <div>✅ Google単独ログイン疎通（Manus OAuthループはPR#1/#2で解消・Day2）。⬜ Manus OAuthコールバック(/api/oauth/callback)の削除は最終確認。</div>
         </div>
       </div>
