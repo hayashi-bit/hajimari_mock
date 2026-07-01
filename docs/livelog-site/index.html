@@ -1967,7 +1967,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       <div class="section">
         <div class="section-title"><i class="ti ti-database"></i> A. データ（非交渉・最優先）</div>
         <div class="card" style="font-size:13px;line-height:2">
-          <div>⬜ <b>本番DBの検証付きフルバックアップを“切替直前”に再取得＋復元検証</b>（6/26に取得済＝復元PASS。切替直前にもう一度）</div>
+          <div>⬜ <b>本番DBの検証付きフルバックアップを“切替直前”に再取得＋復元検証</b>（6/26に取得済＝復元PASS。切替直前にもう一度）。※Manusの日次自動バックアップは <code>mysqldump ENOENT</code> で停止中→②が<b>純JS版に置換(PR#11)</b>＝mysqldump不要の手動 <code>backup_db.mjs</code> で切替前の最終バックアップを取る。ただし対象は接続文字列依存＝<b>本番DBのバックアップにはManus本番の接続文字列が必要</b>。</div>
           <div>⚠️ <b>RailwayのDATABASE_URLを「本番DBの値」に切替</b> ← <b>現状=開発DB値のまま</b>（Day1の暫定）。これが最大の未確定。※R2画像移行で「開発DBに実画像URLがほぼ0件」と判明＝実データは本番DB側。本番DB接続がR2移行の前提。</div>
           <div>⚠️ <b>JWT_SECRETを「本物（Manus本番の値）」に差し替え</b> ← 現状=新規生成値。<b>変えると全ユーザー強制ログアウト</b>なので本番の値を引き継ぐ。Manus自動管理でSecretsに見えない可能性＝取得経路の確認要。</div>
         </div>
