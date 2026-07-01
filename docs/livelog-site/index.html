@@ -1830,7 +1830,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-photo"></i> Cloudflare R2 — 画像／ファイル保管庫</div>
         <div class="card" style="font-size:13px;line-height:1.9">
           <div><b>用途</b>：フライヤー・チケット画像・アー写などの<b>ファイル（写真）</b>を保管しURLで配信。Manus forge ストレージ依存を断つための移行先（Day3）。</div>
-          <div><b>アカウント</b>：<b>hayashi@threeway.co.jp</b>（dash.cloudflare.com・2026-06-29作成・会社）。有効化にカード登録が必要だが<b>無料枠10GB内＝請求0円見込み</b>。</div>
+          <div><b>アカウント</b>：<b>hayashi@threeway.co.jp</b>（dash.cloudflare.com・2026-06-29作成・会社／請求先=東京都大田区西蒲田6-32-11・会社カード）。<b>2026-07-01 R2サブスク有効化（Total Due $0）→ バケット <code>liverico-images</code>（位置=自動/APAC・Standard）作成</b>。無料枠10GB内＝請求0円見込み。次＝APIトークン発行→②へ受け渡し＋Railwayにenv登録。</div>
           <div><b>選定理由</b>：①<b>egress（読み出し転送料）が無料</b>＝画像は何度も見られる＝見られるほど課金されるS3と違い人気が出てもコストが読める②<b>S3互換</b>＝既存コード（@aws-sdk/client-s3）がほぼ書き換えなしで動く③安価（10GBまで無料）。</div>
           <div><b>他候補（ベンチマーク）</b>：AWS S3＝定番だが<b>egress有料</b>（見られるほど課金）／Backblaze B2＝安いが条件付き。発見・つながりで見られ続けるサービス性質に egress無料のR2が最適。</div>
           <div style="margin:10px 0">
@@ -1888,11 +1888,13 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
-        <div class="section-title"><i class="ti ti-alert-triangle"></i> Sentry — エラー監視（予定）</div>
+        <div class="section-title"><i class="ti ti-alert-triangle"></i> Sentry — エラー監視（導入済み）</div>
         <div class="card" style="font-size:13px;line-height:1.9">
-          <div><b>用途</b>：本番のエラーを可視化（Manus時代の「本番ログ不可視」を根治）。Day1残課題。</div>
-          <div><b>選定理由</b>：エラー監視の定番。Railway/Vercelの素のログと併用で目隠しデバッグを解消。</div>
-          <div><b>URL</b>：https://sentry.io</div>
+          <div><b>用途</b>：本番のエラーを可視化（Manus時代の「本番ログ不可視」を根治）。Day1で導入。</div>
+          <div><b>状態</b>：<b>導入済み（2026-07-01）</b>。②が @sentry/node 配線 → PR#4でmainマージ → Railway ACTIVE。<b>SENTRY_DSN はRailwayに登録・デプロイ済み</b>。boom受信検証は②で実施中。</div>
+          <div><b>アカウント</b>：組織 <b>threeway</b>（sentry.io）／<b>GitHub hayashi-bit でサインアップ</b>・請求/連絡メール <b>hayashi@threeway.co.jp</b>／データ保存先 US／<b>無料枠(Developer・クレカ不要)</b>。プロジェクト＝liverico（Express/Node）。GitHub(liverico-app)連携済みでスタックトレース↔コード・suspect commit も有効。</div>
+          <div><b>選定理由</b>：エラー監視の定番。Railwayログと併用で目隠しデバッグを解消。</div>
+          <div><b>URL</b>：https://threeway.sentry.io</div>
         </div>
       </div>
 
@@ -1944,7 +1946,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">サービス</th><th style="text-align:left;padding:6px">場所／アカウント</th><th style="text-align:left;padding:6px">用途</th></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway</b></td><td style="padding:6px">組織 nurturing-imagination ／ project production</td><td style="padding:6px">本番ホスティング（liverico-app の main を自動デプロイ）</td></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Cloudflare（R2）</b></td><td style="padding:6px"><b>hayashi@threeway.co.jp</b>（2026-06-29作成・会社アカウント）</td><td style="padding:6px">画像/ファイル保管庫 R2（Day3で Manus forge から移行）</td></tr>
-            <tr><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px">（本番DB）</td><td style="padding:6px">データ本体（移行でも継続）</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px">（本番DB）</td><td style="padding:6px">データ本体（移行でも継続）</td></tr>
+            <tr><td style="padding:6px"><b>Sentry</b></td><td style="padding:6px">組織 <b>threeway</b> ／ <b>GitHub hayashi-bit でサインアップ</b>・請求 hayashi@threeway.co.jp</td><td style="padding:6px">本番エラー監視（2026-07-01導入・SENTRY_DSNはRailway登録済）</td></tr>
           </table>
         </div>
       </div>
