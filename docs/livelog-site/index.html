@@ -218,6 +218,7 @@ tr:hover td{background:var(--bg2)}
       <div class="nav-item" onclick="show('twochats',this)"><i class="ti ti-arrows-split"></i>①②チャットの使い分け</div>
       <div class="nav-item" onclick="show('accountmap',this)"><i class="ti ti-at"></i>★ アカウント早見表</div>
       <div class="nav-item" onclick="show('serviceledger',this)"><i class="ti ti-server-cog"></i>★ インフラ／サービス台帳</div>
+      <div class="nav-item" onclick="show('cutover',this)"><i class="ti ti-arrow-guide"></i>★ 切替前チェックリスト</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">事業・新仕様</div>
@@ -1951,6 +1952,82 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           </table>
         </div>
       </div>
+    </div>
+
+    <div id="page-cutover" class="page">
+      <div class="topbar"><div class="topbar-title">切替前チェックリスト（Manus → Railway 本番切替の前に潰す項目）</div><span class="topbar-badge">2026-07-01 / 随時更新</span></div>
+      <div class="hero-strip">
+        <i class="ti ti-arrow-guide hero-strip-icon"></i>
+        <div class="hero-strip-text">
+          <h2>「liverico.app を Railway に付け替える」前に、全部✅にする</h2>
+          <p>切替(cutover)＝本番ユーザー(モニター2人＋林)が使う liverico.app を、Manusから Railway 版へ実際に切り替えること。ここが緑になるまで切替はしない。ロールバック可能を維持。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-database"></i> A. データ（非交渉・最優先）</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>⬜ <b>本番DBの検証付きフルバックアップを“切替直前”に再取得＋復元検証</b>（6/26に取得済＝復元PASS。切替直前にもう一度）</div>
+          <div>⚠️ <b>RailwayのDATABASE_URLを「本番DBの値」に切替</b> ← <b>現状=開発DB値のまま</b>（Day1の暫定）。これが最大の未確定。※R2画像移行で「開発DBに実画像URLがほぼ0件」と判明＝実データは本番DB側。本番DB接続がR2移行の前提。</div>
+          <div>⚠️ <b>JWT_SECRETを「本物（Manus本番の値）」に差し替え</b> ← 現状=新規生成値。<b>変えると全ユーザー強制ログアウト</b>なので本番の値を引き継ぐ。Manus自動管理でSecretsに見えない可能性＝取得経路の確認要。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-lock"></i> B. 認証</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>⬜ <b>Google Cloud Console に移行先ドメインの承認済みリダイレクトURIを追加</b>（GOOGLE_CLIENT_IDは再利用可）。忘れるとログイン不可。</div>
+          <div>✅ Google単独ログイン疎通（Manus OAuthループはPR#1/#2で解消・Day2）。⬜ Manus OAuthコールバック(/api/oauth/callback)の削除は最終確認。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-photo"></i> C. 画像（R2）</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>✅ storage.ts→R2＋proxyのR2優先/Forgeフォールバック実装（PR#5マージ）。✅ 非破壊移行スクリプト（PR#6・inert）。</div>
+          <div>⚠️ <b>Forge資格情報(BUILT_IN_FORGE_API_URL/KEY)入手</b> ← 旧画像の実体取得に必須・Manus注入の秘密で取得経路未確定。</div>
+          <div>⬜ <b>本番DB接続後</b>に移行スクリプト --audit → --commit → --verify（実ユーザー画像をR2へ・旧非削除・DB無変更・件数照合）。</div>
+          <div>⬜ 照合OK後に②がForgeフォールバック撤去＝R2専用化（最終PR・/manus-storage契約維持）。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-clock-bolt"></i> D. Heartbeat（Gmail増分同期・最難関）</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>⬜ heartbeat cron を <b>Railway Cron＋CRON_SECRET</b> に差し替え（現=Forge JWT前提）。⬜ scheduleCronTaskUid の扱い変更/廃止。</div>
+          <div>⬜ 増分同期がプレビュー→確認を維持して動くか検証。⬜ 長時間バックフィルがRailway常時起動で完走するか。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-robot"></i> E. LLM</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>⬜ Forge(gemini-2.5-flash)→<b>Anthropic</b>差し替え（OpenAI互換・URL/キー/モデル名）。⬜ Gmail抽出が同等以上か検証。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-shield-check"></i> F. 監視・安全（非交渉）</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>✅ Sentry稼働（本番エラー可視化）。⬜ boom受信検証（②）。</div>
+          <div>⬜ ロールバック手順（問題時Manusに戻せる状態）。⬜ モニター2人＋林は無停止。⬜ 本番DBへの破壊的変更は事前確認＋バックアップ。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-flag"></i> 切替(cutover)当日</div>
+        <div class="card" style="font-size:13px;line-height:2">
+          <div>⬜ 全機能スモーク（記録／友達／公開プロフィール／フライヤー／アー写／Gmail）。</div>
+          <div>⬜ liverico.app のDNSをRailwayへ付け替え（お名前.com）。⬜ 問題が出たらロールバック。⬜ 旧Manusは引退。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="font-size:12.5px;color:var(--text3);line-height:1.9">
+          出典：doc46 確定工程表／doc49 引き継ぎ／doc51 Day1マイルストーン／doc54 実装インベントリ。凡例：✅=完了 ⚠️=未・要注意 ⬜=未着手。この表は移行の進捗に合わせて随時更新。
+        </div>
+      </div>
+    </div>
 
       <div class="section">
         <div class="section-title"><i class="ti ti-bulb"></i> 操作時のルール</div>
