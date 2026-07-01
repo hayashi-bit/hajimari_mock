@@ -1850,7 +1850,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="section-title"><i class="ti ti-database"></i> TiDB Cloud — 本番データベース</div>
         <div class="card" style="font-size:13px;line-height:1.9">
           <div><b>用途</b>：ライブ記録・ユーザー・友達など<b>データ本体</b>（17テーブル）。移行でも<b>そのまま継続</b>。</div>
-          <div><b>アカウント</b>：要確認（Manus自動管理だった接続情報を引き継ぎ。切替時にTiDB Cloudコンソールから取得）。</div>
+          <div><b>アカウント</b>：<b>Manus自動管理（＝林さんの個人ログインでは本番DBに到達できない・確定 2026-07-01）</b>。TiDB Cloudに <b>eiji10hama@gmail.com / hayashi@threeway.co.jp（Google）/ hayashi-bit（GitHub）</b> のいずれで入っても「新規org作成（Terms同意）」＝実体なし＝Manus所有と判明。→ 本番DATABASE_URLは<b>TiDB Cloudコンソールからは取れない</b>。取得ルートは「Manus環境から（Day1で開発DB接続文字列を入手したのと同じ経路）」に切替え・②と要確認。</div>
           <div><b>選定理由</b>：<b>MySQL互換</b>でDrizzle（ORM）の方言が一致＝<b>データを移動させずに「接続先の差し替え」だけで済む</b>＝移行の最大の時短・最大リスク（大移動）の回避。</div>
           <div><b>他候補（ベンチマーク）</b>：PlanetScale（MySQL互換）／RDS MySQL／PostgreSQL＝Postgresは方言の書き直しと危険な大移動が発生＝却下。継続が最善。</div>
           <div style="margin:10px 0">
@@ -1947,7 +1947,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
             <tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px">サービス</th><th style="text-align:left;padding:6px">場所／アカウント</th><th style="text-align:left;padding:6px">用途</th></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Railway</b></td><td style="padding:6px">組織 nurturing-imagination ／ project production</td><td style="padding:6px">本番ホスティング（liverico-app の main を自動デプロイ）</td></tr>
             <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>Cloudflare（R2）</b></td><td style="padding:6px"><b>hayashi@threeway.co.jp</b>（2026-06-29作成・会社アカウント）</td><td style="padding:6px">画像/ファイル保管庫 R2（Day3で Manus forge から移行）</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px">（本番DB）</td><td style="padding:6px">データ本体（移行でも継続）</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><b>TiDB Cloud</b></td><td style="padding:6px"><b>Manus自動管理（林の直接ログイン無し・確定2026-07-01）</b>。eiji10hama/hayashi@threeway/hayashi-bit いずれも新規org＝実体なし。本番DATABASE_URLはManus経由でのみ取得可</td><td style="padding:6px">データ本体（移行でも継続・切替の要）</td></tr>
             <tr><td style="padding:6px"><b>Sentry</b></td><td style="padding:6px">組織 <b>threeway</b> ／ <b>GitHub hayashi-bit でサインアップ</b>・請求 hayashi@threeway.co.jp</td><td style="padding:6px">本番エラー監視（2026-07-01導入・SENTRY_DSNはRailway登録済）</td></tr>
           </table>
         </div>
