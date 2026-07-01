@@ -18,7 +18,12 @@
   .ph{max-width:300px;margin:0 auto;min-height:430px;border:2px dashed #d7cfe0;border-radius:22px;background:#f6f3f9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#a99fbb;font-weight:700;text-align:center;padding:24px}
   .ph small{color:#bcb3cb;font-weight:500;font-size:12px}
   /* carousel（1項目に複数画像） */
-  .carousel{max-width:300px;margin:0 auto}
+  .carousel{max-width:300px;margin:0 auto;position:relative}
+  .carousel .arrow{position:absolute;top:calc(50% - 20px);transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(26,20,36,.55);color:#fff;border:none;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .carousel .arrow:active{background:var(--pink)}
+  .carousel .arrow.l{left:6px}
+  .carousel .arrow.r{right:6px}
+  .carousel .arrow.hide{opacity:0;pointer-events:none}
   .carousel .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:22px}
   .carousel .track::-webkit-scrollbar{display:none}
   .carousel .track img{min-width:100%;width:100%;scroll-snap-align:center;border-radius:22px;display:block;box-shadow:0 10px 34px rgba(255,79,123,.18);border:1px solid #f1e6ec}
@@ -66,8 +71,7 @@
 
 <header class="hero">
   <div class="logo">LiveRico<b>ライブリコ</b></div>
-  <div class="eyebrow">世界観 → キャッチコピー</div>
-  <h1>ライブ好きは、<br>参戦履歴で恋に落ちる。</h1>
+  <h1 style="margin-top:30px">ライブ好きは、<br>参戦履歴で恋に落ちる。</h1>
 </header>
 
 <div class="manifesto">
@@ -228,10 +232,20 @@
       dotsBox.appendChild(d);
     });
     var dots=dotsBox.querySelectorAll('.dot');
-    track.addEventListener('scroll',function(){
-      var i=Math.round(track.scrollLeft/track.clientWidth);
+    // 左右の矢印を追加
+    var la=document.createElement('button'); la.className='arrow l'; la.innerHTML='‹';
+    var ra=document.createElement('button'); ra.className='arrow r'; ra.innerHTML='›';
+    c.insertBefore(la,c.firstChild); c.insertBefore(ra,c.firstChild);
+    function go(dir){ track.scrollTo({left:track.clientWidth*(cur()+dir),behavior:'smooth'}); }
+    function cur(){ return Math.round(track.scrollLeft/track.clientWidth); }
+    la.onclick=function(){go(-1);}; ra.onclick=function(){go(1);};
+    function upd(){
+      var i=cur();
       dots.forEach(function(d,j){d.classList.toggle('active',j===i);});
-    });
+      la.classList.toggle('hide',i<=0);
+      ra.classList.toggle('hide',i>=imgs.length-1);
+    }
+    track.addEventListener('scroll',upd); upd();
   });
 </script>
 
