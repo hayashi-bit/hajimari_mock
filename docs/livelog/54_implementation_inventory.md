@@ -111,7 +111,7 @@
 | # | 項目 | 判定 | 根拠 |
 |---|---|---|---|
 | 1 | Sentry | 🟢配線デプロイ済 | ②が`@sentry/node`配線→PR#3→ビルド失敗(lockfile)→**PR#4で修正しマージ・Railway ACTIVE(2026-07-01)**。`SENTRY_DSN`投入済。残＝boom受信検証(②に委任)のみ |
-| 2 | mainブランチ保護 | ❌未 | GitHub API: main は `"protected": false`。`.github/workflows`無し＝**CIワークフロー自体が無い**（「CIパス必須」は現状かけられない） |
+| 2 | mainブランチ保護 | ⏸先送り | **無料privateリポジトリでは保護ルールが非強制**（GitHub警告）＝設定しても直push禁止にならない。有料(Team)課金の価値は現状薄い。実運用は②が毎回PR経由＋毎日バックアップ＋本番DB非改変で担保。**有料化 or 公開の前に再検討**（2026-07-01 Aで先送り決定） |
 | 3 | 画像R2 | ❌未（Forgeのまま） | `@aws-sdk/client-s3`は依存にあるが**コードから未使用**。`storage.ts`はForge presign→`/manus-storage/{key}` |
 | 4 | Heartbeat(Gmail増分同期) | ❌未（Forge JWTのまま） | `heartbeat.ts`はForgeにcron登録・cron認証は`openId`=`cron_`のForge JWT。**`CRON_SECRET`はコードに0件**・Railway Cron未導入 |
 | 5 | LLM | ❌未（Forge/Geminiのまま） | `llm.ts`: `forge.manus.im/v1/chat/completions`・`model:"gemini-2.5-flash"`。Anthropic差し替え無し |
