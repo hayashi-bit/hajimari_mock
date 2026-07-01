@@ -249,14 +249,12 @@
     var la=document.createElement('button'); la.className='arrow l'; la.innerHTML='‹';
     var ra=document.createElement('button'); ra.className='arrow r'; ra.innerHTML='›';
     c.insertBefore(la,c.firstChild); c.insertBefore(ra,c.firstChild);
-    function go(dir){ track.scrollTo({left:track.clientWidth*(cur()+dir),behavior:'smooth'}); }
     function cur(){ return Math.round(track.scrollLeft/track.clientWidth); }
+    function go(dir){ var n=imgs.length; var i=(cur()+dir+n)%n; track.scrollTo({left:track.clientWidth*i,behavior:'smooth'}); }
     la.onclick=function(){go(-1);}; ra.onclick=function(){go(1);};
     function upd(){
       var i=cur();
       dots.forEach(function(d,j){d.classList.toggle('active',j===i);});
-      la.classList.toggle('hide',i<=0);
-      ra.classList.toggle('hide',i>=imgs.length-1);
     }
     track.addEventListener('scroll',upd); upd();
   });
