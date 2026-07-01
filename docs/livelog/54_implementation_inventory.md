@@ -106,8 +106,20 @@
 - **LLMはGemini 2.5 Flash**（Claudeではない）。資料で「Claude搭載」と書かないこと。
 - **カレンダー登録**はブラウザ側で.ics生成＋Googleカレンダーリンク（サーバendpointは無い）。
 
-## ■6. この表から読み取れる「移行の現在地」
+## ■6. 移行ステータス（2026-07-01・②が実コード実査で確認＝STEP A）
 
-- LLM＝**まだForge(Gemini)** ／ 画像＝**まだForge presign** ／ 認証＝**Manus OAuthが残存**。
-- ＝移行のDay3以降（画像R2・LLM差し替え・Manus OAuth削除）は**未着手**。移行は実質 **Day1完了・Day2認証稼働まで**。
-- Day1の積み残し（Sentry・mainブランチ保護）も本表からは確認できず＝別途②に要確認。
+| # | 項目 | 判定 | 根拠 |
+|---|---|---|---|
+| 1 | Sentry | ❌未 | `package.json`に`@sentry/*`無し・`Sentry.init`無し。`index.ts`の`uncaughtException`→`notifyOwner`はあるがSentryではない |
+| 2 | mainブランチ保護 | ❌未 | GitHub API: main は `"protected": false`。`.github/workflows`無し＝**CIワークフロー自体が無い**（「CIパス必須」は現状かけられない） |
+| 3 | 画像R2 | ❌未（Forgeのまま） | `@aws-sdk/client-s3`は依存にあるが**コードから未使用**。`storage.ts`はForge presign→`/manus-storage/{key}` |
+| 4 | Heartbeat(Gmail増分同期) | ❌未（Forge JWTのまま） | `heartbeat.ts`はForgeにcron登録・cron認証は`openId`=`cron_`のForge JWT。**`CRON_SECRET`はコードに0件**・Railway Cron未導入 |
+| 5 | LLM | ❌未（Forge/Geminiのまま） | `llm.ts`: `forge.manus.im/v1/chat/completions`・`model:"gemini-2.5-flash"`。Anthropic差し替え無し |
+| 6 | env(DATABASE_URL/JWT_SECRET) | ⚠️要Railway確認 | コード/サンドボックスからは実値不明。Day1経緯では「Railwayは開発DB接続のまま」。**林がRailwayダッシュボードで確認**が必要 |
+
+**結論**: 移行は **Day1完了＋Day2認証稼働まで**。Day3以降（画像R2・Heartbeat・LLM・Manus OAuth削除）＋Day1の締め（Sentry・ブランチ保護）は**全て未着手**。
+
+### 次の一手（①の方針・2026-07-01）
+- Day1の締めから：**Sentry配線（DSN無しでは無害no-op・boomは`ENABLE_DEBUG_BOOM=1`時のみ）** ＋ **mainブランチ保護（直push禁止・PR必須／CIパス必須は現状スコープ外）**。
+- env項目6は**林がRailwayで要確認**（本番DB値か・JWT_SECRETは本物か＝切替Day5-7の前提）。
+- CI必須化は見送り：現状 `tsc`20件エラー・テスト3件failのため、CI必須にすると全PRが恒久赤＝マージ不能。CI整備は移行一段落後の別タスク。
