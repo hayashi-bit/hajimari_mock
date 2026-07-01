@@ -3694,6 +3694,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-world-www"></i> 【資料用LP 公開】関係者向けサービス紹介サイトを intro.liverico.app で公開（2026-07-01）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          <b>公開URL</b>：<b>https://intro.liverico.app/pitch-lp/</b>（intro.liverico.app で開くと自動でLPへ）。関係者配布・ピッチ用のサービス紹介LP。<br>
+          <b>中身</b>：北極星コピー「ライブ好きは、参戦履歴で恋に落ちる。」＋体験の時系列（残す／参戦前／ライブに導く／終わっても／恋に落ちる／また次へ）で機能を紹介。実アプリのキャプチャ（個人情報マスク済）＋左右ループのカルーセル。実装済/部分実装/開発中を doc54 実装インベントリと整合させ“盛らない”。フッターに開発者=林英史・問い合わせ hello@liverico.app（Gmail作成リンク）・「開発中サービス」注記。<br>
+          <b>置き場所</b>：hajimari_mock リポジトリ <code>docs/pitch-lp/index.html</code>（単一HTML・画像は img/）。<b>①(このリポジトリ)側で編集→git push で即更新</b>。<br>
+          <b>ホスティング</b>：GitHub Pages（hajimari_mock・publishing source = ブランチ/docs）。カスタムドメイン <code>intro.liverico.app</code>＝<b>お名前.com で CNAME（intro → hayashi-bit.github.io）</b>を加藤さんが追加、GitHub Settings→Pages→Custom domain に設定。<b>Enforce HTTPS は証明書発行後に有効化予定</b>（発行まで数分〜1h）。<br>
+          <b>補足</b>：URLから <code>hajimari_mock</code>・<code>github.io</code> は消えた。<code>/pitch-lp/</code> も消して <code>intro.liverico.app</code> 直下にするのは後回しで可（配置整理が必要）。Pagesの publishing source は現状フィーチャーブランチ＝将来のブランチ削除に備え、広く配布する前に main へ移すのが安全（要検討）。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-git-pull-request"></i> 【新②・PR #2】予習プレイリスト主因=getDb()await抜けを修正＋出演者追加/一括削除/Gmail軟着陸（2026-06-29）</div>
         <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
           新②(liverico-app)が3件＋参考1件を実装しPR #2作成（テスト15件追加・全パス／型新規エラー0・既存5件解消／ビルドOK／JWT_SECRET・DB破壊なし）。<br>
