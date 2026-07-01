@@ -110,7 +110,7 @@
 
 | # | 項目 | 判定 | 根拠 |
 |---|---|---|---|
-| 1 | Sentry | ❌未 | `package.json`に`@sentry/*`無し・`Sentry.init`無し。`index.ts`の`uncaughtException`→`notifyOwner`はあるがSentryではない |
+| 1 | Sentry | 🟡実装中 | ②が`@sentry/node`配線を実装し **PR #3** 作成（DSN無しでは無害・boomは`ENABLE_DEBUG_BOOM=1`時のみ）。`SENTRY_DSN`は**Railway登録・デプロイ済(2026-07-01)**。残＝PR#3マージ→boom検証 |
 | 2 | mainブランチ保護 | ❌未 | GitHub API: main は `"protected": false`。`.github/workflows`無し＝**CIワークフロー自体が無い**（「CIパス必須」は現状かけられない） |
 | 3 | 画像R2 | ❌未（Forgeのまま） | `@aws-sdk/client-s3`は依存にあるが**コードから未使用**。`storage.ts`はForge presign→`/manus-storage/{key}` |
 | 4 | Heartbeat(Gmail増分同期) | ❌未（Forge JWTのまま） | `heartbeat.ts`はForgeにcron登録・cron認証は`openId`=`cron_`のForge JWT。**`CRON_SECRET`はコードに0件**・Railway Cron未導入 |
