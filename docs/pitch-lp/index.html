@@ -56,6 +56,11 @@
   .feat .sub{margin-top:10px;font-size:13px;color:var(--text2);border-left:3px solid var(--orange);padding-left:10px}
   .core h3{color:var(--pink)}
   .core{background:linear-gradient(180deg,#fff,#fff5f8)}
+  .badges{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+  .bdg{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:800;font-size:16px;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+  .bdg.together{background:linear-gradient(100deg,#ff8a3d,#ff4f7b)}
+  .bdg.diffday{background:linear-gradient(100deg,#8a5cf6,#c05cf6)}
+  .bdg.same{background:linear-gradient(100deg,#2ec4b6,#2e9bd6)}
 
   .foot{background:var(--ink);color:#fff;text-align:center;padding:60px 22px;margin-top:70px}
   .foot h2{color:#fff;font-size:clamp(20px,4vw,30px);font-weight:900;line-height:1.4}
@@ -200,7 +205,12 @@
   <div class="feat core rev">
     <div class="txt"><span class="cat">共通バッジ</span>
       <h3>参戦履歴で、恋に落ちる</h3>
-      <p>友達との参戦の重なりを可視化（同じライブ／一緒に参戦／同フェス別日）。「同じ夜、同じ箱にいた」「あのフェス、別の日に来てた」——重なりが見えた瞬間、ただの知り合いが、特別な誰かに変わる。同じ音楽を、同じ熱量で浴びてきた者同士。参戦履歴は、人と人が深くつながり、惹かれ合うための入口になる。これがLiveRicoの核。</p></div>
+      <p>友達との参戦の重なりを、バッジで可視化。「同じ夜、同じ箱にいた」「あのフェス、別の日に来てた」——重なりが見えた瞬間、ただの知り合いが、特別な誰かに変わる。同じ音楽を、同じ熱量で浴びてきた者同士。参戦履歴は、人と人が深くつながり、惹かれ合うための入口になる。これがLiveRicoの核。</p>
+      <div class="badges">
+        <span class="bdg same">🎵 同じライブに行った</span>
+        <span class="bdg together">🤝 一緒に参戦</span>
+        <span class="bdg diffday">📅 日付違いで参戦</span>
+      </div></div>
     <img class="shot" src="img/Screenshot_20260630-072305.png" alt="共通バッジ">
   </div>
 
