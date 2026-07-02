@@ -1988,7 +1988,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;line-height:2">
           <div>✅ <b>Google Cloud Console に Railway のリダイレクトURIを追加済み</b>（2026-07-01）：LiveLog Web / LiveLog Dev 両クライアントに <code>https://liverico-production.up.railway.app/api/gmail/callback</code>（＋<code>/api/oauth/google/callback</code>）を登録。※Gmail連携時の <code>redirect_uri_mismatch</code> の直接対処。反映に5分〜数時間。Google Cloud＝eiji10hama@gmail.com/project LiveLo。</div>
           <div>✅ Google単独ログイン疎通（Manus OAuthループはPR#1/#2で解消・Day2）。⬜ Manus OAuthコールバック(/api/oauth/callback)の削除は最終確認。</div>
-          <div>⚠️ <b>オーナー行(id=1)のemailが空／別値</b>（Manus OAuthはopenId識別のため）。切替後の新ログインは<b>Google OAuth＝emailで人を照合</b>するため、<b>切替直前に id=1 の email を <code>hayashi@threeway.co.jp</code> に埋める</b>工程が必須（埋めないと林が別人扱い＝新規行になる恐れ）。モニター2名分も同様にopenId↔email対応を確認。</div>
+          <div>✅ <b>ログイン照合の事前チェック完了（2026-07-02・新DB liverico に対して precheck_login_identity.mjs）</b>：照合は <b>googleId → email の2段構え</b>（server/db.ts resolveGoogleUser）。<b>3名とも email・googleId 保持済み＝新規化リスク0件</b>。id=1（林・62 lives）／1020001（俵山・52）／2430001（宮下・111）。<br>
+          <b>★切替後の絶対注意：id=1 の照合メールは <code>eiji10hama@gmail.com</code>（threewayではない）</b>。切替後は必ず <b>eiji10hama@gmail.com のGoogleアカウント</b>でログインする。<b>hayashi@threeway.co.jp で入ると別アカウント新規化</b>（データは id=1 に残るが見えなくなる）＝やってはいけない。<span style="color:var(--text3)">※以前ここに threeway と誤記＝訂正。id=1に紐づくのは eiji10hama。</span></div>
         </div>
       </div>
 
