@@ -1812,6 +1812,11 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;line-height:1.9">
           <div><b>用途</b>：アプリ本体（フロント＋バックを<b>1サービス・同一オリジン</b>）を常時起動し、liverico-production.up.railway.app で公開。main への push で<b>自動デプロイ</b>。</div>
           <div><b>アカウント</b>：組織 <b>nurturing-imagination</b> ／ project production（ログインメールは要確認＝早見表に追って追記）。</div>
+          <div style="margin-top:6px;padding:8px 10px;background:var(--bg3);border-left:3px solid var(--navy)"><b>サービス構成（4つ・2026-07-02確認）</b>：<br>
+          ・<b><code>liverico</code></b>＝メインのアプリ本体（Web・liverico-production.up.railway.app・Online）。切替でVariablesを差し替えるのはこのサービス。<br>
+          ・<b><code>cron-gmail</code></b>＝Gmail増分同期（Last run succeeded）。<br>
+          ・<b><code>cron-archive</code></b>＝アーカイブ（Last run succeeded）。<br>
+          ・<b><code>cron-backup</code></b>＝日次バックアップ（純JS版/PR#11）。<span style="color:#d65a2e"><b>⚠️ CRASHED＝Last run failed（2026-07-02）</b></span>。要②調査（Console/ログ）。※今日の手動バックアップ(PC保管)があるため即時のデータ危険はなし。切替後、本番DATABASE_URL/CRON_SECRETの設定込みで要修正。</div>
           <div><b>選定理由</b>：①<b>常時起動</b>＝Gmail の長時間取込ジョブに強い（サーバーレスは長時間処理に不向き）②フロントとバックを<b>同一オリジンの1サービス</b>にまとめられCORS（別ドメイン間通信の面倒）が不要③PORT自動注入＝設定が楽④GitHub連携で push＝自動デプロイ。</div>
           <div><b>他候補（ベンチマーク）</b>：Render＝ほぼ同等の対抗馬／Fly.io＝低レイテンシだが設定が重い／<b>Vercel</b>＝フロントは得意だが常時起動・長時間ジョブに不向き＝バックには選ばず。<span style="color:var(--text3)">※計画当初はフロント=Vercel/バック=Railwayの2枚構成案だったが、同一オリジン1サービスにまとめてRailwayへ集約した。</span></div>
           <div style="margin:10px 0">
