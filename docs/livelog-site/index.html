@@ -1983,7 +1983,7 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;line-height:2">
           <div>✅ <b>本番DBの検証付きフルバックアップを取得（2026-07-01 13:49 UTC）</b>：③（Manus本体AI）が本番サンドボックス（本番DATABASE_URL自動注入）で <code>backup_db.mjs</code>（純JS・SELECTのみ・非破壊）を実行。<b>host=gateway06.us-east-1（本番確定）</b>／合計4,866行／1.94MB（2,035,281 bytes）／SHA-256 <code>47382ff9…56fc34</code>。事前に <code>verify_cutover.mjs</code> でオーナー行 id=1（openId=NKAPWNnboXu6DpzfByVLLD）存在＝本物確認。成果物 <code>.sql</code>／<code>manifest.json</code>／<code>.sha256</code> は林ローカルに保管（※公開リポジトリには実データ厳禁）。⬜ <b>切替直前に再取得＋復元検証</b>（この1本を保険に切替へ進める）。</div>
           <div>ℹ️ <b>実行環境の整理</b>：①（記録・LP）と②（Claude Code・コード）の箱には本番secretが無く実行不可＝実測確認。本番DATABASE_URLが自動注入されるのは<b>③（manus.im本体AI）の本番サンドボックスのみ</b>。バックアップ／切替系の“本番実行”は③に依頼する。</div>
-          <div>⚠️ <b>RailwayのDATABASE_URLを「本番DBの値」に切替</b> ← <b>現状=開発DB値のまま</b>（Day1の暫定）。これが最大の未確定。※R2画像移行で「開発DBに実画像URLがほぼ0件」と判明＝実データは本番DB側。本番DB接続がR2移行の前提。</div>
+          <div>✅ <b>RailwayのDATABASE_URLを林さん所有の新DB（liverico-prod / liverico）に切替＝2026-07-02 切替成功</b>。eiji10hama@gmail.com でログイン→本番データ（lives 62件）表示を確認＝<b>DBがManusから林さん所有へ移行完了</b>。途中2つの障害を解決：①TLSエラー「insecure transport」＝drizzle(url)がssl未注入・mysql2は?ssl-modeを無視→②がdb.ts等でssl明示（PR#12）②パスワード取り違え(Access denied)→TiDBでReset Password＋Connection Stringをコピーボタンで正確に再投入。<b>末尾は /liverico</b>（sysは権限エラー）。⬜ 移行完了後にTiDBパスワード最終ローテーション（作業中チャットに表示のため）。</div>
           <div>⚠️ <b>JWT_SECRETを「本物（Manus本番の値）」に差し替え</b> ← 現状=新規生成値。<b>変えると全ユーザー強制ログアウト</b>なので本番の値を引き継ぐ。Manus自動管理でSecretsに見えない可能性＝取得経路の確認要。</div>
         </div>
       </div>
@@ -3796,6 +3796,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="hero-strip-text">
           <h2>決定事項・メモの記録場所</h2>
           <p>「記録しておいて」と言われたものはここに集約（＋関連docへ）。時系列で追記。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><i class="ti ti-plug-connected"></i> 【本番DB切替成功】RailwayをManus管理DB→林さん所有DBへ（2026-07-02）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>成果</b>：Railway(liverico)のDATABASE_URLを、林さん所有のTiDB（liverico-prod / DB名 liverico・us-east-1・本番データ復元済4,866行）に差し替え＝<b>本番DBがManusから林さん所有へ移行完了</b>。eiji10hama@gmail.com でログイン→lives 62件・自分の参戦履歴が表示を確認。<br>
+          <b>追加した変数</b>：BUILT_IN_FORGE_API_URL/KEY（旧画像フォールバック用・一時）／NODE_ENV=production／DATABASE_URL（新DB）。JWT_SECRET等は維持。<br>
+          <b>解決した障害2つ</b>：①<b>TLSエラー</b>「Connections using insecure transport are prohibited」＝drizzle(url)がssl未注入・mysql2は<code>?ssl-mode=REQUIRED</code>を無視→②がdb.ts等でssl明示（<code>ssl:{minVersion:'TLSv1.2',rejectUnauthorized:true}</code>・PR#12）。②<b>パスワード取り違え</b>（Access denied・貼付時の1文字ずれ）→TiDBで Reset Password→Connection Stringをコピーボタンで正確に再投入。<br>
+          <b>★ログインは eiji10hama@gmail.com（threewayではない）</b>。<br>
+          <b>残り</b>：画像表示確認→R2移行(--commit)→Forge撤去→DNS(liverico.app)付替→TiDBパスワード最終ローテーション→cron-backup修正→モニターへメール。※現時点でliverico.appのDNSは未付替＝モニターは旧Manus利用中で無停止。
         </div>
       </div>
 
