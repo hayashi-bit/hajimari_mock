@@ -2003,8 +2003,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
         <div class="card" style="font-size:13px;line-height:2">
           <div>✅ storage.ts→R2＋proxyのR2優先/Forgeフォールバック実装（PR#5マージ）。✅ 非破壊移行スクリプト（PR#6・inert）。</div>
           <div>⚠️ <b>Forge資格情報(BUILT_IN_FORGE_API_URL/KEY)入手</b> ← 旧画像の実体取得に必須・Manus注入の秘密で取得経路未確定。</div>
-          <div>⬜ <b>本番DB接続後</b>に移行スクリプト --audit → --commit → --verify（実ユーザー画像をR2へ・旧非削除・DB無変更・件数照合）。</div>
-          <div>⬜ 照合OK後に②がForgeフォールバック撤去＝R2専用化（最終PR・/manus-storage契約維持）。</div>
+          <div>✅ <b>画像R2移行 完了（2026-07-02・Railway Consoleで --audit→--commit）</b>：対象<b>34件（DB内 /manus-storage 9件＋コード参照の静的画像25件）を全てR2へコピー＝34/34・不足0・件数照合OK</b>。非破壊（DB・Forge無変更）。※アー写212(Apple Music mzstatic)・アバター5(Google)・外部フライヤー11 は外部URL＝移行不要でそのまま表示。</div>
+          <div>⬜ <b>Forgeフォールバック撤去（②の最終PR）＝R2専用化</b>→ その後 Railwayの BUILT_IN_FORGE_API_URL/KEY を削除＝Manus画像依存を完全に断つ。</div>
         </div>
       </div>
 
