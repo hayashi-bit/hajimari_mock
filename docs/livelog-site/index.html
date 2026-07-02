@@ -3802,6 +3802,17 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i> 【将来の機能アイデア】Manus撤去で消すコードのうち“アイデアとして残す”もの（2026-07-02）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          <b>経緯</b>：Forge撤去の調査で、Manus(Forge)依存の休眠コード（未使用）が判明＝<code>voiceTranscription</code>／<code>imageGeneration</code>／<code>dataApi</code>／<code>map</code>。UIから呼び出しゼロ＝デッドコード。Manus卒業に伴い削除するが、<b>林さんの「機能アイデアとしては良い」を尊重し、アイデアだけ記録して残す</b>（コードは非Manusで作り直す前提なので保持しない）。<br>
+          <b>将来の機能アイデア（バックログ）</b>：<br>
+          ・<b>音声入力（声→文字）</b>：メモやセトリを声で入力→文字起こし。将来やるなら Whisper 等の非Manus APIで新規実装。<br>
+          ・<b>画像生成</b>：AIでフライヤー風画像やビジュアルを生成。将来やるなら画像生成APIで新規実装。<br>
+          ※現状のForge版コードはManus依存＝卒業で動かなくなるため保持せず、アイデアのみここに残す。実装時はコンセプト（体験×つながり×予習）に沿うか要検討。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-mail-check"></i> 【cron-backup ❌解決】日次バックアップを完全Forge非依存に（2026-07-02）</div>
         <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
           <b>成果</b>：ずっと❌通知が出ていた日次バックアップを修正・実機成功。<b>DB(TLS)・保存(R2)・通知(Resend) すべてForge非依存</b>に。<br>
