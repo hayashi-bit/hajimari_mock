@@ -1861,7 +1861,8 @@ await createLive.mutateAsync({ title: '...' });</div></div>
           ・<b>ログイン＝hayashi@threeway.co.jp（Google）</b>／組織＝「英史's Org」＝<b>今度は実体あり（林さん所有・確定）</b>。<br>
           ・<b>インスタンス</b>：<code>liverico-prod</code>／Instance ID <code>10876992984049059726</code>／プラン=<b>Starter（無料・Serverless相当）</b>／AWS <b>us-east-1（N. Virginia＝旧本番と同じ場所・Railwayと近い）</b>／Monthly Spending Limit=$0（無料枠のみ・課金防止）／作成 2026-07-01 14:31。<br>
           ・<b>用途</b>：今日取得した本番バックアップ（4,866行）をここへ復元→RailwayのDATABASE_URLをここへ向ける＝<b>DBまで林さん所有に＝Manus完全卒業</b>。<br>
-          ・接続文字列（Connection string）は取得後 Railway env にのみ登録＝<b>公開リポジトリには絶対に書かない</b>。</div>
+          ・接続文字列（Connection string）は取得後 Railway env にのみ登録＝<b>公開リポジトリには絶対に書かない</b>。<br>
+          <span style="display:inline-block;margin-top:6px;padding:6px 9px;background:#e5f4ec;border-left:3px solid #1f9d55">✅ <b>パスワード最終ローテーション完了（2026-07-02）</b>：作業中チャットに出た旧パスワードを無効化。TiDBで Reset Password→新Connection StringをRailwayの DATABASE_URL に差替→再デプロイ→再ログイン成功。新パスワードはRailway env と林さんPCのみ。DNS付替前＝モニター影響ゼロの窓で実施。</span></div>
           <div><b>選定理由</b>：<b>MySQL互換</b>でDrizzle（ORM）の方言が一致＝<b>データを移動させずに「接続先の差し替え」だけで済む</b>＝移行の最大の時短・最大リスク（大移動）の回避。</div>
           <div><b>他候補（ベンチマーク）</b>：PlanetScale（MySQL互換）／RDS MySQL／PostgreSQL＝Postgresは方言の書き直しと危険な大移動が発生＝却下。継続が最善。</div>
           <div style="margin:10px 0">
