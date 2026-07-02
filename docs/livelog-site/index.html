@@ -3802,6 +3802,15 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-rocket"></i> 【公開準備メモ＋要望】オープン向け調整と“即反映”の運用（2026-07-02）</div>
+        <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
+          <b>公開(オープン)に向けて入れた調整</b>：①ヘッダーに<b>「beta版」バッジ</b>表示 ②<b>セトリ自動登録を外した（手動編集に）</b>。※Railway版で反映確認済み。<br>
+          <b>林さんの要望（絶対に忘れない）</b>：<b>移行後は、こういう公開向けの調整を“すぐ反映”したい</b>。<br>
+          <b>クロコの回答</b>：これは移行の最大のメリット。Railwayは<b>GitHub main への push → 約2分で自動デプロイ（反映）</b>。今後の小調整（バッジ/コピー/機能ON/OFF等）は「②が小PR→マージ→数分で本番反映」で回せる＝Manus時代の“3時間ループ”を卒業。公開後の細かいチューニングを高速に回せる体制。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-plug-connected"></i> 【本番DB切替成功】RailwayをManus管理DB→林さん所有DBへ（2026-07-02）</div>
         <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
           <b>成果</b>：Railway(liverico)のDATABASE_URLを、林さん所有のTiDB（liverico-prod / DB名 liverico・us-east-1・本番データ復元済4,866行）に差し替え＝<b>本番DBがManusから林さん所有へ移行完了</b>。eiji10hama@gmail.com でログイン→lives 62件・自分の参戦履歴が表示を確認。<br>
