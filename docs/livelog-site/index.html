@@ -3802,6 +3802,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-mail-check"></i> 【cron-backup ❌解決】日次バックアップを完全Forge非依存に（2026-07-02）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>成果</b>：ずっと❌通知が出ていた日次バックアップを修正・実機成功。<b>DB(TLS)・保存(R2)・通知(Resend) すべてForge非依存</b>に。<br>
+          <b>やったこと</b>：notifyOwner を Resend へ移行（PR#15・ソフトフェイル＝失敗してもバックアップ本体は止まらない）。原因＝旧notifyOwnerがForge未設定でthrow→バックアップ成功でも通知で❌扱いになっていた。<br>
+          <b>実機確認</b>：Railway Console で <code>node scripts/railway_cron.mjs backup</code> 実行→ <code>ok:true / totalRows:4869 / warnings:[] / anomalies:[]</code>。<b>eiji10hama@gmail.com の受信トレイに「✅日次バックアップ完了」メール到達</b>（送信元 onboarding@resend.dev）。バックアップgzもR2に保存。<br>
+          <b>メモ（後日）</b>：送信元が共有の <code>onboarding@resend.dev</code>＝モニター向け一斉メールに使うと迷惑メール行きの恐れ。対外メールはResendで独自ドメイン(liverico.app)検証 or 林さんのGmail手動送信が無難。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-rocket"></i> 【公開準備メモ＋要望】オープン向け調整と“即反映”の運用（2026-07-02）</div>
         <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
           <b>公開(オープン)に向けて入れた調整</b>：①ヘッダーに<b>「beta版」バッジ</b>表示 ②<b>セトリ自動登録を外した（手動編集に）</b>。※Railway版で反映確認済み。<br>
