@@ -3802,6 +3802,16 @@ await createLive.mutateAsync({ title: '...' });</div></div>
       </div>
 
       <div class="section">
+        <div class="section-title"><i class="ti ti-confetti"></i> 【Forge依存ゼロ達成】本番からManusのForge依存が完全に消えた（2026-07-02）</div>
+        <div class="card" style="border-left:4px solid #1f9d55;font-size:13px;color:var(--text2);line-height:1.9">
+          <b>達成</b>：Railwayの <code>BUILT_IN_FORGE_API_URL</code> / <code>BUILT_IN_FORGE_API_KEY</code> を削除→再デプロイ→<b>全機能OK</b>（ログイン62件・フライヤーAI(Claude)・画像表示・Gmail同期）。<b>本番のlive経路からForge(Manus)依存がゼロに</b>。<br>
+          <b>ここまでの置き換え（全部林さん所有・非Manus）</b>：ホスティング=Railway／DB=自前TiDB(TLS)／画像=自前R2／認証=Google／LLM=Anthropic／cron=Railway+CRON_SECRET／通知=Resend／観測=Sentry。<br>
+          <b>維持したもの</b>：CRON_SECRET・ANTHROPIC_API_KEY（外すと休眠フォールバックが起動するため維持）。残るForge参照はheartbeat/llmの不発分岐のみ（実行されない・撤去は任意で後回し）。<br>
+          <b>残り（完全終了まで）</b>：①DNS付替(liverico.app→Railway)=モニター公開 → ②数日安定確認（この間マナスはロールバック用に残す）→ ③TiDBパスワード最終ローテーション → ④モニターへメール → ⑤<b>マナス引退（プロジェクトを畳む）=本当の最後の1手</b>。ここまでで「二度とマナスを触らない」が完成。
+        </div>
+      </div>
+
+      <div class="section">
         <div class="section-title"><i class="ti ti-bulb"></i> 【将来の機能アイデア】Manus撤去で消すコードのうち“アイデアとして残す”もの（2026-07-02）</div>
         <div class="card" style="border-left:4px solid var(--gold);font-size:13px;color:var(--text2);line-height:1.9">
           <b>経緯</b>：Forge撤去の調査で、Manus(Forge)依存の休眠コード（未使用）が判明＝<code>voiceTranscription</code>／<code>imageGeneration</code>／<code>dataApi</code>／<code>map</code>。UIから呼び出しゼロ＝デッドコード。Manus卒業に伴い削除するが、<b>林さんの「機能アイデアとしては良い」を尊重し、アイデアだけ記録して残す</b>（コードは非Manusで作り直す前提なので保持しない）。<br>
